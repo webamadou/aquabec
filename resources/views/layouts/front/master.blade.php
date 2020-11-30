@@ -11,6 +11,7 @@
     <link rel="icon" type="image/png" href="{{ asset('images/logo/logo.png') }}">
     <!-- CSS -->
     <link rel="stylesheet" href="{{ asset('css/frontend.css') }}" >
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}" >
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>

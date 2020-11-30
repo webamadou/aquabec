@@ -35,23 +35,22 @@
                 <li class="nav-item">
                     <a href="{{ route('admin.users.index') }}" class="nav-link {{ side_nav_bar_menu_status('users','active') }}">
                         <i class="nav-icon fas fa-users"></i>
-                        <p>
+                        <!-- <p>
                             Utilisateurs
-                            @if($users->count() > 0)
-                            <span class="ml-2 badge badge-danger">{{ $users->count() }}</span>
-                            @endif
-                        </p>
+                            @ if($users->count() > 0)
+                            <span class="ml-2 badge badge-danger">{ { $ users->count() }}</span>
+                            @ endif
+                        </p> -->
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('admin.organisations.index') }}" class="nav-link {{ side_nav_bar_menu_status('organisations','active') }}">
                         <i class="nav-icon fas fa-address-card"></i>
-                        <p>
+                        <!-- <p>
                             Organisations
-                            @if($organisations->count() > 0)
-                            <span class="ml-2 badge badge-danger">{{ $organisations->count() }}</span>
-                            @endif
-                        </p>
+                            @ if($organisations->count() > 0)
+                            <span class="ml-2 badge badge-danger">{ { $ organisations->count() }}</span> @ endif
+                        </p> -->
                     </a>
                 </li>
                 <li class="nav-item">

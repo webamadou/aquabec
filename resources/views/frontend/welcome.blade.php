@@ -80,8 +80,55 @@
         <!-- End Container -->
     </section>
     <!-- End Features section -->
+    <section id="tw-subscriptions" class="tw-subscriptions-area">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col section-heading wow fadeInDown" data-wow-duration="1s" data-wow-delay=".5s">
+                    <h2>
+                        <small> - </small>
+                        <span>Abonnements</span>
+                    </h2>
+                    <span class="animate-border border-offwhite ml-auto mr-auto tw-mt-20"></span>
+                </div>
+            </div>
 
-
+            <div class="row wow fadeInUp" data-wow-duration="1s" data-wow-delay=".5s">
+                @foreach($subscriptions as $subs)
+                    <div class="col-lg-4 col-md-12 m-0">
+                        <div class="tw-latest-post">
+                            <div class="subscribtions text-center" style="border-bottom: 5px solid #43c2a7">
+                               <h3 class="post-title "><a href="#">{{ucfirst($subs->title)}}</a></h3>
+                            </div>
+                            <!-- End Latest Post Media -->
+                            <div class="post-body p-0">
+                                <div class="flex-1 bg-white text-gray-600 rounded-t rounded-b-none overflow-hidden shadow">
+                                    <ul class="w-full text-center text-sm subs-options">
+                                        <li class="border-b py-4"><strong>Credit :</strong> {{$subs->credit}}</li>
+                                        <li class="border-b py-4"><strong>Quota : </strong>{{$subs->quota}}</li>
+                                    </ul>
+                                </div>
+                                <div class="flex-none mt-auto bg-white rounded-b rounded-t-none overflow-hidden shadow p-6">
+                                    <div class="w-full pt-6 text-3xl text-gray-600 font-bold uk-text-center subs-prices">
+                                        {{$subs->price}} <span class="text-base"> CAD<!-- for one user --></span>
+                                    </div>
+                                    <div class="col-md-12 text-center wow zoomIn" data-wow-duration="1s" data-wow-delay="1s">
+                                        <a href="#" class="btn btn-primary btn-lg tw-mt-80">Souscrire</a>
+                                    </div>
+                                </div>
+                                <!-- End Post info -->
+                            </div>
+                            <!-- End Post Body -->
+                        </div>
+                        <!-- End Tw Latest Post -->
+                    </div>
+                @endforeach
+                <!-- End Col -->
+                <!-- <div class="col-md-12 text-center wow zoomIn" data-wow-duration="1s" data-wow-delay="1s"><a href="#" class="btn btn-primary btn-lg tw-mt-80">view all</a></div> -->
+            </div>
+        </div>
+    </section>
+    <!-- End Subscribtion section -->
+    
     <section id="tw-analysis" class="tw-analysis-area">
         <div class="analysis-bg-pattern d-none d-md-inline-block">
             <img class="wow fadeInUp" src="images/check-seo/cloud.png" alt="">
