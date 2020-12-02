@@ -112,7 +112,7 @@
                                         {{$subs->price}} <span class="text-base"> CAD<!-- for one user --></span>
                                     </div>
                                     <div class="col-md-12 text-center wow zoomIn" data-wow-duration="1s" data-wow-delay="1s">
-                                        <a href="#" class="btn btn-primary btn-lg tw-mt-80">Souscrire</a>
+                                        <a href="{{route("subscription_summary", @$subs->slug)}}" class="btn btn-primary btn-lg tw-mt-80">Souscrire</a>
                                     </div>
                                 </div>
                                 <!-- End Post info -->
@@ -128,7 +128,7 @@
         </div>
     </section>
     <!-- End Subscribtion section -->
-    
+
     <section id="tw-analysis" class="tw-analysis-area">
         <div class="analysis-bg-pattern d-none d-md-inline-block">
             <img class="wow fadeInUp" src="images/check-seo/cloud.png" alt="">

@@ -14,7 +14,7 @@ class WelcomeController extends Controller
 		$user = Auth::user();
 		//dd($user->getRoleNames());
     	//Auth::logout();
-    	$subscriptions = \App\Models\Subscription::orderBy('price','DESC')->get();
+    	$subscriptions = \App\Models\Subscription::orderBy('price','ASC')->get();
     	//dd($subscriptions);
         return view('frontend.welcome', compact("subscriptions"));
     }

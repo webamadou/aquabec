@@ -13,6 +13,7 @@ use App\Http\Controllers\Backend\User\DashboardController as UserDashboard;
 use App\Http\Controllers\Backend\User\EventController;
 use App\Http\Controllers\Frontend\ContactController;
 use App\Http\Controllers\Frontend\WelcomeController;
+use App\Http\Controllers\Frontend\SubscriberController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -102,4 +103,8 @@ Route::middleware(['auth','verified'])->group(function (){
         Route::get('get-city-by-region/{region_id}', [EventController::class, 'getCityByRegion']);
         Route::get('get-events-data', [EventController::class, 'getEventsData']);
     });
+    /**
+     * User's subscription
+     */
+    Route::get("subscription_summary/{subscription:slug}", [SubscriberController::class, "summary"])->name("subscription_summary");
 });
