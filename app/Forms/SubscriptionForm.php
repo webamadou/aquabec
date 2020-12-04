@@ -24,7 +24,7 @@ class SubscriptionForm extends Form
 
         $this
             ->add('title', 'text',[
-                'label' => 'Titre',
+                'label' => 'Fonction',
                 'rules' => [
                     'required',
                     Rule::unique('subscriptions')->ignore($this->getModel()->id)

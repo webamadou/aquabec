@@ -1,6 +1,6 @@
 @extends('layouts.back.admin')
 
-@section('title','Abbonnements ')
+@section('title','abonnements ')
 
 @section('content')
 
@@ -9,10 +9,10 @@
             <div class="card">
                 <div class="card-header bg-primary">
                     @if(Route::currentRouteName() == 'admin.subscriptions.index')
-                    <h2 class="card-title font-weight-bold">Ajouter un abbonnement</h2>
+                    <h2 class="card-title font-weight-bold">Ajouter un abonnement</h2>
                     @endif
                     @if(Route::currentRouteName() == 'admin.subscriptions.edit')
-                    <h2 class="card-title font-weight-bold">Modifier l'abbonnement'</h2>
+                    <h2 class="card-title font-weight-bold">Modifier l'abonnement'</h2>
                     @endif
                 </div>
                 <div class="card-body">
@@ -22,7 +22,7 @@
                     <div class="card-footer">
                         <a class="btn btn-link float-right text-dark font-weight-bold" href="{{ route('admin.settings.categories.index') }}">
                             <i class="mr-2 fa fa-plus"></i>
-                            Créer un nouvel abbonnement
+                            Créer un nouvel abonnement
                         </a>
                     </div>
                 @endif
@@ -31,13 +31,13 @@
         <div class="col-sm-8">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="card-title font-weight-bold">Liste d'abbonnements</h2>
+                    <h2 class="card-title font-weight-bold">Liste d'abonnements</h2>
                 </div>
                 <div class="card-body">
                     <table class="table table-bordered" id="subscriptions-table">
                         <thead>
                         <tr>
-                            <th>Titre</th>
+                            <th>Fonction</th>
                             <th>Crédit</th>
                             <th>Prix</th>
                             <th>Quota d'annonces</th>
