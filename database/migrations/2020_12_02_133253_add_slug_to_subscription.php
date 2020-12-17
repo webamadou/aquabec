@@ -13,11 +13,9 @@ class AddSlugToSubscription extends Migration
      */
     public function up()
     {
-      if (!Schema::hasTable('subscriptions')) {
         Schema::table('subscriptions', function (Blueprint $table) {
             $table->string('slug')->nullable();
         });
-      }
     }
 
     /**
@@ -27,11 +25,8 @@ class AddSlugToSubscription extends Migration
      */
     public function down()
     {
-        if (
-          Schema::hasTable('subscriptions')) {
-          Schema::table('subscriptions', function (Blueprint $table) {
+        Schema::table('subscriptions', function (Blueprint $table) {
             $table->dropColumn(['slug']);
-          });
-        }
+        });
     }
 }
