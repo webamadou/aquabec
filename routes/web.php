@@ -45,7 +45,7 @@ Route::get('how-to-use', [ContactController::class, 'contactPage'])->name('how.t
 Route::get('get-started', [ContactController::class, 'contactPage'])->name('get.started');
 Route::post('contact', [ContactController::class, 'contactPost'])->name('contact.post');
 
-
+Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
 
 /******************************/
 /*       BACKEND ROUTES       */

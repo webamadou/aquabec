@@ -138,11 +138,22 @@
                     <!-- End Navbar Nav -->
                 </div>
                 <!-- End of navbar collapse -->
-
-                <a href="{{ route('user.dashboard') }}" class="btn btn-primary" id="client-area">
-                    <i class="fa fa-user-circle-o mr-2"></i>
-                    Espace Client
-                </a>
+                @if(Route::has("login"))
+                    @auth
+                      <div class="dropdown">
+                        <a class="btn btn-sm btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> <i class="fa fa-user-circle-o mr-2"></i> </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                          <a class="dropdown-item" href="{{route('welcome')}}"> <i class="fa fa-table"></i> Tableau de bord</a>
+                          <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Profil</a>
+                          <a class="dropdown-item" href="{{route('logout')}}"><i class="fa fa-power-off"></i> Logout</a>
+                        </div>
+                      </div>
+                    @else
+                      <a href="{{ route('login') }}" class="btn btn-primary" id="client-area">
+                          <i class="fa fa-user-circle-o mr-2"></i> Se connecter
+                      </a>
+                    @endauth
+                @endif
                 <!-- End off canvas menu -->
             </nav>
             <!-- End of Nav -->

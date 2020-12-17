@@ -4193,7 +4193,7 @@ span.tw-indicator:after {
 
       =============================*/
 .dropdown-menu.show {
-  display: none;
+  display: block;
 }
 
 li.dropdown:hover ul.tw-dropdown-menu {

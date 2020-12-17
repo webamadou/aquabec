@@ -36,6 +36,7 @@ class LoginController extends Controller
      */
     public function redirectTo(): string
     {
+      return '/';
         if($this->guard()->user()->hasRole(['super-admin'])) {
             return '/admin/dashboard';
         }

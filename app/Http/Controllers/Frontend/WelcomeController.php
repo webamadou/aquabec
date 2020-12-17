@@ -12,10 +12,10 @@ class WelcomeController extends Controller
     {
 
 		$user = Auth::user();
-		//dd($user->getRoleNames());
+		  //dd($user->getRoleNames());
     	//Auth::logout();
-    	$subscriptions = \App\Models\Subscription::orderBy('price','ASC')->get();
+    	//$subscriptions = \App\Models\Subscription::orderBy('price','ASC')->get();
     	//dd($subscriptions);
-        return view('frontend.welcome', compact("subscriptions"));
+        return view('frontend.welcome');
     }
 }

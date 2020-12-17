@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
 
     <!-- App script -->
-    <script src="{{ mix('js/all.js') }}"></script>
+    <script src="{{ asset('js/all.js') }}"></script>
     <!-- DataTables -->
     <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
     @stack('scripts')

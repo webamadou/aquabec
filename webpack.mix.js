@@ -22,16 +22,14 @@ mix.scripts([
     'public/assets/plugins/bs-custom-file-input/bs-custom-file-input.min.js',
     'public/assets/plugins/sweetalert2/sweetalert2.min.js',
     'public/assets/plugins/toastr/toastr.min.js',
-    'public/assets/plugins/bs-custom-file-input/bs-custom-file-input.min.js',
-    'public/assets/plugins/select2/js/select2.full.min.js',
-    'public/assets/plugins/moment/moment.min.js',
-    'public/assets/plugins/daterangepicker/daterangepicker.js',
     'public/assets/dist/js/adminlte.min.js',
+    'public/assets/dist/js/scripts.js',
     'public/assets/plugins/jquery-mousewheel/jquery.mousewheel.js',
     'public/assets/plugins/raphael/raphael.min.js',
     'public/assets/plugins/jquery-mapael/jquery.mapael.min.js',
     'public/assets/plugins/jquery-mapael/maps/usa_states.min.js',
-    'public/assets/plugins/summernote/summernote-bs4.min.js',
+    'public/assets/plugins/chart.js/Chart.min.js',
+    'public/assets/dist/js/pages/dashboard2.js',
     'public/assets/custom/js/scripts.js',
 ], 'public/js/all.js');
 
@@ -40,11 +38,7 @@ mix.styles([
     'public/assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css',
     'public/assets/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css',
     'public/assets/plugins/toastr/toastr.min.css',
-    'public/assets/plugins/daterangepicker/daterangepicker.css',
-    'public/assets/plugins/select2/css/select2.min.css',
-    'public/assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css',
     'public/assets/dist/css/adminlte.min.css',
-    'public/assets/plugins/summernote/summernote-bs4.css',
     'public/assets/custom/css/google-font.css',
 ], 'public/css/all.css');
 

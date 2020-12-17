@@ -12,7 +12,7 @@
     <link rel="icon" href="{{ asset('images/logo/logo.png') }}">
     <!-- CSS
     ================================================== -->
-    <link rel="stylesheet" href="{{ mix('css/auth.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
     <!-- icons
     ================================================== -->
     <script src="https://kit.fontawesome.com/815e388c50.js" crossorigin="anonymous"></script>
@@ -52,6 +52,6 @@
 
 <!-- javaScripts
 ================================================== -->
-<script src="{{ mix('js/auth.js') }}"></script>
+<script src="{{ asset('js/auth.js') }}"></script>
 </body>
 </html>
