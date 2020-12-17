@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Backend\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+
+use App\Models\User;
+use App\Models\Event;
+use App\Models\Announcement;
 
 class UserController extends Controller
 {
@@ -18,7 +21,7 @@ class UserController extends Controller
 
     public function usersData()
     {
-        $users = User::role('user')->with('roles')->get();
+        $users = User::role(['user','admin'])->with('roles')->get();
 
         return datatables()
             ->collection($users)
@@ -38,6 +41,12 @@ class UserController extends Controller
      */
     public function index()
     {
+
+    	$users = User::all();
+    	$organisations = User::all();
+    	$events = Event::all();
+    	$announcements = Announcement::all();
+      return view('admin.users.index', compact("users","organisations","events","announcements"));
         return view('admin.users.index');
     }
 }
