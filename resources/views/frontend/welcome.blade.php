@@ -80,18 +80,8 @@
         <!-- End Container -->
     </section>
     <!-- End Features section -->
-    <section id="tw-subscriptions" class="tw-subscriptions-area">
-        <div class="container">
-            <div class="row text-center">
-                <div class="col section-heading wow fadeInDown" data-wow-duration="1s" data-wow-delay=".5s">
-                    <h2>
-                        <small> - </small>
-                        <span>Abonnements</span>
-                    </h2>
-                    <span class="animate-border border-offwhite ml-auto mr-auto tw-mt-20"></span>
-                </div>
-            </div>
 
+<<<<<<< HEAD
             <div class="row wow fadeInUp" data-wow-duration="1s" data-wow-delay=".5s">
                 @foreach($subscriptions as $subs)
                     <div class="col-lg-4 col-md-12 m-0">
@@ -128,6 +118,8 @@
         </div>
     </section>
     <!-- End Subscribtion section -->
+=======
+>>>>>>> parent of 23041f1... Add list subscriptions on front-page
 
     <section id="tw-analysis" class="tw-analysis-area">
         <div class="analysis-bg-pattern d-none d-md-inline-block">
