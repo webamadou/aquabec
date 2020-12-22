@@ -143,12 +143,14 @@
                       <div class="dropdown">
                         <a class="btn btn-sm btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> <i class="fa fa-user-circle-o mr-2"></i> </a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            @role('super-admin')
+                            @hasanyrole('super-admin')
                               @include('layouts.front.partials.su-admin')
-                            @elseif('admin')
+                            @endrole
+                            @hasanyrole('admin')
                               @include('layouts.front.partials.admin')
-                            @else
-                                ...
+                            @endrole
+                            @hasanyrole('client')
+                              hello
                             @endrole
                             <hr>
                             <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Profil</a>

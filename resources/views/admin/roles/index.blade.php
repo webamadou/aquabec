@@ -1,37 +1,17 @@
 @extends('layouts.back.admin')
 
-@section('title','Roles')
+@section('title','Fonctions')
 
 @section('content')
 
     <div class="row">
         <div class="col-sm-4">
-            <div class="card">
-                <div class="card-header bg-primary">
-                    @if(Route::currentRouteName() == 'admin.settings.security.roles.index')
-                    <h2 class="card-title font-weight-bold">Ajouter un role</h2>
-                    @endif
-                    @if(Route::currentRouteName() == 'admin.settings.security.roles.edit')
-                    <h2 class="card-title font-weight-bold">Modifier le role</h2>
-                    @endif
-                </div>
-                <div class="card-body">
-                    {!! form($form) !!}
-                </div>
-                @if(Route::currentRouteName() == 'admin.settings.security.roles.edit')
-                    <div class="card-footer">
-                        <a class="btn btn-link float-right text-dark font-weight-bold" href="{{ route('admin.settings.security.roles.index') }}">
-                            <i class="mr-2 fa fa-plus"></i>
-                            Créer un nouveau rôle
-                        </a>
-                    </div>
-                @endif
-            </div>
+            <div class="card"><a href="{{route('admin.settings.security.roles.create')}}" class="btn btn-primary">Ajouter une fonction</a> </div>
         </div>
-        <div class="col-sm-8">
+        <div class="col-sm-12">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="card-title font-weight-bold">Liste des roles</h2>
+                    <h2 class="card-title font-weight-bold">Liste des fonctions</h2>
                 </div>
                 <div class="card-body">
                     <table class="table table-bordered" id="roles-table">

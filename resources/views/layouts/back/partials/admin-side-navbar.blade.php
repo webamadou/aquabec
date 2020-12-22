@@ -37,9 +37,11 @@
                         <i class="nav-icon fas fa-users"></i>
                         <p>
                             Utilisateurs
-                            @if($users->count() > 0)
-                            <span class="ml-2 badge badge-danger">{{ $users->count() }}</span>
-                            @endif
+                            @isset($users)
+                              @if($users->count() > 0)
+                              <span class="ml-2 badge badge-danger">{{ $users->count() }}</span>
+                              @endif
+                            @endisset
                         </p>
                     </a>
                 </li>
@@ -48,9 +50,11 @@
                         <i class="nav-icon fas fa-address-card"></i>
                         <p>
                             Organisations
-                            @if($organisations->count() > 0)
-                            <span class="ml-2 badge badge-danger">{{ $organisations->count() }}</span>
-                            @endif
+                            @isset($organisations)
+                              @if($organisations->count() > 0)
+                              <span class="ml-2 badge badge-danger">{{ $organisations->count() }}</span>
+                              @endif
+                            @endisset
                         </p>
                     </a>
                 </li>
@@ -94,7 +98,7 @@
                         <li class="nav-item">
                             <a href="{{ route('admin.settings.security.roles.index') }}" class="nav-link {{ side_nav_bar_menu_status('roles','active')  }}">
                                 <i class="fa fa-user-shield nav-icon"></i>
-                                <p>Roles</p>
+                                <p>Fonctions</p>
                             </a>
                         </li>
                         <li class="nav-item">

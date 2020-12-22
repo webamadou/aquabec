@@ -11,8 +11,8 @@ class Permission extends SpatiePermission
     use HasFactory;
 
     protected $fillable = [
-        'name','guard_name'
-    ];
+                          'name','guard_name','permission_group'
+                          ];
 
     /**
      * Format created date value to custom

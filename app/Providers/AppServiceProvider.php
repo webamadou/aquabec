@@ -37,7 +37,7 @@ class AppServiceProvider extends ServiceProvider
         $announcements = null;
         $notifications = null;
 
-        if (Schema::hasTable('users')) {
+/*         if (Schema::hasTable('users')) {
             $users = User::role('user')->with('roles')->get();
         }
         if (Schema::hasTable('organisations')) {
@@ -54,7 +54,7 @@ class AppServiceProvider extends ServiceProvider
         }
 
 
-
+ */
         /*$users = User::role('user')->with('roles')->get();
         $organisations = Organisation::all();
         $events = Event::all();

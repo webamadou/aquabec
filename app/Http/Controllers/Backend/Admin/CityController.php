@@ -4,7 +4,12 @@ namespace App\Http\Controllers\Backend\Admin;
 
 use App\Forms\CityForm;
 use App\Http\Controllers\Controller;
+
 use App\Models\City;
+use App\Models\User;
+use App\Models\Event;
+use App\Models\Announcement;
+
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
@@ -68,6 +73,11 @@ class CityController extends Controller
     public function index()
     {
         $form = $this->getForm();
+
+      	$users = User::all();
+      	$organisations = User::all();
+      	$events = Event::all();
+      	$announcements = Announcement::all();
         return view('admin.cities.index',compact('form'));
     }
 

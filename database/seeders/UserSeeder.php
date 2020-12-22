@@ -22,11 +22,17 @@ class UserSeeder extends Seeder
             'name' => 'Super Admin',
             'email' => 'suadmin@lagenda.quebec',
             'email_verified_at' => Carbon::now(),
-            'password' => Hash::make('passer')
+            'password' => Hash::make('@gend5ue$&c')
         ];
         $adminData = [
             'name' => 'Admin',
             'email' => 'admin@lagenda.quebec',
+            'email_verified_at' => Carbon::now(),
+        'password' => Hash::make('@gend5ue$&c')
+        ];
+        $client = [
+            'name' => 'Admin',
+            'email' => 'client@lagenda.quebec',
             'email_verified_at' => Carbon::now(),
         'password' => Hash::make('passer')
         ];
@@ -40,6 +46,10 @@ class UserSeeder extends Seeder
 
         $admin = User::create($adminData);
         $role = Role::create(['name' => 'admin']);
+        $admin->assignRole($role);
+
+        $admin = User::create($client);
+        $role = Role::create(['name' => 'client']);
         $admin->assignRole($role);
 
     }
