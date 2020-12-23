@@ -135,7 +135,6 @@ class RoleController extends Controller
                     $new_role->givePermissionTo($permission->name);
                 }
             }
-            dd("end");
             //We saved the credits prices
             //If nbr price is > 0 that means we have a least one credit price define
             if(intval($request->input("nbr_price_fields")) > 0){

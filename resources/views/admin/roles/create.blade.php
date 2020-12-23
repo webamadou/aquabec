@@ -6,15 +6,6 @@
     <form method="POST" action="{{route('admin.settings.security.roles.index')}}" accept-charset="UTF-8">
       <input type="hidden" name="_token" value="{{ csrf_token() }}" />
       <div class="row">
-      @if ($errors->any())
-          <div class="alert alert-danger">
-              <ul>
-                  @foreach ($errors->all() as $error)
-                      <li>{{ $error }}</li>
-                  @endforeach
-              </ul>
-          </div>
-      @endif
           <div class="col-sm-12 col-md-8">
               <div class="card">
                   <div class="card-header bg-primary">
@@ -26,16 +17,30 @@
                       <input class="col-sm-12 col-md-9" name="name" type="text" value="">
                         {!! $errors->first('name', '<div class="error-message col-12">:message</div>') !!}
                       </div>
-                      <div class="col-12 form-group row">
-                      <label for="Evenements Gratuits" class="col-sm-12 col-md-3">Evenements Gratuits</label>
-                      <input class="col-sm-12 col-md-9" name="free_events" type="checkbox" value="1">
+                      <div class="col-12 form-group row justify-content-center bg-light">
+                        <label for="free_events" class="col-sm-6 col-md-6">Evenements Gratuits</label>
+                        <label class="label col-sm-6 col-md-6">
+                          <input class="label__checkbox" id="free_events" name="free_events" type="checkbox" value="1">
+                          <span class="label__text">
+                            <span class="label__check">
+                              <i class="fa fa-check icon"></i>
+                            </span>
+                          </span>
+                        </label>
                       </div>
-                      <div class="col-12 form-group row">
-                      <label for="Annonces Gratuites" class="col-sm-12 col-md-3">Annonces Gratuites</label>
-                      <input class="col-sm-12 col-md-9" name="free_annoncements" type="checkbox" value="1">
+                      <div class="col-12 form-group row justify-content-center bg-light">
+                        <label for="free_annoncements" class="col-sm-6 col-md-6">Annonces Gratuites</label>
+                        <label class="label col-sm-6 col-md-6">
+                          <input class="label__checkbox" id="free_annoncements" name="free_annoncements" type="checkbox" value="1">
+                          <span class="label__text">
+                            <span class="label__check">
+                              <i class="fa fa-check icon"></i>
+                            </span>
+                          </span>
+                        </label>
                       </div>
                       <div class="col-6 form-group row">
-                      <label for="Prix par événement" class="col-sm-12 col-md-6">Prix Par événement</label>
+                        <label for="Prix par événement" class="col-sm-12 col-md-6">Prix Par événement</label>
                         <div class="input-group mb-3 col-sm-12 col-md-6">
                         <input class="form-control" min="10" name="events_price" type="number" value="500">
                             <div class="input-group-append">
@@ -100,9 +105,16 @@
                         <h4 class="col-12">{{$groupe}}</h4>
                         @foreach($permissions as $permission)
                           @if($permission->permission_group == strtolower($key))
-                            <div class="col-12">
-                              <input class="col-sm-2" id="all" name="{{'permission_'.$permission->id}}" type="checkbox" value="{{$permission->id}}">
-                              <label for="permission_{{$permission->id}}" style="font-weight: normal;" col="col-sm-10">{{$permission->name}}</label>
+                            <div class="col-12 row">
+                              <label class="label">
+                                <input class="col-sm-2 label__checkbox" id="{{'permission_'.$permission->id}}" name="{{'permission_'.$permission->id}}" type="checkbox" value="{{$permission->id}}">
+                                <span class="label__text">
+                                  <span class="label__check">
+                                    <i class="fa fa-check icon"></i>
+                                  </span>
+                                </span>
+                              </label>
+                              <label for="permission_{{$permission->id}}" style="font-weight: normal;" class="">{{$permission->name}}</label>
                             </div>
                           @endif
                         @endforeach
@@ -112,8 +124,8 @@
               </div>
           </div>
           <div class="col justify-content-end row justify-content-end m-2">
-            <button type="submit" name="save" class="btn btn-primary">
-              <i class="fa fa-register"></i>Enregistrer
+            <button type="submit" name="save" class="btn btn-sm btn-block btn-primary">
+              <i class="fa fa-save"></i> Enregistrer
             </button>
           </div>
       </div>

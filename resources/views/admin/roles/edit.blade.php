@@ -18,13 +18,31 @@
                             <input class="col-sm-12 col-md-9" name="name" type="text" value="{{$role->name}}">
                             {!! $errors->first('name', '<div class="error-message col-12">:message</div>') !!}
                         </div>
-                        <div class="col-12 form-group row">
+                        <div class="col-12 form-group row justify-content-center bg-light">
+                            <label for="free_events" class="col-sm-6 col-md-6">Evenements Gratuits</label>
+                            <label class="label col-sm-6 col-md-6">
+                                <input class="label__checkbox" id="free_events" name="free_events" type="checkbox" value="1" {{ $role->free_events>=1 ?"checked": "" }}>
+                                <span class="label__text">
+                                <span class="label__check">
+                                    <i class="fa fa-check icon"></i>
+                                </span>
+                                </span>
+                            </label>
+                        </div>
+                        <!-- <div class="col-12 form-group row">
                             <label for="free_events" class="col-sm-12 col-md-3">Evenements Gratuits</label>
                             <input class="col-sm-12 col-md-9" id="free_events" name="free_events" type="checkbox" value="1" {{ $role->free_events>=1 ?"checked": "" }}>
-                        </div>
-                        <div class="col-12 form-group row">
-                            <label for="free_annoncements" class="col-sm-12 col-md-3">Annonces Gratuites</label>
-                            <input class="col-sm-12 col-md-9" name="free_annoncements" type="checkbox" value="1" {{ $role->free_annoncements >= 1 ?"checked": "" }}>
+                        </div> -->
+                        <div class="col-12 form-group row justify-content-center bg-light">
+                            <label for="free_annoncements" class="col-sm-6 col-md-6">Annonces Gratuites</label>
+                            <label class="label col-sm-6 col-md-6">
+                                <input class="label__checkbox" name="free_annoncements" type="checkbox" value="1" {{ $role->free_annoncements >= 1 ?"checked": "" }}>
+                                <span class="label__text">
+                                    <span class="label__check">
+                                    <i class="fa fa-check icon"></i>
+                                    </span>
+                                </span>
+                            </label>
                         </div>
                         <div class="col-6 form-group row">
                             <label for="events_price" class="col-sm-12 col-md-6">Prix Par événement</label>
@@ -102,8 +120,19 @@
                         @foreach($permissions as $permission)
                             @if($permission->permission_group == strtolower($key))
                             <div class="col-12">
-                                <input class="col-sm-2" id="$permission->name" name="permission_{{$permission->id}}" type="checkbox" value="{{$permission->id}}" {{ $role->hasPermissionTo($permission->name) ?"checked": "" }}>
-                                <label for="permission_{{$permission->id}}" style="font-weight: normal;" col="col-sm-10">{{$permission->name}}</label>
+                                <!-- <input class="col-sm-2" id="$permission->name" name="permission_{{$permission->id}}" type="checkbox" value="{{$permission->id}}" {{ $role->hasPermissionTo($permission->name) ?"checked": "" }}>
+                                <label for="permission_{{$permission->id}}" style="font-weight: normal;" col="col-sm-10">{{$permission->name}}</label> -->
+                              <label class="label">
+                                <!-- <input class="col-sm-2 label__checkbox" id="{{'permission_'.$permission->id}}" name="{{'permission_'.$permission->id}}" type="checkbox" value="{{$permission->id}}"> -->
+                                <input class="label__checkbox" id="permission_{{$permission->id}}" name="permission_{{$permission->id}}" type="checkbox" value="{{$permission->id}}" {{ $role->hasPermissionTo($permission->name) ?"checked": "" }}>
+                                <span class="label__text">
+                                  <span class="label__check">
+                                    <i class="fa fa-check icon"></i>
+                                  </span>
+                                </span>
+                              </label>
+                              <label for="permission_{{$permission->id}}" style="font-weight: normal;" class="">{{$permission->name}}</label>
+
                             </div>
                             @endif
                         @endforeach
@@ -113,8 +142,8 @@
                 </div>
             </div>
             <div class="col justify-content-end row justify-content-end m-2">
-            <button type="submit" name="save" class="btn btn-primary">
-                <i class="fa fa-register"></i>Editer
+            <button type="submit" name="save" class="btn btn-lg btn-block btn-primary">
+                <i class="fa fa-save"></i> Enregistrer les modifications
             </button>
             </div>
         </div>
