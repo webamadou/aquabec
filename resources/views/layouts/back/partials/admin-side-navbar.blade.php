@@ -24,6 +24,31 @@
             <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
+                @if(auth()->user()->hasRole('super-admin|banker'))
+                    <li class="nav-item has-treeview {{ side_nav_bar_menu_status('banker','menu-open') }}">
+                        <a href="#" class="nav-link {{ side_nav_bar_menu_status('banker','active') }}">
+                            <i class="fa fa-coins nav-icon"></i>
+                            <p>
+                                Credits
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('banker.credit_pack.index') }}" class="nav-link {{ side_nav_bar_menu_status('regions','active')  }}">
+                                    <i class="fa fa-list-ul nav-icon"></i>
+                                    <p>Packs Crédit</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.settings.regions.index') }}" class="nav-link {{ side_nav_bar_menu_status('regions','active')  }}">
+                                    <i class="fa fa-coins nav-icon"></i>
+                                    <p>Crédits</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                @endif
                 <li class="nav-item">
                     <a href="{{ route('admin.dashboard') }}" class="nav-link {{ side_nav_bar_menu_status('dashboard','active') }}">
                         <i class="nav-icon fas fa-th"></i>

@@ -9,11 +9,15 @@ use App\Http\Controllers\Backend\Admin\RegionController;
 use App\Http\Controllers\Backend\Admin\RoleController;
 use App\Http\Controllers\Backend\Admin\SubscriptionController;
 use App\Http\Controllers\Backend\Admin\UserController;
+use App\Http\Controllers\Backend\Admin\CreditPackController;
+
 use App\Http\Controllers\Backend\User\DashboardController as UserDashboard;
 use App\Http\Controllers\Backend\User\EventController;
+
 use App\Http\Controllers\Frontend\ContactController;
 use App\Http\Controllers\Frontend\WelcomeController;
 use App\Http\Controllers\Frontend\SubscriberController;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -55,6 +59,10 @@ Route::middleware(['auth','verified'])->group(function (){
     /*
      * Admin's Routes
      */
+    Route::middleware(['role: banker|super-admin'])->name("banker.")->prefix("banker")->group(function(){
+        Route::resource('credit_pack', CreditPackController::class);
+        Route::get('get-credit_pack-data', [CreditPackController::class, 'creditPackData'])->name('credit_pack.data');
+    });
     Route::middleware(['role:super-admin|admin'])->name('admin.')->prefix('admin')->group(function () {
         // Dashboard Routes...
         Route::get('dashboard', [AdminDashboard::class, 'index'])->name('dashboard');
@@ -65,6 +73,7 @@ Route::middleware(['auth','verified'])->group(function (){
                 // Roles Routes...
                 Route::resource('roles', RoleController::class);
                 Route::get('get-role-data', [RoleController::class, 'roleData'])->name('roles.data');
+                
                 Route::get('roles/{role}/permissions', [RoleController::class, 'getRolePermissions'])->name('roles.permissions');
                 Route::put('roles/{role}/permissions', [RoleController::class, 'assignRolePermissions'])->name('roles.permissions.assign');
                 // Permissions Routes...

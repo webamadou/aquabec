@@ -75,7 +75,7 @@ class PermissionController extends Controller
     {
         $form = $this->getForm();
         $data = $form->getFieldValues();
-        //dd($data);
+
         $form->redirectIfNotValid();
 
         Permission::create($data);
