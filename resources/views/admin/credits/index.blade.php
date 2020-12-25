@@ -34,11 +34,10 @@
                     <h2 class="card-title font-weight-bold">Liste des permissions</h2>
                 </div>
                 <div class="card-body">
-                    <table class="table table-bordered" id="credit_packs-table">
+                    <table class="table table-bordered" id="credits-table">
                         <thead>
                         <tr>
                             <th>N°</th>
-                            <th>Nom</th>
                             <th>Valeur</th>
                             <th>Dernière modification</th>
                             <th>Actions</th>
@@ -58,17 +57,21 @@
 
     <script>
         $(function() {
-            $('#credit_packs-table').DataTable({
+            $('#credits-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ url('banker/get-credit_pack-data') }}',
+                ajax: '{{ url('banker/get-credits-data') }}',
                 columns: [
-                    { data: 'id', name: 'id' },
-                    { data: 'name', name: 'name' },
-                    { data: 'pack_value', name: 'pack_value' },
+                    { data: 'ref', name: 'ref' },
+                    /* { data: 'value', name: 'value' }, */
+                    { data: null, name: 'value',
+                        render: data => { return `${data.value}<br><strong>${data.credit_type}</strong><br>`; }
+                    },
                     { data: 'updated_at', name: 'updated_at' },
                     { data: 'action', name: 'action', orderable: false, searchable: false }
-                ]
+                ],
+                order: [[ 2, 'desc' ]],
+                pageLength: 100,
             });
         });
     </script>

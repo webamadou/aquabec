@@ -41,7 +41,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('admin.settings.regions.index') }}" class="nav-link {{ side_nav_bar_menu_status('regions','active')  }}">
+                                <a href="{{ route('banker.credits.index') }}" class="nav-link {{ side_nav_bar_menu_status('regions','active')  }}">
                                     <i class="fa fa-coins nav-icon"></i>
                                     <p>Crédits</p>
                                 </a>

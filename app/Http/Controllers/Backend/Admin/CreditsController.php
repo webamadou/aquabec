@@ -3,43 +3,37 @@
 namespace App\Http\Controllers\Backend\Admin;
 
 use App\Http\Controllers\Controller;
+
+use App\Models\Credit;
+use App\Forms\CreditForm;
+
 use Illuminate\Http\Request;
-
-use App\Forms\CreditPackForm;
-
-use App\Models\CreditPack;
-
-use Exception;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\View\View;
 use Kris\LaravelFormBuilder\Form;
 use Kris\LaravelFormBuilder\FormBuilder;
 use Yajra\Datatables\Datatables;
 
-class CreditPackController extends Controller
+class CreditsController extends Controller
 {
-    private $formBuilder;
 
     public function __construct(FormBuilder $formBuilder)
     {
         $this->middleware(['auth','verified','role:super-admin|banker']);
         $this->formBuilder = $formBuilder;
     }
+
     /*
-     * Get credit pack data for datatable
+     * Get credit data for datatable
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function creditPackData()
+    public function creditData()
     {
-        $creditPack = \App\Models\CreditPack::all();
+        $credit = Credit::all();
         return datatables()
-            ->collection($creditPack)
-            ->addColumn('action',function ($creditPack) {
-                $edit_route = route('banker.credit_pack.edit',$creditPack);
-                $delete_route = route('banker.credit_pack.destroy',$creditPack);
+            ->collection($credit)
+            ->addColumn('action',function ($credit) {
+                $edit_route = route('banker.credits.edit',$credit);
+                $delete_route = route('banker.credits.destroy',$credit);
                 return view('layouts.back.datatables.actions-btn',compact('edit_route','delete_route'));
             })
             ->rawColumns(['action'])
@@ -50,13 +44,14 @@ class CreditPackController extends Controller
      * @param Role|null $role
      * @return Form
      */
-    private function getForm(?CreditPack $creditPack = null): Form
+    private function getForm(?Credit $credit = null): Form
     {
-        $creditPack = $creditPack ?: new CreditPack();
-        return $this->formBuilder->create(CreditPackForm::class, [
-            'model' => $creditPack
+        $credit = $credit ?: new Credit();
+        return $this->formBuilder->create(CreditForm::class, [
+            'model' => $credit
         ]);
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -64,9 +59,9 @@ class CreditPackController extends Controller
      */
     public function index()
     {
-        $model = new CreditPack();
-        $form = $this->getForm();
-        return view('admin.credit_packs.index',compact('form'));
+        $model  = new Credit();
+        $form   = $this->getForm();
+        return view('admin.credits.index',compact('form'));
     }
 
     /**
@@ -92,8 +87,8 @@ class CreditPackController extends Controller
 
         $form->redirectIfNotValid();
 
-        CreditPack::create($data);
-        return redirect()->route('banker.credit_pack.index')->with('success','Le nouveau pack a été créé avec succès!');
+        Credit::create($data);
+        return redirect()->route('banker.credits.index')->with('success','Le nouveau pack à été créé avec succès!');
     }
 
     /**
@@ -113,10 +108,10 @@ class CreditPackController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(CreditPack $creditPack)
+    public function edit(Credit $credit)
     {
-        $form = $this->getForm($creditPack);
-        return view('admin.credit_packs.index',compact('form'));
+        $form = $this->getForm($credit);
+        return view('admin.credits.index',compact('form'));
     }
 
     /**
@@ -126,14 +121,14 @@ class CreditPackController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CreditPack $creditPack)
+    public function update(Credit $credit)
     {
-        $form = $this->getForm($creditPack);
+        $form = $this->getForm($credit);
         $data = $form->getFieldValues();
         $form->redirectIfNotValid();
 
-        $creditPack->update($data);
-        return redirect()->route('banker.credit_pack.index')->with('success','Le pack a été mise à jour avec succès!');
+        $credit->update($data);
+        return redirect()->route('banker.credits.index')->with('success','Le pack a été mise à jour avec succès!');
     }
 
     /**
@@ -142,9 +137,9 @@ class CreditPackController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(CreditPack $creditPack)
+    public function destroy(Credit $credit)
     {
-        $creditPack->delete();
+        $credit->delete();
         return redirect()->back()->with('success','Le pack été supprimé avec succès!');
     }
 }

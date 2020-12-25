@@ -10,6 +10,7 @@ use App\Http\Controllers\Backend\Admin\RoleController;
 use App\Http\Controllers\Backend\Admin\SubscriptionController;
 use App\Http\Controllers\Backend\Admin\UserController;
 use App\Http\Controllers\Backend\Admin\CreditPackController;
+use App\Http\Controllers\Backend\Admin\CreditsController;
 
 use App\Http\Controllers\Backend\User\DashboardController as UserDashboard;
 use App\Http\Controllers\Backend\User\EventController;
@@ -62,6 +63,9 @@ Route::middleware(['auth','verified'])->group(function (){
     Route::middleware(['role: banker|super-admin'])->name("banker.")->prefix("banker")->group(function(){
         Route::resource('credit_pack', CreditPackController::class);
         Route::get('get-credit_pack-data', [CreditPackController::class, 'creditPackData'])->name('credit_pack.data');
+
+        Route::resource('credits', CreditsController::class);
+        Route::get('get-credits-data', [CreditsController::class, 'creditData'])->name('credit.data');
     });
     Route::middleware(['role:super-admin|admin'])->name('admin.')->prefix('admin')->group(function () {
         // Dashboard Routes...
