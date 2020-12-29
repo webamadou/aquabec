@@ -9,6 +9,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
+use App\Models\CreditsTransfersLog;
+
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable, HasRoles;
@@ -38,7 +40,10 @@ class User extends Authenticatable implements MustVerifyEmail
         'remember_token',
     ];
 
-
+    public function creditsTransfersLogs()
+    {
+        return $this->hasMany(CreditsTransfersLog::class,'sent_by','id');
+    }
 
     /**
      * The attributes that should be cast to native types.
@@ -72,4 +77,5 @@ class User extends Authenticatable implements MustVerifyEmail
         $updated_at = Carbon::make($value);
         return $updated_at->toDateString().' à '.$updated_at->toTimeString();
     }
+
 }

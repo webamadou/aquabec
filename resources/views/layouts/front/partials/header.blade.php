@@ -146,6 +146,9 @@
                             @hasanyrole('super-admin')
                               @include('layouts.front.partials.su-admin')
                             @endrole
+                            @hasanyrole('banker')
+                              @include('layouts.front.partials.admin')
+                            @endrole
                             @hasanyrole('admin')
                               @include('layouts.front.partials.admin')
                             @endrole

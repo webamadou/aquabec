@@ -1,87 +1,17 @@
 @extends('layouts.back.admin')
 
-@section('title','Packs de credits')
+@section('title','Transférer credits')
 
 @section('content')
-    <div class="row">
-        <div class="col-md-6 col-sm-6 col-12">
-            <div class="info-box">
-                <span class="info-box-icon bg-primary"><i class="fas fa-hand-holding-heart"></i></span>
-                <div class="info-box-content">
-                    <strong class="info-box-text">Credit Gratuit</strong>
-                    <h3 class="info-box-number">{{ $free_credits}}</h3>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-sm-6 col-12">
-            <div class="info-box">
-                <span class="info-box-icon bg-primary"><i class="fas fa-hand-holding-usd"></i></span>
-                <div class="info-box-content">
-                    <strong class="info-box-text">Credit Payant</strong>
-                    <h3 class="info-box-number">{{ $paid_credits }}</h3>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-4">
-            <div class="card">
-                <div class="card-header bg-primary">
-                    @if(Route::currentRouteName() == 'admin.settings.security.permissions.index')
-                        <h2 class="card-title font-weight-bold">Ajouter une permission</h2>
-                    @endif
-                    @if(Route::currentRouteName() == 'admin.settings.security.permissions.edit')
-                        <h2 class="card-title font-weight-bold">Modifier la permission</h2>
-                    @endif
-                </div>
-                <div class="card-body">
-                    {!! form($form) !!}
-                </div>
-                @if(Route::currentRouteName() == 'admin.settings.security.permissions.edit')
-                    <div class="card-footer">
-                        <a class="btn btn-link float-right text-dark font-weight-bold" href="{{ route('admin.settings.security.permissions.index') }}">
-                            <i class="mr-2 fa fa-plus"></i>
-                            Créer une nouvelle permission
-                        </a>
-                    </div>
-                @endif
-            </div>
-            <div class="row">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#transferCredits"> Transférer du credit </button>
-            </div>
-            <div class="modal fade" id="transferCredits" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            @include('layouts._transfer_credit')
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--  -->
-        </div>
-        <div class="col-sm-8">
+
+    <div class="row justify-content-center">
+        <div class="col-sm-6">
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title font-weight-bold">Liste des permissions</h2>
                 </div>
                 <div class="card-body">
-                    <table class="table table-bordered" id="credits-table">
-                        <thead>
-                        <tr>
-                            <th>N°</th>
-                            <th>Valeur</th>
-                            <th>Dernière modification</th>
-                            <th>Actions</th>
-                        </tr>
-                        </thead>
-                    </table>
+                    @include('layouts._transfer_credit')
                 </div>
             </div>
         </div>

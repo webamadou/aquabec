@@ -6,18 +6,20 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Credit;
 use App\Forms\CreditForm;
+use App\Models\User;
 
 use Illuminate\Http\Request;
 use Kris\LaravelFormBuilder\Form;
 use Kris\LaravelFormBuilder\FormBuilder;
 use Yajra\Datatables\Datatables;
 
+
 class CreditsController extends Controller
 {
 
     public function __construct(FormBuilder $formBuilder)
     {
-        $this->middleware(['auth','verified','role:super-admin|banker']);
+        $this->middleware(['auth','verified','role:super-admin|banker'],['except' => ['creditsTransfer']]);
         $this->formBuilder = $formBuilder;
     }
 
@@ -40,6 +42,18 @@ class CreditsController extends Controller
             ->make(true);
     }
 
+    public function getUsersLists(Request $request)
+    {
+        $users = User::select('id','name')
+                    ->where('id', '!=', auth()->id())
+                    ->where("name","LIKE","%{$request->term}%")
+                    ->get();
+        return response()->json($users);
+    }
+    public function creditsTransfer(Request $request)
+    {
+        dd($request->inputs);
+    }
     /**
      * @param Role|null $role
      * @return Form
@@ -51,7 +65,6 @@ class CreditsController extends Controller
             'model' => $credit
         ]);
     }
-
     /**
      * Display a listing of the resource.
      *
@@ -61,7 +74,13 @@ class CreditsController extends Controller
     {
         $model  = new Credit();
         $form   = $this->getForm();
-        return view('admin.credits.index',compact('form'));
+        $current_user = auth()->user();//We need the current user's id for the generated_by field
+        $users  = User::where('id', '!=', $current_user->id)->pluck('name','id');
+
+        $free_credits = $model->totalFreeCredits;
+        $paid_credits = $model->totalPaidCredits;
+
+        return view('admin.credits.index',compact('form','current_user','users','paid_credits','free_credits'));
     }
 
     /**
@@ -84,10 +103,14 @@ class CreditsController extends Controller
     {
         $form = $this->getForm();
         $data = $form->getFieldValues();
+        //$credit = new Credit();
 
         $form->redirectIfNotValid();
+        /* $credit_type = intval($request->input('credit_type')) === 0 ? "free_credits" : "paid_credits";
+        auth()->user()->increment("$credit_type", $request->input("value")); */
+        $credit = Credit::create($data);
+        $credit->updateBankerCredit();
 
-        Credit::create($data);
         return redirect()->route('banker.credits.index')->with('success','Le nouveau pack à été créé avec succès!');
     }
 
@@ -111,7 +134,13 @@ class CreditsController extends Controller
     public function edit(Credit $credit)
     {
         $form = $this->getForm($credit);
-        return view('admin.credits.index',compact('form'));
+        $current_user = auth()->user();//We need the current user's id for the generated_by field
+        $users  = User::where('id', '!=', $current_user->id)->pluck('name','id');
+
+        $free_credits = $credit->totalFreeCredits;
+        $paid_credits = $credit->totalPaidCredits;
+
+        return view('admin.credits.index',compact('form','current_user','users','free_credits','paid_credits'));
     }
 
     /**
@@ -125,9 +154,11 @@ class CreditsController extends Controller
     {
         $form = $this->getForm($credit);
         $data = $form->getFieldValues();
+        //dd($data);
         $form->redirectIfNotValid();
 
         $credit->update($data);
+        $credit->updateBankerCredit();
         return redirect()->route('banker.credits.index')->with('success','Le pack a été mise à jour avec succès!');
     }
 
@@ -140,6 +171,7 @@ class CreditsController extends Controller
     public function destroy(Credit $credit)
     {
         $credit->delete();
+        $credit->updateBankerCredit();
         return redirect()->back()->with('success','Le pack été supprimé avec succès!');
     }
 }

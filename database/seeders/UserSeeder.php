@@ -19,37 +19,48 @@ class UserSeeder extends Seeder
     public function run()
     {
         $superAdminData = [
-            'name' => 'Super Admin',
             'email' => 'suadmin@lagenda.quebec',
+            'name' => 'Super Admin',
             'email_verified_at' => Carbon::now(),
             'password' => Hash::make('@gend5ue$&c')
         ];
         $adminData = [
-            'name' => 'Admin',
             'email' => 'admin@lagenda.quebec',
+            'name' => 'Admin',
             'email_verified_at' => Carbon::now(),
         'password' => Hash::make('@gend5ue$&c')
         ];
+        $banker = [
+            'name'  => 'Banker',
+            'email' => 'banker@lagenda.quebec',
+            'email_verified_at' => Carbon::now(),
+        'password' => Hash::make('passer')
+        ];
         $client = [
-            'name' => 'Admin',
+            'name' => 'Client',
             'email' => 'client@lagenda.quebec',
             'email_verified_at' => Carbon::now(),
         'password' => Hash::make('passer')
         ];
 
 
-        $superAdmin = User::create($superAdminData);
-        $role = Role::create(['name' => 'super-admin']);
-        $permission = Permission::create(['name' => 'all']);
+        $superAdmin = User::updateOrCreate($superAdminData);
+        $role       = Role::updateOrCreate(['name' => 'super-admin']);
+        $permission = Permission::updateOrCreate(['name' => 'all']);
+
         $role->givePermissionTo($permission);
         $superAdmin->assignRole($role);
 
-        $admin = User::create($adminData);
-        $role = Role::create(['name' => 'admin']);
+        $admin      = User::updateOrCreate($adminData);
+        $role       = Role::updateOrCreate(['name' => 'admin']);
         $admin->assignRole($role);
 
-        $admin = User::create($client);
-        $role = Role::create(['name' => 'client']);
+        $banker     = User::updateOrCreate($banker);
+        $role       = Role::updateOrCreate(['name' => 'banker']);
+        $banker->assignRole($role);
+
+        $admin      = User::updateOrCreate($client);
+        $role       = Role::updateOrCreate(['name' => 'client']);
         $admin->assignRole($role);
 
     }

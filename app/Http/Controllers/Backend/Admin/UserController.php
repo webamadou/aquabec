@@ -49,4 +49,15 @@ class UserController extends Controller
       return view('admin.users.index', compact("users","organisations","events","announcements"));
         return view('admin.users.index');
     }
+
+    public function getListUserAjax()
+    {
+        $res = User::select("name,id")
+                ->where("name","LIKE","%{$request->term}%")
+                ->where("id","%{$request->term}%")
+                ->where("id", "!=", Auth::id())
+                ->get();
+    
+        return response()->json($res);
+    }
 }

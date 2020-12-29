@@ -58,18 +58,27 @@ Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
 
 Route::middleware(['auth','verified'])->group(function (){
     /*
-     * Admin's Routes
-     */
-    Route::middleware(['role: banker|super-admin'])->name("banker.")->prefix("banker")->group(function(){
+    * Admin's Routes
+    */
+    Route::get('get-users-list', [CreditsController::class, 'getUsersLists'])->name("get-users-list");
+    //Route::post('get-users-list', [App\Http\Controllers\TransferCreditsController::class, 'getUsersLists'])->name("get-users-list");
+
+    Route::post('credits-transfer', [App\Http\Controllers\TransferCreditsController::class, 'transferCredits'])->name('credits.transfer');
+
+    Route::middleware(['role:banker|super-admin'])->name("banker.")->prefix("banker")->group(function(){
         Route::resource('credit_pack', CreditPackController::class);
         Route::get('get-credit_pack-data', [CreditPackController::class, 'creditPackData'])->name('credit_pack.data');
 
         Route::resource('credits', CreditsController::class);
         Route::get('get-credits-data', [CreditsController::class, 'creditData'])->name('credit.data');
     });
-    Route::middleware(['role:super-admin|admin'])->name('admin.')->prefix('admin')->group(function () {
+    Route::middleware(['role:super-admin|admin|banker'])->name('admin.')->prefix('admin')->group(function () {
         // Dashboard Routes...
         Route::get('dashboard', [AdminDashboard::class, 'index'])->name('dashboard');
+        //Logs des transferts de credit
+        Route::get('credits-logs',[App\Http\Controllers\TransferCreditsController::class, 'creditLogs'])->name("credits.logs");
+        Route::get('get-credits-logs', [App\Http\Controllers\TransferCreditsController::class, 'creditLogsData'])->name('credit.logs');
+
         // Settings Routes...
         Route::name('settings.')->prefix('settings')->group(function () {
             // Security Routes...

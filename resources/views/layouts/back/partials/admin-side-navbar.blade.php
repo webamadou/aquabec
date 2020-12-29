@@ -24,7 +24,7 @@
             <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-                @if(auth()->user()->hasRole('super-admin|banker'))
+                @if(auth()->user()->hasRole('banker'))
                     <li class="nav-item has-treeview {{ side_nav_bar_menu_status('banker','menu-open') }}">
                         <a href="#" class="nav-link {{ side_nav_bar_menu_status('banker','active') }}">
                             <i class="fa fa-coins nav-icon"></i>
@@ -46,9 +46,16 @@
                                     <p>Crédits</p>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.credits.logs') }}" class="nav-link {{ side_nav_bar_menu_status('regions','active')  }}">
+                                    <i class="fa fa-list nav-icon"></i>
+                                    <p>Historique transferts</p>
+                                </a>
+                            </li>
                         </ul>
                     </li>
                 @endif
+                @if(!auth()->user()->hasRole('banker'))
                 <li class="nav-item">
                     <a href="{{ route('admin.dashboard') }}" class="nav-link {{ side_nav_bar_menu_status('dashboard','active') }}">
                         <i class="nav-icon fas fa-th"></i>
@@ -110,6 +117,7 @@
                     </a>
                 </li>
                 <li class="nav-header text-uppercase">Configurations</li>
+                @endif
                 @if(auth()->user()->hasRole('super-admin'))
                 <li class="nav-item has-treeview {{ side_nav_bar_menu_status('security','menu-open') }}">
                     <a href="#" class="nav-link {{ side_nav_bar_menu_status('security','active') }}">
@@ -147,12 +155,14 @@
                     </a>
                 </li>
                 @endif
+                @if(auth()->user()->hasRole('super-admin'))
                 <li class="nav-item">
                     <a href="{{ route('admin.settings.categories.index') }}" class="nav-link {{ side_nav_bar_menu_status('categories','active')  }}">
                         <i class="fa fa-list-alt nav-icon"></i>
                         <p>Catégories</p>
                     </a>
                 </li>
+                @endif
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
