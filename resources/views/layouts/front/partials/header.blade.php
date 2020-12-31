@@ -1,3 +1,5 @@
+@inject('credit', 'App\Models\Credit')
+
 <!-- header======================-->
 <header>
     <div class="tw-head">
@@ -141,22 +143,24 @@
                 @if(Route::has("login"))
                     @auth
                       <div class="dropdown">
-                        <a class="btn btn-sm btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> <i class="fa fa-user-circle-o mr-2"></i> </a>
+                        <a class="btn btn-sm btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> <i class="fa fa-user-circle-o mr-2"></i> {{ Auth::user()->name }}</a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                             @hasanyrole('super-admin')
                               @include('layouts.front.partials.su-admin')
                             @endrole
                             @hasanyrole('banker')
-                              @include('layouts.front.partials.admin')
+                              @include('layouts.front.partials.banker')
                             @endrole
                             @hasanyrole('admin')
                               @include('layouts.front.partials.admin')
                             @endrole
                             @hasanyrole('client')
-                              hello
+                              -
                             @endrole
                             <hr>
                             <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Profil</a>
+                            <a class="dropdown-item link-success" href="#" title="Crédits gratuit"><i class="fa fa-usd" aria-hidden="true"></i> {{ $credit->formatCredit( Auth::user()->free_credits ) }} </a>
+                            <a class="dropdown-item link-primary" href="#" title="Crédits payant"><i class="fa fa-heart" aria-hidden="true"></i> {{ $credit->formatCredit( Auth::user()->paid_credits ) }} </a>
                             <a class="dropdown-item" href="{{route('logout')}}"><i class="fa fa-power-off"></i> Logout</a>
                         </div>
                       </div>

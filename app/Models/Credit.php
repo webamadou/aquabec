@@ -49,22 +49,22 @@ class Credit extends Model
      */
     public function getRefAttribute()
     {
-        return $this->formatCredit($this->attributes["ref"]);
+        return self::formatCredit($this->attributes["ref"]);
         return $returned_ref;
     }
     public function getTotalFreeCreditsAttribute()
     {
-        return $this->formatCredit(Credit::where("credit_type", 0)->sum("value"));
+        return self::formatCredit(Credit::where("credit_type", 0)->sum("value"));
     }
     public function getTotalPaidCreditsAttribute()
     {
-        return $this->formatCredit(Credit::where("credit_type", 1)->sum("value"));
+        return self::formatCredit(Credit::where("credit_type", 1)->sum("value"));
     }
 
     /**
      * Format given value to put a space after each three caracters starting from the end
      */
-    private function formatCredit($value)
+    public static function formatCredit($value)
     {
         $returned_ref = '';
         $ref = str_split($value);
