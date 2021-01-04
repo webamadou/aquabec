@@ -46,9 +46,8 @@ class UserSeeder extends Seeder
 
         $superAdmin = User::updateOrCreate($superAdminData);
         $role       = Role::updateOrCreate(['name' => 'super-admin']);
-        $permission = Permission::updateOrCreate(['name' => 'all']);
 
-        $role->givePermissionTo($permission);
+        //$role->givePermissionTo($permission);
         $superAdmin->assignRole($role);
 
         $admin      = User::updateOrCreate($adminData);
@@ -58,6 +57,7 @@ class UserSeeder extends Seeder
         $banker     = User::updateOrCreate($banker);
         $role       = Role::updateOrCreate(['name' => 'banker']);
         $banker->assignRole($role);
+        $banker->givePermissionTo("Banker");
 
         $admin      = User::updateOrCreate($client);
         $role       = Role::updateOrCreate(['name' => 'client']);
