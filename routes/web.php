@@ -11,6 +11,7 @@ use App\Http\Controllers\Backend\Admin\SubscriptionController;
 use App\Http\Controllers\Backend\Admin\UserController;
 use App\Http\Controllers\Backend\Admin\CreditPackController;
 use App\Http\Controllers\Backend\Admin\CreditsController;
+use App\Http\Controllers\Backend\Admin\CurrencyController;
 
 use App\Http\Controllers\Backend\User\DashboardController as UserDashboard;
 use App\Http\Controllers\Backend\User\EventController;
@@ -72,6 +73,12 @@ Route::middleware(['auth','verified'])->group(function (){
         Route::resource('credits', CreditsController::class);
         Route::get('get-credits-data', [CreditsController::class, 'creditData'])->name('credit.data');
     });
+
+    Route::middleware(['role:banker'])->name('banker.')->prefix('banker')->group(function () {
+        Route::resource("currencies", CurrencyController::class);
+        Route::get("get-currencies-data", [CurrencyController::class, 'currenciesData'])->name('currencies.data');
+    });
+
     Route::middleware(['role:super-admin|admin|banker'])->name('admin.')->prefix('admin')->group(function () {
         // Dashboard Routes...
         Route::get('dashboard', [AdminDashboard::class, 'index'])->name('dashboard');

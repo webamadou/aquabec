@@ -111,7 +111,7 @@ class CreditsController extends Controller
         $credit = Credit::create($data);
         $credit->updateBankerCredit();
 
-        return redirect()->route('banker.credits.index')->with('success','Le nouveau pack à été créé avec succès!');
+        return redirect()->route('banker.credits.index')->with('success','Le nouveau pack a été créé avec succès!');
     }
 
     /**
@@ -159,7 +159,7 @@ class CreditsController extends Controller
 
         $credit->update($data);
         $credit->updateBankerCredit();
-        return redirect()->route('banker.credits.index')->with('success','Le pack a été mise à jour avec succès!');
+        return redirect()->route('banker.credits.index')->with('success','Le pack a été mis à jour avec succès!');
     }
 
     /**
