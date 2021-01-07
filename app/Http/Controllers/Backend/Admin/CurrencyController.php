@@ -32,7 +32,13 @@ class CurrencyController extends Controller
             ->addColumn('action',function ($currency) {
                 $edit_route = route('banker.currencies.edit',$currency);
                 $delete_route = route('banker.currencies.destroy',$currency);
-                return view('layouts.back.datatables.actions-btn',compact('edit_route','delete_route'));
+                $another_actions = [
+                    [
+                        'name' => 'Générer',
+                        'route' => route('banker.currencies.generate',$currency)
+                    ]
+                ];
+                return view('layouts.back.datatables.actions-btn',compact('edit_route','delete_route','another_actions'));
             })
             ->rawColumns(['action'])
             ->make(true);
@@ -57,11 +63,8 @@ class CurrencyController extends Controller
     public function index()
     {
         $model  = new Currency();
-        /* $credit = Currency::all();
-        dd($credit); */
         $form   = $this->getForm();
         $current_user = auth()->user();//We need the current user's id for the generated_by field
-        //$users  = User::where('id', '!=', $current_user->id)->pluck('name','id');
 
         $free_credits = $model->totalFreeCredits;
         $paid_credits = $model->totalPaidCredits;
@@ -90,7 +93,8 @@ class CurrencyController extends Controller
                 ->route('banker.currencies.index')
                 ->with('success','La monnaies a été créée avec succès!');
     }
-    public function edit($id){
+    public function edit($id)
+    {
         $currencies = Currency::find($id);
         $form = $this->getForm($currencies);
         return view('admin.currencies.index',compact('form'));
@@ -113,9 +117,47 @@ class CurrencyController extends Controller
                 ->route('banker.currencies.index')
                 ->with('success','La monnaie a été mise à jour avec succès!');
     }
-    public function destroy(Currency $currency){
+    /**
+     * 
+     * Deleting a line
+     */
+    public function destroy(Currency $currency)
+    {
         $currency->delete();
         return redirect()->back()->with('success','La monnaie a été supprimée avec succès!');
     }
 
+    /**
+     * 
+     * Render the form to generate a currency
+     */
+    public function generate(Currency $currency)
+    {
+        $user = auth()->user();
+        return view('admin.currencies.generate', compact("currency","user"));
+    }
+
+    /**
+     * 
+     */
+    public function generator(Request $request)
+    {
+        $data = $request->validate([
+            "user_id"       => "required | integer",
+            "currency_id"   => "required | integer",
+            "currency_type" => "required | integer",
+            "amount"        => "required | integer"
+        ]);
+
+        $currency       = Currency::find($data['currency_id']);
+        $sync           = $currency->users()->sync([$data['user_id']]);
+        $currency_type  = $data['currency_type'] > 0 ? "paid_currency" : "free_currency";
+
+        $currency->users[0]->pivot->$currency_type += $data["amount"];
+        $currency->users[0]->pivot->save();
+
+        return redirect()
+                ->route('banker.currencies.index')
+                ->with('success',ucfirst($currency->name )." généré(e) avec succès");
+    }
 }

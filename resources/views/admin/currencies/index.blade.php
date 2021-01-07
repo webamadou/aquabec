@@ -75,28 +75,3 @@
     </script>
 
 @endpush
-
-
-<!-- @push('scripts')
-    <script>
-        $(function() {
-            $('#credits-table').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: '{{ url('banker/get-currencies-data') }}',
-                columns: [
-                    { data: 'icons', name: 'icons' },
-                    { data: 'name', name: 'name' },
-                    /* { data: null, name: 'value',
-                        render: data => { return `${data.value}<br><strong>${data.credit_type}</strong><br>`; }
-                    }, */
-                    { data: 'updated_at', name: 'updated_at' },
-                    { data: 'action', name: 'action', orderable: false, searchable: false }
-                ],
-                order: [[ 2, 'desc' ]],
-                pageLength: 100,
-            });
-        });
-    </script>
-
-@endpush -->

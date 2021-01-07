@@ -9,6 +9,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
+use App\Models\Currency;
+
 use App\Models\CreditsTransfersLog;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -23,11 +25,7 @@ class User extends Authenticatable implements MustVerifyEmail
     //protected $guard_name = 'api';
     protected $guard_name = 'web';
 
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    protected $fillable = [ 'name', 'email', 'password', ];
 
 
     /**
@@ -43,6 +41,15 @@ class User extends Authenticatable implements MustVerifyEmail
     public function creditsTransfersLogs()
     {
         return $this->hasMany(CreditsTransfersLog::class,'sent_by','id');
+    }
+
+    /**
+     * 
+     * Setting up the relationship between users and currency. A many to many relationship
+     */
+    public function currencies()
+    {
+        return $this->belongsToMany(Currency::class)->withPivot('free_currency','paid_currency')->withTimestamps();
     }
 
     /**

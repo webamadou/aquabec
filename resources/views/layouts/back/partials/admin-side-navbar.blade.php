@@ -29,21 +29,21 @@
                         <a href="#" class="nav-link {{ side_nav_bar_menu_status('banker','active') }}">
                             <i class="fa fa-coins nav-icon"></i>
                             <p>
-                                Credits
+                                Monnaies
                                 <i class="right fas fa-angle-left"></i>
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
-                            <li class="nav-item">
+                            <!-- <li class="nav-item">
                                 <a href="{{ route('banker.credit_pack.index') }}" class="nav-link {{ side_nav_bar_menu_status('regions','active')  }}">
                                     <i class="fa fa-list-ul nav-icon"></i>
                                     <p>Packs Crédit</p>
                                 </a>
-                            </li>
+                            </li> -->
                             <li class="nav-item">
-                                <a href="{{ route('banker.credits.index') }}" class="nav-link {{ side_nav_bar_menu_status('regions','active')  }}">
+                                <a href="{{ route('banker.currencies.index') }}" class="nav-link {{ side_nav_bar_menu_status('regions','active')  }}">
                                     <i class="fa fa-coins nav-icon"></i>
-                                    <p>Crédits</p>
+                                    <p>Monnaies</p>
                                 </a>
                             </li>
                             <li class="nav-item">

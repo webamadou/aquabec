@@ -8,7 +8,7 @@
         @if (isset($another_actions))
             <div class="dropdown-divider"></div>
             @foreach($another_actions as $another_action)
-                <a class="dropdown-item text-primary text-bold" href="{{ $another_action['route'] }}">{{ $another_action['name'] }} 111</a>
+                <a class="dropdown-item text-primary text-bold" href="{{ $another_action['route'] }}">{{ $another_action['name'] }}</a>
             @endforeach
         @endif
     </div>
