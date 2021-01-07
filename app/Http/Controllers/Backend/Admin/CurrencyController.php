@@ -157,7 +157,15 @@ class CurrencyController extends Controller
         $currency->users[0]->pivot->save();
 
         return redirect()
-                ->route('banker.currencies.index')
+                ->route('banker.currencies.accounts')
                 ->with('success',ucfirst($currency->name )." généré(e) avec succès");
+    }
+
+    public function accounts()
+    {
+        $user = auth()->user();
+        $currencies = $user->currencies;
+        // $currencies = Currency::where
+        return view("admin.currencies.accounts", compact('currencies', 'user'));
     }
 }

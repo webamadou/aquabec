@@ -76,9 +76,10 @@ Route::middleware(['auth','verified'])->group(function (){
 
     Route::middleware(['role:banker'])->name('banker.')->prefix('banker')->group(function () {
         Route::resource("currencies", CurrencyController::class);
-        Route::get("/currencies.generator/{currency}",[CurrencyController::class, 'generate'])->name('currencies.generate');
-        Route::post("/currencies.generator",[CurrencyController::class, 'generator'])->name('currencies.generator');
+        Route::get("/generator/{currency}",[CurrencyController::class, 'generate'])->name('currencies.generate');
+        Route::post("/generator",[CurrencyController::class, 'generator'])->name('currencies.generator');
         Route::get("get-currencies-data", [CurrencyController::class, 'currenciesData'])->name('currencies.data');
+        Route::get("/accounts", [CurrencyController::class, 'accounts'])->name('currencies.accounts');
     });
 
     Route::middleware(['role:super-admin|admin|banker'])->name('admin.')->prefix('admin')->group(function () {
