@@ -967,3 +967,14 @@ html.os-html,html.os-html>.os-host{display:block;overflow:hidden;box-sizing:bord
   border-bottom: 6px solid red;
   padding: 1px 15px;
 }
+/*icons picker*/
+.iconpicker {
+  min-width: 100%;
+}
+.center {
+  position: relative;
+  top: 0%;
+  left: 0%;
+  transform: initial;
+  width: 100%;
+}

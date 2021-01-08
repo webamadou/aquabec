@@ -9,6 +9,7 @@ use App\Models\Credit;
 
 use Kris\LaravelFormBuilder\Form;
 use Kris\LaravelFormBuilder\FormBuilder;
+use Illuminate\Support\Str;
 
 class CurrencyController extends Controller
 {
@@ -64,12 +65,9 @@ class CurrencyController extends Controller
     {
         $model  = new Currency();
         $form   = $this->getForm();
-        $current_user = auth()->user();//We need the current user's id for the generated_by field
+        $user = auth()->user();//We need the current user's id for the generated_by field
 
-        $free_credits = $model->totalFreeCredits;
-        $paid_credits = $model->totalPaidCredits;
-
-        return view('admin.currencies.index',compact('form','current_user','paid_credits','free_credits'));
+        return view('admin.currencies.index',compact('form','user'));
     }
 
     public function show(Currency $currencies){}
@@ -83,21 +81,32 @@ class CurrencyController extends Controller
      */
     public function store(Request $request)
     {
-        $form = $this->getForm();
-        $data = $form->getFieldValues();
-
-        $form->redirectIfNotValid();
+        $data = $request->validate([
+            "name"    => "required | unique:currencies",
+            "icons"   => "required",
+        ]);
+        $data['ref'] = Str::random(20);
+        $data['created_by'] = auth()->user()->id;
         $currency = Currency::create($data);
 
         return redirect()
                 ->route('banker.currencies.index')
                 ->with('success','La monnaies a été créée avec succès!');
     }
+
+    /**
+     * Edit a resource in storage.
+     *
+     * @param  Currency id $id
+     * @return \Illuminate\Http\Response
+     */
     public function edit($id)
     {
-        $currencies = Currency::find($id);
-        $form = $this->getForm($currencies);
-        return view('admin.currencies.index',compact('form'));
+        $currency = Currency::find($id);
+        $form = $this->getForm($currency);
+        $user = auth()->user();//We need the current user's id for the generated_by field
+
+        return view('admin.currencies.index',compact('form','currency','user'));
     }
 
     /**
@@ -107,12 +116,17 @@ class CurrencyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Currency $currency)
+    public function update(Currency $currency, Request $request)
     {
-        $form = $this->getForm($currency);
-        $data = $form->getFieldValues();
-        $form->redirectIfNotValid();
+
+        $data = $request->validate([
+            "name"    => "required | unique:currencies,name,".$currency->id,
+            "icons"   => "required",
+        ]);
+        $data['ref'] = Str::random(20);
+        $data['created_by'] = auth()->user()->id;
         $currency->update($data);
+
         return redirect()
                 ->route('banker.currencies.index')
                 ->with('success','La monnaie a été mise à jour avec succès!');
@@ -165,7 +179,6 @@ class CurrencyController extends Controller
     {
         $user = auth()->user();
         $currencies = $user->currencies;
-        // $currencies = Currency::where
         return view("admin.currencies.accounts", compact('currencies', 'user'));
     }
 }

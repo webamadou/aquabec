@@ -11,12 +11,31 @@
                     @if(Route::currentRouteName() == 'banker.currencies.index')
                         <h2 class="card-title font-weight-bold">Ajouter une monnaie</h2>
                     @endif
-                    @if(Route::currentRouteName() == 'admin.currencies.edit')
+                    @if(Route::currentRouteName() == 'banker.currencies.edit')
                         <h2 class="card-title font-weight-bold">Modifier la monnaie</h2>
                     @endif
                 </div>
                 <div class="card-body">
-                    {!! form($form) !!}
+                    @if(Route::currentRouteName() == 'banker.currencies.edit')
+                    <form method="POST" action="{{route('banker.currencies.update', @$currency)}}" accept-charset="UTF-8">
+                        @method('PUT')
+                    @else
+                    <form method="POST" action="http://localhost:8000/banker/currencies" accept-charset="UTF-8">
+                    @endif
+                        @csrf
+                        <input class="form-control" name="created_by" type="hidden" value="{{$user->id}}">
+                        <div class="form-group" data-children-count="1">
+                            <label for="name" class="control-label">Le nom de la monnaie</label>
+                            <input class="form-control" name="name" type="text" id="name" value="{{@$currency->name}}">
+                        </div>
+                        <div class="form-group" data-children-count="1">
+                            <label for="icons" class="control-label">L'icone de la monnaie</label>
+                            <input class="form-control" name="icons" type="hidden" id="icons" value="{{@$currency->icons}}">
+                            <div id="icons-picker"></div>
+                        </div>
+                        <button class="btn bg-primary float-right" type="submit"><i class="fa fa-save mr-2"></i>Enregistrer</button>
+                    </form>
+                    <!-- {!! form($form) !!} -->
                 </div>
                 @if(Route::currentRouteName() == 'banker.currencies.edit')
                     <div class="card-footer">
@@ -70,6 +89,26 @@
                     { data: 'updated_at', name: 'updated_at' },
                     { data: 'action', name: 'action', orderable: false, searchable: false }
                 ]
+            });
+
+            /*folowing script will update the value of the icon field when iconpicker is set*/
+            $(document).ready(function() {
+                $('#icons-picker').iconpicker({
+                    align: 'center', // Only in div tag
+                    arrowClass: 'btn-danger',
+                    arrowPrevIconClass: 'fas fa-angle-left',
+                    arrowNextIconClass: 'fas fa-angle-right',
+                    setSearch: false
+                })
+                .iconpicker('setAlign', 'center') // Only in div tag
+                .iconpicker('setArrowClass', 'btn-success')
+                .iconpicker('setArrowPrevIconClass', 'fas fa-angle-left')
+                .iconpicker('setArrowNextIconClass', 'fas fa-angle-right')
+                .iconpicker('setCols', 7)
+                .iconpicker('setSearchText', `{{@$currency->icons}}`)
+                .on('change', function(e) {
+                    $("#icons").val(e.icon);
+                });
             });
         });
     </script>

@@ -46,6 +46,7 @@ class CurrencyForm extends Form
             ])
             ->add('icons', 'text',[
                 'label'       => "L'icone de la monnaie",
+                'id'          => "iconpicker"
             ])
             /* ->add('credit_type', 'choice', [
                 'label' => 'Selectionnez le type de crédit à générer',

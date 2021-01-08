@@ -25,12 +25,14 @@
     <!-- <script src="https://code.jquery.com/jquery-1.12.4.js"></script> -->
 
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="{{asset('dist/icons-picker/js/bootstrap-iconpicker.bundle.min.js')}}" defer></script>
 
     @stack('scripts')
 
     <!-- Theme style -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <link rel="stylesheet" href="{{ asset('css/fancyform.css') }}">
+    <link rel="stylesheet" href="{{ asset('dist/icons-picker/css/bootstrap-iconpicker.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/all.css') }}">
 </head>
 
