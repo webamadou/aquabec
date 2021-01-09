@@ -95,7 +95,7 @@ class TransferCreditsController extends Controller
      */
     public function creditLogsData()
     {
-        $logs = CreditsTransfersLog::with('sentBy','sentTo')
+        $logs = CreditsTransfersLog::with('sentBy','sentTo','credit')
                                     ->orderBy("created_at","desc")
                                     ->get();
 

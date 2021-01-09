@@ -39,6 +39,14 @@ class CreditsTransfersLog extends Model
     }
 
     /**
+     * the relation between the log and the recipient
+     */
+    public function credit()
+    {
+        return $this->belongsTo(\App\Models\Currency::class,'credit_id', 'id');
+    }
+
+    /**
      * Format created date value to custom
      *
      * @param $value
@@ -59,7 +67,6 @@ class CreditsTransfersLog extends Model
     public function getUpdatedAtAttribute($value)
     {
         $updated_at = Carbon::make($value);
-        //$date = Carbon::createFromFormat('Y-m-d H:i:s', $updated_at)->format('m-d-Y H:i:s');
         return Carbon::createFromFormat('Y-m-d H:i:s', $updated_at)->format('m-d-Y à H:i:s');
         //return $updated_at->toDateString().' à '.$updated_at->toTimeString();
     }

@@ -42,14 +42,14 @@
                             </li> -->
                             <li class="nav-item">
                                 <a href="{{ route('banker.currencies.accounts') }}" class="nav-link {{ side_nav_bar_menu_status('regions','active')  }}">
-                                    <i class="fas fa-file-invoice nav-icon"></i> 
-                                    <p>Comptes</p>
+                                    <i class="fas fa-piggy-bank nav-icon"></i> 
+                                    <p>Mes Comptes</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('banker.currencies.index') }}" class="nav-link {{ side_nav_bar_menu_status('regions','active')  }}">
                                     <i class="fa fa-coins nav-icon"></i>
-                                    <p>Monnaies</p>
+                                    <p>Liste des Monnaies</p>
                                 </a>
                             </li>
                             <li class="nav-item">

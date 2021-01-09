@@ -8,7 +8,7 @@
         <div class="col-sm-6">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="card-title font-weight-bold">Liste des permissions</h2>
+                    <h2 class="card-title font-weight-bold">Générer de la monnaie: {{strtolower(@$currency->name)}}</h2>
                 </div>
                 <div class="card-body">
                     <form method="POST" action="{{route('banker.currencies.generator')}}" accept-charset="UTF-8">
@@ -49,7 +49,7 @@
 
                             <div class="col justify-content-end row justify-content-end m-2">
                                 <button type="submit" name="save" class="btn btn-lg btn-block btn-primary">
-                                <i class="fa fa-plus fa-lg mx-4"></i> Generer
+                                <i class="fas fa-piggy-bank fa-sm mx-1"></i> GÉNÉRER
                                 </button>
                             </div>
                         </div>

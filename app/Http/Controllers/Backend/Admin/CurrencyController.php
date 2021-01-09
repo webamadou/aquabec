@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Currency;
 use App\Models\Credit;
+use App\Models\User;
 
 use Kris\LaravelFormBuilder\Form;
 use Kris\LaravelFormBuilder\FormBuilder;
@@ -180,5 +181,67 @@ class CurrencyController extends Controller
         $user = auth()->user();
         $currencies = $user->currencies;
         return view("admin.currencies.accounts", compact('currencies', 'user'));
+    }
+
+    /**
+     * 
+     * Render the form to generate a currency
+     */
+    public function transfer(Currency $currency)
+    {
+        $user = auth()->user();
+        //We need users with the role admin or super-admin
+        $users = User::whereHas("roles", function($q){ $q->where("name", "admin")
+                     ->orWhere('name','super-admin'); })
+                     ->pluck('name','id');
+        //We need the data for the picked currency for the current user
+        $currency = $user->currencies()->wherePivot('currency_id',$user->id)->first();
+        return view('admin.currencies.transfering', compact("currency","user","users"));
+    }
+
+    public function transfering(Request $request, Currency $currency)
+    {
+        $data = $request->validate([
+            "send_by" => "required | integer",
+            "send_to" => "required | integer",
+            "credit_type" => "required | integer",
+            "currency_id" => "required",
+            "sent_value" => "required | integer"
+        ]);
+
+        $sender = $currency->getUserCurrency($data['send_by'],$data['currency_id']);
+        $currency_type = $data['credit_type'] > 0 ? 'paid_currency' : 'free_currency';
+        //Check if sender have enough currency to send
+        if($sender->pivot->$currency_type < $data['sent_value'])
+            return redirect()
+                    ->back()
+                    ->with("error", "Vous n'avez pas assez pour faire le transfert.");
+
+        $recipient = $currency->setUserCurrency($data['send_to'],$data['currency_id']);
+        $currency->transfering($sender, $recipient, $currency_type, $data['sent_value']);
+
+        //We need the initial amounts of each account for the logs.s
+        $send_initial_amount = intval($sender->pivot->$currency_type) ;
+        $recipient_initial_amount = intval($recipient->pivot->$currency_type) ;
+        $logs = [
+            'ref' => Str::random(20),
+            'sent_by' => $data['send_by'],
+            'sent_to' => $data['send_to'],
+            'credit_id' => $data['currency_id'],
+            'credit_type' => $data['credit_type'],
+            'sender_initial_credit' => $send_initial_amount,
+            'recipient_initial_credit' => $recipient_initial_amount,
+            'sent_value' => $data['sent_value'],
+            'sender_new_credit' => $send_initial_amount - intval($data['sent_value']),
+            'recipient_new_credit' => $recipient_initial_amount + intval($data['sent_value']),
+            'transfer_status' => 1
+        ];
+        //Then we save in the log
+        \App\Models\CreditsTransfersLog::create($logs);
+
+        return redirect()
+                ->back()
+                ->with("success", "Montant tensféré!");
+        //dd($sender);
     }
 }

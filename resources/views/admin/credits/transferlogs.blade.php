@@ -38,7 +38,11 @@
                 serverSide: true,
                 ajax: '{{ url('admin/get-credits-logs') }}',
                 columns: [
-                    { data: 'ref', name: 'ref' },
+                    /* { data: 'ref', name: 'ref' }, */
+                    {data: null, name: 'ref',
+                        render: data => {
+                                return `<strong>${data.credit.name}</strong>`;
+                    }},
                     { data: null, name: 'sent_by',
                         render: data => {
                                 return `<strong>${data.sent_by.name}</strong><br><span>Credit initial: ${data.sender_initial_credit}</span><br><span>Credit final: ${data.sender_new_credit}</span><br>`;

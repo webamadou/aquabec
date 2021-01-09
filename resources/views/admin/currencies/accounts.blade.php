@@ -2,6 +2,7 @@
 
 @section('title','Mes comptes')
 
+@inject('credit', 'App\Models\Credit')
 @section('content')
     <div class="row">
     @foreach($currencies as $currency)
@@ -13,16 +14,23 @@
                     <ul class="list-group">
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             Valeur Gratuite
-                            <span class="badge bg-primary rounded-pill">{{$currency->pivot->free_currency}}</span>
+                            <span class="badge bg-primary rounded-pill">{{$credit->formatCredit(@$currency->pivot->free_currency ?: 0)}}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             Valeur payante
-                            <span class="badge bg-primary rounded-pill">{{$currency->pivot->paid_currency}}</span>
+                            <span class="badge bg-primary rounded-pill">{{$credit->formatCredit(@$currency->pivot->paid_currency ?: 0)}}</span>
                         </li>
                     </ul>
                     <p class="my-4">
-                        <a href="{{route('banker.currencies.generate',$currency)}}" class="btn btn-primary">Générer</a>
-                        <a href="{{route('banker.currencies.edit',$currency)}}" class="btn btn-success">Éditer</a>
+                        <a href="{{route('banker.currencies.generate',$currency)}}" class="btn btn-primary btn-sm">
+                            <i class="fas fa-plus-square"></i> Générer
+                        </a>
+                        <a href="{{route('banker.currencies.transfer',$currency)}}" class="btn btn-light btn-sm">
+                            <i class="fas fa-share-square"></i> Transférers
+                        </a>
+                        <a href="{{route('banker.currencies.edit',$currency)}}" class="btn btn-success btn-sm">
+                            <i class="far fa-edit"></i> Éditer
+                        </a>
                     </p>
                 </div>
             </div>
