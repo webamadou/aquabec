@@ -141,4 +141,5 @@ Route::middleware(['auth','verified'])->group(function (){
      * User's subscription
      */
     Route::get("subscription_summary/{subscription:slug}", [SubscriberController::class, "summary"])->name("subscription_summary");
+    Route::get("/my_safe", [SubscriberController::class, "mySafe"])->name("my_safe");
 });

@@ -64,12 +64,14 @@ class Currency extends Model
     public function setUserCurrency($user_id, $currency_id)
     {
         $currency = $this->getUserCurrency($user_id, $currency_id);
+        //dd($currency);
         if($currency == null)
         {
             $user = User::find($user_id);
-            $user->currencies()->sync([$currency_id]);
+            $currency = Currency::find($currency_id);
+            $currency->users()->attach([$user_id]);
         }
-
+        //dd($this->getUserCurrency($user_id, $currency_id));
         return $this->getUserCurrency($user_id, $currency_id);
     }
 
@@ -86,8 +88,9 @@ class Currency extends Model
 
         $send_by->pivot->$type -= $amount;
         $send_by->pivot->save();
+
         $send_to->pivot->$type += $amount;
-        $send_by->pivot->save();
+        $send_to->pivot->save();
 
        
     }

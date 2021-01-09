@@ -11,7 +11,7 @@
                     <h2 class="card-title font-weight-bold">Transférer de la monnaie</h2>
                 </div>
                 <div class="info-box">
-                    <span class="info-box-icon bg-primary"><i class="{{$currency->icons}}"></i></span>
+                    <span class="info-box-icon bg-primary"><i class="{{@$currency->icons}}"></i></span>
                     <div class="info-box-content">
                         <h3>{{$currency->name}}</h3>
                         <ul class="list-group">
@@ -47,25 +47,25 @@
                                 <div class="col-12 row">
                                     <div class="col-6 row">
                                         <label class="label">
-                                            <input class="col-sm-2 label__checkbox" value="0" id="credit_type_free" name="credit_type" type="radio" {{ intval(@$_POST['credit_type'] ) === 0 ? 'checked':''}}>
+                                            <input class="col-sm-2 label__checkbox" value="0" id="credit_type_free" name="credit_type" type="radio">
                                             <span class="label__text">
                                                 <span class="label__check">
                                                     <i class="fa fa-dot-circle icon"></i>
                                                 </span>
                                             </span>
                                         </label>
-                                        <label for="credit_type_free" style="font-weight: normal;" class="">Credit gratuit</label>
+                                        <label for="credit_type_free" style="font-weight: normal;" class="">Type gratuit</label>
                                     </div>
                                     <div class="col-6 row">
                                         <label class="label">
-                                            <input class="col-sm-2 label__checkbox" value="1" id="credit_type_paid" name="credit_type" type="radio" {{ intval(@$_POST['credit_type'] ) == 1 ? 'checked':''}}>
+                                            <input class="col-sm-2 label__checkbox" value="1" id="credit_type_paid" name="credit_type" type="radio">
                                             <span class="label__text">
                                                 <span class="label__check">
                                                     <i class="fa fa-dot-circle icon"></i>
                                                 </span>
                                             </span>
                                         </label>
-                                        <label for="credit_type_paid" style="font-weight: normal;" class="">Credit payant</label>
+                                        <label for="credit_type_paid" style="font-weight: normal;" class="">Type payant</label>
                                     </div>
                                 </div>
                             @endrole
@@ -78,7 +78,7 @@
 
                             <div class="col justify-content-end row justify-content-end m-2">
                                 <button type="submit" name="save" class="btn btn-sm btn-block btn-primary">
-                                <i class="fa fa-save"></i> Enregistrer
+                                <i class="fa fa-save"></i> Transférer
                                 </button>
                             </div>
                         </div>

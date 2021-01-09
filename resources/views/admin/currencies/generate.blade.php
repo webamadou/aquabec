@@ -19,25 +19,25 @@
                             <div class="col-12 row">
                                 <div class="col-6 row">
                                     <label class="label">
-                                        <input class="col-sm-2 label__checkbox" value="0" id="currency_type_free" name="currency_type" type="radio" {{ intval(@$_POST['currency_type'] ) === 0 ? 'checked':''}}>
+                                        <input class="col-sm-2 label__checkbox" value="0" id="currency_type_free" name="currency_type" type="radio" >
                                         <span class="label__text">
                                             <span class="label__check">
                                                 <i class="fa fa-dot-circle icon"></i>
                                             </span>
                                         </span>
                                     </label>
-                                    <label for="currency_type_free" style="font-weight: normal;" class="">Credit gratuit</label>
+                                    <label for="currency_type_free" style="font-weight: normal;" class="">Type gratuit</label>
                                 </div>
                                 <div class="col-6 row">
                                     <label class="label">
-                                        <input class="col-sm-2 label__checkbox" value="1" id="currency_type_paid" name="currency_type" type="radio" {{ intval(@$_POST['currency_type'] ) == 1 ? 'checked':''}}>
+                                        <input class="col-sm-2 label__checkbox" value="1" id="currency_type_paid" name="currency_type" type="radio">
                                         <span class="label__text">
                                             <span class="label__check">
                                                 <i class="fa fa-dot-circle icon"></i>
                                             </span>
                                         </span>
                                     </label>
-                                    <label for="currency_type_paid" style="font-weight: normal;" class="">Credit payant</label>
+                                    <label for="currency_type_paid" style="font-weight: normal;" class="">Type payant</label>
                                 </div>
                             </div>
                             <div class="col-12 form-group">

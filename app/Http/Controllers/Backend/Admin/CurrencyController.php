@@ -164,8 +164,9 @@ class CurrencyController extends Controller
             "amount"        => "required | integer"
         ]);
 
-        $currency       = Currency::find($data['currency_id']);
-        $sync           = $currency->users()->sync([$data['user_id']]);
+        $currency       = new Currency();
+        $currency       = $currency->setUserCurrency($data['user_id'], $data['currency_id']);
+        //$sync           = $currency->users()->sync([$data['user_id']]);
         $currency_type  = $data['currency_type'] > 0 ? "paid_currency" : "free_currency";
 
         $currency->users[0]->pivot->$currency_type += $data["amount"];
@@ -189,17 +190,20 @@ class CurrencyController extends Controller
      */
     public function transfer(Currency $currency)
     {
+        if(!$currency)
+            return route("banker.currencies.accounts");
         $user = auth()->user();
         //We need users with the role admin or super-admin
         $users = User::whereHas("roles", function($q){ $q->where("name", "admin")
                      ->orWhere('name','super-admin'); })
                      ->pluck('name','id');
         //We need the data for the picked currency for the current user
-        $currency = $user->currencies()->wherePivot('currency_id',$user->id)->first();
+        $currency = $user->currencies()->wherePivot('currency_id',$currency->id)->first();
+
         return view('admin.currencies.transfering', compact("currency","user","users"));
     }
 
-    public function transfering(Request $request, Currency $currency)
+    public function transfering(Request $request)
     {
         $data = $request->validate([
             "send_by" => "required | integer",
@@ -208,9 +212,14 @@ class CurrencyController extends Controller
             "currency_id" => "required",
             "sent_value" => "required | integer"
         ]);
-
+        $currency = new Currency();
         $sender = $currency->getUserCurrency($data['send_by'],$data['currency_id']);
         $currency_type = $data['credit_type'] > 0 ? 'paid_currency' : 'free_currency';
+        if($sender == null)
+            return redirect()
+                    ->route('banker.currencies.accounts')
+                    ->with("error", "Une erreur s'est produite.");
+            
         //Check if sender have enough currency to send
         if($sender->pivot->$currency_type < $data['sent_value'])
             return redirect()
@@ -218,11 +227,14 @@ class CurrencyController extends Controller
                     ->with("error", "Vous n'avez pas assez pour faire le transfert.");
 
         $recipient = $currency->setUserCurrency($data['send_to'],$data['currency_id']);
-        $currency->transfering($sender, $recipient, $currency_type, $data['sent_value']);
-
+        
         //We need the initial amounts of each account for the logs.s
         $send_initial_amount = intval($sender->pivot->$currency_type) ;
         $recipient_initial_amount = intval($recipient->pivot->$currency_type) ;
+        
+        //dd($data['send_to'],$data['currency_id'],$recipient);
+        $currency->transfering($sender, $recipient, $currency_type, $data['sent_value']);
+
         $logs = [
             'ref' => Str::random(20),
             'sent_by' => $data['send_by'],

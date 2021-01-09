@@ -159,8 +159,8 @@
                             @endrole
                             <hr>
                             <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Profil</a>
-                            <a class="dropdown-item link-success" href="#" title="Crédits gratuit"><i class="fa fa-usd" aria-hidden="true"></i> {{ $credit->formatCredit( Auth::user()->free_credits ) }} </a>
-                            <a class="dropdown-item link-primary" href="#" title="Crédits payant"><i class="fa fa-heart" aria-hidden="true"></i> {{ $credit->formatCredit( Auth::user()->paid_credits ) }} </a>
+                            <a class="dropdown-item link-success" href="{{route('my_safe')}}" title="Voir mon compte"><i class="fas fa-piggy-bank" aria-hidden="true"></i> Mon coffre</a>
+                            <!-- <a class="dropdown-item link-primary" href="#" title="Crédits payant"><i class="fa fa-heart" aria-hidden="true"></i> {{ $credit->formatCredit( Auth::user()->paid_credits ) }} </a> -->
                             <a class="dropdown-item" href="{{route('logout')}}"><i class="fa fa-power-off"></i> Logout</a>
                         </div>
                       </div>

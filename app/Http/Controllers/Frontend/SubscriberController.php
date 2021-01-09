@@ -12,5 +12,11 @@ class SubscriberController extends Controller
     	//$subs = Subscription::find($id);
     	$subs = $subscription;
     	return view("frontend.subscriber_summary", compact("subs"));
-    }
+	}
+	
+	public function mySafe()
+	{
+		$user = auth()->user();
+		return view('frontend.my_safe', compact("user"));
+	}
 }

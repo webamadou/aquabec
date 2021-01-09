@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
+
     <!-- Basic Page Needs =====================================-->
     <meta charset="utf-8">
     <!-- Mobile Specific Metas ================================-->
@@ -34,5 +35,6 @@
 <!-- Javascript File
    =============================================================================-->
 <script src="{{ asset('js/frontend.js') }}"></script>
+<script src="https://kit.fontawesome.com/9466c40bfd.js" crossorigin="anonymous"></script>
 </body>
 </html>
