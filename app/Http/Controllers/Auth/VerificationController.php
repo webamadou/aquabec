@@ -47,15 +47,15 @@ class VerificationController extends Controller
      */
     public function redirectTo(): string
     {
-        //dd($this->guard()->user()->role);
         if(auth()->user()->hasRole(['super-admin'])) {
             return '/admin/dashboard';
         }
         if(auth()->user()->hasRole(['admin'])) {
             return '/admin/dashboard';
         }
-        if(auth()->user()->hasRole(['user'])) {
+        if (auth()->user()->hasRole(['user'])) {
             return '/dashboard';
         }
+        return '/';
     }
 }

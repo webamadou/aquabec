@@ -20,7 +20,7 @@
                     <form method="POST" action="{{route('banker.currencies.update', @$currency)}}" accept-charset="UTF-8">
                         @method('PUT')
                     @else
-                    <form method="POST" action="http://localhost:8000/banker/currencies" accept-charset="UTF-8">
+                    <form method="POST" action="{{route('banker.currencies.store')}}" accept-charset="UTF-8">
                     @endif
                         @csrf
                         <input class="form-control" name="created_by" type="hidden" value="{{$user->id}}">

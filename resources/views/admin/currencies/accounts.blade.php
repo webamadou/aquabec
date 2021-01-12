@@ -5,6 +5,9 @@
 @inject('credit', 'App\Models\Credit')
 @section('content')
     <div class="row">
+        <div class="col-12 mb-5">
+            <a href="{{route('banker.currencies.index')}}" class="btn btn-primary">Enregistrer une nouvelles monnaie</a>
+        </div>
     @foreach($currencies as $currency)
         <div class="col-md-6 col-sm-12">
             <div class="info-box">

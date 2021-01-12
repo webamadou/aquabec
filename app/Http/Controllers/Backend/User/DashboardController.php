@@ -9,6 +9,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        return view('user.dashboard');
+        $notifications = \App\Models\Notifications::all();
+        return view('user.dashboard', compact('notifications'));
     }
 }

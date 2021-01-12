@@ -83,6 +83,27 @@
         </div>
         <div>
             <div class="uk-form-group">
+                <label for="email" class="uk-form-label"> Type de profil</label>
+                <div class="uk-position-relative w-100">
+                    <span class="uk-form-icon">
+                        <i class="fas fa-user-tag"></i>
+                    </span>
+                    <select id="role" type="text" name="role" class="uk-input @error('role') is-invalid @enderror" placeholder="Choisissez un type de profil" value="{{ old('role') }}" required autocomplete="role">
+                        @foreach($roles as $role)
+                            <option value="{{$role}}">{{$role}}</option>
+                        @endforeach
+                    </select>
+                    <!-- <input id="email" type="text" name="role" class="uk-input @error('role') is-invalid @enderror" placeholder="Choisissez un type de profil" value="{{ old('role') }}" required autocomplete="email"> -->
+                </div>
+                @error('email')
+                    <span class="text-danger" role="alert">
+                        {{ $message }}
+                    </span>
+                @enderror
+            </div>
+        </div>
+        <div>
+            <div class="uk-form-group">
                 <input type="checkbox" name="terms" id="terms" {{ old('terms') ? 'checked' : '' }} required>
                 <label class="font-weight-bold" for="terms">
                     J'accepte les conditions d'utilisation

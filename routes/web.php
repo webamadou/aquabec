@@ -131,7 +131,8 @@ Route::middleware(['auth','verified'])->group(function (){
     /*
      * User's Routes
      */
-    Route::middleware(['role:user'])->name('user.')->group(function () {
+    //Route::middleware(['role:user|client'])->name('user.')->group(function () {
+    Route::name('user.')->group(function () {
         Route::get('dashboard', [UserDashboard::class, 'index'])->name('dashboard');
         Route::resource('events', EventController::class);
         Route::get('get-city-by-region/{region_id}', [EventController::class, 'getCityByRegion']);
