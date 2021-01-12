@@ -109,12 +109,8 @@ class RoleController extends Controller
       $announcements = Announcement::all();
       $permission_array = $this->persmission_group;
       $permissions = Permission::where("guard_name","web")->get();
-<<<<<<< HEAD
-      return view('admin.roles.create',compact('form','users','organisations','events','announcements','role','permissions','permission_array')); }
-=======
       return view('admin.roles.create',compact('form','users','organisations','events','announcements','role','permissions','permission_array')); 
     }
->>>>>>> 07115b378cc0b5bebe1ab667fb58d22633ad126c
     /**
      * Store a newly created resource in storage.
      *
@@ -132,12 +128,9 @@ class RoleController extends Controller
         ]);
         $data['free_events'] = @$request->input("free_events") || 0;
         $data['free_annoncements'] = @$request->input("free_annoncements") || 0;
-<<<<<<< HEAD
-=======
         $data['free_credit'] = intval($request->input("free_credit"));
         $data['paid_credit'] = intval($request->input("paid_credit"));
 
->>>>>>> 07115b378cc0b5bebe1ab667fb58d22633ad126c
         $form->redirectIfNotValid();
         if($new_role = Role::create($data)){//If the role si saved successfully
             //We link the role to the checked permissions
@@ -205,11 +198,8 @@ class RoleController extends Controller
         ]);
         $data['free_events'] = @$request->input("free_events") || 0;
         $data['free_annoncements'] = @$request->input("free_annoncements") || 0;
-<<<<<<< HEAD
-=======
         $data['free_credit'] = intval($request->input("free_credit"));
         $data['paid_credit'] = intval($request->input("paid_credit"));
->>>>>>> 07115b378cc0b5bebe1ab667fb58d22633ad126c
 
         if($new_role = $role->update($data)){//If the role si saved successfully
             //We link the role to the checked permissions
