@@ -85,4 +85,29 @@ class User extends Authenticatable implements MustVerifyEmail
         return $updated_at->toDateString().' à '.$updated_at->toTimeString();
     }
 
+    /**
+     * return the data of a given currency for a given user
+     */
+    public function getUserCurrency($currency_id)
+    {
+        return $this->currencies()
+                    ->wherePivot('currency_id',$currency_id)
+                    ->first();
+    }
+
+    /**
+     * set the data of a given currency for a given user
+     */
+    public function setUserCurrency($currency_id, $pivot_field = [])
+    {
+        $currency = $this->getUserCurrency($currency_id);
+        if($currency == null)
+        {
+            $this->currencies()->attach([$currency_id => $pivot_field]);
+        }
+
+        return $this->getUserCurrency($currency_id);
+    }
+
+
 }

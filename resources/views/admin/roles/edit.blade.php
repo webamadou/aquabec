@@ -29,10 +29,6 @@
                                 </span>
                             </label>
                         </div>
-                        <!-- <div class="col-12 form-group row">
-                            <label for="free_events" class="col-sm-12 col-md-3">Evenements Gratuits</label>
-                            <input class="col-sm-12 col-md-9" id="free_events" name="free_events" type="checkbox" value="1" {{ $role->free_events>=1 ?"checked": "" }}>
-                        </div> -->
                         <div class="col-12 form-group row justify-content-center bg-light">
                             <label for="free_annoncements" class="col-sm-6 col-md-6">Annonces Gratuites</label>
                             <label class="label col-sm-6 col-md-6">
@@ -72,7 +68,23 @@
                             </div>
                             {!! $errors->first('annoucements_price', '<div class="error-message col-12">:message</div>') !!}
                             </div>
-                    </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-12">
+                                <label for="free_credit" class="col-md-12">Crédit gratuit par défaut</label>
+                                <div class="input-group mb-3 col-md-12 col-sm-6">
+                                    <input class="form-control" min="0" name="free_credit" type="number" value="{{$role->free_credit}}">
+                                </div>
+                                {!! $errors->first('free_credit', '<div class="error-message col-12">:message</div>') !!}
+                            </div>
+                            <div class="col-md-6 col-sm-12">
+                                <label for="paid_credit" class="col-md-12">Crédit payant par défaut</label>
+                                <div class="input-group mb-3 col-md-12 col-sm-6">
+                                    <input class="form-control" min="0" name="paid_credit" type="number" value="{{$role->paid_credit}}">
+                                </div>
+                                {!! $errors->first('paid_credit', '<div class="error-message col-12">:message</div>') !!}
+                            </div>
+                        </div>
                 </div>
             </div>
             <div class="col-sm-12 col-md-4"> <!-- column to add prices -->

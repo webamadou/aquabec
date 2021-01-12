@@ -5,6 +5,9 @@
 @inject('credit', 'App\Models\Credit')
 @section('content')
     <div class="row">
+        <div class="col-12 mb-5">
+            <a href="{{route('banker.currencies.index')}}" class="btn btn-primary">Enregistrer une nouvelles monnaie</a>
+        </div>
     @foreach($currencies as $currency)
         <div class="col-md-6 col-sm-12">
             <div class="info-box">
@@ -26,7 +29,7 @@
                             <i class="fas fa-plus-square"></i> Générer
                         </a>
                         <a href="{{route('banker.currencies.transfer',$currency)}}" class="btn btn-light btn-sm">
-                            <i class="fas fa-share-square"></i> Transférers
+                            <i class="fas fa-share-square"></i> Transférer
                         </a>
                         <a href="{{route('banker.currencies.edit',$currency)}}" class="btn btn-success btn-sm">
                             <i class="far fa-edit"></i> Éditer

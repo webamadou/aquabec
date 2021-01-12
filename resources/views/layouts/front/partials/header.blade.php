@@ -145,8 +145,6 @@
                       <div class="dropdown">
                         <a class="btn btn-sm btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> <i class="fa fa-user-circle-o mr-2"></i> {{ Auth::user()->name }}</a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-
-                    {{Auth::user()->roles->pluck('name')}}
                             @hasanyrole('super-admin')
                               @include('layouts.front.partials.su-admin')
                             @endrole

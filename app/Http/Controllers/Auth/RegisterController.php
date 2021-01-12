@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
+use App\Models\Currency;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\JsonResponse;
@@ -104,12 +105,19 @@ class RegisterController extends Controller
     {
         $this->validator($request->all())->validate();
 
-        $role = $request->role;
+        $role = $request->role;//We get the picked role
         event(new Registered($user = $this->create($request->all())));
-        $user->assignRole($role);
+        $user->assignRole($role);//We assign the role to the user
+        //We need to prepare the data to apply to the default credit amount to assign to the user
+        $role = $user->roles->first();
+        $free_credit_amount = $role != null ? intval($role->free_credit) : 0;
+        $paid_credit_amount = $role != null ? intval($role->paid_credit) : 0;
+        //dd($free_credit_amount,$paid_credit_amount);
+        $pivot_field        = ['free_currency' => $free_credit_amount, 'paid_currency' => $paid_credit_amount ];
+        $user->setUserCurrency(1 , $pivot_field);
 
         $this->guard()->login($user);
-
+        
         if ($response = $this->registered($request, $user)) {
             return $response;
         }

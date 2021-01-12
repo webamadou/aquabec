@@ -28,7 +28,7 @@ class CurrencyController extends Controller
      */
     public function currenciesData()
     {
-        $currency = Currency::all();
+        $currency = Currency::where('status','<=',1)->get();
         return datatables()
             ->collection($currency)
             ->addColumn('action',function ($currency) {
@@ -138,7 +138,12 @@ class CurrencyController extends Controller
      */
     public function destroy(Currency $currency)
     {
-        $currency->delete();
+        if($currency->id == 1){
+            return redirect()->back()->with('error','Cette monnaie ne peut être supprimé!');
+        }
+        //$currency->delete();
+        $currency->status = 4;//When setting the status field to 4, we are making a logical suppression
+        $currency->save();
         return redirect()->back()->with('success','La monnaie a été supprimée avec succès!');
     }
 
@@ -180,7 +185,9 @@ class CurrencyController extends Controller
     public function accounts()
     {
         $user = auth()->user();
-        $currencies = $user->currencies;
+        $currencies = $user->currencies()
+                           ->where('status','<=',1)
+                           ->get();
         return view("admin.currencies.accounts", compact('currencies', 'user'));
     }
 
