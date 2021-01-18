@@ -31,7 +31,7 @@ class UserSeeder extends Seeder
         'password' => Hash::make('@gend5ue$&c')
         ];
         $banker = [
-            'name'  => 'Banker',
+            'name'  => 'Banquier',
             'email' => 'banker@lagenda.quebec',
             'email_verified_at' => Carbon::now(),
         'password' => Hash::make('passer')
@@ -55,9 +55,9 @@ class UserSeeder extends Seeder
         $admin->assignRole($role);
 
         $banker     = User::updateOrCreate($banker);
-        $role       = Role::updateOrCreate(['name' => 'banker']);
+        $role       = Role::updateOrCreate(['name' => 'Banquier']);
         $banker->assignRole($role);
-        $banker->givePermissionTo("Banker");
+        $banker->givePermissionTo("Banquier");
 
         $admin      = User::updateOrCreate($client);
         $role       = Role::updateOrCreate(['name' => 'client']);

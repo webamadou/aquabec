@@ -42,25 +42,29 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3 col-sm-6 col-12">
+    </div>
+    <div class="row my-4">
+        <h3 class="col-12">Réserve de monnaies</h3>
+        @foreach($current_user->currencies as $currency)
+        <div class="col-md-6 col-sm-6 col-12">
             <div class="info-box">
-                <span class="info-box-icon bg-success"><i class="fas fa-hand-holding-heart"></i></span>
+                <span class="info-box-icon bg-success"><i class="{{$currency->icons}}"></i></span>
                 <div class="info-box-content">
-                    <span class="info-box-text">Crédit gratuit</span>
-                    <span class="info-box-number">{{ $credit->formatCredit( Auth::user()->free_credits ) }}</span>
+                    <span class="info-box-text">Réserve {{strtolower($currency->name)}} gratuit</span>
+                    <span class="info-box-number">{{ $credit->formatCredit($currency->pivot->free_currency) }}</span>
                 </div>
             </div>
         </div>
-        <div class="col-md-3 col-sm-6 col-12">
+        <div class="col-md-6 col-sm-6 col-12">
             <div class="info-box">
-                <span class="info-box-icon bg-primary"><i class="fas fa-hand-holding-usd"></i></span>
+                <span class="info-box-icon bg-primary"><i class="{{$currency->icons}}"></i></span>
                 <div class="info-box-content">
-                    <span class="info-box-text">Crédit gratuit</span>
-                    <span class="info-box-number">{{ $credit->formatCredit( Auth::user()->paid_credits ) }} </span>
+                    <span class="info-box-text">Réserve {{strtolower($currency->name)}} payant</span>
+                    <span class="info-box-number">{{ $credit->formatCredit($currency->pivot->paid_currency) }}</span>
                 </div>
             </div>
         </div>
-        
+        @endforeach
     </div>
 
 @endsection

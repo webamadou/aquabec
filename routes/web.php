@@ -66,7 +66,7 @@ Route::middleware(['auth','verified'])->group(function (){
 
     Route::post('credits-transfer', [App\Http\Controllers\TransferCreditsController::class, 'transferCredits'])->name('credits.transfer');
 
-    Route::middleware(['role:banker|super-admin'])->name("banker.")->prefix("banker")->group(function(){
+    Route::middleware(['role:banker|Banquier|super-admin'])->name("banker.")->prefix("banker")->group(function(){
         Route::resource('credit_pack', CreditPackController::class);
         Route::get('get-credit_pack-data', [CreditPackController::class, 'creditPackData'])->name('credit_pack.data');
 
@@ -74,7 +74,7 @@ Route::middleware(['auth','verified'])->group(function (){
         Route::get('get-credits-data', [CreditsController::class, 'creditData'])->name('credit.data');
     });
 
-    Route::middleware(['role:banker'])->name('banker.')->prefix('banker')->group(function () {
+    Route::middleware(['role:banker|Banquier'])->name('banker.')->prefix('banker')->group(function () {
         Route::resource("currencies", CurrencyController::class);
         Route::get("/generator/{currency}",[CurrencyController::class, 'generate'])->name('currencies.generate');
         Route::post("/generator",[CurrencyController::class, 'generator'])->name('currencies.generator');
@@ -84,7 +84,7 @@ Route::middleware(['auth','verified'])->group(function (){
         Route::post("/transfering",[CurrencyController::class, 'transfering'])->name('currencies.transfering');
     });
 
-    Route::middleware(['role:super-admin|admin|banker'])->name('admin.')->prefix('admin')->group(function () {
+    Route::middleware(['role:super-admin|admin|banker|Banquier'])->name('admin.')->prefix('admin')->group(function () {
         // Dashboard Routes...
         Route::get('dashboard', [AdminDashboard::class, 'index'])->name('dashboard');
         //Logs des transferts de credit

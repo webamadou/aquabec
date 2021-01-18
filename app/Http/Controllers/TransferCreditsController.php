@@ -84,8 +84,8 @@ class TransferCreditsController extends Controller
 
     public function creditLogs()
     {
-        $logs   = CreditsTransfersLog::all();
-        return view('admin.credits.transferlogs',compact('logs'));
+        //$logs   = CreditsTransfersLog::all();
+        return view('admin.credits.transferlogs');
     }
 
     /*

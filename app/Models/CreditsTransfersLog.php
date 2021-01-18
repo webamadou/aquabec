@@ -12,6 +12,7 @@ class CreditsTransfersLog extends Model
 {
     use HasFactory;
     protected $guarded = [];
+    protected $appends = ['free_currency'];
 
     /**
      * Return either "payant" or "gratuit" depending on the credit_type column
@@ -69,5 +70,8 @@ class CreditsTransfersLog extends Model
         $updated_at = Carbon::make($value);
         return Carbon::createFromFormat('Y-m-d H:i:s', $updated_at)->format('m-d-Y à H:i:s');
         //return $updated_at->toDateString().' à '.$updated_at->toTimeString();
+    }
+    public function getFreeCurrencyAttribute(){
+        return $free_currency = "test";
     }
 }

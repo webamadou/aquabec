@@ -41,12 +41,12 @@
                     { data: 'ref', name: 'ref' },
                     { data: null, name: 'sent_by',
                         render: data => {
-                                return `<strong>${data.sent_by.name}</strong><br><span>Credit initial: ${data.sender_initial_credit}</span><br><span>Credit final: ${data.sender_new_credit}</span><br>`;
+                                return `<strong>${data.sent_by.name}</strong><br><span>Réserve initial: ${data.sender_initial_credit}</span><br><span>Réserve final: ${data.sender_new_credit}</span><br>`;
                             }
                     },
                     { data: null, name: 'sent_to',
                         render: data => { 
-                                return `<strong>${data.sent_to.name}</strong><br><span>Credit initial: ${data.recipient_initial_credit}</span><br><span>Credit final: ${data.recipient_new_credit}</span><br>`;
+                                return `<strong>${data.sent_to.name}</strong><br><span>Réserve initial: ${data.recipient_initial_credit}</span><br><span>Réserve final: ${data.recipient_new_credit}</span><br>`;
                             }
                     },
                     { data: 'sent_value', name: 'sent_value' },
@@ -55,17 +55,6 @@
                 order: [[ 4, 'desc' ]],
                 pageLength: 100,
             });
-
-            //Autocompletion to check the user to transfer credit
-            var path = "{{ route('get-users-list') }}";
-            /* $('input#send_to').typeahead({
-                source:  function (query, process) {
-                    return $.get(path, { query: query }, function (data) {
-                        //console.log(data[0].name);
-                        return process(data);
-                    });
-                }
-            }); */
         });
     </script>
 

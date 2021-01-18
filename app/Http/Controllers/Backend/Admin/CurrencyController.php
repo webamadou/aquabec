@@ -17,7 +17,7 @@ class CurrencyController extends Controller
     
     public function __construct(FormBuilder $formBuilder)
     {
-        $this->middleware(['auth','verified','role:super-admin|banker'],['except' => ['creditsTransfer']]);
+        $this->middleware(['auth','verified','role:super-admin|banker|Banquier'],['except' => ['creditsTransfer']]);
         $this->formBuilder = $formBuilder;
     }
 

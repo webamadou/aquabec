@@ -38,7 +38,7 @@ class PermissionSeeder extends Seeder
             ['name'=>'Accepter des annonces', 'permission_group' => 'announcement'],
             ['name'=>'Supprimer des annonces', 'permission_group' => 'announcement'],
             ['name'=>'Éditer des annonces', 'permission_group' => 'announcement'],
-            ['name'=>'Banker', 'permission_group' => 'banker'],
+            ['name'=>'Banquier', 'permission_group' => 'banquier'],
         ];
         foreach ($permissions as $key => $permission) {
             Permission::updateOrCreate($permission);

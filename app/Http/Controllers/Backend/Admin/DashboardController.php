@@ -21,7 +21,8 @@ class DashboardController extends Controller
     	$users = User::all();
     	$organisations = User::all();
     	$events = Event::all();
-    	$announcements = Announcement::all();
-        return view('admin.dashboard', compact("users","organisations","events","announcements"));
+        $announcements = Announcement::all();
+        $current_user = auth()->user();
+        return view('admin.dashboard', compact("users","organisations","events","announcements","current_user"));
     }
 }
