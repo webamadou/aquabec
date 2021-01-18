@@ -10,13 +10,14 @@
                     <h2 class="card-title font-weight-bold">-</h2>
                 </div>
                 <div class="card-body">
-                    <table class="table table-bordered" id="credits-table">
-                        <thead>
+                    <table class="table table-bordered table-responsive" id="credits-table">
+                        <thead class="table-light">
                         <tr>
                             <th>Monnaie</th>
                             <th>Envoyé par</th>
                             <th>Destinataire</th>
                             <th>Somme envoyé</th>
+                            <th>Notes</th>
                             <th>Dernière modification</th>
                         </tr>
                         </thead>
@@ -53,6 +54,11 @@
                             }
                     },
                     { data: 'sent_value', name: 'sent_value' },
+                    { data: null, name: 'notes',
+                        render: data => {
+                                return data.notes?`<div class='log-notes'>${data.notes}</div>`:'';
+                        }
+                    },
                     { data: 'updated_at', name: 'updated_at' }
                 ],
                 order: [[ 4, 'desc' ]],

@@ -217,7 +217,8 @@ class CurrencyController extends Controller
             "send_to" => "required | integer",
             "credit_type" => "required | integer",
             "currency_id" => "required",
-            "sent_value" => "required | integer"
+            "sent_value" => "required | integer",
+            "notes" => "nullable"
         ]);
         $currency = new Currency();
         $sender = $currency->getUserCurrency($data['send_by'],$data['currency_id']);
@@ -253,6 +254,7 @@ class CurrencyController extends Controller
             'sent_value' => $data['sent_value'],
             'sender_new_credit' => $send_initial_amount - intval($data['sent_value']),
             'recipient_new_credit' => $recipient_initial_amount + intval($data['sent_value']),
+            'notes' => $data['notes'],
             'transfer_status' => 1
         ];
         //Then we save in the log

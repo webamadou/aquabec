@@ -43,7 +43,7 @@
                                 </select>
                                 {!! $errors->first('send_to', '<div class="error-message col-12">:message</div>') !!}
                             </div>
-                            @role('banker|super-admin') 
+                            @role('banker|Banquier|super-admin') 
                                 <div class="col-12 row">
                                     <div class="col-6 row">
                                         <label class="label">
@@ -75,7 +75,12 @@
                                 </select>
                                 {!! $errors->first('sent_value', '<div class="error-message col-12">:message</div>') !!}
                             </div>
-
+                            <div class="col-12 form-group">
+                                <label for="notes" class="col-sm-12">Ajouter une note (facultatif)</label>
+                                <textarea name="notes" id="notes" cols="30" rows="5" placeholder="Ajouter une note" class="form-control">{{old("notes")}}</textarea>
+                                </select>
+                                {!! $errors->first('notes', '<div class="error-message col-12">:message</div>') !!}
+                            </div>
                             <div class="col justify-content-end row justify-content-end m-2">
                                 <button type="submit" name="save" class="btn btn-sm btn-block btn-primary">
                                 <i class="fa fa-save"></i> Transférer
