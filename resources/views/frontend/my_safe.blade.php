@@ -27,6 +27,7 @@
                         <div class="facts-img wow zoomIn" data-wow-duration="1s" style="visibility: visible; animation-duration: 1s; animation-name: zoomIn;">
                             <h2 class="info-box-icon"><i class="{{$currency->icons}}"></i></h2>
                             <h2 class="text-danger">{{$currency->name}}</h2>
+                            <p>{{$currency->description}}</p>
                         </div>
                         <!-- End Fatcs image -->
                         <div class="facts-content wow fadeInUp" data-wow-duration="1s" style="visibility: visible; animation-duration: 1s; animation-name: fadeInUp;">

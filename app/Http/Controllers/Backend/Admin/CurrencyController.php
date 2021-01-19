@@ -85,6 +85,7 @@ class CurrencyController extends Controller
         $data = $request->validate([
             "name"    => "required | unique:currencies",
             "icons"   => "required",
+            "description" => "nullable"
         ]);
         $data['ref'] = Str::random(20);
         $data['created_by'] = auth()->user()->id;
@@ -123,6 +124,7 @@ class CurrencyController extends Controller
         $data = $request->validate([
             "name"    => "required | unique:currencies,name,".$currency->id,
             "icons"   => "required",
+            "description" => "nullable"
         ]);
         $data['ref'] = Str::random(20);
         $data['created_by'] = auth()->user()->id;
@@ -188,7 +190,8 @@ class CurrencyController extends Controller
         $currencies = $user->currencies()
                            ->where('status','<=',1)
                            ->get();
-        return view("admin.currencies.accounts", compact('currencies', 'user'));
+
+        return view("admin.currencies.accounts", compact('currencies'));
     }
 
     /**

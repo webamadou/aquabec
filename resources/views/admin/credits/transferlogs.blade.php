@@ -45,12 +45,12 @@
                     }},
                     { data: null, name: 'sent_by',
                         render: data => {
-                                return `<strong>${data.sent_by?data.sent_by.name:"Utilisateur supprimé"}</strong><br><span>Réserve initial: ${data.sender_initial_credit}</span><br><span>Réserve final: ${data.sender_new_credit}</span><br>`;
+                                return `<strong>${data.sent_by?data.sent_by.name:"Utilisateur supprimé"}</strong><br><span class="tiny-text">Réserve initial: ${data.sender_initial_credit}</span><br><span class="tiny-text">Réserve final: ${data.sender_new_credit}</span><br>`;
                             }
                     },
                     { data: null, name: 'sent_to',
                         render: data => { 
-                                return `<strong>${data.sent_to?data.sent_to.name:"Utilisateur supprimé"}</strong><br><span>Réserve initial: ${data.recipient_initial_credit}</span><br><span>Réserve final: ${data.recipient_new_credit}</span><br>`;
+                                return `<strong>${data.sent_to?data.sent_to.name:"Utilisateur supprimé"}</strong><br><span class="tiny-text">Réserve initial: ${data.recipient_initial_credit}</span><br><span class="tiny-text">Réserve final: ${data.recipient_new_credit}</span><br>`;
                             }
                     },
                     { data: 'sent_value', name: 'sent_value' },

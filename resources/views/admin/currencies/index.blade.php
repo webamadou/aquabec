@@ -33,6 +33,10 @@
                             <input class="form-control" name="icons" type="hidden" id="icons" value="{{@$currency->icons}}">
                             <div id="icons-picker"></div>
                         </div>
+                        <div class="form-group" data-children-count="1">
+                            <label for="description" class="control-label">Description</label>
+                            <textarea class="form-control" name="description" id="description" cols="30" rows="5" placeholder="Ajoutez une description à cette monnaie">{{old('description')}}</textarea>
+                        </div>
                         <button class="btn bg-primary float-right" type="submit"><i class="fa fa-save mr-2"></i>Enregistrer</button>
                     </form>
                     <!-- {!! form($form) !!} -->
@@ -56,8 +60,8 @@
                     <table class="table table-bordered" id="roles-table">
                         <thead>
                         <tr>
-                            <th>Icon</th>
-                            <th>Nom</th>
+                            <th>Monnaie</th>
+                            <th>Description</th>
                             <th>Dernière modification</th>
                             <th>Actions</th>
                         </tr>
@@ -83,13 +87,16 @@
                 columns: [
                     /* { data: 'icons', name: 'icons' }, */
                     { data: null, name: 'icons',
-                        render: data => { return `<i class="${data.icons} fa-lg text-primary"></i>`; }
+                        render: data => { return `<i class="${data.icons} fa-lg text-primary"></i> <strong>${data.name}</strong>`; }
                     },
-                    { data: 'name', name: 'name' },
-                    { data: 'updated_at', name: 'updated_at' },
+                    { data: 'description', name: 'description' },
+                    { data: null, name: 'updated_at',
+                        render: data => { return `<span class="tiny-text">${data.updated_at}</span>`; }
+                    },
+                    /* { data: 'updated_at', name: 'updated_at' }, */
                     { data: 'action', name: 'action', orderable: false, searchable: false }
                 ],
-                order: [[ 1, 'asc' ]],
+                order: [[ 0, 'asc' ]],
                 pageLength: 100,
                 responsive: true,
                 "oLanguage":{

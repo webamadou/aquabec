@@ -989,3 +989,10 @@ html.os-html,html.os-html>.os-host{display:block;overflow:hidden;box-sizing:bord
   max-width: 150px;
   overflow-y: auto;
 }
+.tiny-text {
+  font-size: small;
+  font-weight: lighter;
+  line-height: 1 !important;
+  margin: 0;
+  padding: 0;
+}
