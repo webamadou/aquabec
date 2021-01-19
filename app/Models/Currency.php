@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
 use App\Models\User;
+use App\Models\CreditsTransfersLog;
 
 class Currency extends Model
 {
@@ -23,6 +24,14 @@ class Currency extends Model
         return $this->belongsToMany(User::class)->withPivot('free_currency','paid_currency')->withTimestamps();
     }
 
+    /**
+     * 
+     * Setting up the relationship between CreditsTransfersLog and currency. A many to many relationship
+     */
+    public function transferslog()
+    {
+        return $this->hasMany(CreditsTransfersLog::class,'credit_id','id');
+    }
     /**
      * Format created date value to custom
      *

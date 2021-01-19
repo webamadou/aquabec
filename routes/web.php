@@ -88,8 +88,11 @@ Route::middleware(['auth','verified'])->group(function (){
         // Dashboard Routes...
         Route::get('dashboard', [AdminDashboard::class, 'index'])->name('dashboard');
         //Logs des transferts de credit
-        Route::get('credits-logs',[App\Http\Controllers\TransferCreditsController::class, 'creditLogs'])->name("credits.logs");
-        Route::get('get-credits-logs', [App\Http\Controllers\TransferCreditsController::class, 'creditLogsData'])->name('credit.logs');
+        Route::get('/credits-logs',[App\Http\Controllers\TransferCreditsController::class, 'currencyLogs'])->name("credits.logs");
+        Route::get('/currency-logs/{id}',[App\Http\Controllers\TransferCreditsController::class, 'singleCurrencyLogs'])->name("currency.logs");
+
+        Route::get('/get-credits-logs', [App\Http\Controllers\TransferCreditsController::class, 'currencyLogsData'])->name('credit.logs');
+        Route::get('/get-currency-logs/{id}', [App\Http\Controllers\TransferCreditsController::class, 'singleCurrencyLogsData'])->name('credit.logs');
 
         // Settings Routes...
         Route::name('settings.')->prefix('settings')->group(function () {

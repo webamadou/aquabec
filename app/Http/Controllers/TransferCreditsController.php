@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\Credit;
+use App\Models\Currency;
 use \App\Models\CreditsTransfersLog;
 
 class TransferCreditsController extends Controller
@@ -82,9 +82,8 @@ class TransferCreditsController extends Controller
         return redirect()->back()->with("success", "Crédit transéré avec succès!");
     }
 
-    public function creditLogs()
+    public function currencyLogs()
     {
-        //$logs   = CreditsTransfersLog::all();
         return view('admin.credits.transferlogs');
     }
 
@@ -93,10 +92,40 @@ class TransferCreditsController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function creditLogsData()
+    public function currencyLogsData()
     {
         $logs = CreditsTransfersLog::with('sentBy','sentTo','credit')
                                     ->orderBy("created_at","desc")
+                                    ->get();
+
+        return datatables()
+            ->collection($logs)
+            ->addColumn('action',function ($logs) {
+                $edit_route = route('banker.credits.edit',$logs);
+                $delete_route = route('banker.credits.destroy',$logs);
+                return view('layouts.back.datatables.actions-btn',compact('edit_route','delete_route'));
+            })
+            /* ->rawColumns(['action']) */
+            ->make(true);
+    }
+
+    public function singleCurrencyLogs($id)
+    {
+        $currency   = Currency::find($id);
+        return view('admin.currencies.singleCurrencyTransferlogs',compact('currency'));
+    }
+
+    public function singleCurrencyLogsData($id)
+    {
+
+        $currency = Currency::with('transferslog')
+                        ->where('id',$id)
+                        ->orderBy("created_at","desc")
+                        ->first();
+        $logs = $currency->transferslog->all();
+        $logs = CreditsTransfersLog::with('sentBy','sentTo','credit')
+                                    ->orderBy("created_at","desc")
+                                    ->where('credit_id', $id)
                                     ->get();
 
         return datatables()

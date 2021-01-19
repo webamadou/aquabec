@@ -1,19 +1,28 @@
 @extends('layouts.back.admin')
 
-@section('title','Historique des transferts de credit')
+@section('title','Historique des transferts de la monnaie '.$currency->name)
 
+@inject('credit', 'App\Models\Credit')
 @section('content')
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-md-12 col-sm-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-primary"><i class="{{$currency->icons}}"></i></span>
+                <div class="info-box-content">
+                    <h3>{{$currency->name}}</h3>
+                    <div class="tiny-text mb-3"> {{$currency->description}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12">
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title font-weight-bold">-</h2>
                 </div>
                 <div class="card-body">
-                    <table class="table table-bordered table-responsive" id="credits-table">
+                    <table class="table table-bordered" id="credits-table">
                         <thead class="table-light">
                         <tr>
-                            <th>Monnaie</th>
                             <th>Envoyé par</th>
                             <th>Destinataire</th>
                             <th>Somme envoyé</th>
@@ -37,12 +46,8 @@
             $('#credits-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ url('admin/get-credits-logs') }}',
+                ajax: '{{ url("admin/get-currency-logs/".$currency->id) }}',
                 columns: [
-                    {data: null, name: 'ref',
-                        render: data => {
-                                return data.credit.status<=1?`<strong><a href="{{url('/admin/currency-logs/')}}/${data.credit.id}">${data.credit.name}</a></strong>`:"Monnaie introuvable";
-                    }},
                     { data: null, name: 'sent_by',
                         render: data => {
                                 return `<strong>${data.sent_by?data.sent_by.name:"Utilisateur supprimé"}</strong><br><span>Réserve initial: ${data.sender_initial_credit}</span><br><span>Réserve final: ${data.sender_new_credit}</span><br>`;
