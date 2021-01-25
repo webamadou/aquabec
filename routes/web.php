@@ -140,6 +140,9 @@ Route::middleware(['auth','verified'])->group(function (){
         Route::resource('events', EventController::class);
         Route::get('get-city-by-region/{region_id}', [EventController::class, 'getCityByRegion']);
         Route::get('get-events-data', [EventController::class, 'getEventsData']);
+        Route::get('/membres/{default_tab?}', [UserDashboard::class, 'infosPerso'])->name('infosperso');
+        Route::post("/update/members/infosperso", [UserController::class, 'updateInfosPerso'])->name("updateInfosPerso");
+        Route::get("select_cities/",[UserDashboard::class, "selectCities"])->name("select_cities");
     });
     /**
      * User's subscription

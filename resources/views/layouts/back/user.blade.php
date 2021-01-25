@@ -18,51 +18,21 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <!-- App script -->
     <script src="{{ asset('js/all.js') }}"></script>
+    <script src="{{ asset('js/scripts.js') }}" defer></script>
 
+    <!-- <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> -->
     <!-- DataTables -->
-    <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+    <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js" defer></script>
 
     @stack('scripts')
 
     <!-- Theme style -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <link rel="stylesheet" href="{{ asset('css/all.css') }}">
-
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-    <script>
-        $(function () {
-            $('.textarea').summernote({
-                height: 250,
-                lang: 'fr',
-                toolbar: [
-                    ['style', ['style']],
-                    ['font', ['bold', 'underline', 'clear']],
-                    ['fontsize', ['fontsize']],
-                    ['color', ['color']],
-                    ['para', ['ul', 'ol', 'paragraph','style']],
-                    ['table', ['table']],
-                    ['insert', ['link','hr']],
-                    ['view', ['fullscreen', 'codeview', 'undo', 'redo', 'help']]
-                ]
-            });
-
-            $('.select2bs4').select2({
-                theme: 'bootstrap4'
-            });
-
-            //Date range picker with time picker
-            $('#reservationtime').daterangepicker({
-                timePicker: true,
-                timePickerIncrement: 30,
-                locale: {
-                    format: 'DD/MM/YYYY hh:mm A'
-                }
-            });
-        });
-
-        $(document).ready(function () {
-            bsCustomFileInput.init();
-        });
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ asset('css/all.css') }}">
+    <script defer>
+       
 
     </script>
 </head>
@@ -95,28 +65,31 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <li class="nav-item dropdown">
                         <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Mon Compte</a>
                         <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
-                            <li><a href="#" class="dropdown-item">Informations personnelles </a></li>
+                            <li><a href="{{route('user.infosperso')}}" class="dropdown-item">Informations personnelles </a></li>
                             <li><a href="#" class="dropdown-item">Mon équipe</a></li>
                             <li class="dropdown-divider"></li>
                             <li><a href="#" class="dropdown-item">Mon Abonnements</a></li>
-                            <li><a href="#" class="dropdown-item">Mon Portefeuille</a></li>
+                            <li><a href="#" class="dropdown-item">Mes Monnaies</a></li>
                         </ul>
                     </li>
+                    @hasanyrole('super-admin')
+                        <li class="nav-item dropdown">
+                            <a href="{{route('admin.dashboard')}}" class="btn btn-primary"><i class="fa fa-user-shield"></i> Tableau de bord</a>
+                        </li>
+                    @endrole
                 </ul>
             </div>
 
             <!-- Right navbar links -->
-            <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
-                <!-- Notifications Dropdown Menu -->
+            <!-- <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
+                <!-- Notifications Dropdown Menu ->
                 <li class="nav-item dropdown">
                     <a class="nav-link" data-toggle="dropdown" href="#">
                         <i class="far fa-bell"></i>
-                        @if($notifications->count() > 0)
-                            <span class="badge badge-primary navbar-badge">{{ $notifications->count() }}</span>
-                        @endif
+                        <span class="badge badge-primary navbar-badge">0</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        <span class="dropdown-header">{{ $notifications->count() > 0 ? $notifications->count() : 0 }} Notification(s)</span>
+                        <span class="dropdown-header">0 Notification(s)</span>
                         <div class="dropdown-divider"></div>
                         <a href="#" class="dropdown-item">
                             <i class="fas fa-envelope mr-2"></i> 4 new messages
@@ -149,7 +122,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         @csrf
                     </form>
                 </li>
-            </ul>
+            </ul> -->
         </div>
     </nav>
     <!-- /.navbar -->
@@ -179,6 +152,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 </div>
 <!-- ./wrapper -->
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
 @include('layouts.back.alerts.sweetalerts')
 </body>
 </html>

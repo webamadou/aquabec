@@ -996,3 +996,10 @@ html.os-html,html.os-html>.os-host{display:block;overflow:hidden;box-sizing:bord
   margin: 0;
   padding: 0;
 }
+.fancy-form-fields .form-control {
+  border: none;
+  border-bottom: 2px solid #f0f0f1;
+  background: transparent;
+  padding: 15px 0 0 15px;
+  border-radius: 0;
+}

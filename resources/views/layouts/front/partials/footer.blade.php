@@ -72,7 +72,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <span>Copyright &copy; 2018, All Right Reserved{{ config('app.name') }}</span>
+                    <span>Copyright &copy; 2021, All Right Reserved L'agenda du Quebec</span>
                 </div>
                 <!-- End Col -->
                 <div class="col-md-6">

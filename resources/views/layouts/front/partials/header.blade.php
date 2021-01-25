@@ -161,10 +161,10 @@
                               -
                             @endrole
                             <hr>
-                            <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Profil</a>
-                            <a class="dropdown-item link-success" href="{{route('my_safe')}}" title="Voir mon compte"><i class="fas fa-piggy-bank" aria-hidden="true"></i> Mon portefeuille</a>
+                            <a class="dropdown-item" href="{{route('user.infosperso')}}/infos-perso"><i class="fa fa-user"></i> Infos personelles</a>
+                            <!-- <a class="dropdown-item link-success" href="{{route('my_safe')}}" title="Voir mon compte"><i class="fas fa-piggy-bank" aria-hidden="true"></i> Mon portefeuille</a> -->
                             <!-- <a class="dropdown-item link-primary" href="#" title="Crédits payant"><i class="fa fa-heart" aria-hidden="true"></i> {{ $credit->formatCredit( Auth::user()->paid_credits ) }} </a> -->
-                            <a class="dropdown-item" href="{{route('logout')}}"><i class="fa fa-power-off"></i> Logout</a>
+                            <a class="dropdown-item" href="{{route('logout')}}"><i class="fa fa-power-off"></i> Se déconnecter</a>
                         </div>
                       </div>
                     @else

@@ -14,6 +14,10 @@ class Region extends Model
         'region_number','name','slug'
     ];
 
+    public function cities(){
+        return $this->hasMany(City::class);
+    }
+
     /**
      * Format created date value to custom
      *

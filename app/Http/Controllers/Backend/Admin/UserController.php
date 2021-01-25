@@ -16,7 +16,7 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth','verified','role:super-admin|admin']);
+        $this->middleware(['auth','verified','role:super-admin|admin'],['except' => 'updateInfosPerso']);
     }
 
     public function usersData()
@@ -59,5 +59,28 @@ class UserController extends Controller
                 ->get();
     
         return response()->json($res);
+    }
+
+    public function updateInfosPerso(Request $request)
+    {
+        $data = $request->validate([
+            "name"          => "required",
+            "prenom"        => "nullable",
+            "region_id"     => "nullable",
+            "postal_code"   => "nullable",
+            "gender"        => "nullable",
+            "num_civique"   => "nullable",
+            "age_group"     => "nullable",
+            "mobile_phone"  => "nullable",
+            "num_tel"       => "nullable",
+        ]);
+        $user = User::find($request->input('id'));
+        if(isset($data['gender']))
+            $data['gender'] = intval($data['gender']);
+        if($user->update($data)){
+            return redirect()->back()->with("success","Vos informations ont été mise à jour");
+        }
+
+        return redirect()->back()->with("error","Une erreur s'est produite!");
     }
 }

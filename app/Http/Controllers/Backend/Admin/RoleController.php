@@ -188,8 +188,6 @@ class RoleController extends Controller
      */
     public function update(Request $request,Role $role)
     {
-        //$form = $this->getForm();
-
         $data = $request->validate([
             "name" => 'required',
             "events_price" => 'required',
