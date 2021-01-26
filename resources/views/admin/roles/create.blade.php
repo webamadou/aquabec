@@ -1,6 +1,6 @@
 @extends('layouts.back.admin')
 
-@section('title','Creation de fonctions')
+@section('title',"Creation d'une fonctions")
 
 @section('content')
     <form method="POST" action="{{route('admin.settings.security.roles.index')}}" accept-charset="UTF-8">
@@ -42,7 +42,7 @@
                       <div class="col-6 form-group row">
                         <label for="Prix par événement" class="col-sm-12 col-md-6">Prix Par événement</label>
                         <div class="input-group mb-3 col-sm-12 col-md-6">
-                        <input class="form-control" min="10" name="events_price" type="number" value="{{old('events_price') ?: 500}}">
+                        <input class="form-control" name="events_price" type="number" value="{{old('events_price') ?: 500}}">
                             <div class="input-group-append">
                               <span class="input-group-text" id="basic-addon1">Crédits</span>
                             </div>
@@ -62,26 +62,40 @@
                       <div class="col-12 form-group row">
                         <label for="Prix par annonce" class="col-sm-12 col-md-3">Prix Par Annonce</label>
                         <div class="input-group mb-3 col-sm-12 col-md-9">
-                          <input class="form-control" min="10" name="annoucements_price" type="number" value="{{old('annoucements_price') ?: 100}}">
+                          <input class="form-control" name="annoucements_price" type="number" value="{{old('annoucements_price') ?: 100}}">
                           <div class="input-group-append">
                             <span class="input-group-text" id="basic-addon3">Crédits</span>
                           </div>
                         </div>
                         {!! $errors->first('annoucements_price', '<div class="error-message col-12">:message</div>') !!}
                       </div>
-                      <div class="col-md-6 col-sm-12">
-                          <label for="free_credit" class="col-md-12">Crédit gratuit par défaut</label>
-                          <div class="input-group mb-3 col-md-12 col-sm-6">
-                              <input class="form-control" min="0" name="free_credit" type="number" value="{{old('free_credit')}}">
-                          </div>
-                          {!! $errors->first('free_credit', '<div class="error-message col-12">:message</div>') !!}
-                      </div>
-                      <div class="col-md-6 col-sm-12">
-                          <label for="paid_credit" class="col-md-12">Crédit payant par défaut</label>
-                          <div class="input-group mb-3 col-md-12 col-sm-6">
-                              <input class="form-control" min="0" name="paid_credit" type="number" value="{{old('paid_credit')}}">
-                          </div>
-                          {!! $errors->first('paid_credit', '<div class="error-message col-12">:message</div>') !!}
+                      <div class="col-12 row bg-gradient-light">
+                        <div class="col-md-6 col-sm-12">
+                            <label for="free_credit" class="col-md-12">Monnaie de la fonction</label>
+                            <div class="input-group mb-3 col-md-12 col-sm-6">
+                              <select name="currency_id" id="currency_id" class="form-control">
+                                <option value="">Sélectionnez la monnaie pour cette fonction.</option>
+                                @foreach($currencies as $key => $currency)
+                                  <option value="{{$key}}">{{$currency}}</option>
+                                @endforeach
+                              </select>
+                            </div>
+                            {!! $errors->first('free_credit', '<div class="error-message col-12">:message</div>') !!}
+                        </div>
+                        <div class="col-md-3 col-sm-12">
+                            <label for="paid_credit" class="col-md-12"> Montant gratuit </label>
+                            <div class="input-group mb-3 col-md-12 col-sm-6">
+                                <input class="form-control" min="0" name="free_credit" type="number" value="{{old('free_credit')}}">
+                            </div>
+                            {!! $errors->first('paid_credit', '<div class="error-message col-12">:message</div>') !!}
+                        </div>
+                        <div class="col-md-3 col-sm-12">
+                            <label for="paid_credit" class="col-md-12"> Montant payant </label>
+                            <div class="input-group mb-3 col-md-12 col-sm-6">
+                                <input class="form-control" min="0" name="paid_credit" type="number" value="{{old('paid_credit')}}">
+                            </div>
+                            {!! $errors->first('paid_credit', '<div class="error-message col-12">:message</div>') !!}
+                        </div>
                       </div>
                   </div>
               </div>

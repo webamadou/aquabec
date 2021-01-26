@@ -36,9 +36,9 @@ class UserSeeder extends Seeder
             'email_verified_at' => Carbon::now(),
         'password' => Hash::make('passer')
         ];
-        $client = [
-            'name' => 'Client',
-            'email' => 'client@lagenda.quebec',
+        $membre = [
+            'name' => 'membre',
+            'email' => 'membre@lagenda.quebec',
             'email_verified_at' => Carbon::now(),
         'password' => Hash::make('passer')
         ];
@@ -47,7 +47,6 @@ class UserSeeder extends Seeder
         $superAdmin = User::updateOrCreate($superAdminData);
         $role       = Role::updateOrCreate(['name' => 'super-admin']);
 
-        //$role->givePermissionTo($permission);
         $superAdmin->assignRole($role);
 
         $admin      = User::updateOrCreate($adminData);
@@ -59,9 +58,8 @@ class UserSeeder extends Seeder
         $banker->assignRole($role);
         $banker->givePermissionTo("Banquier");
 
-        $admin      = User::updateOrCreate($client);
-        $role       = Role::updateOrCreate(['name' => 'client']);
-        $admin->assignRole($role);
+        $membre     = User::updateOrCreate($membre);
+        $admin->assignRole('membre');
 
     }
 }

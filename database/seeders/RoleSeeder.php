@@ -17,7 +17,9 @@ class RoleSeeder extends Seeder
     {
         //Role::create(['name' => 'super_admin']);
         //Role::create(['name' => 'admin']);
-        Role::updateOrCreate(['name' => 'user']);
+        Role::updateOrCreate(['name' => 'membre']);
+        Role::updateOrCreate(['name' => 'chef vendeur']);
+        Role::updateOrCreate(['name' => 'vendeur']);
 
         $permission = Permission::updateOrCreate(['name' => 'all']);
     }

@@ -88,12 +88,12 @@
                     <span class="uk-form-icon">
                         <i class="fas fa-user-tag"></i>
                     </span>
-                    <select id="role" type="text" name="role" class="uk-input @error('role') is-invalid @enderror" placeholder="Choisissez un type de profil" value="{{ old('role') }}" required autocomplete="role">
+                    <input id="role" type="hidden" name="role" value="{{ old('role') }}" value="1"><!-- 
+                    <select id="role" name="role" class="uk-input @error('role') is-invalid @enderror" placeholder="Choisissez un type de profil" value="{{ old('role') }}" required autocomplete="role">
                         @foreach($roles as $role)
                             <option value="{{$role}}">{{$role}}</option>
                         @endforeach
-                    </select>
-                    <!-- <input id="email" type="text" name="role" class="uk-input @error('role') is-invalid @enderror" placeholder="Choisissez un type de profil" value="{{ old('role') }}" required autocomplete="email"> -->
+                    </select> -->
                 </div>
                 @error('email')
                     <span class="text-danger" role="alert">
