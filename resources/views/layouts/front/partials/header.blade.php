@@ -162,8 +162,8 @@
                             @endrole
                             <hr>
                             <a class="dropdown-item" href="{{route('user.infosperso')}}/infos-perso"><i class="fa fa-user"></i> Infos personelles</a>
-                            <a class="dropdown-item link-success" href="{{route('user.infosperso')}}/transactions" title="Lsite de mes transactions"><i class="fas fa-wallet" aria-hidden="true"></i> Mes Transactions</a>
-                            <!-- <a class="dropdown-item link-primary" href="#" title="Crédits payant"><i class="fa fa-heart" aria-hidden="true"></i> {{ $credit->formatCredit( Auth::user()->paid_credits ) }} </a> -->
+                            <a class="dropdown-item link-success" href="{{route('user.infosperso')}}/transactions" title="Lsite de mes transactions"><i class="fas fa-exchange-alt" aria-hidden="true"></i> Mes Transactions</a>
+                            <a class="dropdown-item link-primary" href="{{route('user.infosperso')}}/wallet" title="Mon Portefeuille"><i class="fa fa-wallet" aria-hidden="true"></i> Mon Portefeuille </a>
                             <a class="dropdown-item" href="{{route('logout')}}"><i class="fa fa-power-off"></i> Se déconnecter</a>
                         </div>
                       </div>

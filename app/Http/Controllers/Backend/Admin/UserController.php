@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Backend\Admin;
 
+use App\Rules\CheckOldPassword;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -16,7 +18,7 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth','verified','role:super-admin|admin'],['except' => 'updateInfosPerso']);
+        $this->middleware(['auth','verified','role:super-admin|admin'],['except' => ['updateInfosPerso','updatePWD']]);
     }
 
     public function usersData()
@@ -82,5 +84,19 @@ class UserController extends Controller
         }
 
         return redirect()->back()->with("error","Une erreur s'est produite!");
+    }
+
+    public function updatePWD(Request $request)
+    {
+        $request->validate([
+            'current_password' =>  ['required', new CheckOldPassword],
+            'new_password' => ['required', 'string', 'min:8'],
+            'new_confirm_password' => ['same:new_password']
+        ]);
+
+        $user = User::find(auth()->user()->id);
+        if($user->update(['password' => Hash::make($request->new_password)])){
+            return redirect()->back()->with("success", "Votre mot de passe a parfaitement été modifié!");
+        }
     }
 }

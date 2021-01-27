@@ -1,4 +1,4 @@
-@extends('layouts.back.user')
+@extends('layouts.front.app')
 
 @section('title','Informations personelles')
 
@@ -12,6 +12,7 @@
                 <a class="nav-link {{@$default_tab=='wallet'?'active':''}}" id="nav-wallet-tab" data-bs-toggle="tab" href="#nav-wallet" role="tab" aria-controls="nav-wallet" aria-selected="false"><i class="fa fa-bullhorn"></i> Mon portefeuille </a>
                 <a class="nav-link {{@$default_tab=='transactions'?'active':''}}" id="nav-transactions-tab" data-bs-toggle="tab" href="#nav-transactions" role="tab" aria-controls="nav-transactions" aria-selected="false"><i class="fa fa-list"></i> Mes Transactions</a>
                 <a class="nav-link {{@$default_tab=='infos-perso'?'active':''}}" id="nav-infos-perso-tab" data-bs-toggle="tab" href="#nav-infos-perso" role="tab" aria-controls="nav-infos-perso" aria-selected="false"><i class="fa fa-user"></i> Informations Personelles</a>
+                <a class="nav-link {{@$default_tab=='security'?'active':''}}" id="nav-security-tab" data-bs-toggle="tab" href="#nav-security" role="tab" aria-controls="nav-security" aria-selected="false"><i class="fa fa-user-lock"></i> Sécurité </a>
             </div>
         </nav>
         <div class="col-12 tab-content" id="nav-tabContent">
@@ -25,7 +26,6 @@
             </div>
             <div class="tab-pane fade {{@$default_tab=='wallet'?'show active':''}}" id="nav-wallet" role="tabpanel" aria-labelledby="nav-wallet-tab">
                 <div class="bg-white">
-                    <h3>Mon portefeuille</h3>
                     @include('user.profile.includes.my_wallet')
                 </div>
             </div>
@@ -38,6 +38,12 @@
                     <div class="text-center text-bold mb-4">*Requis pour postulant uniquement*</div>
                     <hr size="1" width="50%" class="mx-auto">
                     @include('user.profile.includes.infosperso_form')
+                </div>
+            </div>
+            <div class="tab-pane fade {{@$default_tab=='security'?'show active':''}}" id="nav-security" role="tabpanel" aria-labelledby="nav-security-tab">
+                <div class="bg-white">
+                    <h2 class="text-center mb-1">Modifier mon mot de passe</h2>
+                    @include('user.profile.includes.change_pwd')
                 </div>
             </div>
         </div>

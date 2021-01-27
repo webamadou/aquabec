@@ -46,6 +46,9 @@ Auth::routes(['verify' => true]);
 /******************************/
 
 Route::get('/', [WelcomeController::class, 'welcomePage'])->name('welcome');
+Route::get('/home', [WelcomeController::class, 'welcomePage'])->name('welcome');
+Route::get('/index', [WelcomeController::class, 'welcomePage'])->name('welcome');
+Route::get('/accueil', [WelcomeController::class, 'welcomePage'])->name('welcome');
 Route::get('contact-us', [ContactController::class, 'contactPage'])->name('contact');
 Route::get('how-to-use', [ContactController::class, 'contactPage'])->name('how.to.use');
 Route::get('get-started', [ContactController::class, 'contactPage'])->name('get.started');
@@ -144,6 +147,7 @@ Route::middleware(['auth','verified'])->group(function (){
         Route::post("/update/members/infosperso", [UserController::class, 'updateInfosPerso'])->name("updateInfosPerso");
         Route::get("select_cities/",[UserDashboard::class, "selectCities"])->name("select_cities");
         Route::get("user_sent_transactions/",[UserDashboard::class, "userSentTransactions"])->name("userSentTransactions");
+        Route::post("/update_password", [UserController::class, "updatePWD"])->name('update_password');
     });
     /**
      * User's subscription
