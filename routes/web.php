@@ -13,7 +13,7 @@ use App\Http\Controllers\Backend\Admin\CreditPackController;
 use App\Http\Controllers\Backend\Admin\CreditsController;
 use App\Http\Controllers\Backend\Admin\CurrencyController;
 
-use App\Http\Controllers\Backend\User\DashboardController as UserDashboard;
+use App\Http\Controllers\Frontend\DashboardController as UserDashboard;
 use App\Http\Controllers\Backend\User\EventController;
 
 use App\Http\Controllers\Frontend\ContactController;
@@ -143,6 +143,7 @@ Route::middleware(['auth','verified'])->group(function (){
         Route::get('/membres/{default_tab?}', [UserDashboard::class, 'infosPerso'])->name('infosperso');
         Route::post("/update/members/infosperso", [UserController::class, 'updateInfosPerso'])->name("updateInfosPerso");
         Route::get("select_cities/",[UserDashboard::class, "selectCities"])->name("select_cities");
+        Route::get("user_sent_transactions/",[UserDashboard::class, "userSentTransactions"])->name("userSentTransactions");
     });
     /**
      * User's subscription

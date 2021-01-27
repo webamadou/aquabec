@@ -9,7 +9,8 @@
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
                 <a class="nav-link {{@$default_tab=='account'?'active':''}}" id="nav-account-tab" data-bs-toggle="tab" href="#nav-account" role="tab" aria-controls="nav-account" aria-selected="true"><i class="fa fa-cogs"></i> Mon Compte</a>
                 <a class="nav-link {{@$default_tab=='events'?'active':''}}" id="nav-events-tab" data-bs-toggle="tab" href="#nav-events" role="tab" aria-controls="nav-events" aria-selected="false"><i class="fa fa-list"></i> Mes Événements</a>
-                <a class="nav-link {{@$default_tab=='announcement'?'active':''}}" id="nav-announcement-tab" data-bs-toggle="tab" href="#nav-announcement" role="tab" aria-controls="nav-announcement" aria-selected="false"><i class="fa fa-bullhorn"></i> Mes Annonces</a>
+                <a class="nav-link {{@$default_tab=='wallet'?'active':''}}" id="nav-wallet-tab" data-bs-toggle="tab" href="#nav-wallet" role="tab" aria-controls="nav-wallet" aria-selected="false"><i class="fa fa-bullhorn"></i> Mon portefeuille </a>
+                <a class="nav-link {{@$default_tab=='transactions'?'active':''}}" id="nav-transactions-tab" data-bs-toggle="tab" href="#nav-transactions" role="tab" aria-controls="nav-transactions" aria-selected="false"><i class="fa fa-list"></i> Mes Transactions</a>
                 <a class="nav-link {{@$default_tab=='infos-perso'?'active':''}}" id="nav-infos-perso-tab" data-bs-toggle="tab" href="#nav-infos-perso" role="tab" aria-controls="nav-infos-perso" aria-selected="false"><i class="fa fa-user"></i> Informations Personelles</a>
             </div>
         </nav>
@@ -22,14 +23,22 @@
             <div class="tab-pane fade {{@$default_tab=='events'?'show active':''}}" id="nav-events" role="tabpanel" aria-labelledby="nav-events-tab">
                 <h1>My events</h1>
             </div>
-            <div class="tab-pane fade {{@$default_tab=='announcement'?'show active':''}}" id="nav-announcement" role="tabpanel" aria-labelledby="nav-announcement-tab">
-                <h1>Mes annonces</h1>
+            <div class="tab-pane fade {{@$default_tab=='wallet'?'show active':''}}" id="nav-wallet" role="tabpanel" aria-labelledby="nav-wallet-tab">
+                <div class="bg-white">
+                    <h3>Mon portefeuille</h3>
+                    @include('user.profile.includes.my_wallet')
+                </div>
+            </div>
+            <div class="tab-pane fade {{@$default_tab=='transactions'?'show active':''}}" id="nav-transactions" role="tabpanel" aria-labelledby="nav-transactions-tab">
+               @include('user.profile.includes.my_transactions')
             </div>
             <div class="tab-pane fade {{@$default_tab=='infos-perso'?'show active':''}}" id="nav-infos-perso" role="tabpanel" aria-labelledby="nav-infos-perso-tab">
-                <h2 class="text-center mb-1">Informations Personelles</h2>
-                <div class="text-center text-bold mb-4">*Requis pour postulant uniquement*</div>
-                <hr size="1" width="50%">
-                @include('user.profile.includes.infosperso_form')
+                <div class="bg-white">
+                    <h2 class="text-center mb-1">Informations Personelles</h2>
+                    <div class="text-center text-bold mb-4">*Requis pour postulant uniquement*</div>
+                    <hr size="1" width="50%" class="mx-auto">
+                    @include('user.profile.includes.infosperso_form')
+                </div>
             </div>
         </div>
     </div>
@@ -39,10 +48,10 @@
 @push('scripts')
 
     <script defer>
-        
         $(function() {
-            const regions = document.getElementById("region_id");
 
+            //*** Select the cities of the selected region ***
+            const regions = document.getElementById("region_id");
             document.getElementById("region_id").addEventListener('change', function (event) {
                 const selected_region = this.value;
                 $.ajax({
