@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Support\Facades\DB;
 
 use App\Models\Currency;
-
 use App\Models\CreditsTransfersLog;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -70,7 +70,9 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getCreatedAtAttribute($value)
     {
         $created_at = Carbon::make($value);
-        return $created_at->toDateString().' à '.$created_at->toTimeString();
+        return Carbon::createFromFormat('Y-m-d H:i:s', $created_at)->diffForHumans();
+        /* return Carbon::createFromFormat('Y-m-d H:i:s', $created_at)->format('d-m-Y à H:i:s');
+        return $created_at->toDateString().' à '.$created_at->toTimeString(); */
     }
 
     /**
@@ -102,8 +104,15 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $currency = $this->getUserCurrency($currency_id);
         if($currency == null)
-        {
+        {//User has no ammount of picked currency
+            //dd('hello');
             $this->currencies()->attach([$currency_id => $pivot_field]);
+        } else {//we just update the values
+            $pivot_field['free_currency'] += $currency->pivot->free_currency;
+            $pivot_field['paid_currency'] += $currency->pivot->paid_currency;
+            //dd($pivot_field);
+            $this->currencies()->updateExistingPivot($currency_id,$pivot_field);
+            //$this->currencies()->attach([$currency_id => $pivot_field]);
         }
 
         return $this->getUserCurrency($currency_id);

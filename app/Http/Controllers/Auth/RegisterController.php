@@ -58,11 +58,11 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'last_name' => ['required', 'string', 'max:255'],
-            'first_name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'terms' => ['required'],
+            'name'      => ['required', 'string', 'max:255'],
+            'prenom'    => ['required', 'string', 'max:255'],
+            'email'     => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password'  => ['required', 'string', 'min:8', 'confirmed'],
+            'terms'     => ['required'],
         ]);
     }
     public function showRegistrationForm()
@@ -80,7 +80,7 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         return User::create([
-            'name' => $data['last_name'] . ' ' . $data['first_name'],
+            'name' => $data['name'] . ' ' . $data['prenom'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
@@ -112,7 +112,7 @@ class RegisterController extends Controller
         $role = $user->roles->first();
         $free_credit_amount = $role != null ? intval($role->free_credit) : 0;
         $paid_credit_amount = $role != null ? intval($role->paid_credit) : 0;
-        //dd($free_credit_amount,$paid_credit_amount);
+
         $pivot_field        = ['free_currency' => $free_credit_amount, 'paid_currency' => $paid_credit_amount ];
         $user->setUserCurrency(1 , $pivot_field);
 

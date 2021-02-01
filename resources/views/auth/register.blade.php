@@ -13,9 +13,9 @@
                     <span class="uk-form-icon">
                         <i class="icon-feather-user"></i>
                     </span>
-                    <input id="last-name" type="text" name="last_name" class="uk-input" value="{{ old('last_name') }}" required placeholder="Votre nom de famille">
+                    <input id="last-name" type="text" name="name" class="uk-input" value="{{ old('name') }}" required placeholder="Votre nom de famille">
                 </div>
-                @error('last_name')
+                @error('name')
                 <span class="text-danger" role="alert">
                     {{ $message }}
                 </span>
@@ -29,9 +29,9 @@
                     <span class="uk-form-icon">
                         <i class="icon-feather-user"></i>
                     </span>
-                    <input id="first-name" type="text" name="first_name" class="uk-input" value="{{ old('first_name') }}" required placeholder="Votre prénom">
+                    <input id="first-name" type="text" name="prenom" class="uk-input" value="{{ old('prenom') }}" required placeholder="Votre prénom">
                 </div>
-                @error('first_name')
+                @error('prenom')
                     <span class="text-danger" role="alert">
                         {{ $message }}
                     </span>
@@ -88,7 +88,7 @@
                     <span class="uk-form-icon">
                         <i class="fas fa-user-tag"></i>
                     </span>
-                    <input id="role" type="hidden" name="role" value="{{ old('role') }}" value="1"><!-- 
+                    <input id="role" type="hidden" name="role" value="{{ old('role',1) }}"><!-- 
                     <select id="role" name="role" class="uk-input @error('role') is-invalid @enderror" placeholder="Choisissez un type de profil" value="{{ old('role') }}" required autocomplete="role">
                         @foreach($roles as $role)
                             <option value="{{$role}}">{{$role}}</option>

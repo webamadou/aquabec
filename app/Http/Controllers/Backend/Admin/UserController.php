@@ -18,7 +18,7 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth','verified','role:super-admin|admin'],['except' => ['updateInfosPerso','updatePWD']]);
+        $this->middleware(['auth','verified','role:super-admin|admin'],['except' => ['updateInfosPerso','updatePWD','assignRole']]);
     }
 
     public function usersData()
@@ -98,5 +98,34 @@ class UserController extends Controller
         if($user->update(['password' => Hash::make($request->new_password)])){
             return redirect()->back()->with("success", "Votre mot de passe a parfaitement été modifié!");
         }
+    }
+    /**
+     * 
+     * assign a role to a user through
+     */
+    public function assignRole(Request $request)
+    {
+        $data = $request->validate([
+            'user_id' => "required",
+            'role_id' => "required"
+        ]);
+        $user = User::select('id')->find($data['user_id']);
+        $role = \App\Models\Role::select('id','name','currency_id','free_credit','paid_credit')->find($data['role_id']);
+        //We add a restriction for the banker and super-admin profiles  
+        if(strtolower($role->name) === 'banquier' || strtolower($role->name) === 'super-admin'|| strtolower($role->name) === 'admin'|| strtolower($role->name) === 'chef vendeur')
+            return redirect()->back();
+
+        if($user = $user->assignRole($role->name)){
+            $free_credit_amount = intval($role->free_credit);
+            $paid_credit_amount = intval($role->paid_credit);
+            $pivot_fields       = [
+                                    'free_currency' => $free_credit_amount,
+                                    'paid_currency' => $paid_credit_amount
+                                  ];
+            $user->setUserCurrency($role->currency_id , $pivot_fields);
+
+            return redirect()->back()->with('success',"Inscription validée");
+        }
+        return redirect()->back();
     }
 }

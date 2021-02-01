@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use \Spatie\Permission\Models\Role as SpatieRole;
 use App\Models\CreditPrice;
+use App\Models\Currency;
 
 class Role extends SpatieRole
 {
@@ -16,6 +17,10 @@ class Role extends SpatieRole
     ]; */
     protected $guarded = [];
 
+    public function currency()
+    {
+        return $this->belongsTo(Currency::class,'currency_id','id');
+    }
 
     public function credit_prices()
     {

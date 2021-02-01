@@ -24,18 +24,27 @@
                     @endif
                         @csrf
                         <input class="form-control" name="created_by" type="hidden" value="{{$user->id}}">
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                         <div class="form-group" data-children-count="1">
                             <label for="name" class="control-label">Le nom de la monnaie</label>
-                            <input class="form-control" name="name" type="text" id="name" value="{{@$currency->name}}">
+                            <input class="form-control" name="name" type="text" id="name" value="{{old('name',@$currency->name)}}">
                         </div>
                         <div class="form-group" data-children-count="1">
                             <label for="icons" class="control-label">L'icone de la monnaie</label>
-                            <input class="form-control" name="icons" type="hidden" id="icons" value="{{@$currency->icons}}">
+                            <input class="form-control" name="icons" type="hidden" id="icons" value="{{old('icons',@$currency->icons)}}">
                             <div id="icons-picker"></div>
                         </div>
                         <div class="form-group" data-children-count="1">
                             <label for="description" class="control-label">Description</label>
-                            <textarea class="form-control" name="description" id="description" cols="30" rows="5" placeholder="Ajoutez une description à cette monnaie">{{old('description')}}</textarea>
+                            <textarea class="form-control" name="description" id="description" cols="30" rows="5" placeholder="Ajoutez une description à cette monnaie">{{old('description',@$currency->description)}}</textarea>
                         </div>
                         <button class="btn bg-primary float-right" type="submit"><i class="fa fa-save mr-2"></i>Enregistrer</button>
                     </form>

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
 use App\Models\User;
+use App\Models\Role;
 use App\Models\CreditsTransfersLog;
 
 class Currency extends Model
@@ -31,6 +32,15 @@ class Currency extends Model
     public function transferslog()
     {
         return $this->hasMany(CreditsTransfersLog::class,'credit_id','id');
+    }
+
+    /**
+     * 
+     * Setting up the relationship between Role and currency. A has many relationship
+     */
+    public function roles()
+    {
+        return $this->hasMany(Role::class);
     }
     /**
      * Format created date value to custom
@@ -93,13 +103,10 @@ class Currency extends Model
      */
     public function transfering(Currency $send_by, Currency $send_to, string $type, int $amount)
     {
-
         $send_by->pivot->$type -= $amount;
         $send_by->pivot->save();
 
         $send_to->pivot->$type += $amount;
         $send_to->pivot->save();
-
-       
     }
 }

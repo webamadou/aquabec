@@ -129,6 +129,7 @@ class RoleController extends Controller
             "date_credit" => 'required',
             "annoucements_price" => 'required',
         ]);
+        $data['description'] = @$request->input("description");
         $data['free_events'] = @$request->input("free_events") || 0;
         $data['free_annoncements'] = @$request->input("free_annoncements") || 0;
         $data['currency_id'] = intval($request->input("currency_id"));
@@ -180,8 +181,9 @@ class RoleController extends Controller
         $events             = Event::all();
         $announcements      = Announcement::all();
         $permissions        = Permission::where("guard_name","web")->get();
+        $currencies         = Currency::where('status', '>=', 1)->pluck("name", "id");
 
-        return view('admin.roles.edit',compact('form','users','organisations','events','announcements','role','permissions','permission_array'));
+        return view('admin.roles.edit',compact('form','users','organisations','events','announcements','role','permissions','permission_array','currencies'));
     }
 
     /**
@@ -198,8 +200,10 @@ class RoleController extends Controller
             "date_credit" => 'required',
             "annoucements_price" => 'required',
         ]);
+        $data['description'] = @$request->input("description");
         $data['free_events'] = @$request->input("free_events") || 0;
         $data['free_annoncements'] = @$request->input("free_annoncements") || 0;
+        $data['currency_id'] = @$request->input("currency_id");
         $data['free_credit'] = intval($request->input("free_credit"));
         $data['paid_credit'] = intval($request->input("paid_credit"));
 

@@ -41341,3 +41341,13 @@ span.sent_to {
     color: #1b6517;
     padding: 1px 7px;
 }
+.accordion-button:not(.collapsed) {
+    background: #1a3d82 !important;
+    color: #fafafa !important;
+}
+.accordion-button:focus {
+    z-index: 3;
+    border-color: transparent;
+    outline: 0;
+    box-shadow: none;
+}

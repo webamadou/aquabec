@@ -43,9 +43,9 @@
                         <div class="col-6 form-group row">
                             <label for="events_price" class="col-sm-12 col-md-6">Prix Par événement</label>
                             <div class="input-group mb-3 col-sm-12 col-md-6">
-                                <input class="form-control" min="10" name="events_price" type="number" value="{{$role->events_price}}">
+                                <input class="form-control" name="events_price" type="number" value="{{$role->events_price}}">
                                 <div class="input-group-append">
-                                    <span class="input-group-text" id="basic-addon1">Crédits</span>
+                                    <span class="input-group-text" id="basic-addon1"><i class="fa fa-coins"></i> </span>
                                 </div>
                             </div>
                             {!! $errors->first('events_price', '<div class="error-message col-12">:message</div>') !!}
@@ -55,7 +55,7 @@
                             <div class="input-group mb-3 col-sm-12 col-md-6">
                                 <input class="form-control" min="1" name="date_credit" id="date_credit" type="number" value="{{$role->date_credit}}">
                                 <div class="input-group-append">
-                                    <span class="input-group-text" id="basic-addon2">Crédits</span>
+                                    <span class="input-group-text" id="basic-addon2"><i class="fa fa-coins"></i> </span>
                                 </div>
                             </div>
                             {!! $errors->first('date_credit', '<div class="error-message col-12">:message</div>') !!}
@@ -63,24 +63,36 @@
                         <div class="col-12 form-group row">
                             <label for="Prix par annonce" class="col-sm-12 col-md-3">Prix Par Annonce</label>
                             <div class="input-group mb-3 col-sm-12 col-md-9">
-                                <input class="form-control" min="10" name="annoucements_price" id="annoucements_price" type="number" value="{{$role->annoucements_price}}">
-                                <div class="input-group-append"> <span class="input-group-text" id="basic-addon3">Crédits</span> </div>
+                                <input class="form-control" min="0" name="annoucements_price" id="annoucements_price" type="number" value="{{$role->annoucements_price}}">
+                                <div class="input-group-append"> <span class="input-group-text" id="basic-addon3"><i class="fa fa-coins"></i> </span> </div>
                             </div>
                             {!! $errors->first('annoucements_price', '<div class="error-message col-12">:message</div>') !!}
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="col-12 row bg-gradient-light">
                             <div class="col-md-6 col-sm-12">
-                                <label for="free_credit" class="col-md-12">Crédit gratuit par défaut</label>
+                                <label for="free_credit" class="col-md-12">Monnaie de la fonction</label>
                                 <div class="input-group mb-3 col-md-12 col-sm-6">
-                                    <input class="form-control" min="0" name="free_credit" type="number" value="{{$role->free_credit}}">
+                                <select name="currency_id" id="currency_id" class="form-control">
+                                    <option value="">Sélectionnez la monnaie pour cette fonction.</option>
+                                    @foreach($currencies as $key => $currency)
+                                    <option value="{{$key}}" {{old('currency_id',$role->currency_id)==$key?"selected":""}}>{{$currency}}</option>
+                                    @endforeach
+                                </select>
                                 </div>
                                 {!! $errors->first('free_credit', '<div class="error-message col-12">:message</div>') !!}
                             </div>
-                            <div class="col-md-6 col-sm-12">
-                                <label for="paid_credit" class="col-md-12">Crédit payant par défaut</label>
+                            <div class="col-md-3 col-sm-12">
+                                <label for="paid_credit" class="col-md-12"> Montant gratuit </label>
                                 <div class="input-group mb-3 col-md-12 col-sm-6">
-                                    <input class="form-control" min="0" name="paid_credit" type="number" value="{{$role->paid_credit}}">
+                                    <input class="form-control" min="0" name="free_credit" type="number" value="{{old('free_credit',$role->free_credit)}}">
+                                </div>
+                                {!! $errors->first('paid_credit', '<div class="error-message col-12">:message</div>') !!}
+                            </div>
+                            <div class="col-md-3 col-sm-12">
+                                <label for="paid_credit" class="col-md-12"> Montant payant </label>
+                                <div class="input-group mb-3 col-md-12 col-sm-6">
+                                    <input class="form-control" min="0" name="paid_credit" type="number" value="{{old('paid_credit',$role->paid_credit)}}">
                                 </div>
                                 {!! $errors->first('paid_credit', '<div class="error-message col-12">:message</div>') !!}
                             </div>
@@ -88,37 +100,47 @@
                 </div>
             </div>
             <div class="col-sm-12 col-md-4"> <!-- column to add prices -->
-            <div class="card">
+                <div class="card" id="description-card">
+                    <div class="card-header bg-primary">
+                        <h2 class="card-title font-weight-bold">Description</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="">
+                            <textarea class="form-control" name="description" id="description" cols="30" rows="5" placeholder="ajouter une description de la fonction">{{old('description',$role->description)}}</textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
                     <div class="card-header bg-primary">
                         <h2 class="card-title font-weight-bold">Liste des prix</h2>
                     </div>
                     <div class="card-body">
                         <div class="row">
-                        <div class="col-6">
-                            <label for="Prix $" class="col-sm-12">Prix $</label>
-                        </div>
-                        <div class="col-xm-6">
-                            <label for="Credits" class="col-sm-12">Credits</label>
-                        </div>
-                        <div id="credit_price_wrapper">
-                        @foreach($role->credit_prices as $key => $price)
-                            @php ++$key @endphp
-                            <div class="justify-content-between row my-2 price-line" id="price_wrapper-{{$key}}" data-children-count="{{2}}" data-price_id="{{$price->id}}">
-                                <input type="hidden" name="credit_id-{{$key}}" value="{{$price->id}}" class="id_input">
-                                <input class="price_field form-control col-sm-5" name="price-{{$key}}" id="price-{{$key}}" type="number" value="{{$price->price}}">
-                                <input class="credit_amount_field form-control col-sm-5" name="credit_amount-{{$key}}" id="credit_amount-{{$key}}" type="number" value="{{$price->credit_amount}}">
-                                <button type="button" class="btn btn-danger delete-price" data-target="price_wrapper-{{$key}}" id="delete-price-{{$key}}" data-price_id="{{$price->id}}"><i class="fa fa-trash"></i></button>
+                            <div class="col-6">
+                                <label for="Prix $" class="col-sm-12">Prix $</label>
                             </div>
-                        @endforeach
-                        </div>
-                        <input class="price_deleted form-control col-sm-5" name="prices_deleted" type="hidden" value="">
-                        <input type="hidden" name="nbr_price_fields" id="nbr_price_fields" value="{{$role->credit_prices->count()}}" />
-                        <div class="col-12 my-5 justify-content-center row">
-                            <button type="button" name="add_credit_price" id="add_credit_price" class="btn btn-primary">Ajouter un prix</button>
-                        </div>
+                            <div class="col-xm-6">
+                                <label for="Credits" class="col-sm-12">Credits</label>
+                            </div>
+                            <div id="credit_price_wrapper">
+                                @foreach($role->credit_prices as $key => $price)
+                                    @php ++$key @endphp
+                                    <div class="justify-content-between row my-2 price-line" id="price_wrapper-{{$key}}" data-children-count="{{2}}" data-price_id="{{$price->id}}">
+                                        <input type="hidden" name="credit_id-{{$key}}" value="{{$price->id}}" class="id_input">
+                                        <input class="price_field form-control col-sm-5" name="price-{{$key}}" id="price-{{$key}}" type="number" value="{{$price->price}}">
+                                        <input class="credit_amount_field form-control col-sm-5" name="credit_amount-{{$key}}" id="credit_amount-{{$key}}" type="number" value="{{$price->credit_amount}}">
+                                        <button type="button" class="btn btn-danger delete-price" data-target="price_wrapper-{{$key}}" id="delete-price-{{$key}}" data-price_id="{{$price->id}}"><i class="fa fa-trash"></i></button>
+                                    </div>
+                                @endforeach
+                            </div>
+                            <input class="price_deleted form-control col-sm-5" name="prices_deleted" type="hidden" value="">
+                            <input type="hidden" name="nbr_price_fields" id="nbr_price_fields" value="{{$role->credit_prices->count()}}" />
+                            <div class="col-12 my-5 justify-content-center row">
+                                <button type="button" name="add_credit_price" id="add_credit_price" class="btn btn-primary">Ajouter un prix</button>
+                            </div>
                         </div>
                     </div>
-            </div>
+                </div>
             </div>
             <div class="col-sm-12">
                 <div class="card">

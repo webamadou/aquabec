@@ -148,6 +148,7 @@ Route::middleware(['auth','verified'])->group(function (){
         Route::get("select_cities/",[UserDashboard::class, "selectCities"])->name("select_cities");
         Route::get("user_sent_transactions/",[UserDashboard::class, "userSentTransactions"])->name("userSentTransactions");
         Route::post("/update_password", [UserController::class, "updatePWD"])->name('update_password');
+        Route::post("/assign_role", [UserController::class, "assignRole"])->name('assign_role');
     });
     /**
      * User's subscription

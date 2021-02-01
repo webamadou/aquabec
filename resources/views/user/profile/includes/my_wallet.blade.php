@@ -35,7 +35,4 @@
     </div>
 </div>
 <script defer>
-        $(function() {
-            $('#wallet-table').DataTable();
-        });
     </script>

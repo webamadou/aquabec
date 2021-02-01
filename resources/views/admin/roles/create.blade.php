@@ -44,7 +44,7 @@
                         <div class="input-group mb-3 col-sm-12 col-md-6">
                         <input class="form-control" name="events_price" type="number" value="{{old('events_price') ?: 500}}">
                             <div class="input-group-append">
-                              <span class="input-group-text" id="basic-addon1">Crédits</span>
+                              <span class="input-group-text" id="basic-addon1"><i class="fa fa-coins"></i> </span>
                             </div>
                         </div>
                         {!! $errors->first('events_price', '<div class="error-message col-12">:message</div>') !!}
@@ -54,7 +54,7 @@
                         <div class="input-group mb-3 col-sm-12 col-md-6">
                           <input class="form-control" min="1" name="date_credit" type="number" value="{{old('date_credit') ?: 1}}">
                           <div class="input-group-append">
-                            <span class="input-group-text" id="basic-addon2">Crédits</span>
+                            <span class="input-group-text" id="basic-addon2"><i class="fa fa-coins"></i> </span>
                           </div>
                         </div>
                         {!! $errors->first('date_credit', '<div class="error-message col-12">:message</div>') !!}
@@ -64,7 +64,7 @@
                         <div class="input-group mb-3 col-sm-12 col-md-9">
                           <input class="form-control" name="annoucements_price" type="number" value="{{old('annoucements_price') ?: 100}}">
                           <div class="input-group-append">
-                            <span class="input-group-text" id="basic-addon3">Crédits</span>
+                            <span class="input-group-text" id="basic-addon3"><i class="fa fa-coins"></i> </span>
                           </div>
                         </div>
                         {!! $errors->first('annoucements_price', '<div class="error-message col-12">:message</div>') !!}
@@ -101,6 +101,16 @@
               </div>
           </div>
           <div class="col-sm-12 col-md-4"> <!-- column to add prices -->
+            <div class="card" id="description-card">
+                <div class="card-header bg-primary">
+                    <h2 class="card-title font-weight-bold">Description</h2>
+                </div>
+                <div class="card-body">
+                    <div class="">
+                        <textarea class="form-control" name="description" id="description" cols="30" rows="5" placeholder="ajouter une description de la fonction">{{old('description')}}</textarea>
+                    </div>
+                </div>
+            </div>
             <div class="card">
                   <div class="card-header bg-primary">
                       <h2 class="card-title font-weight-bold">Liste des prix</h2>

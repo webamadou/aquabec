@@ -84,7 +84,7 @@ class CurrencyController extends Controller
     {
         $data = $request->validate([
             "name"    => "required | unique:currencies",
-            "icons"   => "required",
+            "icons"   => "required | unique:currencies",
             "description" => "nullable"
         ]);
         $data['ref'] = Str::random(20);
@@ -123,7 +123,7 @@ class CurrencyController extends Controller
 
         $data = $request->validate([
             "name"    => "required | unique:currencies,name,".$currency->id,
-            "icons"   => "required",
+            "icons"   => "required | unique:currencies,icons,".$currency->icons,
             "description" => "nullable"
         ]);
         $data['ref'] = Str::random(20);

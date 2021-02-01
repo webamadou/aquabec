@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Region;
 use App\Models\City;
+use App\Models\Role;
 use App\Models\CreditsTransfersLog;
 class DashboardController extends Controller
 {
@@ -31,7 +32,10 @@ class DashboardController extends Controller
                         '65_74' => 'de 65 à 74 ans',
                         '75_+'  => 'plus de 75 ans'];
 
-        return view('user.profile.infosperso',compact('region_list','cities_list', 'age_group','user','default_tab'));
+        $fonction_except = ['admin','super-admin','membre','chef vendeur','vendeur','Banquier'];
+        $fonctions   = Role::select('name','id','description')->whereNotIn("name",$fonction_except)->get();
+
+        return view('user.profile.infosperso',compact('region_list','cities_list', 'age_group','user','default_tab','fonctions'));
     }
 
     public function selectCities(Request $request)
