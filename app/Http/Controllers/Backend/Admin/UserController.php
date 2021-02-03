@@ -69,6 +69,7 @@ class UserController extends Controller
             "name"          => "required",
             "prenom"        => "nullable",
             "region_id"     => "nullable",
+            "city_id"       => "nullable",
             "postal_code"   => "nullable",
             "gender"        => "nullable",
             "num_civique"   => "nullable",

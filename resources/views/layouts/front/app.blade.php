@@ -74,11 +74,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <li class="nav-item dropdown">
                         <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Mon Compte</a>
                         <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
-                            <li><a href="{{route('user.infosperso')}}" class="dropdown-item">Informations personnelles </a></li>
-                            <li><a href="#" class="dropdown-item">Mon équipe</a></li>
+                            <li><a class="dropdown-item" href="{{route('user.infosperso')}}/infos-perso"><i class="fa fa-user"></i> Infos personelles</a></li>
+                            <li><a class="dropdown-item link-success" href="{{route('user.infosperso')}}/transactions" title="Lsite de mes transactions"><i class="fas fa-exchange-alt" aria-hidden="true"></i> Mes Transactions</a></li>
+                            <li><a class="dropdown-item link-primary" href="{{route('user.infosperso')}}/wallet" title="Mon Portefeuille"><i class="fa fa-wallet" aria-hidden="true"></i> Mon Portefeuille </a></li>
                             <li class="dropdown-divider"></li>
-                            <li><a href="#" class="dropdown-item">Mon Abonnements</a></li>
-                            <li><a href="#" class="dropdown-item">Mes Monnaies</a></li>
+                            <li><a class="dropdown-item" href="{{route('logout')}}"><i class="fa fa-power-off"></i> Se déconnecter</a></li>
                         </ul>
                     </li>
                     @hasanyrole('super-admin|admin')

@@ -21,7 +21,7 @@
             <select name="city_id" id="city_id" class="form-control">
                 <option value=""> --- </option>
                 @forelse($cities_list as $key => $city)
-                    <option value="{{$key}}" {{ (old("city_id") == $key || @$user->city_id == $key )? "selected":"" }}>{{$city}}</option>
+                    <option value="{{$key}}" {{  @$user->city_id == $key ? "selected":"" }}>{{$city}}</option>
                 @empty
                 @endforelse
             </select>
@@ -38,10 +38,10 @@
             <label for="gender" class="col-sm-6 col-md-6">Sexe : *</label>
             <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
                 <input type="radio" class="btn-check" name="gender" id="gender_m" autocomplete="off" value="1" {{ intval($user->gender === 1 ) ? 'checked':"" }}>
-                <label class="btn btn-outline-primary" for="gender_m">Masculin</label>
+                <label class="btn btn-outline-primary" for="gender_m"><i class="fa fa-male"></i> Masculin</label>
 
                 <input type="radio" class="btn-check" name="gender" id="gender_f" autocomplete="off" value="0" {{ intval($user->gender === 0 ) ? 'checked':"" }}>
-                <label class="btn btn-outline-primary" for="gender_f">Feminin</label>
+                <label class="btn btn-outline-primary" for="gender_f"><i class="fa fa-female"></i> Feminin</label>
             </div>
         </div>
         <div class="offset-sm-1 col-5 form-group row">

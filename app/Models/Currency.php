@@ -69,8 +69,9 @@ class Currency extends Model
     /**
      * return the data of a given currency for a given user
      */
-    public function getUserCurrency($user_id, $currency_id)
+    public function getUserCurrency($user_id)
     {
+        return $this->users()->where('user_id',$user_id)->first();
        return User::find($user_id)
                         ->currencies()
                         ->wherePivot('currency_id',$currency_id)
@@ -80,28 +81,28 @@ class Currency extends Model
     /**
      * set the data of a given currency for a given user
      */
-    public function setUserCurrency($user_id, $currency_id)
+    public function setUserCurrency($user_id)
     {
-        $currency = $this->getUserCurrency($user_id, $currency_id);
+        $currency = $this->getUserCurrency($user_id);
         if($currency == null)
         {
-            $user = User::find($user_id);
-            $currency = Currency::find($currency_id);
-            $currency->users()->attach([$user_id]);
+            $user       = User::find($user_id);
+            //$currency   = Currency::find($currency_id);
+            $this->users()->attach([$user_id]);
         }
 
-        return $this->getUserCurrency($user_id, $currency_id);
+        return $this->getUserCurrency($user_id);
     }
 
     /**
      * make the editting necessary to make the transfer.
      * No checking is made  
-     * @params $send_by App\Models\Currency objet 
-     * @params $send_to App\Models\Currency objet 
+     * @params $send_by App\Models\User objet 
+     * @params $send_to App\Models\User objet 
      * @params $type string  
      * @params $type integer the amount to transfer 
      */
-    public function transfering(Currency $send_by, Currency $send_to, string $type, int $amount)
+    public function transfering(User $send_by, User $send_to, string $type, int $amount)
     {
         $send_by->pivot->$type -= $amount;
         $send_by->pivot->save();

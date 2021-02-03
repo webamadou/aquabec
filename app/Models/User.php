@@ -13,7 +13,8 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Currency;
 use App\Models\CreditsTransfersLog;
 
-class User extends Authenticatable implements MustVerifyEmail
+//class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable
 {
     use HasFactory, Notifiable, HasRoles;
 
@@ -105,14 +106,11 @@ class User extends Authenticatable implements MustVerifyEmail
         $currency = $this->getUserCurrency($currency_id);
         if($currency == null)
         {//User has no ammount of picked currency
-            //dd('hello');
             $this->currencies()->attach([$currency_id => $pivot_field]);
         } else {//we just update the values
             $pivot_field['free_currency'] += $currency->pivot->free_currency;
             $pivot_field['paid_currency'] += $currency->pivot->paid_currency;
-            //dd($pivot_field);
             $this->currencies()->updateExistingPivot($currency_id,$pivot_field);
-            //$this->currencies()->attach([$currency_id => $pivot_field]);
         }
 
         return $this->getUserCurrency($currency_id);

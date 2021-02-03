@@ -5,10 +5,16 @@
         @foreach($fonctions as $fonction)
             <div class="accordion-item">
                 <h2 class="accordion-header" id="flush-heading{{$fonction->id}}">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{{$fonction->id}}" aria-expanded="false" aria-controls="flush-collapse{{$fonction->id}}"><i class="nav-icon fa fa-user-tag"></i>&nbsp; {{ucfirst($fonction->name)}} </button>
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{{$fonction->id}}" aria-expanded="false" aria-controls="flush-collapse{{$fonction->id}}">
+                    @hasanyrole($fonction->name)
+                        <i class="nav-icon fa fa-user-check text-success"></i>
+                    @else
+                        <i class="nav-icon fa fa-user-plus"></i>
+                    @endrole
+                    &nbsp; {{ucfirst($fonction->name)}} </button>
                 </h2>
                 <div id="flush-collapse{{$fonction->id}}" class="accordion-collapse collapse" aria-labelledby="flush-heading{{$fonction->id}}" data-bs-parent="#accordionFlushExample">
-                    <div class="accordion-body">
+                    <div class="accordion-body ">
                         {{$fonction->description}}
                         @hasanyrole($fonction->name)
                             <div class="col-12 row aq-card-action">
@@ -27,7 +33,7 @@
         </div>
     </div>
 
-    <div class="bg-white col-md-8 col-sm-6 justify-content-evenly row">
+    <div class="bg-white col-md-8 col-sm-6 justify-content-start align-items-center flex-column row">
         @foreach($user->roles as $role)
             <div class="card mb-3" style="max-width: 540px;">
                 <div class="row g-0">
@@ -36,19 +42,18 @@
                         <h4 class='badge badge-warning mx-auto'><i class='fa fa-coins'></i> Monnaie utilisée : {{$role->currency->name}}</h4>
                         {!! $role->free_events ? "<span class='badge badge-success mx-auto'><i class='fa fa-dot-circle'></i> Activités gratuites</span>":'' !!} 
                         {!! $role->free_annoncements ? "<span class='badge badge-success mx-auto'><i class='fa fa-dot-circle'></i> Annonces gratuites</span>":'' !!}
-                    </div>
-                    <div class="col-md-8">
-                    <div class="card-body">
-                        <hr size="100%" class="mx-auto">
-                            <!-- <strong class="card-title">Card title</strong> -->
-                        <ul class="list-group">
+                        <!-- <ul class="list-group">
                             <li class="list-group-item">
                                 <strong class="card-text">{{ucfirst($role->currency->name)}} par événement : {{intval(- $role->events_price)}} </strong>
                             </li>
                             <li class="list-group-item">
                                 <strong class="card-text">{{ucfirst($role->currency->name)}} par annonce : {{intval(- $role->annoucements_price)}} </strong>
                             </li>
-                        </ul>
+                        </ul> -->
+                    </div>
+                    <div class="col-md-8">
+                    <div class="card-body">
+                        <div class="card-title">{{$role->description}}</div>
                     </div>
                     </div>
                 </div>
@@ -69,8 +74,9 @@
             <div class="modal-body">
                     <input type="hidden" name="role_id" id="form_role_id">
                     <input type="hidden" name="user_id" id="form_user_id">
-                <div class="mb-3"> Confirmer votre inscription à la fonction <span id="confirm_role_name"></span></div>
-                <div class="mb-3"><span id="confirm_role_description"></span></div>
+                <div class="mb-3" id="confirm_role_description"></div>
+                <hr size="70%" class="mx-auto">
+                <div class="mb-3 text-primary"> Confirmer votre inscription à la fonction <span id="confirm_role_name"></span></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fa fa-times"></i> Close</button>
@@ -90,6 +96,7 @@ $(function(){
         const role_desc = $(this).data('role_description');
 
         $("#role_name").text(role_name);
+        $("#confirm_role_description").text(role_desc);
         $("#form_role_id").val(role_id);
         $("#form_user_id").val({{$user->id}});
         const myModal = new bootstrap.Modal(document.getElementById('myModal'))

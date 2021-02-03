@@ -171,13 +171,14 @@ class CurrencyController extends Controller
             "amount"        => "required | integer"
         ]);
 
-        $currency       = new Currency();
-        $currency       = $currency->setUserCurrency($data['user_id'], $data['currency_id']);
-        //$sync           = $currency->users()->sync([$data['user_id']]);
-        $currency_type  = $data['currency_type'] > 0 ? "paid_currency" : "free_currency";
-
-        $currency->users[0]->pivot->$currency_type += $data["amount"];
-        $currency->users[0]->pivot->save();
+        $currency       = Currency::find($data['currency_id']);
+        if($currency == null)
+            return false;
+        $currency       = $currency->setUserCurrency($data['user_id']);//get the relation user -> currency
+        $currency_type  = $data['currency_type'] > 0 ? "paid_currency" : "free_currency";//We picj the corresponding type currency
+        //then we update and save the value
+        $currency->pivot->$currency_type += $data["amount"];
+        $currency->pivot->save();
 
         return redirect()
                 ->route('banker.currencies.accounts')
@@ -223,8 +224,8 @@ class CurrencyController extends Controller
             "sent_value" => "required | integer",
             "notes" => "nullable"
         ]);
-        $currency = new Currency();
-        $sender = $currency->getUserCurrency($data['send_by'],$data['currency_id']);
+        $currency = Currency::find($data['currency_id']);
+        $sender = $currency->getUserCurrency($data['send_by']);
         $currency_type = $data['credit_type'] > 0 ? 'paid_currency' : 'free_currency';
         if($sender == null)
             return redirect()
@@ -237,7 +238,7 @@ class CurrencyController extends Controller
                     ->back()
                     ->with("error", "Vous n'avez pas assez pour faire le transfert.");
 
-        $recipient = $currency->setUserCurrency($data['send_to'],$data['currency_id']);
+        $recipient = $currency->setUserCurrency($data['send_to']);
         
         //We need the initial amounts of each account for the logs.s
         $send_initial_amount = intval($sender->pivot->$currency_type) ;
