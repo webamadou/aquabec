@@ -40,6 +40,8 @@ use Illuminate\Support\Facades\Route;
 Auth::routes(['verify' => true]);
 
 
+Route::get('/mailling', [UserDashboard::class, 'maillingTest'])->name('maillingTest');
+
 
 /******************************/
 /*       FRONTEND ROUTES      */

@@ -54,7 +54,7 @@ class UserSeeder extends Seeder
         $admin->assignRole($role);
 
         $banker     = User::updateOrCreate($banker);
-        $role       = Role::updateOrCreate(['name' => 'Banquier']);
+        $role       = Role::updateOrCreate(['name' => 'banquier']);
         $banker->assignRole($role);
         $banker->givePermissionTo("Banquier");
 

@@ -5,6 +5,7 @@
 @section('content')
 
     <div class="row">
+        <div><a href="{{route('admin.users.create')}}" class="btn btn-primary mb-4 mb-4"><i class="fa fa-user-plus"></i> Ajouter un utilisateur </a></div>
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-header">
@@ -39,7 +40,9 @@
                 serverSide: true,
                 ajax: '{{ url('admin/get-users-data') }}',
                 columns: [
-                    { data: 'name', name: 'name' },
+                    { data: null, name: 'name',
+                        render: data => { return `<strong><i class="fa fa-user"></i> <a href="/admin/users/${data.id}" class="text-link">${data.prenom?data.prenom:''} ${data.name?data.name:''}</a></strong>`; }
+                    },
                     { data: 'email', name: 'email' },
                     { data: 'updated_at', name: 'updated_at', width: '150' },
                     { data: 'action', name: 'action', orderable: false, searchable: false, width: '80' }

@@ -13,8 +13,8 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Currency;
 use App\Models\CreditsTransfersLog;
 
-//class User extends Authenticatable implements MustVerifyEmail
-class User extends Authenticatable
+//class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable, HasRoles;
 
@@ -26,7 +26,7 @@ class User extends Authenticatable
     //protected $guard_name = 'api';
     protected $guard_name = 'web';
 
-    protected $fillable = [ 'name', 'email', 'password','prenom','region_id','city_id','postal_code','gender','num_civique','age_group','mobile_phone','num_tel' ];
+    protected $fillable = [ 'name', 'email', 'password','prenom','region_id','city_id','postal_code','gender','num_civique','age_group','mobile_phone','num_tel','godfather' ];
 
 
     /**
@@ -46,13 +46,90 @@ class User extends Authenticatable
 
     /**
      * 
+     * Setting up the relationship between user and region. Each user has a region
+     */
+    public function region()
+    {
+        return $this->belongsTo(\App\Models\Region::class);
+    }
+
+    /**
+     * 
+     * Setting up the relationship between user and city. Each user has a city
+     */
+    public function city()
+    {
+        return $this->belongsTo(\App\Models\City::class);
+    }
+    /**
+     * 
      * Setting up the relationship between users and currency. A many to many relationship
      */
     public function currencies()
     {
         return $this->belongsToMany(Currency::class)->withPivot('free_currency','paid_currency')->withTimestamps();
     }
+    /**
+     * 
+     * the relation betwin a user and the one that created the account
+     */
+    public function thegodfather()
+    {
+        return $this->belongsTo(User::class, 'godfather','id');
+    }
 
+    /**
+     * 
+     * the relation betwin a user and all the accounts he created
+     */
+    public function godchildren()
+    {
+        return $this->hasMany(User::class, 'godfather', 'id');
+    }
+
+    public function allGodchildren()
+    {
+        return $this->allGodchildren()->with('allGodchildren');
+    }
+    
+    /**
+     * 
+     * Get users with role Banquier
+     */
+    public function scopeBankers($query)
+    {
+        return $query->whereHas("roles", function($q){ $q->where("name", "Banquier"); } );
+    }
+    
+    /**
+     * 
+     * Get users with role admin or super-admin
+     */
+    public function scopeAdmins($query)
+    {
+        return $query->whereHas("roles", function($q){ $q->where("name", "super-admin")->orWhere('name','admin'); } );
+    }
+    
+    /**
+     * 
+     * Get users with role chef vendor or vendor
+     */
+    public function scopeVendors($query)
+    {
+        return $query->whereHas("roles", function($q){ $q->where('name','chef-vendeur')->orWhere('name','vendeur'); } );
+    }
+    /**
+     * 
+     * Get users with role vendor or higher
+     */
+    public function scopeVendorsHigher($query)
+    {
+        return $query->whereHas("roles", function($q){ $q->where("name", "admin")
+                                                         ->orWhere('name','super-admin')
+                                                         ->orWhere('name','Banquier')
+                                                         ->orWhere('name','chef vendeur')
+                                                         ->orWhere('name','vendeur'); } );
+    }
     /**
      * The attributes that should be cast to native types.
      *
@@ -115,6 +192,5 @@ class User extends Authenticatable
 
         return $this->getUserCurrency($currency_id);
     }
-
-
+    
 }

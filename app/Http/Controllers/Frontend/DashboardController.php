@@ -8,6 +8,9 @@ use App\Models\Region;
 use App\Models\City;
 use App\Models\Role;
 use App\Models\CreditsTransfersLog;
+use Mail;
+use App\Mail\UserMails;
+
 class DashboardController extends Controller
 {
     public function index()
@@ -16,13 +19,32 @@ class DashboardController extends Controller
         return view('user.dashboard', compact('notifications'));
     }
 
+    public function maillingTest(){
+        $mail = new UserMails();
+        $info = array(
+            'name' => "Alex"
+        );
+        Mail::to('amadou@mail.com')->send(new UserMails);
+        return "Message send";
+        /* $message->to('alex@example.com', 'W3SCHOOLS')
+                ->subject('Basic test eMail from W3schools.');
+            $message->from('sender@example.com', 'Alex'); */
+        /* $mail->send(['text' => 'mail'], $info, function ($message)
+        {
+            $message->to('alex@example.com', 'W3SCHOOLS')
+                ->subject('Basic test eMail from W3schools.');
+            $message->from('sender@example.com', 'Alex');
+        });
+        echo "Successfully sent the email"; */
+    }
+
     public function infosPerso($default_tab=null){
         //the default_tab var is use to set default tab to display in the page 
         $user = auth()->user();
         $default_tab = $default_tab == null ? 'account': $default_tab ;
         $region_list = Region::pluck('name','id');
         $cities_list = City::where('region_id',$user->region_id)->pluck('name','id');
-        // $age_group   = ['02_12' => '', '12_17', '18_24', '25_34', '35_44', '45_54', '55_64', '65_74', '75_+'];
+
         $age_group   = ['12_17' => 'moins de 17 ans',
                         '18_24' => 'de 18 à 24 ans',
                         '25_34' => 'de 25 à 34 ans',

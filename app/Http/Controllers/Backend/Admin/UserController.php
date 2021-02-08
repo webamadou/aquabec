@@ -9,9 +9,14 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Illuminate \Support\Str;
+use Carbon\Carbon;
 
 use App\Models\User;
+use App\Models\City;
 use App\Models\Event;
+use App\Models\Region;
+use App\Models\Role;
 use App\Models\Announcement;
 
 class UserController extends Controller
@@ -23,7 +28,8 @@ class UserController extends Controller
 
     public function usersData()
     {
-        $users = User::role(['user','admin'])->with('roles')->get();
+        //$users = User::role(['membre','admin'])->with('roles')->get();
+        $users = User::select('id','name','prenom','email','updated_at')->get();
 
         return datatables()
             ->collection($users)
@@ -44,14 +50,150 @@ class UserController extends Controller
     public function index()
     {
 
-    	$users = User::all();
-    	$organisations = User::all();
-    	$events = Event::all();
-    	$announcements = Announcement::all();
-      return view('admin.users.index', compact("users","organisations","events","announcements"));
+    	$users          = User::all();
+    	$organisations  = User::all();
+    	$events         = Event::all();
+        $announcements  = Announcement::all();
+
+        return view('admin.users.index', compact("users","organisations","events","announcements"));
         return view('admin.users.index');
     }
 
+    public function show(User $user)
+    {
+        $current_user = auth()->user();
+        if($user->can('update',$user))
+            return view('admin.users.show', compact('user','current_user'));
+    }
+    public function create()
+    {
+        $user = new User();
+        $region_list = Region::pluck('name','id');
+        $cities_list = City::where('region_id',$user->region_id)->pluck('name','id');       
+        $age_group   = [
+                        '12_17' => 'moins de 17 ans',
+                        '18_24' => 'de 18 à 24 ans',
+                        '25_34' => 'de 25 à 34 ans',
+                        '35_44' => 'de 35 à 44 ans',
+                        '45_54' => 'de 45 à 54 ans',
+                        '55_64' => 'de 55 à 64 ans',
+                        '65_74' => 'de 65 à 74 ans',
+                        '75_+'  => 'plus de 75 ans'
+                        ];
+        $vendors     = User::vendors()->where('id', '!=', $user->id )->get(['prenom','name','id']);
+        $roles       = Role::pluck('name','id');
+
+        return view('admin.users.create',compact('user','region_list','cities_list','age_group','vendors','roles'));
+    }
+
+    public function edit(User $user)
+    {
+        $region_list = Region::pluck('name','id');
+        $cities_list = City::where('region_id',$user->region_id)->pluck('name','id');       
+        $age_group   = ['12_17' => 'moins de 17 ans',
+                        '18_24' => 'de 18 à 24 ans',
+                        '25_34' => 'de 25 à 34 ans',
+                        '35_44' => 'de 35 à 44 ans',
+                        '45_54' => 'de 45 à 54 ans',
+                        '55_64' => 'de 55 à 64 ans',
+                        '65_74' => 'de 65 à 74 ans',
+                        '75_+'  => 'plus de 75 ans'];
+
+        $vendors     = User::vendors()->where('id', '!=',$user->id)->get(['prenom','name','id']);
+        $roles       = Role::pluck('name','id');
+
+        return view('admin.users.edit',compact('user','region_list','cities_list','age_group','vendors','roles'));
+    }
+    /**
+     * Store the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            "godfather"     => "nullable",
+            "prenom"        => "nullable",
+            "name"          => "required",
+            "email"         => "required | unique:users",
+            "age_group"     => "nullable",
+            "gender"        => "nullable",
+            "region_id"     => "nullable",
+            "city_id"       => "nullable",
+            "postal_code"   => "nullable",
+            "num_tel"       => "nullable",
+            "mobile_phone"  => "nullable",
+            "description"   => "nullable",
+        ]);
+        //We generate a password for the user
+        $password           = Str::random(8);
+        $data['password']   = Hash::make($password);
+        $data['must_update_password'] = Str::random(35);
+        //If the password is changed we have to update the field must_update_password to force the user to change it's password
+        if($user = User::create($data)){
+            $roles = Role::pluck('name','id');
+            //We now need to loop through the roles and assign the checked role and remove the unchecked ones
+            foreach ($roles as $key => $role) {
+                if($request->input("role_$role")){
+                    $user->assignRole($role);
+                }
+            }
+            //We need to send the notification to the user 
+            $user->notify(new \App\Notifications\NewAccount($user,$password));
+            //Then we set users as verified
+            $user->email_verified_at = Carbon::now();
+            $user->save();
+            return redirect()
+                            ->route('admin.users.index')
+                            ->with('success','Modifications enregistrées avec succès!');
+        }
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(User $user, Request $request)
+    {
+        $data = $request->validate([
+            "godfather"     => ["nullable"],
+            "prenom"        => ["nullable"],
+            "name"          => ["required"],
+            "email"         => ["required"],
+            "age_group"     => ["nullable"],
+            "gender"        => ["nullable"],
+            "region_id"     => ["nullable"],
+            "city_id"       => ["nullable"],
+            "postal_code"   => ["nullable"],
+            "num_tel"       => ["nullable"],
+            "mobile_phone"  => ["nullable"],
+            "description"   => ["nullable"],
+        ]);
+        /* //If the password is changed we have to update the field must_update_password to force the user to change it's password
+        if($request->input('password') !== ''){
+            $data['password'] = Hash::make($request->input('password'));
+            $data['must_update_password'] = 1;
+        } */
+        if($user->update($data)){
+            $roles = Role::pluck('name','id');
+            //We now need to loop through the roles and assign the checked role and remove the unchecked ones
+            foreach ($roles as $key => $role) {
+                if($request->input("role_$role")){
+                    $user->assignRole($role);
+                } else {
+                    $user->removeRole($role);
+                }
+            }
+            return redirect()
+                            ->back()
+                            ->with('success','Modifications enregistrées avec succès!');
+        }
+    }
     public function getListUserAjax()
     {
         $res = User::select("name,id")

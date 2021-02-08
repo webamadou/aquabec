@@ -26,6 +26,7 @@
 
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="{{asset('dist/icons-picker/js/bootstrap-iconpicker.bundle.min.js')}}" defer></script>
+    <script src="{{asset('js/scripts.js')}}" defer></script>
 
     @stack('scripts')
 
