@@ -40,9 +40,6 @@ use Illuminate\Support\Facades\Route;
 Auth::routes(['verify' => true]);
 
 
-Route::get('/mailling', [UserDashboard::class, 'maillingTest'])->name('maillingTest');
-
-
 /******************************/
 /*       FRONTEND ROUTES      */
 /******************************/
@@ -71,13 +68,13 @@ Route::middleware(['auth','verified'])->group(function (){
 
     Route::post('credits-transfer', [App\Http\Controllers\TransferCreditsController::class, 'transferCredits'])->name('credits.transfer');
 
-    Route::middleware(['role:banker|Banquier|super-admin'])->name("banker.")->prefix("banker")->group(function(){
+    /* Route::middleware(['role:banker|Banquier|super-admin'])->name("banker.")->prefix("banker")->group(function(){
         Route::resource('credit_pack', CreditPackController::class);
         Route::get('get-credit_pack-data', [CreditPackController::class, 'creditPackData'])->name('credit_pack.data');
 
         Route::resource('credits', CreditsController::class);
         Route::get('get-credits-data', [CreditsController::class, 'creditData'])->name('credit.data');
-    });
+    }); */
 
     Route::middleware(['role:banker|Banquier'])->name('banker.')->prefix('banker')->group(function () {
         Route::resource("currencies", CurrencyController::class);
@@ -136,6 +133,19 @@ Route::middleware(['auth','verified'])->group(function (){
         Route::get('get-subscriptions-data', [SubscriptionController::class, 'subscriptionsData'])->name('subscriptions.data');
     });
 
+    /*
+     * Vendor's Routes
+     */
+    Route::middleware(['role:chef-vendeur|vendeur'])->name('vendeurs.')->group(function () {
+        Route::get('/my_team', [UserDashboard::class, 'myTeam'])->name('my_team');
+        Route::get('get-my_team-data/{user_id?}', [UserDashboard::class, 'myTeamData'])->name('my_team_data');
+        Route::get('/create/vendeur', [UserDashboard::class, 'createVendeur'])->name('create_vendeur');
+        Route::post('/create/vendeur', [UserController::class, 'store'])->name('store_vendeur');
+        Route::get('/update/vendeur/{user}/edit', [UserDashboard::class, 'editVendeur'])->name('edit_vendeur');
+        Route::put('/update/vendeur/{user}', [UserController::class, 'update'])->name('update_vendeur');
+        Route::get('/vendeur/{user:slug}', [UserDashboard::class, 'showProfile'])->name('show_vendeur');
+        Route::delete('/vendeur/{user:slug}', [UserController::class, 'destroy'])->name('delete');
+    });
     /*
      * User's Routes
      */

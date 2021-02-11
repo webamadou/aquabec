@@ -151,8 +151,11 @@
                             @hasanyrole('banquier')
                               @include('layouts.front.partials.banker')
                             @endrole
-                            @hasanyrole('Banquier')
-                              @include('layouts.front.partials.banker')
+                            @hasanyrole('chef-vendeur')
+                              @include('layouts.front.partials.cvendeur')
+                            @endrole
+                            @hasanyrole('vendeur')
+                              @include('layouts.front.partials.cvendeur')
                             @endrole
                             @hasanyrole('admin')
                               @include('layouts.front.partials.admin')

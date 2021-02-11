@@ -51,7 +51,7 @@ class NewAccount extends Notification
                     ->line("Votre compte a été parfaitement comfiguré.")
                     ->line("Vous pouvez vous connecter avec les accès suivants.")
                     ->line("votre login : $user->email")
-                    ->line("votre mot de passe ".$this->password)
+                    ->line("votre mot de passe : ".$this->password)
                     ->line("")
                     ->line("Vous pouvez toujours modifier votre mot de passe dans votre profil")
                     ->action('Notification Action', url('/'))

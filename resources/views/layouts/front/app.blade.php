@@ -63,14 +63,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <!-- Left navbar links -->
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a href="{{ route('user.dashboard') }}" class="nav-link {{ side_nav_bar_menu_status('dashboard','active') }}">Dashboard</a>
+                        <a href="{{ route('user.dashboard') }}" class="nav-link {{ side_nav_bar_menu_status('dashboard','active') }}"><i class="fa fa-user-cog"></i> Portrait</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('user.events.index') }}" class="nav-link {{ side_nav_bar_menu_status('events','active') }}">Mes évènements</a>
+                        <a href="{{ route('user.events.index') }}" class="nav-link {{ side_nav_bar_menu_status('events','active') }}"><i class="fas fa-calendar-check"></i> Mes évènements</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">Mes annonces</a>
+                        <a href="#" class="nav-link"><i class="fa fa-bullhorn"></i> Mes annonces</a>
                     </li>
+                    @hasanyrole('chef-vendeur|vendeur')
+                        <li class="nav-item"><a class="nav-link" href="{{route('vendeurs.my_team')}}"><i class="fa fa-user-friends"></i> Mon équipe</a></li>
+                    @endrole
                     <li class="nav-item dropdown">
                         <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Mon Compte</a>
                         <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">

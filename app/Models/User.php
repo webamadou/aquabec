@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Support\Facades\DB;
+use Cviebrock\EloquentSluggable\Sluggable;
 
 use App\Models\Currency;
 use App\Models\CreditsTransfersLog;
@@ -26,9 +27,31 @@ class User extends Authenticatable implements MustVerifyEmail
     //protected $guard_name = 'api';
     protected $guard_name = 'web';
 
-    protected $fillable = [ 'name', 'email', 'password','prenom','region_id','city_id','postal_code','gender','num_civique','age_group','mobile_phone','num_tel','godfather' ];
+    protected $fillable = [ 'name', 'email', 'password','prenom','region_id','city_id','postal_code','gender','num_civique'.'street','age_group','mobile_phone','num_tel','godfather' ];
+    //protected $guarded = [];
 
-
+    use Sluggable;
+    /**
+     * Return the sluggable configuration array for this model.
+     *
+     * @return array
+    */
+    public function sluggable()
+    {
+        return [
+            'slug' => [
+                 'source'             => ['prenom', 'name'],
+                 'separator'          => '',
+                 'unique'             => true,
+                 'onUpdate'           => true,
+                 'includeTrashed'     => false,
+            ]
+        ];
+    }
+    /* public function getRouteKeyName()
+    {
+        return 'slug';
+    } */
     /**
      * The attributes that should be hidden for arrays.
      *

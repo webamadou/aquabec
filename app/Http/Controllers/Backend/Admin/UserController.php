@@ -12,6 +12,8 @@ use Illuminate\View\View;
 use Illuminate \Support\Str;
 use Carbon\Carbon;
 
+use App\Http\Requests\UpdateUserRequest;
+use App\Http\Requests\storeUserRequest;
 use App\Models\User;
 use App\Models\City;
 use App\Models\Event;
@@ -23,7 +25,7 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth','verified','role:super-admin|admin'],['except' => ['updateInfosPerso','updatePWD','assignRole']]);
+        $this->middleware(['auth','verified','role:super-admin|admin|chef-vendeur|vendeur'],['except' => ['updateInfosPerso','updatePWD','assignRole']]);
     }
 
     public function usersData()
@@ -111,44 +113,46 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(storeUserRequest $request)
     {
-        $data = $request->validate([
-            "godfather"     => "nullable",
-            "prenom"        => "nullable",
-            "name"          => "required",
-            "email"         => "required | unique:users",
-            "age_group"     => "nullable",
-            "gender"        => "nullable",
-            "region_id"     => "nullable",
-            "city_id"       => "nullable",
-            "postal_code"   => "nullable",
-            "num_tel"       => "nullable",
-            "mobile_phone"  => "nullable",
-            "description"   => "nullable",
-        ]);
+        $data = $request->validated();
         //We generate a password for the user
         $password           = Str::random(8);
         $data['password']   = Hash::make($password);
-        $data['must_update_password'] = Str::random(35);
+        //$data['must_update_password'] = Str::random(35);
         //If the password is changed we have to update the field must_update_password to force the user to change it's password
         if($user = User::create($data)){
             $roles = Role::pluck('name','id');
+            $last_role = '';//If at the end of the loop this var is still empty we need to assign a default role
             //We now need to loop through the roles and assign the checked role and remove the unchecked ones
             foreach ($roles as $key => $role) {
                 if($request->input("role_$role")){
+                    $last_role = $role;
                     $user->assignRole($role);
                 }
             }
+            if($last_role === '')
+                $user->assignRole("membre");
             //We need to send the notification to the user 
             $user->notify(new \App\Notifications\NewAccount($user,$password));
             //Then we set users as verified
             $user->email_verified_at = Carbon::now();
             $user->save();
-            return redirect()
-                            ->route('admin.users.index')
-                            ->with('success','Modifications enregistrées avec succès!');
+            $current_user = auth()->user();
+            //Based on the role of the current user we will have a different 
+            if($current_user->hasRole('super-admin') || $current_user->hasRole('admin')){
+                return redirect()
+                    ->route('admin.users.index')
+                    ->with('success','Modifications enregistrées avec succès!');
+            } elseif ($current_user->hasRole('chef-vendeur') || $current_user->hasRole('vendeur')) {
+                return redirect()
+                    ->route('vendeurs.my_team')
+                    ->with('success','Modifications enregistrées avec succès!');
+            }
         }
+        return redirect()
+                    ->route('welcome')
+                    ->with('success',"Il s'est produit une erreur lors de l'enregistrement!");
     }
 
     /**
@@ -158,27 +162,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(User $user, Request $request)
+    public function update(User $user, UpdateUserRequest $request)
     {
-        $data = $request->validate([
-            "godfather"     => ["nullable"],
-            "prenom"        => ["nullable"],
-            "name"          => ["required"],
-            "email"         => ["required"],
-            "age_group"     => ["nullable"],
-            "gender"        => ["nullable"],
-            "region_id"     => ["nullable"],
-            "city_id"       => ["nullable"],
-            "postal_code"   => ["nullable"],
-            "num_tel"       => ["nullable"],
-            "mobile_phone"  => ["nullable"],
-            "description"   => ["nullable"],
-        ]);
-        /* //If the password is changed we have to update the field must_update_password to force the user to change it's password
-        if($request->input('password') !== ''){
-            $data['password'] = Hash::make($request->input('password'));
-            $data['must_update_password'] = 1;
-        } */
+        $data = $request->validated();
         if($user->update($data)){
             $roles = Role::pluck('name','id');
             //We now need to loop through the roles and assign the checked role and remove the unchecked ones
@@ -192,6 +178,10 @@ class UserController extends Controller
             return redirect()
                             ->back()
                             ->with('success','Modifications enregistrées avec succès!');
+        } else {
+            return redirect()
+                            ->back()
+                            ->with('error',"Il s'est produit une erreur");
         }
     }
     public function getListUserAjax()
@@ -257,6 +247,9 @@ class UserController extends Controller
         //We add a restriction for the banker and super-admin profiles  
         if(strtolower($role->name) === 'banquier' || strtolower($role->name) === 'super-admin'|| strtolower($role->name) === 'admin'|| strtolower($role->name) === 'chef vendeur')
             return redirect()->back();
+        if($user->hasRole('super-admin')){//We prevent to change the super-admin role
+            return redirect()->back();
+        }
 
         if($user = $user->assignRole($role->name)){
             $free_credit_amount = intval($role->free_credit);
@@ -270,5 +263,12 @@ class UserController extends Controller
             return redirect()->back()->with('success',"Inscription validée");
         }
         return redirect()->back();
+    }
+
+    public function destroy(User $user)
+    {
+        $user->profile_status = 4;
+        $user->save();
+        return redirect()->back()->with("success", "Le profile a été supprimé");
     }
 }
