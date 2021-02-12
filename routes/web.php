@@ -12,6 +12,7 @@ use App\Http\Controllers\Backend\Admin\UserController;
 use App\Http\Controllers\Backend\Admin\CreditPackController;
 use App\Http\Controllers\Backend\Admin\CreditsController;
 use App\Http\Controllers\Backend\Admin\CurrencyController;
+use App\Http\Controllers\Backend\Admin\AgeRangeController;
 
 use App\Http\Controllers\Frontend\DashboardController as UserDashboard;
 use App\Http\Controllers\Backend\User\EventController;
@@ -95,7 +96,6 @@ Route::middleware(['auth','verified'])->group(function (){
 
         Route::get('/get-credits-logs', [App\Http\Controllers\TransferCreditsController::class, 'currencyLogsData'])->name('credit.logs');
         Route::get('/get-currency-logs/{id}', [App\Http\Controllers\TransferCreditsController::class, 'singleCurrencyLogsData'])->name('credit.logs');
-
         // Settings Routes...
         Route::name('settings.')->prefix('settings')->group(function () {
             // Security Routes...
@@ -118,6 +118,10 @@ Route::middleware(['auth','verified'])->group(function (){
             Route::get('get-cities-data', [CityController::class, 'citiesData'])->name('cities.data');
             // Categories Routes
             Route::resource('categories', CategoryController::class);
+            //Age range resource
+            Route::resource('age_ranges', AgeRangeController::class);
+            Route::get('get-age_ranges-data', [AgeRangeController::class, 'eventAgeRangeData'])->name('event.categories.data');
+
             Route::get('get-event-categories-data', [CategoryController::class, 'eventCategoriesData'])->name('event.categories.data');
             Route::get('get-announcement-categories-data', [CategoryController::class, 'announcementCategoriesData'])->name('announcement.categories.data');
 

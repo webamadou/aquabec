@@ -1,22 +1,45 @@
 @extends('layouts.back.admin')
 
-@section('title','Utilisateurs ')
+@section('title','Groupes d\'age ')
 
 @section('content')
 
     <div class="row">
-        <div><a href="{{route('admin.users.create')}}" class="btn btn-primary mb-4 mb-4"><i class="fa fa-user-plus"></i> Ajouter un utilisateur </a></div>
-        <div class="col-sm-12">
+        <div class="col-sm-12 col-md-3">
             <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title font-weight-bold">Liste des utilisateurs</h2>
+                <div class="card-header bg-primary">
+                    @if(Route::currentRouteName() == 'admin.settings.age_ramges.index')
+                    <h2 class="card-title font-weight-bold">Ajouter un groupe</h2>
+                    @endif
+                    @if(Route::currentRouteName() == 'admin.settings.age_ramges.edit')
+                    <h2 class="card-title font-weight-bold">Modifier le groupe</h2>
+                    @endif
                 </div>
                 <div class="card-body">
-                    <table class="table table-bordered" id="event-users-table">
+                    {!! form($form) !!}
+                </div>
+                @if(Route::currentRouteName() == 'admin.settings.categories.edit')
+                    <div class="card-footer">
+                        <a class="btn btn-link float-right text-dark font-weight-bold" href="{{ route('admin.settings.age_groupe.index') }}">
+                            <i class="mr-2 fa fa-plus"></i>
+                            Groupe d'age
+                        </a>
+                    </div>
+                @endif
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-9 ">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title font-weight-bold">Groupe d'age</h2>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered" id="age_groupe-table">
                         <thead>
                         <tr>
-                            <th>Nom & Prénom</th>
-                            <th>Adresse Email</th>
+                            <th>Nom</th>
+                            <th>Position</th>
                             <th>Dernière modification</th>
                             <th>Actions</th>
                         </tr>
@@ -35,19 +58,17 @@
 
     <script>
         $(function() {
-            $('#event-users-table').DataTable({
+            $('#age_groupe-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ url('admin/get-users-data') }}',
+                ajax: '{{ url('admin/settings/get-age_ranges-data') }}',
                 columns: [
-                    { data: null, name: 'name',
-                        render: data => { return `<strong><i class="fa fa-user"></i> <a href="/admin/users/${data.slug}" class="text-link">${data.prenom?data.prenom:''} ${data.name?data.name:''}</a></strong>`; }
-                    },
-                    { data: 'email', name: 'email' },
-                    { data: 'updated_at', name: 'updated_at', width: '150' },
-                    { data: 'action', name: 'action', orderable: false, searchable: false, width: '80' }
+                    { data: 'name', name: 'name' },
+                    { data: 'position', name: 'position' },
+                    { data: 'updated_at', name: 'updated_at' },
+                    { data: 'action', name: 'action', orderable: false, searchable: false }
                 ],
-                order: [[ 0, 'asc' ]],
+                order: [[ 1, 'asc' ]],
                 pageLength: 100,
                 responsive: true,
                 "oLanguage":{
@@ -73,6 +94,18 @@
                       }
                     }
             });
+/* 
+            $('#announcement-categories-table').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: '{{ url('admin/settings/get-announcement-categories-data') }}',
+                columns: [
+                    { data: 'name', name: 'name' },
+                    { data: 'parent', name: 'parent' },
+                    { data: 'updated_at', name: 'updated_at' },
+                    { data: 'action', name: 'action', orderable: false, searchable: false }
+                ]
+            }); */
 
             $('#modal-delete').on('show.bs.modal', function (event) {
                 var button = $(event.relatedTarget) // Button that triggered the modal

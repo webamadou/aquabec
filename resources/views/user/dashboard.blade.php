@@ -1,4 +1,4 @@
-@extends('layouts.back.user')
+@extends('layouts.front.app')
 
 @section('title','Dashboard')
 

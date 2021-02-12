@@ -19,6 +19,7 @@ use App\Models\City;
 use App\Models\Event;
 use App\Models\Region;
 use App\Models\Role;
+use App\Models\AgeRange;
 use App\Models\Announcement;
 
 class UserController extends Controller
@@ -31,7 +32,7 @@ class UserController extends Controller
     public function usersData()
     {
         //$users = User::role(['membre','admin'])->with('roles')->get();
-        $users = User::select('id','name','prenom','email','updated_at')->get();
+        $users = User::select('id','name','prenom','slug','email','updated_at')->where('profile_status','<=',1)->get();
 
         return datatables()
             ->collection($users)
@@ -64,24 +65,15 @@ class UserController extends Controller
     public function show(User $user)
     {
         $current_user = auth()->user();
-        if($user->can('update',$user))
+        if($current_user->hasRole('super-admin') || $user->hasRole('admin'))
             return view('admin.users.show', compact('user','current_user'));
     }
     public function create()
     {
         $user = new User();
         $region_list = Region::pluck('name','id');
-        $cities_list = City::where('region_id',$user->region_id)->pluck('name','id');       
-        $age_group   = [
-                        '12_17' => 'moins de 17 ans',
-                        '18_24' => 'de 18 à 24 ans',
-                        '25_34' => 'de 25 à 34 ans',
-                        '35_44' => 'de 35 à 44 ans',
-                        '45_54' => 'de 45 à 54 ans',
-                        '55_64' => 'de 55 à 64 ans',
-                        '65_74' => 'de 65 à 74 ans',
-                        '75_+'  => 'plus de 75 ans'
-                        ];
+        $cities_list = City::where('region_id',$user->region_id)->pluck('name','id'); 
+        $age_group   = AgeRange::ageSelect();
         $vendors     = User::vendors()->where('id', '!=', $user->id )->get(['prenom','name','id']);
         $roles       = Role::pluck('name','id');
 
@@ -92,14 +84,7 @@ class UserController extends Controller
     {
         $region_list = Region::pluck('name','id');
         $cities_list = City::where('region_id',$user->region_id)->pluck('name','id');       
-        $age_group   = ['12_17' => 'moins de 17 ans',
-                        '18_24' => 'de 18 à 24 ans',
-                        '25_34' => 'de 25 à 34 ans',
-                        '35_44' => 'de 35 à 44 ans',
-                        '45_54' => 'de 45 à 54 ans',
-                        '55_64' => 'de 55 à 64 ans',
-                        '65_74' => 'de 65 à 74 ans',
-                        '75_+'  => 'plus de 75 ans'];
+        $age_group   = AgeRange::ageSelect();
 
         $vendors     = User::vendors()->where('id', '!=',$user->id)->get(['prenom','name','id']);
         $roles       = Role::pluck('name','id');

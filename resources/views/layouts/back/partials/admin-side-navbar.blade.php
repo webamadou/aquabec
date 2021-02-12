@@ -176,6 +176,12 @@
                         <p>Catégories</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.settings.age_ranges.index') }}" class="nav-link {{ side_nav_bar_menu_status('age_ranges','active')  }}">
+                        <i class="fa fa-users-cog nav-icon"></i>
+                        <p>Groupes d'age</p>
+                    </a>
+                </li>
                 @endif
             </ul>
         </nav>

@@ -8,6 +8,7 @@ use App\Models\Region;
 use App\Models\City;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\AgeRange;
 use App\Models\CreditsTransfersLog;
 use Mail;
 use App\Mail\UserMails;
@@ -60,21 +61,13 @@ class DashboardController extends Controller
 
     public function createVendeur()
     {
-        $current_user = auth()->user();
-        $user = new User();
-        $region_list = Region::pluck('name','id');
-        $cities_list = City::where('region_id',$user->region_id)->pluck('name','id');
-        $age_group   = [
-                        '12_17' => 'moins de 17 ans',
-                        '18_24' => 'de 18 à 24 ans',
-                        '25_34' => 'de 25 à 34 ans',
-                        '35_44' => 'de 35 à 44 ans',
-                        '45_54' => 'de 45 à 54 ans',
-                        '55_64' => 'de 55 à 64 ans',
-                        '65_74' => 'de 65 à 74 ans',
-                        '75_+'  => 'plus de 75 ans'
-                        ];
-        $title = $current_user->hasRole('vendeur')?"Enregistrer un annonceur dans votre équipe":"Enregistrer un vendeur dans votre équipe";
+        $current_user   = auth()->user();
+        $user           = new User();
+        $region_list    = Region::pluck('name','id');
+        $cities_list    = City::where('region_id',$user->region_id)->pluck('name','id');
+        $age_group      = AgeRange::ageSelect();
+        $title          = $current_user->hasRole('vendeur')?"Enregistrer un annonceur dans votre équipe":"Enregistrer un vendeur dans votre équipe";
+
         return view('user.vendeurs.cvcreate', compact('title','current_user','user','region_list','cities_list','age_group'));
     }
     public function editVendeur(User $user)
@@ -82,16 +75,8 @@ class DashboardController extends Controller
         $current_user = auth()->user();
         $region_list = Region::pluck('name','id');
         $cities_list = City::where('region_id',$user->region_id)->pluck('name','id');
-        $age_group   = [
-                        '12_17' => 'moins de 17 ans',
-                        '18_24' => 'de 18 à 24 ans',
-                        '25_34' => 'de 25 à 34 ans',
-                        '35_44' => 'de 35 à 44 ans',
-                        '45_54' => 'de 45 à 54 ans',
-                        '55_64' => 'de 55 à 64 ans',
-                        '65_74' => 'de 65 à 74 ans',
-                        '75_+'  => 'plus de 75 ans'
-                        ];
+        $age_group   = AgeRange::ageSelect();
+
         return view('user.vendeurs.cvedit', compact('current_user','user','region_list','cities_list','age_group'));
     }
     public function infosPerso($default_tab=null){
@@ -101,14 +86,7 @@ class DashboardController extends Controller
         $region_list = Region::pluck('name','id');
         $cities_list = City::where('region_id',$user->region_id)->pluck('name','id');
 
-        $age_group   = ['12_17' => 'moins de 17 ans',
-                        '18_24' => 'de 18 à 24 ans',
-                        '25_34' => 'de 25 à 34 ans',
-                        '35_44' => 'de 35 à 44 ans',
-                        '45_54' => 'de 45 à 54 ans',
-                        '55_64' => 'de 55 à 64 ans',
-                        '65_74' => 'de 65 à 74 ans',
-                        '75_+'  => 'plus de 75 ans'];
+        $age_group   = AgeRange::ageSelect();
 
         $fonction_except = ['admin','super-admin','membre','chef vendeur','vendeur','Banquier'];
         $fonctions   = Role::select('name','id','description')->whereNotIn("name",$fonction_except)->get();
@@ -119,10 +97,6 @@ class DashboardController extends Controller
     public function selectCities(Request $request)
     {
         $res = Region::find($request->id)->cities->pluck('name','id');
-                /* ->where("name","LIKE","%{$request->term}%")
-                ->where("id","%{$request->term}%")
-                ->where("id", "!=", Auth::id())
-                ->get(); */
 
         return response()->json($res);
     }

@@ -18,6 +18,7 @@ use App\Models\CreditsTransfersLog;
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable, HasRoles;
+    use Sluggable;
 
     /**
      * The attributes that are mass assignable.
@@ -30,7 +31,6 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $fillable = [ 'name', 'email', 'password','prenom','region_id','city_id','postal_code','gender','num_civique'.'street','age_group','mobile_phone','num_tel','godfather' ];
     //protected $guarded = [];
 
-    use Sluggable;
     /**
      * Return the sluggable configuration array for this model.
      *
@@ -41,17 +41,17 @@ class User extends Authenticatable implements MustVerifyEmail
         return [
             'slug' => [
                  'source'             => ['prenom', 'name'],
-                 'separator'          => '',
+                 'separator'          => '-',
                  'unique'             => true,
                  'onUpdate'           => true,
                  'includeTrashed'     => false,
             ]
         ];
     }
-    /* public function getRouteKeyName()
+    public function getRouteKeyName()
     {
         return 'slug';
-    } */
+    }
     /**
      * The attributes that should be hidden for arrays.
      *
