@@ -17,6 +17,7 @@ class CreateCitiesTable extends Migration
             $table->id();
             $table->foreignId('region_id')->index();
             $table->string('prefix')->nullable();
+            $table->string('code')->nullable();
             $table->string('name');
             $table->string('slug');
             $table->timestamps();

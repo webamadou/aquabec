@@ -32,6 +32,7 @@ class RegionSeeder extends Seeder
         ['region_number'=>'00','name'=> 'CRÉ Montérégie Est'],
         ['region_number'=>'00','name'=> 'CRÉ Vallée-du-Haut-Saint-Laurent'],
         ['region_number'=>'17','name'=> 'Centre-du-Québec'],
+        ['region_number'=>'20','name'=> 'Partout au Québec'],
     ];
     /**
      * Run the database seeds.
