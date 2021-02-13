@@ -2,7 +2,7 @@
     <div class="col-md-12 col-sm-12">
         <div class="card">
             <div class="card-header">
-                <h2 class="card-title font-weight-bold">Liste de mes transfert de crédit</h2>
+                <h2 class="card-title font-weight-bold">Liste de mes transferts de crédit</h2>
             </div>
             <div class="card-body">
                 <table class="table table-success table-striped table-borderless" id="credits-table">

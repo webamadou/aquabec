@@ -1,6 +1,6 @@
 @extends('layouts.back.admin')
 
-@section('title', 'Générer de la monnaie: '.strtolower(@$currency->name))
+@section('title', 'Générer de la monnaie: '.@$currency->name)
 
 @section('content')
 
@@ -8,7 +8,7 @@
         <div class="col-sm-6">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="card-title font-weight-bold">Générer de la monnaie: {{strtolower(@$currency->name)}}</h2>
+                    <h2 class="card-title font-weight-bold">Générer de la monnaie: {{@$currency->name}}</h2>
                 </div>
                 <div class="card-body">
                     <form method="POST" action="{{route('banker.currencies.generator')}}" accept-charset="UTF-8">

@@ -48,16 +48,7 @@
                         </div>
                         <button class="btn bg-primary float-right" type="submit"><i class="fa fa-save mr-2"></i>Enregistrer</button>
                     </form>
-                    <!-- {!! form($form) !!} -->
                 </div>
-                @if(Route::currentRouteName() == 'banker.currencies.edit')
-                    <div class="card-footer">
-                        <a class="btn btn-link float-right text-dark font-weight-bold" href="{{ route('banker.currencies.index') }}">
-                            <i class="mr-2 fa fa-plus"></i>
-                            Créer une nouvelle permission
-                        </a>
-                    </div>
-                @endif
             </div>
         </div>
         <div class="col-sm-8">

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Currency;
 use App\Models\Credit;
 use App\Models\User;
-
+use App\Http\Requests\updateCurrencyRequest;
 use Kris\LaravelFormBuilder\Form;
 use Kris\LaravelFormBuilder\FormBuilder;
 use Illuminate\Support\Str;
@@ -17,7 +17,7 @@ class CurrencyController extends Controller
     
     public function __construct(FormBuilder $formBuilder)
     {
-        $this->middleware(['auth','verified','role:super-admin|banker|Banquier'],['except' => ['creditsTransfer']]);
+        $this->middleware(['auth','verified','role:super-admin|banker|banquier'],['except' => ['creditsTransfer']]);
         $this->formBuilder = $formBuilder;
     }
 
@@ -118,14 +118,15 @@ class CurrencyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Currency $currency, Request $request)
+    public function update(Currency $currency, updateCurrencyRequest $request)
     {
 
-        $data = $request->validate([
+        /* $data = $request->validate([
             "name"    => "required | unique:currencies,name,".$currency->id,
             "icons"   => "required | unique:currencies,icons,".$currency->icons,
             "description" => "nullable"
-        ]);
+        ]); */
+        $data = $request->validated();
         $data['ref'] = Str::random(20);
         $data['created_by'] = auth()->user()->id;
         $currency->update($data);

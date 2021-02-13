@@ -77,7 +77,7 @@ Route::middleware(['auth','verified'])->group(function (){
         Route::get('get-credits-data', [CreditsController::class, 'creditData'])->name('credit.data');
     }); */
 
-    Route::middleware(['role:banker|Banquier'])->name('banker.')->prefix('banker')->group(function () {
+    Route::middleware(['role:banker|banquier'])->name('banker.')->prefix('banker')->group(function () {
         Route::resource("currencies", CurrencyController::class);
         Route::get("/generator/{currency}",[CurrencyController::class, 'generate'])->name('currencies.generate');
         Route::post("/generator",[CurrencyController::class, 'generator'])->name('currencies.generator');
@@ -87,7 +87,7 @@ Route::middleware(['auth','verified'])->group(function (){
         Route::post("/transfering",[CurrencyController::class, 'transfering'])->name('currencies.transfering');
     });
 
-    Route::middleware(['role:super-admin|admin|banker|Banquier'])->name('admin.')->prefix('admin')->group(function () {
+    Route::middleware(['role:super-admin|admin|banker|banquier'])->name('admin.')->prefix('admin')->group(function () {
         // Dashboard Routes...
         Route::get('dashboard', [AdminDashboard::class, 'index'])->name('dashboard');
         //Logs des transferts de credit

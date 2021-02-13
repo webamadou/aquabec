@@ -33,7 +33,6 @@ class RoleController extends Controller
                           'users'     => 'Gestion des membres',
                           'events'    => 'Gestion des Événements',
                           'announcement' => 'Gestion des annonces classées',
-                          'banker'    => 'Bankier'
                         ];
 
     public function __construct(FormBuilder $formBuilder)
