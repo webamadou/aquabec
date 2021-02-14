@@ -1,6 +1,6 @@
 @extends('layouts.back.admin')
 
-@section('title','Transférer credits')
+@section('title','Transfert de monnaies')
 
 @inject('credit', 'App\Models\Credit')
 @section('content')
@@ -43,7 +43,7 @@
                                 </select>
                                 {!! $errors->first('send_to', '<div class="error-message col-12">:message</div>') !!}
                             </div>
-                            @role('banker|Banquier|super-admin') 
+                            @role('banquier|super-admin') 
                                 <div class="col-12 row">
                                     <div class="col-6 row">
                                         <label class="label">
@@ -77,7 +77,7 @@
                             </div>
                             <div class="col-12 form-group">
                                 <label for="notes" class="col-sm-12">Ajouter une note (facultatif)</label>
-                                <textarea name="notes" id="notes" cols="30" rows="5" placeholder="Ajouter une note" class="form-control">{{old("notes")}}</textarea>
+                                <textarea name="notes" id="notes" cols="30" rows="5" placeholder="Ajouter une note" class="ckeditor form-control">{{old("notes")}}</textarea>
                                 </select>
                                 {!! $errors->first('notes', '<div class="error-message col-12">:message</div>') !!}
                             </div>
@@ -98,6 +98,13 @@
 @stop
 
 @push('scripts')
+
+    <script src="{{asset('/dist/ckeditor/ckeditor.js')}}" defer></script>
+    <script type="text/javascript" defer>
+        $(document).ready(function () {
+            $('.ckeditor').ckeditor();
+        });
+    </script>
     <script>
         $(function() {
         });

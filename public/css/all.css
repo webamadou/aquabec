@@ -41302,12 +41302,12 @@ a.text-muted:hover {
 .log-notes {
     font-size: 0.7rem;
     line-height: 1.5;
-    background: #fff6a6;
+    background: transparent;
     padding: 0 4px;
     margin: 0;
     min-height: 60px;
     max-height: 90px;
-    max-width: 150px;
+    max-width: 350px;
     overflow-y: auto;
 }
 .tiny-text {

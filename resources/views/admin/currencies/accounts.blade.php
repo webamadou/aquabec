@@ -14,7 +14,7 @@
                 <span class="info-box-icon bg-primary"><i class="{{$currency->icons}}"></i></span>
                 <div class="info-box-content">
                     <h3>{{$currency->name}}</h3>
-                    <div class="tiny-text mb-3"> {{$currency->description}}</div>
+                    <div class="tiny-text mb-3"> {!!$currency->description!!}</div>
                     <ul class="list-group">
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             Valeur Gratuite

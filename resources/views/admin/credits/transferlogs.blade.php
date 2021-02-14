@@ -56,12 +56,14 @@
                     { data: 'sent_value', name: 'sent_value' },
                     { data: null, name: 'notes',
                         render: data => {
-                                return data.notes?`<div class='log-notes'>${data.notes}</div>`:'';
+                                const notesHTML= data.notes?data.notes:'';
+                                const notes = $("<div>").html(notesHTML).text();
+                                return `<div class="log-notes">${notes}</div>`;
                         }
                     },
                     { data: 'updated_at', name: 'updated_at' }
                 ],
-                order: [[ 4, 'desc' ]],
+                order: [[ 5, 'desc' ]],
                 pageLength: 100,
                 responsive: true,
                 "oLanguage":{

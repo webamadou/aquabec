@@ -7,7 +7,7 @@
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="card-title font-weight-bold">Liste des permissions</h2>
+                    <h2 class="card-title font-weight-bold">Liste des transactions</h2>
                 </div>
                 <div class="card-body">
                     <table class="table table-bordered" id="credits-table">
@@ -52,7 +52,7 @@
                     { data: 'sent_value', name: 'sent_value' },
                     { data: 'updated_at', name: 'updated_at' }
                 ],
-                order: [[ 4, 'desc' ]],
+                order: [[ 5, 'desc' ]],
                 pageLength: 100,
             });
         });

@@ -66,9 +66,10 @@ class CurrencyController extends Controller
     {
         $model  = new Currency();
         $form   = $this->getForm();
+        $currencies = Currency::where('status','<=',1)->get();
         $user = auth()->user();//We need the current user's id for the generated_by field
 
-        return view('admin.currencies.index',compact('form','user'));
+        return view('admin.currencies.index',compact('form','user','currencies'));
     }
 
     public function show(Currency $currencies){}
@@ -84,7 +85,7 @@ class CurrencyController extends Controller
     {
         $data = $request->validate([
             "name"    => "required | unique:currencies",
-            "icons"   => "required | unique:currencies",
+            "icons"   => "required | unique:currencies | max:12",
             "description" => "nullable"
         ]);
         $data['ref'] = Str::random(20);
@@ -106,9 +107,10 @@ class CurrencyController extends Controller
     {
         $currency = Currency::find($id);
         $form = $this->getForm($currency);
+        $currencies = Currency::where('status','<=',1)->get();
         $user = auth()->user();//We need the current user's id for the generated_by field
 
-        return view('admin.currencies.index',compact('form','currency','user'));
+        return view('admin.currencies.index',compact('form','currency','user','currencies'));
     }
 
     /**
@@ -120,12 +122,6 @@ class CurrencyController extends Controller
      */
     public function update(Currency $currency, updateCurrencyRequest $request)
     {
-
-        /* $data = $request->validate([
-            "name"    => "required | unique:currencies,name,".$currency->id,
-            "icons"   => "required | unique:currencies,icons,".$currency->icons,
-            "description" => "nullable"
-        ]); */
         $data = $request->validated();
         $data['ref'] = Str::random(20);
         $data['created_by'] = auth()->user()->id;
@@ -263,7 +259,7 @@ class CurrencyController extends Controller
             'transfer_status' => 1
         ];
         //Then we save in the log
-        \App\Models\CreditsTransfersLog::create($logs);
+        $save = \App\Models\CreditsTransfersLog::create($logs);
 
         return redirect()
                 ->back()

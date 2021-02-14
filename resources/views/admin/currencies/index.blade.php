@@ -44,7 +44,7 @@
                         </div>
                         <div class="form-group" data-children-count="1">
                             <label for="description" class="control-label">Description</label>
-                            <textarea class="form-control" name="description" id="description" cols="30" rows="5" placeholder="Ajoutez une description à cette monnaie">{{old('description',@$currency->description)}}</textarea>
+                            <textarea class="ckeditor form-control" name="description" id="description" cols="30" rows="5" placeholder="Ajoutez une description à cette monnaie">{{old('description',@$currency->description)}}</textarea>
                         </div>
                         <button class="btn bg-primary float-right" type="submit"><i class="fa fa-save mr-2"></i>Enregistrer</button>
                     </form>
@@ -66,6 +66,28 @@
                             <th>Actions</th>
                         </tr>
                         </thead>
+                        <tbody>
+                        @foreach($currencies as $currency)
+                            <tr>
+                                <td><i class="{{$currency->icons}} fa-lg text-primary"></i> <strong>{{$currency->name}}</strong></td>
+                                <td>{!!$currency->description!!}</td>
+                                <td>{{$currency->updated_at}}</td>
+                                <td>
+                                     <div class="btn-group dropleft">
+                                        <button type="button" class="btn bg-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Actions
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item text-primary text-bold" href="{{ route('banker.currencies.edit',$currency) }}"><i class="fa fa-user-edit"></i> Modifier</a>
+                                            <a href="#" class="dropdown-item text-danger text-bold" data-toggle="modal" data-target="#modal-delete" data-whatever="{{ route('banker.currencies.destroy',$currency) }}"><i class="fa fa-user-times"></i> Supprimer</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item text-primary text-bold" href="{{ route('banker.currencies.generate',$currency) }}">Générer</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -77,25 +99,11 @@
 @stop
 
 @push('scripts')
-
+    <script src="{{asset('/dist/ckeditor/ckeditor.js')}}"></script>
+    <script src="{{asset('/dist/ckeditor/lang/fr-ca.js')}}"></script>
     <script>
         $(function() {
             $('#roles-table').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: '{{ url('banker/get-currencies-data') }}',
-                columns: [
-                    /* { data: 'icons', name: 'icons' }, */
-                    { data: null, name: 'icons',
-                        render: data => { return `<i class="${data.icons} fa-lg text-primary"></i> <strong>${data.name}</strong>`; }
-                    },
-                    { data: 'description', name: 'description' },
-                    { data: null, name: 'updated_at',
-                        render: data => { return `<span class="tiny-text">${data.updated_at}</span>`; }
-                    },
-                    /* { data: 'updated_at', name: 'updated_at' }, */
-                    { data: 'action', name: 'action', orderable: false, searchable: false }
-                ],
                 order: [[ 0, 'asc' ]],
                 pageLength: 100,
                 responsive: true,

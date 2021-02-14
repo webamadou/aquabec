@@ -10,7 +10,7 @@
                 <span class="info-box-icon bg-primary"><i class="{{$currency->icons}}"></i></span>
                 <div class="info-box-content">
                     <h3>{{$currency->name}}</h3>
-                    <div class="tiny-text mb-3"> {{$currency->description}}</div>
+                    <div class="tiny-text mb-3"> {!!$currency->description!!}</div>
                 </div>
             </div>
         </div>
@@ -61,7 +61,9 @@
                     { data: 'sent_value', name: 'sent_value' },
                     { data: null, name: 'notes',
                         render: data => {
-                                return data.notes?`<div class='log-notes'>${data.notes}</div>`:'';
+                                const notesHTML = data.notes?data.notes:'';
+                                const notes = $("<div>").html(notesHTML).text();
+                                return `<div class='log-notes'>${notes}</div>`;
                         }
                     },
                     { data: 'updated_at', name: 'updated_at' }

@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
             'email' => 'suadmin@lagenda.quebec',
             'name' => 'Super Admin',
             'email_verified_at' => Carbon::now(),
-            'password' => Hash::make('@gend5ue$&c')
+        'password' => Hash::make('@gend5ue$&c')
         ];
         $adminData = [
             'email' => 'admin@lagenda.quebec',

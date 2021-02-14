@@ -115,11 +115,11 @@ class DashboardController extends Controller
 
         return datatables()
             ->collection($logs)
-            ->addColumn('action',function ($logs) {
+            /* ->addColumn('action',function ($logs) {
                 $edit_route = route('banker.credits.edit',$logs);
                 $delete_route = route('banker.credits.destroy',$logs);
                 return view('layouts.back.datatables.actions-btn',compact('edit_route','delete_route'));
-            })
+            }) */
             /* ->rawColumns(['action']) */
             ->make(true);
     }

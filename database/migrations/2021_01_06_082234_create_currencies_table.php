@@ -18,7 +18,7 @@ class CreateCurrenciesTable extends Migration
             $table->string('ref',20)->unique();
             $table->string('name', 255);
             $table->text("description")->nullable(true);
-            $table->string('icons',40)->nullable(true)->unique();
+            $table->string('icons',60)->nullable(true)->unique();
             $table->integer("status")->default(1)->nullable();
             $table->foreignId("created_by");
             $table->timestamps();

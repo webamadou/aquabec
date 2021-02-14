@@ -25,7 +25,7 @@ class updateCurrencyRequest extends FormRequest
     {
         return [
             "name"    => "required | unique:currencies,name,".$this->currency->id,
-            "icons"   => "required | unique:currencies,icons,".$this->currency->id,
+            "icons"   => "required | max:60 | unique:currencies,icons,".$this->currency->id,
             "description" => "nullable"
         ];
     }

@@ -1,6 +1,6 @@
 @extends('layouts.back.admin')
 
-@section('title','Transférer credits')
+@section('title','Transfert de monnaies')
 
 @section('content')
 

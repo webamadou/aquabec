@@ -190,6 +190,7 @@ class UserController extends Controller
             "postal_code"   => "nullable",
             "gender"        => "nullable",
             "num_civique"   => "nullable",
+            "street"        => "nullable",
             "age_group"     => "nullable",
             "mobile_phone"  => "nullable",
             "num_tel"       => "nullable",
@@ -198,7 +199,7 @@ class UserController extends Controller
         if(isset($data['gender']))
             $data['gender'] = intval($data['gender']);
         if($user->update($data)){
-            return redirect()->back()->with("success","Vos informations ont été mise à jour");
+            return redirect()->back()->with("success","Vos informations ont été mise à jour 111");
         }
 
         return redirect()->back()->with("error","Une erreur s'est produite!");
