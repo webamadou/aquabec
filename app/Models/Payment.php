@@ -64,9 +64,9 @@ class Payment extends Model
                         'submitForSettlement' => true
                     ]
                 ]);
+        /* $transaction = $result->transaction;
+        dd($result, @$result->message, @$transaction->updatedAt, @$transaction->creditCard['cardType'], @$transaction->creditCard['last4'],@$transaction->paypal); */
         if ($result->success) {
-            /* $transaction = $result->transaction;
-            dd($transaction, @$transaction->updatedAt, @$transaction->creditCard['cardType'], @$transaction->creditCard['last4'],@$transaction->paypal); */
             $response = ["status" => "SUCCESS","transaction" => $result->transaction, "messages" => null];
         } else {
             $errorString = "";

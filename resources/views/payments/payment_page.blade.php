@@ -3,47 +3,45 @@
 <!-- @ section('title','Informations personelles') -->
 
 @section('content')
-    <div class="col-md-6 offset-md-3">
-        <h1>{{ session("payment_title") }}</h1>
-
+    <div class="card col-md-9 offset-md-3 mx-auto py-4">
+        <h1 class="mb-5 text-center text-blue">{{ session("payment_title") }}</h1>
+        <h4 class="col-12 text-center">Vous pouvez payer en utilisant votre carte bancaire ou votre compte PayPal</h4>
+        <div type="button" class="btn btn-default">
+            Prix de l'inscription : <h2 class="badge bg-primary" style="font-size: 2rem">{{session('price')}} CAD</h2>
+        </div>
+        <div class="spacer"></div>
         <form action="{{ session('form_action') }}" method="POST" id="payment-form">
             @csrf
             <input type="hidden" name="user_id" value="{{session('user_details')['user_id']}}">
             <div class="row">
-                <div class="col-md-6">
-                    <label for="cc_number">Credit Card Number</label>
-
-                    <div class="form-group" id="card-number">
-
-                    </div>
-                </div>
-
-                <div class="col-md-3">
-                    <label for="expiry">Expiry</label>
-
-                    <div class="form-group" id="expiration-date">
-
-                    </div>
-                </div>
-
-                <div class="col-md-3">
-                    <label for="cvv">CVV</label>
-
-                    <div class="form-group" id="cvv">
-
-                    </div>
+                <div id="credit-card-wrapper" class="row bg-gray-light m-0">
+                  <div class="col-md-6">
+                      <label for="cc_number">Numéro de Carte de Crédit</label>
+                      <div class="form-group" id="card-number">
+                      </div>
+                  </div>
+                  <div class="col-md-3">
+                      <label for="expiry">Expiration</label>
+                      <div class="form-group" id="expiration-date">
+                      </div>
+                  </div>
+                  <div class="col-md-3">
+                      <label for="cvv">CVV</label>
+                      <div class="form-group" id="cvv">
+                      </div>
+                  </div>
                 </div>
 
             </div>
 
             <div class="spacer"></div>
 
-            <div id="paypal-button"></div>
+            <div id="paypal-button" class="justify-content-center row pt-4 bg-primary"></div>
 
             <div class="spacer"></div>
 
             <input id="nonce" name="payment_method_nonce" type="hidden" />
-            <button type="submit" class="btn btn-success">Submit Payment</button>
+            <button type="submit" class="btn btn-success btn-lg btn-block"><i class="fa fa-money-check-alt"></i> Soumettre le paiement</button>
         </form>
     </div>
 
@@ -148,8 +146,8 @@
               // Your PayPal options here. For available options, see
               // http://braintree.github.io/braintree-web/current/PayPalCheckout.html#createPayment
               flow: 'checkout', // Required
-              amount: 13.00, // Required
-              currency: 'USD', // Required
+              amount: {{session('price')}}, // Required
+              currency: 'CAD', // Required
             });
           },
 
@@ -173,9 +171,7 @@
           // The PayPal button will be rendered in an html element with the id
           // `paypal-button`. This function will be called when the PayPal button
           // is set up and ready to be used.
-
         });
-
       });
 
 

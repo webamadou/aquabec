@@ -41360,10 +41360,34 @@ input#credit-card-number,
 input#expiration,
 input#cvv,
 input.class,
-input.autofill-field,.credit-card {
+input.autofill-field,
+.credit-card {
     background: #fff;
     height: auto;
     padding: 11px 15px;
     border: 1px solid #dcdcdc;
     border-radius: 6px;
+}
+.spacer {
+    margin-bottom: 24px;
+}
+
+#card-number,
+#cvv,
+#expiration-date {
+    background: white;
+    height: 38px;
+    border: 1px solid #ced4da;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.25rem;
+}
+.paypal-button-container {
+    min-width: 50vw;
+    max-width: auto;
+    font-size: 10px;
+}
+.paypal-button:not(.paypal-button-card) {
+    height: 12vh;
+    min-height: 69px;
+    max-height: auto;
 }

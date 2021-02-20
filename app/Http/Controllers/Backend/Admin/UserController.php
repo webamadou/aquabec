@@ -279,7 +279,7 @@ class UserController extends Controller
             //We now need to save the transaction to the table before return
             $transaction = $payment["transaction"];
             //If we get the paypal index , user paid with paypal. If not we get the card type and the last four digits
-            $payment_method = isset($transaction->paypal)?"Paypal":$transaction->creditCard['cardType']."-".$transaction->creditCard['last4'];
+            $payment_method = isset($transaction->paypal)?"Paypal-".$transaction->paypal['payerEmail']:$transaction->creditCard['cardType']."-".$transaction->creditCard['last4'];
             \App\Models\Payment::create([
                 "user_id" => $user->id,
                 "payment_method" => $payment_method,
