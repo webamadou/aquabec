@@ -215,5 +215,35 @@ class User extends Authenticatable implements MustVerifyEmail
 
         return $this->getUserCurrency($currency_id);
     }
+
+    /**
+     * 
+     * assign a role to a user through
+     */
+    public function giveRole(\App\Models\Role $role)
+    {
+        if($role === null)
+        {return false;}
+        //We add a restriction for the banker and super-admin profiles  
+        if(strtolower($role->name) === 'banquier' || strtolower($role->name) === 'super-admin'|| strtolower($role->name) === 'admin'|| strtolower($role->name) === 'chef vendeur'){
+            return false;
+        }
+        if($this->hasRole('super-admin')){//We prevent to change the super-admin role
+            return false;
+        }
+
+        if($this->assignRole($role->name)){
+            $free_credit_amount = intval($role->free_credit);
+            $paid_credit_amount = intval($role->paid_credit);
+            $pivot_fields       = [
+                                    'free_currency' => $free_credit_amount,
+                                    'paid_currency' => $paid_credit_amount
+                                  ];
+            $this->setUserCurrency($role->currency_id , $pivot_fields);
+
+            return true;
+        }
+        return false;
+    }
     
 }

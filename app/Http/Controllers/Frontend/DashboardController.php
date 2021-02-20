@@ -70,6 +70,7 @@ class DashboardController extends Controller
 
         return view('user.vendeurs.cvcreate', compact('title','current_user','user','region_list','cities_list','age_group'));
     }
+
     public function editVendeur(User $user)
     {
         $current_user = auth()->user();
@@ -79,6 +80,7 @@ class DashboardController extends Controller
 
         return view('user.vendeurs.cvedit', compact('current_user','user','region_list','cities_list','age_group'));
     }
+
     public function infosPerso($default_tab=null){
         //the default_tab var is use to set default tab to display in the page 
         $user = auth()->user();
@@ -90,7 +92,10 @@ class DashboardController extends Controller
 
         $fonction_except = ['admin','super-admin','membre','chef vendeur','vendeur','Banquier'];
         $fonctions   = Role::select('name','id','description')->whereNotIn("name",$fonction_except)->get();
-
+        //we set here the price of a role subscription in a session. We avoid to put that on a form input.
+        /* if(session('price') === null){
+            session(['price' => 5]); //Price are set to 5 CAD ... for the moment...
+        } */
         return view('user.profile.infosperso',compact('region_list','cities_list', 'age_group','user','default_tab','fonctions'));
     }
 

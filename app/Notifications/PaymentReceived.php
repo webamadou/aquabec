@@ -9,20 +9,21 @@ use Illuminate\Notifications\Notification;
 
 use App\Models\User;
 
-class NewAccount extends Notification
+class PaymentReceived extends Notification
 {
     use Queueable;
     public $user ;
-    private $password;
+    private $message;
+
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(User $user, $password)
+    public function __construct(User $user, $message)
     {
-        $this->user = $user ;
-        $this->password = $password;
+        $this->user     = $user ;
+        $this->message  = $message;
     }
 
     /**
@@ -44,19 +45,13 @@ class NewAccount extends Notification
      */
     public function toMail($notifiable)
     {
-        $user = $this->user ;
+        $user = $this->user;
         return (new MailMessage)
                     ->greeting("Hello $user->prenom $user->name")
-                    ->line("Bienvenu sur l'agenda du Québec.")
-                    ->line("Votre compte a été parfaitement comfiguré.")
-                    ->line("Vous pouvez vous connecter avec les accès suivants.")
-                    ->line("votre login : $user->email")
-                    ->line("votre mot de passe : ".$this->password)
-                    ->line("")
-                    ->line("Vous pouvez toujours modifier votre mot de passe dans votre profil")
-                    ->action('Notification Action', url('/'))
-                    ->line('Merci et à toute!')
-                    ->subject("Votre compte l'Agenda du Quebec!");
+                    ->line("Votre Transaction a parfaitement été effectué.")
+                    ->line($this->message)
+                    ->action('Votre profile l\'agenda du Quebec', url('/membres/account'))
+                    ->line('Merci est à bientôt!');
     }
 
     /**

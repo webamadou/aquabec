@@ -41351,3 +41351,19 @@ span.sent_to {
     outline: 0;
     box-shadow: none;
 }
+/* payment forms */
+.braintree-heading {
+    display: none;
+}
+
+input#credit-card-number,
+input#expiration,
+input#cvv,
+input.class,
+input.autofill-field,.credit-card {
+    background: #fff;
+    height: auto;
+    padding: 11px 15px;
+    border: 1px solid #dcdcdc;
+    border-radius: 6px;
+}

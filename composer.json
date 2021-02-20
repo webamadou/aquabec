@@ -22,7 +22,8 @@
         "laravel/ui": "^3.0",
         "spatie/laravel-permission": "^3.18",
         "tinymce/tinymce": ">= 5",
-        "yajra/laravel-datatables-oracle": "~9.0"
+        "yajra/laravel-datatables-oracle": "~9.0",
+        "braintree/braintree_php": "^3.36"
     },
     "require-dev": {
         "facade/ignition": "^2.3.6",

@@ -28,6 +28,15 @@ class Role extends SpatieRole
     }
 
     /**
+     * User can pay to subscribe to a role.
+     * We the need to set a polymorph relation with the payments model
+     */
+    public function payments()
+    {
+        return $this->morphMany(\App\Model\Payment::class, 'purchassable');
+    }
+
+    /**
      * Format created date value to custom
      *
      * @param $value

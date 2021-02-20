@@ -68,13 +68,20 @@
         <form action="{{route('user.assign_role')}}" method="post">
             @csrf
             <div class="modal-header">
-                <h2 class="modal-title text-center" id="exampleModalLabel">Vous allez vous inscrire a la fonction <span id="role_name"></span></h2>
+                <h4 class="modal-title text-center" id="exampleModalLabel">Vous allez vous inscrire à la fonction <span id="role_name"></span></h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                     <input type="hidden" name="role_id" id="form_role_id">
                     <input type="hidden" name="user_id" id="form_user_id">
+                    <input type="hidden" name="form_payment_title" id="form_payment_title">
                 <div class="mb-3" id="confirm_role_description"></div>
+                <div class="mb-3 row" id="price">
+                    <input type="hidden" name="price" value="5" id="price">
+                    <div type="button" class="btn btn-primary">
+                       <h3>Prix de l'inscription : <span class="badge bg-warning">5 CAD</span></h3>
+                    </div>
+                </div>
                 <hr size="70%" class="mx-auto">
                 <div class="mb-3 text-primary"> Confirmer votre inscription à la fonction <span id="confirm_role_name"></span></div>
             </div>
@@ -99,8 +106,9 @@ $(function(){
         $("#confirm_role_description").text(role_desc);
         $("#form_role_id").val(role_id);
         $("#form_user_id").val({{$user->id}});
-        const myModal = new bootstrap.Modal(document.getElementById('myModal'))
-        //alert("This here is a test");
+        $("#form_payment_title").val(`Inscription à la fonction ${role_name}`);
+        const myModal = new bootstrap.Modal(document.getElementById('myModal'));
+
         myModal.show();
     });
 });
