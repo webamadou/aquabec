@@ -31,7 +31,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
 
-        $users = null;
+        Schema::defaultStringLength(191);
+		$users = null;
         $organisations = null;
         $events = null;
         $announcements = null;
