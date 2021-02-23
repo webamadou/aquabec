@@ -132,7 +132,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $query->whereHas("roles", function($q){ $q->where("name", "super-admin")->orWhere('name','admin'); } );
     }
-    
+ 
     /**
      * 
      * Get users with role chef vendor or vendor
@@ -152,6 +152,34 @@ class User extends Authenticatable implements MustVerifyEmail
                                                          ->orWhere('name','Banquier')
                                                          ->orWhere('name','chef vendeur')
                                                          ->orWhere('name','vendeur'); } );
+    }
+        
+    /**
+     * 
+     * Each role has a different list of users it can send currency to 
+     */
+    public function scopeRecipientList($query)
+    {
+        if($this->hasAnyRole(['admin','super-admin'])){
+            $users = User::where('id','!=',$this->id)
+                            ->where('profile_status','<=',1);
+        } elseif($this->hasAnyRole(['chef-vendeur','vendeur'])){
+            $users = $this->godchildren();
+        }
+        else{
+            $users = $query->whereHas("roles", function($q){
+                                         $q->where('name','!=','super-admin')
+                                           ->where('name','!=','admin')
+                                           ->Where('name','!=','chef-vendeur')
+                                           ->Where('name','!=','vendeur')
+                                           ->Where('name','!=','banquier'); 
+                                        })
+                        ->where('id','!=',$this->id)
+                        ->where('profile_status',1)
+                        ;
+        }
+
+        return $users;
     }
     /**
      * The attributes that should be cast to native types.

@@ -133,4 +133,21 @@ class DashboardController extends Controller
     {
         return view('user.not_available');
     }
+    
+    public function transferCurrency(\App\Models\Currency $currency)
+    {
+        $current_user = auth()->user();
+        $currency = $current_user->currencies()->where('slug',$currency->slug)->first();
+        if(!$currency){
+            return redirect()->route('welcome');
+        }
+        $users = $current_user->recipientList()
+                              ->select('id','name','prenom','email')
+                              ->get();
+
+        //We need to display the id next to name in list of users. We just need to add some leading zeros
+        $nbr_leading_zeros = $users->count()<100?3:0;
+
+        return view("user.currencies.transfer", compact("currency","users","current_user","nbr_leading_zeros"));
+    }
 }

@@ -8,7 +8,7 @@
         <div class="col-sm-6">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="card-title font-weight-bold">Liste des permissions</h2>
+                    <h2 class="card-title font-weight-bold">Transfert d'un monnaie</h2>
                 </div>
                 <div class="card-body">
                     @include('layouts._transfer_credit')

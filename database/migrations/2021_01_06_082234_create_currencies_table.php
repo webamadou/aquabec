@@ -17,6 +17,7 @@ class CreateCurrenciesTable extends Migration
             $table->id();
             $table->string('ref',20)->unique();
             $table->string('name', 255);
+            $table->string('slug', 255)->nullable();
             $table->text("description")->nullable(true);
             $table->string('icons',60)->nullable(true)->unique();
             $table->integer("status")->default(1)->nullable();

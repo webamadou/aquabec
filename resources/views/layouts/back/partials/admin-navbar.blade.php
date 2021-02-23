@@ -41,11 +41,11 @@
                 <i class="fas fa-user"></i>
             </a>
             <div class="dropdown-menu dropdown-menu-right">
-                <a href="#" class="dropdown-item">
+                <a href="{{route('user.infosperso')}}" class="dropdown-item">
                     <i class="fas fa-user mr-2"></i> Mon Profil
                 </a>
                 <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item">
+                <a href="{{route('user.infosperso','security')}}" class="dropdown-item">
                     <i class="fas fa-lock mr-2"></i> Securité
                 </a>
                 <div class="dropdown-divider"></div>

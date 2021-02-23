@@ -9,13 +9,33 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\CreditsTransfersLog;
+use Cviebrock\EloquentSluggable\Sluggable;
 
 class Currency extends Model
 {
     use HasFactory;
+    use Sluggable;
 
     protected $guarded = [];
 
+
+    /**
+     * Return the sluggable configuration array for this model.
+     *
+     * @return array
+    */
+    public function sluggable()
+    {
+        return [
+            'slug' => [
+                 'source'             => 'name',
+                 'separator'          => '-',
+                 'unique'             => true,
+                 'onUpdate'           => true,
+                 'includeTrashed'     => false,
+            ]
+        ];
+    }
     /**
      * 
      * Setting up the relationship between users and currency. A many to many relationship

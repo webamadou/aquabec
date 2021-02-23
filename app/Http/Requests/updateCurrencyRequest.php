@@ -24,8 +24,8 @@ class updateCurrencyRequest extends FormRequest
     public function rules()
     {
         return [
-            "name"    => "required | unique:currencies,name,".$this->currency->id,
-            "icons"   => "required | max:60 | unique:currencies,icons,".$this->currency->id,
+            "name"    => "required|unique:currencies,name,".$this->currency->id,
+            "icons"   => "required|max:60|unique:currencies,icons,".$this->currency->id,
             "description" => "nullable"
         ];
     }

@@ -84,8 +84,8 @@ class CurrencyController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            "name"    => "required | unique:currencies",
-            "icons"   => "required | unique:currencies | max:12",
+            "name"    => "required|unique:currencies",
+            "icons"   => "required|unique:currencies|max:60",
             "description" => "nullable"
         ]);
         $data['ref'] = Str::random(20);

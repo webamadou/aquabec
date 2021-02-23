@@ -66,7 +66,8 @@ Route::middleware(['auth','verified'])->group(function (){
     */
     Route::get('get-users-list', [CreditsController::class, 'getUsersLists'])->name("get-users-list");
 
-    Route::post('credits-transfer', [App\Http\Controllers\TransferCreditsController::class, 'transferCredits'])->name('credits.transfer');
+    // Route::post('credits-transfer', [App\Http\Controllers\TransferCreditsController::class, 'transferCredits'])->name('credits.transfer');
+    Route::post('credits-transfer', [App\Http\Controllers\TransferCreditsController::class, 'transfering'])->name('credits.transfer');
 
     Route::middleware(['role:banker|banquier'])->name('banker.')->prefix('banker')->group(function () {
         Route::resource("currencies", CurrencyController::class);
@@ -157,6 +158,8 @@ Route::middleware(['auth','verified'])->group(function (){
         Route::post("/update_password", [UserController::class, "updatePWD"])->name('update_password');
         Route::post("/assign_role", [UserController::class, "assignRole"])->name('assign_role');
         Route::post("/assign_role_checkout", [UserController::class, "assignRoleCheckout"])->name('assign_role_checkout');
+        //FO currencies routes
+        Route::get("/transfering/{currency:slug}",[UserDashboard::class, 'transferCurrency'])->name('currencies.transfer');
     });
     /**
      * User's subscription

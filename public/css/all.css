@@ -41391,3 +41391,9 @@ input.autofill-field,
     min-height: 69px;
     max-height: auto;
 }
+.btn-group > .btn-group:not(:first-child) > .btn,
+.btn-group > .btn:not(:first-child) {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-radius: 1px;
+}

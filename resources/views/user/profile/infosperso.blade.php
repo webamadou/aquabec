@@ -67,35 +67,6 @@
 
     <script defer>
         $(function() {
-
-            $('#wallet-table').DataTable({
-                order: [[ 3, 'desc' ]],
-                pageLength: 100,
-                responsive: true,
-                "oLanguage":{
-                      "sProcessing":     "<i class='fa fa-2x fa-spinner fa-pulse'>",
-                      "sSearch":         "Rechercher&nbsp;:",
-                      "sLengthMenu":     "Afficher _MENU_ &eacute;l&eacute;ments",
-                      "sInfo":           "Affichage de l'&eacute;lement _START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments",
-                      "sInfoEmpty":      "Affichage de l'&eacute;lement 0 &agrave; 0 sur 0 &eacute;l&eacute;ments",
-                      "sInfoFiltered":   "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",
-                      "sInfoPostFix":    "",
-                      "sLoadingRecords": "Chargement en cours...",
-                      "sZeroRecords":    "Aucun &eacute;l&eacute;ment &agrave; afficher",
-                      "sEmptyTable":     "Votre protfeuille est vide.",
-                      "oPaginate": {
-                        "sFirst":      "<| ",
-                        "sPrevious":   "Prec",
-                        "sNext":       " Suiv",
-                        "sLast":       " |>"
-                      },
-                      "oAria": {
-                        "sSortAscending":  ": activez pour trier la colonne par ordre croissant",
-                        "sSortDescending": ": activez pour trier la colonne par ordre décroissant"
-                      }
-                    }
-            });
-            
             //*** Select the cities of the selected region ***
             const regions = document.getElementById("region_id");
             document.getElementById("region_id").addEventListener('change', function (event) {
