@@ -66,7 +66,9 @@ Route::middleware(['auth','verified'])->group(function (){
     */
     Route::get('get-users-list', [CreditsController::class, 'getUsersLists'])->name("get-users-list");
 
-    // Route::post('credits-transfer', [App\Http\Controllers\TransferCreditsController::class, 'transferCredits'])->name('credits.transfer');
+    /**
+     * process transfer credit
+     */
     Route::post('credits-transfer', [App\Http\Controllers\TransferCreditsController::class, 'transfering'])->name('credits.transfer');
 
     Route::middleware(['role:banker|banquier'])->name('banker.')->prefix('banker')->group(function () {

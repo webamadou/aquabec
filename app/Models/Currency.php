@@ -145,21 +145,21 @@ class Currency extends Model
      */
     public function transferCheckings($sender, $recipient, $currency_type, $amount)
     {
-        if( $sender == null || $recipient == null){
+		if( $sender == null || $recipient == null){
             return false;
         }
         //We make sure vendeur , chef vendeur and member can only send paid currency type
         if(!$sender->hasAnyRole(['admin','super-admin','banquier']) && intval($currency_type) === 0){
-            return false;
+			return false;
         }
         //Check if sender have enough currency to send
         $currency_type  = intval($currency_type) > 0 ? 'paid_currency' : 'free_currency';
         if(!isset($sender->pivot->$currency_type) || $sender->pivot->$currency_type < $amount){
-            return false;
+			return false;
         }
         //Lets make sure sender and recipient are not the same
         if(@$sender->id == @$recipient->id){
-            return false;
+			return false;
         }
 
         return true;
