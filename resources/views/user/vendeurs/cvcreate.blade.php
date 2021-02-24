@@ -18,10 +18,10 @@
                 <form action="{{route('vendeurs.store_vendeur')}}" method="post">
                     <input type="hidden" name="godfather" id="godfather" value="{{$current_user->id}}">
                     @hasanyrole('chef-vendeur')
-                        <input type="hidden" name="role_vendeur" id="role_vendeur" value="vendeur">
+                        <input type="text" name="role_vendeur" id="role_vendeur" value="vendeur">
                     @endrole
                     @hasanyrole('vendeur')
-                        <input type="hidden" name="role_annonceur" id="role_annonceur" value="annonceur">
+                        <input type="text" name="role_annonceur" id="role_annonceur" value="annonceur">
                     @endrole
                     @include('user.vendeurs.includes.form')
                 </form>

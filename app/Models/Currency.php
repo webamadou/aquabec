@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\Role;
 use App\Models\CreditsTransfersLog;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate \Support\Str;
 
 class Currency extends Model
 {
@@ -115,7 +116,7 @@ class Currency extends Model
     }
 
     /**
-     * make the editting necessary to make the transfer.
+     * make the editting necessary to make the transfer of a currency.
      * No checking is made  
      * @params $send_by App\Models\User objet 
      * @params $send_to App\Models\User objet 
@@ -124,10 +125,83 @@ class Currency extends Model
      */
     public function transfering(User $send_by, User $send_to, string $type, int $amount)
     {
+        $type  = intval($type) > 0 ? 'paid_currency' : 'free_currency';
         $send_by->pivot->$type -= $amount;
         $send_by->pivot->save();
 
         $send_to->pivot->$type += $amount;
         $send_to->pivot->save();
+    }
+    
+    /**
+     * This will handle all chekings before processing the tansfer
+     * 
+     * @sender object User
+     * @recipient object User
+     * @currency_type integer the type of credit. 0=free, 1=paid
+     * @amount the amount to transfer
+     * 
+     * 
+     */
+    public function transferCheckings($sender, $recipient, $currency_type, $amount)
+    {
+        if( $sender == null || $recipient == null){
+            return false;
+        }
+        //We make sure vendeur , chef vendeur and member can only send paid currency type
+        if(!$sender->hasAnyRole(['admin','super-admin','banquier']) && intval($currency_type) === 0){
+            return false;
+        }
+        //Check if sender have enough currency to send
+        $currency_type  = intval($currency_type) > 0 ? 'paid_currency' : 'free_currency';
+        if(!isset($sender->pivot->$currency_type) || $sender->pivot->$currency_type < $amount){
+            return false;
+        }
+        //Lets make sure sender and recipient are not the same
+        if(@$sender->id == @$recipient->id){
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * This will take care of transfering the given amount to the user. And process all required changes
+     * And will also save to the logs
+     * 
+     * @sender object User
+     * @recipient object User
+     * @currency_type integer the type of credit. 0=free, 1=paid
+     * @amount the amount to transfer
+     * 
+     * 
+     */
+    public function saveTransfer($sender, $recipient, $currency_type, $amount, $notes = null)
+    {
+        if(!$this->transferCheckings($sender, $recipient, $currency_type, $amount)){
+            return false;
+        }
+        $send_initial_amount        = intval($sender->pivot->$currency_type) ;
+        $recipient_initial_amount   = intval($recipient->pivot->$currency_type) ;
+
+        $this->transfering($sender, $recipient, $currency_type, $amount);
+        
+        //We build the logs
+        $logs = [
+            'ref' => Str::random(20),
+            'sent_by' => $sender->id,
+            'sent_to' => $recipient->id,
+            'credit_id' => $this->id,
+            'credit_type' => $currency_type,
+            'sender_initial_credit' => $send_initial_amount,
+            'recipient_initial_credit' => $recipient_initial_amount,
+            'sent_value' => $amount,
+            'sender_new_credit' => $send_initial_amount - intval($amount),
+            'recipient_new_credit' => $recipient_initial_amount + intval($amount),
+            'notes' => $notes,
+            'transfer_status' => 1
+        ];
+        //Then we save in the log
+        $save = \App\Models\CreditsTransfersLog::create($logs);
     }
 }

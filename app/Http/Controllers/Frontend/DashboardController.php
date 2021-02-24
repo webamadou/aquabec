@@ -67,8 +67,9 @@ class DashboardController extends Controller
         $cities_list    = City::where('region_id',$user->region_id)->pluck('name','id');
         $age_group      = AgeRange::ageSelect();
         $title          = $current_user->hasRole('vendeur')?"Enregistrer un annonceur dans votre équipe":"Enregistrer un vendeur dans votre équipe";
+        $role_name          = $current_user->hasRole('vendeur')?"vendeur":"annonceur";
 
-        return view('user.vendeurs.cvcreate', compact('title','current_user','user','region_list','cities_list','age_group'));
+        return view('user.vendeurs.cvcreate', compact('title','current_user','user','region_list','cities_list','age_group','role_name'));
     }
 
     public function editVendeur(User $user)
@@ -90,12 +91,9 @@ class DashboardController extends Controller
 
         $age_group   = AgeRange::ageSelect();
 
-        $fonction_except = ['admin','super-admin','membre','chef vendeur','vendeur','Banquier'];
-        $fonctions   = Role::select('name','id','description')->whereNotIn("name",$fonction_except)->get();
-        //we set here the price of a role subscription in a session. We avoid to put that on a form input.
-        /* if(session('price') === null){
-            session(['price' => 5]); //Price are set to 5 CAD ... for the moment...
-        } */
+        $fonction_except    = ['admin','super-admin','membre','chef vendeur','chef-vendeur','vendeur','Banquier'];
+        $fonctions          = Role::select('name','id','description')->whereNotIn("name",$fonction_except)->get();
+
         return view('user.profile.infosperso',compact('region_list','cities_list', 'age_group','user','default_tab','fonctions'));
     }
 

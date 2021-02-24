@@ -101,12 +101,12 @@ class TransferCreditsController extends Controller
         ]);
         $currency       = Currency::find($data['currency_id']);
         //We check if the sender is the current user 
-        if(@$data['send_by'] === auth()->user()->id){
+        if(intval(@$data['send_by']) !== auth()->user()->id){
             return redirect()
                     ->back()
                     ->with("error", "Une erreur s'est produite.");
         }
-        $sender = $currency->getUserCurrency($data['send_by']);
+        $sender = $currency->getUserCurrency(@$data['send_by']);
         if( $sender == null ){
             return redirect()
                     ->back()
@@ -139,7 +139,7 @@ class TransferCreditsController extends Controller
         $send_initial_amount = intval($sender->pivot->$currency_type) ;
         $recipient_initial_amount = intval($recipient->pivot->$currency_type) ;
 
-        $currency->transfering($sender, $recipient, $currency_type, $data['sent_value']);
+        $currency->transfering($sender, $recipient, $data['credit_type'], $data['sent_value']);
 
         $logs = [
             'ref' => Str::random(20),

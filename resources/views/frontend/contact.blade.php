@@ -1,4 +1,4 @@
-@extends('layouts.frontend')
+@extends('layouts.front.app')
 
 @section('title','Contactez Nous')
 
@@ -85,7 +85,7 @@
                         </div>
                         <div class="col-lg-12">
                             <div class="form-group">
-                                {!! htmlFormSnippet() !!}
+                                <!-- { !! htmlFormSnippet() !!} -->
                             </div>
                         </div>
                         <!-- Col 12 end -->

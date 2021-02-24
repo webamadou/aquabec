@@ -46,9 +46,9 @@ Auth::routes(['verify' => true]);
 /******************************/
 
 Route::get('/', [WelcomeController::class, 'welcomePage'])->name('welcome');
-Route::get('/home', [WelcomeController::class, 'welcomePage'])->name('welcome');
-Route::get('/index', [WelcomeController::class, 'welcomePage'])->name('welcome');
-Route::get('/accueil', [WelcomeController::class, 'welcomePage'])->name('welcome');
+Route::get('/home', [WelcomeController::class, 'welcomePage'])->name('home');
+Route::get('/index', [WelcomeController::class, 'welcomePage'])->name('index');
+Route::get('/accueil', [WelcomeController::class, 'welcomePage'])->name('accueil');
 Route::get('contact-us', [ContactController::class, 'contactPage'])->name('contact');
 Route::get('how-to-use', [ContactController::class, 'contactPage'])->name('how.to.use');
 Route::get('get-started', [ContactController::class, 'contactPage'])->name('get.started');
@@ -174,4 +174,7 @@ Route::middleware(['auth','verified'])->group(function (){
     Route::post("/payment", [\App\Http\Controllers\PaymentController::class, 'payment'])->name('payment');
     Route::post("/checkout", [\App\Http\Controllers\PaymentController::class, 'checkout'])->name('checkout');
 
+    Route::get("/purchase", [CurrencyController::class, "purchase"])->name("purchase_currency");
+    Route::post("/process_purchase", [CurrencyController::class, "purchasing"])->name("process_purchase_currency");
+    Route::post("/process_purchase_checkout", [CurrencyController::class, "purchasing_checkout"])->name("checkout_purchase_currency");
 });

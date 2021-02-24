@@ -123,12 +123,12 @@
                     </a>
                 </li>
                 <li><hr></li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a href="{{route('admin.credits.logs')}}" class="nav-link">
                         <i class="nav-icon fas fa-comments-dollar"></i>
                         <p> Transférer une monnaie </p>
                     </a>
-                </li>
+                </li> -->
                 <li class="nav-item">
                     <a href="{{route('admin.credits.logs')}}" class="nav-link">
                         <i class="nav-icon fas fa-list"></i>

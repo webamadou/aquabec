@@ -7,7 +7,7 @@
         <h1 class="mb-5 text-center text-blue">{{ session("payment_title") }}</h1>
         <h4 class="col-12 text-center">Vous pouvez payer en utilisant votre carte bancaire ou votre compte PayPal</h4>
         <div type="button" class="btn btn-default">
-            Prix de l'inscription : <h2 class="badge bg-primary" style="font-size: 2rem">{{session('price')}} CAD</h2>
+            Montant à payer : <h2 class="badge bg-primary" style="font-size: 2rem">${{session('price')}} CAD</h2>
         </div>
         <div class="spacer"></div>
         <form action="{{ session('form_action') }}" method="POST" id="payment-form">

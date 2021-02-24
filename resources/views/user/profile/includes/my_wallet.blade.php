@@ -3,6 +3,12 @@
         <div class="card">
             <div class="card-header">
                 <h2 class="card-title font-weight-bold">Mon portefeuille</h2>
+                <div class="card-tools">
+                        <a href="{{route('purchase_currency')}}" class="btn btn-primary btn-sm">
+                            <i class="mr-2 fa fa-credit-card"></i>
+                            Recharger mon portefeuille
+                        </a>
+                    </div>
             </div>
             <div class="card-body">
                 <table class="table table-success table-striped" id="wallet-table">
