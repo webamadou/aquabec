@@ -20,13 +20,13 @@ class CategoryController extends Controller
 
     public function __construct(FormBuilder $formBuilder)
     {
-        $this->middleware(['auth','verified','role:super-admin']);
+        $this->middleware(['auth','verified','role:super-admin|admin']);
         $this->formBuilder = $formBuilder;
     }
 
     public function eventCategoriesData()
     {
-        $categories = Category::where('type','event')->get();
+        $categories = Category::where('type','evemenent')->get();
 
         return datatables()
             ->collection($categories)
@@ -45,9 +45,23 @@ class CategoryController extends Controller
             ->make(true);
     }
 
+    public function categoriesData()
+    {
+        $categories = Category::where('type','!=','')->with('parent')->get();
+        return datatables()
+            ->collection($categories)
+            ->addColumn('action',function ($category) {
+                $edit_route = route('admin.settings.categories.edit',$category);
+                $delete_route = route('admin.settings.categories.destroy',$category);
+
+                return view('layouts.back.datatables.actions-btn',compact('edit_route','delete_route'));
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+    }
     public function announcementCategoriesData()
     {
-        $categories = Category::where('type','announcement')->get();
+        $categories = Category::where('type','annonce')->get();
 
         return datatables()
             ->collection($categories)
@@ -153,6 +167,9 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
+        if($category->categories_count > 0){
+            return redirect()->back()->with("error", "Impossible de supprimer une catégorie qui a des catégories enfant.");
+        }
         if($category->type == 'event' && $category->events_count == 0){
             $category->delete();
             return redirect()->back()->with('success','La catégorie a été supprimée avec succès!');

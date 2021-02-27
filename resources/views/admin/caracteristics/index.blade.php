@@ -5,7 +5,7 @@
 @section('content')
 
     <div class="row">
-        <div class="col-sm-12 col-md-4">
+        <div class="col-sm-12">
             <div class="card">
                 <div class="card-header bg-primary">
                     @if(Route::currentRouteName() == 'admin.settings.categories.index')
@@ -28,8 +28,10 @@
                 @endif
             </div>
         </div>
- 
-        <div class="col-sm-6 col-md-8">
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title font-weight-bold">Catégories d'évènements</h2>
@@ -39,7 +41,25 @@
                         <thead>
                         <tr>
                             <th>Nom</th>
-                            <th>Type</th>
+                            <th>Parent</th>
+                            <th>Dernière modification</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title font-weight-bold">Catégories d'annonces</h2>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered" id="announcement-categories-table">
+                        <thead>
+                        <tr>
+                            <th>Nom</th>
                             <th>Parent</th>
                             <th>Dernière modification</th>
                             <th>Actions</th>
@@ -62,17 +82,10 @@
             $('#event-categories-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ url('admin/settings/get-categories-data') }}',
+                ajax: '{{ url('admin/settings/get-event-categories-data') }}',
                 columns: [
-                    { data: null, name: 'name',
-                        render: data => {return `<h4>${data.name}</h4>`}
-                    },
-                    { data: null, name: 'type',
-                        render: data => {return `${data.type}`}
-                    },
-                    { data: null, name: 'parent',
-                        render: data => {return `${data.parent?data.parent.name:''}`}
-                    },
+                    { data: 'name', name: 'name' },
+                    { data: 'parent', name: 'parent' },
                     { data: 'updated_at', name: 'updated_at' },
                     { data: 'action', name: 'action', orderable: false, searchable: false }
                 ],
@@ -103,7 +116,7 @@
                     }
             });
 
-            /* $('#announcement-categories-table').DataTable({
+            $('#announcement-categories-table').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: '{{ url('admin/settings/get-announcement-categories-data') }}',
@@ -113,7 +126,7 @@
                     { data: 'updated_at', name: 'updated_at' },
                     { data: 'action', name: 'action', orderable: false, searchable: false }
                 ]
-            }); */
+            });
 
             $('#modal-delete').on('show.bs.modal', function (event) {
                 var button = $(event.relatedTarget) // Button that triggered the modal

@@ -116,6 +116,7 @@ Route::middleware(['auth','verified'])->group(function (){
             Route::resource('age_ranges', AgeRangeController::class);
             Route::get('get-age_ranges-data', [AgeRangeController::class, 'eventAgeRangeData'])->name('event.categories.data');
 
+            Route::get('get-categories-data', [CategoryController::class, 'categoriesData'])->name('event.categories.data');
             Route::get('get-event-categories-data', [CategoryController::class, 'eventCategoriesData'])->name('event.categories.data');
             Route::get('get-announcement-categories-data', [CategoryController::class, 'announcementCategoriesData'])->name('announcement.categories.data');
 

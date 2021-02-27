@@ -37,7 +37,7 @@ class CategoryForm extends Form
             ])
             ->add('type', 'select',[
                 'label' => 'Type',
-                'choices' => ['event' => 'Evènement', 'announcement' => 'Annonce'],
+                'choices' => ['evènement' => 'Evènement', 'annonce' => 'Annonce'],
                 'empty_value' => '=== Choisissez le type de catégorie ===',
                 'rules' => [
                     'required',
