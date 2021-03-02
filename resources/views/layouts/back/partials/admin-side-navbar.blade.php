@@ -123,12 +123,6 @@
                     </a>
                 </li>
                 <li><hr></li>
-                <!-- <li class="nav-item">
-                    <a href="{{route('admin.credits.logs')}}" class="nav-link">
-                        <i class="nav-icon fas fa-comments-dollar"></i>
-                        <p> Transférer une monnaie </p>
-                    </a>
-                </li> -->
                 <li class="nav-item">
                     <a href="{{route('admin.credits.logs')}}" class="nav-link">
                         <i class="nav-icon fas fa-list"></i>
@@ -178,10 +172,17 @@
                 </li>
                 @endif
                 @if(auth()->user()->hasRole('super-admin'))
+                <li><hr></li>
                 <li class="nav-item">
                     <a href="{{ route('admin.settings.categories.index') }}" class="nav-link {{ side_nav_bar_menu_status('categories','active')  }}">
-                        <i class="fa fa-list-alt nav-icon"></i>
+                        <i class="fa fa-list nav-icon"></i>
                         <p>Catégories</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.settings.caracteristics.index') }}" class="nav-link {{ side_nav_bar_menu_status('caracteristics','active')  }}">
+                        <i class="fa fa-list-alt nav-icon"></i>
+                        <p>Caractéristiques</p>
                     </a>
                 </li>
                 <li class="nav-item">

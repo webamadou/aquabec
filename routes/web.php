@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Backend\Admin\CategoryController;
+use App\Http\Controllers\Backend\Admin\CaracteristicController;
+use App\Http\Controllers\Backend\Admin\CaracteristicOptionController;
 use App\Http\Controllers\Backend\Admin\CityController;
 use App\Http\Controllers\Backend\Admin\DashboardController as AdminDashboard;
 use App\Http\Controllers\Backend\Admin\OrganisationController;
@@ -112,11 +114,24 @@ Route::middleware(['auth','verified'])->group(function (){
             Route::get('get-cities-data', [CityController::class, 'citiesData'])->name('cities.data');
             // Categories Routes
             Route::resource('categories', CategoryController::class);
+            Route::get('get-categories-data', [CategoryController::class, 'categoriesData'])->name('event.categories.data');
+            // Caracteristics Routes
+            Route::resource('caracteristics', CaracteristicController::class);
+            Route::get('get-cateristics-data', [CaracteristicController::class, 'caracteristicsData'])->name('cateristics.data');
+            // Caracteristics options Routes
+            //Route::resource('caracteristic_options', CaracteristicOptionController::class);
+            Route::get('get-cateristic-options-data/{caracteristic}', [CaracteristicOptionController::class, 'optionsData'])->name('cateristicOptions.data');
+
+            Route::get('/caracteristic/{caracteristic}/caracteristic_options', [CaracteristicOptionController::class, 'index'])->name("caracteristicOption");
+            Route::get('/caracteristic/{caracteristic}/caracteristic_options/create', [CaracteristicOptionController::class, 'create'])->name("caracteristicOption.create");
+            Route::post('/caracteristic/{caracteristic}/caracteristic_options', [CaracteristicOptionController::class, 'store'])->name("store_caracteristicOption");
+            Route::get('/caracteristic/{caracteristic}/caracteristic_options/{option_id}/edit', [CaracteristicOptionController::class, 'edit'])->name("edit_caracteristicOption");
+            Route::put('/caracteristic/caracteristic_options/{option}', [CaracteristicOptionController::class, 'update'])->name("update_caracteristicOption");
+            Route::delete('/caracteristic/caracteristic_options/{option}', [CaracteristicOptionController::class, 'destroy'])->name("delete_caracteristicOption"); //*/
             //Age range resource
             Route::resource('age_ranges', AgeRangeController::class);
             Route::get('get-age_ranges-data', [AgeRangeController::class, 'eventAgeRangeData'])->name('event.categories.data');
 
-            Route::get('get-categories-data', [CategoryController::class, 'categoriesData'])->name('event.categories.data');
             Route::get('get-event-categories-data', [CategoryController::class, 'eventCategoriesData'])->name('event.categories.data');
             Route::get('get-announcement-categories-data', [CategoryController::class, 'announcementCategoriesData'])->name('announcement.categories.data');
 

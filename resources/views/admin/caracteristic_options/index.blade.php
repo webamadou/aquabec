@@ -1,27 +1,42 @@
 @extends('layouts.back.admin')
 
-@section('title','Caracteristics ')
+@section('title','Les options de la caracteristique '.@$caracteristic->name)
 
 @section('content')
     <div class="row">
         <div class="col-sm-12 col-md-4">
             <div class="card">
                 <div class="card-header bg-primary">
-                    @if(Route::currentRouteName() == 'admin.settings.caracteristics.index')
-                    <h2 class="card-title font-weight-bold">Ajouter une caracteristic</h2>
+                    @if(Route::currentRouteName() == 'admin.settings.caracteristicOption')
+                    <h2 class="card-title font-weight-bold">Ajouter une option</h2>
                     @endif
-                    @if(Route::currentRouteName() == 'admin.settings.caracteristics.edit')
-                    <h2 class="card-title font-weight-bold">Modifier la caracteristic</h2>
+                    @if(Route::currentRouteName() == 'admin.settings.edit_caracteristicOption')
+                    <h2 class="card-title font-weight-bold">Modification d'une option</h2>
                     @endif
                 </div>
                 <div class="card-body">
-                    {!! form($form) !!}
+                @if(Route::currentRouteName() == 'admin.settings.caracteristicOption')
+                    <form method="POST" action="{{route('admin.settings.store_caracteristicOption',$caracteristic->id)}}">
+                    <input type="hidden" name="caracteristic_id" id="caracteristic_id" value="{{$caracteristic->id}}">
+                @endif
+                @if(Route::currentRouteName() == 'admin.settings.edit_caracteristicOption')
+                    <form method="POST" action="{{route('admin.settings.update_caracteristicOption',[$option])}}">
+                    @method('put')
+                    <input type="hidden" name="caracteristic_id" id="caracteristic_id" value="{{$option->caracteristic_id}}">
+                @endif
+                        @csrf
+                        <div class="form-group" data-children-count="1"> 
+                            <label for="name" class="control-label required">Nom de l'option *</label>
+                            <input class="form-control" required="required" name="name" type="text" id="name" value="{{@$option->name}}">
+                        </div> 
+                        <button class="btn bg-primary float-right" type="submit"><i class="fa fa-save mr-2"></i>Enregistrer</button> 
+                    </form>
                 </div>
-                @if(Route::currentRouteName() == 'admin.settings.caracteristics.edit')
+                @if(Route::currentRouteName() == 'admin.settings.caracteristic_options.edit')
                     <div class="card-footer">
                         <a class="btn btn-link float-right text-dark font-weight-bold" href="{{ route('admin.settings.caracteristics.index') }}">
                             <i class="mr-2 fa fa-plus"></i>
-                            Créer une nouvelle caracteristique
+                            Ajouter une option
                         </a>
                     </div>
                 @endif
@@ -39,17 +54,37 @@
                         <thead>
                         <tr>
                             <th>Nom</th>
-                            <th>Category</th>
+                            <th>Caracteristic</th>
                             <th>Dernière modification</th>
                             <th>Actions</th>
                         </tr>
                         </thead>
+                        <tbody>
+                        @foreach($options as $key => $option)
+                            <tr>
+                                <td><h4>{{$option->name}}</h4></td>
+                                <td><strong>{{$option->caracteristic->name}}</strong></td>
+                                <td>{{$option->updated_at}}</td>
+                                <td>
+                                    <div class="btn-group dropleft">
+                                        <button type="button" class="btn bg-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Actions
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item text-primary text-bold" href="{{ route('admin.settings.edit_caracteristicOption',[$option->caracteristic_id,$option->id]) }}"><i class="fa fa-user-edit"></i> Modifier</a>
+                                            <a href="#" class="dropdown-item text-danger text-bold" data-toggle="modal" data-target="#modal-delete" data-whatever="{{ route('admin.settings.delete_caracteristicOption',[$option->id]) }}"><i class="fa fa-user-times"></i> Supprimer</a>
+                                        </div>
+                                    </div>
+
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
-
     @include('layouts.back.alerts.delete-confirmation')
 
 @stop
@@ -60,34 +95,22 @@
         $(function() {
             $('#caracteristics-table').DataTable({
                 processing: true,
-                serverSide: true,
-                ajax: '{{ url('admin/settings/get-cateristics-data') }}',
+                /* serverSide: true,
+                ajax: '{ { url('admin/settings/get-cateristic-options-data',$id) }}',
                 columns: [
                     { data: null, name: 'name',
                         render: data => {
-                            //We could have done this on the model. But we want to be able to get the raw value of type some time. 
-                            let type = null;
-                            switch (data.type){
-                                case 0: type = "Text simple";
-                                break;
-                                case 1: type = `Choix unique<br><a href='/admin/settings/caracteristic/${data.id}/caracteristic_options'>Gérer les options</>`;
-                                break;
-                                case 2: type = `Choix multiple<br><a href='/admin/settings/caracteristic/${data.id}/caracteristic_options'>Gérer les options</>`;
-                                break;
-
-                                default: type = "Text simple";
-                            }
-                            return `<h4>${data.name}</h4>${type}`;
+                            return `<h4>${data.name}</h4>`;
                         }
                     },
                     { data: null, name: 'category',
                         render: data =>{
-                            return `${data.category ? data.category.name:''}`;
+                            return `${data.caracteristic ? data.caracteristic.name:''}`;
                         }
                     },
                     { data: 'updated_at', name: 'updated_at' },
                     { data: 'action', name: 'action', orderable: false, searchable: false }
-                ],
+                ], */
                 order: [[ 0, 'asc' ]],
                 pageLength: 100,
                 responsive: true,
