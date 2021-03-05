@@ -1,0 +1,97 @@
+@extends('layouts.front.app')
+<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"> 
+@section('content')
+    <div class="row">
+        <div class="offset-sm-2 col-10 text-blue mb-4"><h2><i class="fa fa-plus"></i> Enregistrement d'une annonce classée</h2></div>
+        <!-- @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif -->
+        <div class="col-8 tab-content mx-auto" id="nav-tabContent">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title font-weight-bold">- </h2>
+                    <!-- <div class="card-tools">
+                        <a href="{ {route('user.create_announcement')}}" class="btn btn-primary btn-sm">
+                            <i class="mr-2 fa fa-plus"></i> Ajouter une annonce
+                        </a>
+                    </div> -->
+                </div>
+                <div class="card-body">
+                    <form action="{{route('user.store_announcement')}}" method="post" enctype="multipart/form-data">
+                        <div class="row">
+                            @csrf
+                            @if($user->hasAnyRole(['chef-vendeur','vendeur']))
+                            <div class="offset-sm-0 col-12 form-group row">
+                                <label for="owner" class="col-sm-12 col-md-12">Publiée l'annonce pour : </label>
+                                <select name="owner" id="owner" class="form-control">
+                                    <option value=""> --- </option>
+                                    @forelse($children as $child)
+                                    <option value="{{$child->id}}"> {{$child->name}} </option>
+                                    @empty
+                                    <option value="{{$user->id}}">Vous n'avez enregistré aucun équipier.</option>
+                                    @endforelse
+                                </select>
+                            </div>
+                            @endif
+                            <input type="hidden" name="posted_by" value="{{$user->id}}">
+                            @include("announcements.includes.announcement_form")
+                            <div class="offset-sm-4 col-sm-8 form-group row">
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Enregistrer</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
+@push('scripts')
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js" defer></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js" defer></script>
+    <script src="{{asset('dist/multiple_dates_picker/jquery-ui.multidatespicker.js')}}" defer></script>
+    <script>
+        $(document).ready(function(){  
+            $('#datePick').multiDatesPicker({
+                dateFormat: "d/m/yy",
+                minDate: 0, // today
+            });
+
+            //*** Select the cities of the selected region ***
+            const regions = document.getElementById("region_id");
+            document.getElementById("region_id").addEventListener('change', function (event) {
+                const selected_region = this.value;
+                $.ajax({
+                    type: 'get',
+                    url: `{{url('/select_cities')}}`,
+                    data: {'id': selected_region},
+                    success: function(res){
+                        const entries = Object.entries(res);
+                        const cities_field = document.getElementById("city_id");
+                        cities_field.innerHTML = `<option value=""> --- </option>`;
+                        for(const [key,region] of entries){
+                            console.log(key);
+                            cities_field.innerHTML += `<option value="${key}">${region}</option>`;
+                        }
+                    }
+                });
+            });
+
+
+        });
+    </script>
+
+    <script src="{{asset('/dist/ckeditor/ckeditor.js')}}" defer></script>
+    <script>
+            //Load of ckeditor
+            $(document).ready(function () {
+                $('.ckeditor').ckeditor();
+            });
+    </script>
+@endpush

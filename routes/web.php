@@ -58,6 +58,12 @@ Route::post('contact', [ContactController::class, 'contactPost'])->name('contact
 
 Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
 
+//We use following links to display images from storage folder
+Route::get('images/announcements/{filename?}', [UserDashboard::class, 'announcementImage'])->name('announcement.image');
+
+Route::get('/linkstorage', function () {
+    Artisan::call('storage:link');
+});
 /******************************/
 /*       BACKEND ROUTES       */
 /******************************/
@@ -178,6 +184,19 @@ Route::middleware(['auth','verified'])->group(function (){
         Route::post("/assign_role_checkout", [UserController::class, "assignRoleCheckout"])->name('assign_role_checkout');
         //FO currencies routes
         Route::get("/transfering/{currency:slug}",[UserDashboard::class, 'transferCurrency'])->name('currencies.transfer');
+    
+    });
+
+    //Routes for vendeurs and annonceurs
+    Route::middleware(['role:vendeur|annonceur|super-admin'])->name('user.')->group(function(){
+        Route::get("/mes_annonces", [UserDashboard::class, 'myAnnouncements'])->name("my_announcements");
+        Route::get("/mes_annonces/create", [UserDashboard::class, 'createAnnouncement'])->name('create_announcement');
+        Route::get("/mes_annonces/announcement/{announcement:slug}", [UserDashboard::class, 'showAnnouncement'])->name('show_announcement');
+        Route::get("/mes_annonces/edit/{announcement:slug}", [UserDashboard::class, 'editAnnouncement'])->name('edit_announcement');
+        Route::post("/mes_annonces/store", [UserDashboard::class, 'storeAnnouncement'])->name('store_announcement');
+        Route::put("/mes_annonces/update/{announcement}", [UserDashboard::class, 'updateAnnouncement'])->name('update_announcement');
+        Route::get("/myAnnouncements-data", [UserDashboard::class, 'myAnnouncementsData'])->name('myAnnouncements-data');
+        Route::delete("/mes_annonces/delete/{announcement:slug}", [UserDashboard::class, 'deleteAnnouncement'])->name('delete_announcement');
     });
     /**
      * User's subscription

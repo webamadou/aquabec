@@ -13,6 +13,7 @@ use Cviebrock\EloquentSluggable\Sluggable;
 
 use App\Models\Currency;
 use App\Models\CreditsTransfersLog;
+use App\Models\Announcement;
 
 //class User extends Authenticatable
 class User extends Authenticatable implements MustVerifyEmail
@@ -113,6 +114,27 @@ class User extends Authenticatable implements MustVerifyEmail
     public function allGodchildren()
     {
         return $this->allGodchildren()->with('allGodchildren');
+    }
+
+    public function announcementsPosted()
+    {
+        return $this->hasMany(Announcement::class, 'posted_by', 'id');
+    }
+
+    public function announcementsValidated()
+    {
+        return $this->hasMany(Announcement::class, 'validated_by', 'id');
+    }
+
+    public function scopeMyAnnouncements($query)
+    {
+        if($this->hasAnyRole(['chef-vendeur','vendeur'])){
+            return Announcement::where('posted_by',$this->id)->where('publication_status','<',4)->orWhere('owner',$this->id);
+        } elseif ($this->hasAnyRole(['super-admin','admin'])) {
+            return Announcement::where('posted_by',$this->id)->where('publication_status','<',4)->orWhere('owner',$this->id);
+        }
+
+        return $announcements = Announcement::where('owner',$this->id);
     }
     
     /**

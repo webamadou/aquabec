@@ -50,7 +50,7 @@ const phone_numbers = document.querySelectorAll(".phone_number").forEach(functio
 
 
 //I get this code from the layou.back.user file but I barely understand what it is for
-$(function () {
+/* $(function () {
     $('.textarea').summernote({
         height: 250,
         lang: 'fr',
@@ -78,7 +78,7 @@ $(function () {
             format: 'DD/MM/YYYY hh:mm A'
         }
     });
-});
+}); */
 
 $(document).ready(function () {
     bsCustomFileInput.init();

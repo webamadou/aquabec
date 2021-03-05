@@ -13,7 +13,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name') }} - @yield(('title'))</title>
-
+    
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
 
     <!-- App script -->
@@ -58,7 +58,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
             <div class="collapse navbar-collapse order-3" id="navbarCollapse">
                 <!-- Left navbar links -->
                 <ul class="navbar-nav">
@@ -69,7 +68,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <a href="{{ route('user.events.index') }}" class="nav-link {{ side_nav_bar_menu_status('events','active') }}"><i class="fas fa-calendar-check"></i> Mes évènements</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link"><i class="fa fa-bullhorn"></i> Mes annonces</a>
+                        <a href="{{route('user.my_announcements')}}" class="nav-link"><i class="fa fa-bullhorn"></i> Mes annonces</a>
                     </li>
                     @hasanyrole('chef-vendeur|vendeur')
                         <li class="nav-item"><a class="nav-link" href="{{route('vendeurs.my_team')}}"><i class="fa fa-user-friends"></i> Mon équipe</a></li>
@@ -100,50 +99,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     </li>
                 </ul>
             </div>
-
-            <!-- Right navbar links -->
-            <!-- <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
-                <!-- Notifications Dropdown Menu ->
-                <li class="nav-item dropdown">
-                    <a class="nav-link" data-toggle="dropdown" href="#">
-                        <i class="far fa-bell"></i>
-                        <span class="badge badge-primary navbar-badge">0</span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        <span class="dropdown-header">0 Notification(s)</span>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-envelope mr-2"></i> 4 new messages
-                            <span class="float-right text-muted text-sm">3 mins</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-
-                        <a href="#" class="dropdown-item dropdown-footer">Toutes les notifications</a>
-                    </div>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link" data-toggle="dropdown" href="#">
-                        <i class="fas fa-user"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-user mr-2"></i> Mon Profil
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-lock mr-2"></i> Securité
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{{ route('logout') }}"
-                           onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-                            <i class="fas fa-power-off mr-2"></i> Se Déconnecter
-                        </a>
-                    </div>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                        @csrf
-                    </form>
-                </li>
-            </ul> -->
         </div>
     </nav>
     <!-- /.navbar -->

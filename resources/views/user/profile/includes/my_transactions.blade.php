@@ -5,7 +5,7 @@
                 <h2 class="card-title font-weight-bold">Liste de mes transferts de crédit</h2>
             </div>
             <div class="card-body">
-                <table class="table table-success table-striped table-borderless" id="credits-table">
+                <table class="table table-success table-striped table-borderless" id="my-transactions-table">
                     <thead class="table-light">
                     <tr>
                         <th>Actions</th>
@@ -22,7 +22,7 @@
 <script defer>
         $(function() {
 
-            $('#credits-table').DataTable({
+            $('#my-transactions-table').DataTable({
                 processing: true,
                 serverSide: true,
                 method:'post',

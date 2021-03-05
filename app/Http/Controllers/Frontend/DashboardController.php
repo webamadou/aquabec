@@ -4,14 +4,21 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Gate;
+
 use App\Models\Region;
 use App\Models\City;
+use App\Models\Category;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\AgeRange;
 use App\Models\CreditsTransfersLog;
+use App\Models\Announcement;
+
 use Mail;
 use App\Mail\UserMails;
+
 
 class DashboardController extends Controller
 {
@@ -147,5 +154,199 @@ class DashboardController extends Controller
         $nbr_leading_zeros = $users->count()<100?3:0;
 
         return view("user.currencies.transfer", compact("currency","users","current_user","nbr_leading_zeros"));
+    }
+    /**
+     * Will use this method to return the image for an announcement
+     */
+    public function announcementImage($images=null)
+    {
+        $path = storage_path('app/public/images/announcements/'. $images);
+        if ($images ===null || !\File::exists($path)) {
+            $path = storage_path('app/public/images/announcements/default.jpg');
+        }
+        $file = \File::get($path);
+        $type = \File::mimeType($path);
+        $response = \Response::make($file, 200);
+        $response->header("Content-Type", $type);
+        return $response;
+    }
+
+    /*
+     * Get current user announcements data for datatable
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function myAnnouncementsData()
+    {
+        $user = auth()->user();
+        $announcement = $user->myAnnouncements()->with('owned','posted','category','region','city')->get();
+        return datatables()
+            ->collection($announcement)
+            ->addColumn('action',function ($item) {
+                $edit_route = route('user.edit_announcement',$item);
+                $delete_route = route('user.delete_announcement',$item);
+
+                return view('layouts.back.datatables.actions-btn',compact('edit_route','delete_route'));
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+    }
+    /**
+     * list anoucements of current user
+     */
+    public function myAnnouncements()
+    {
+        $user = auth()->user();
+        $announcements = $user->myAnnouncements();
+
+        return view('announcements.my_announcements', compact('user','announcements'));
+    }
+
+    public function createAnnouncement()
+    {
+        $categories = Category::all();
+        $regions    = Region::pluck('name','id');
+        $cities     = City::pluck('name','id');
+        $status     = ['Enregistrer en brouillon','Publiée','Enregistrer en privée'];
+        $user       = auth()->user();
+        $children   = $user->godchildren()->select('name','prenom','email','id')->get();
+
+        return view('announcements.add_announcement',compact('categories','regions','cities','status','children','user'));
+    }
+
+    public function storeAnnouncement(Request $request)
+    {
+        $data = $request->validate([
+            'title'         => 'required',
+            'description'   => 'nullable',
+            'excerpt'       => 'nullable',
+            'category_id'   => 'required',
+            'images'        => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+            'parent'        => 'nullable',
+            'posted_by'     => 'required',
+            'region_id'     => 'nullable',
+            'city_id'       => 'nullable',
+            'publication_status'=> 'required',
+            'published_at'  => 'nullable',
+            'dates'         => 'nullable',
+        ]);
+        $current_user = auth()->user();
+        if(!isset($request->owner)){//If the owner is not defined the publisher become the publisher
+            $data['owner'] = $current_user->id;
+        }
+        //If annouce is published we set the published_at column
+        if(intval($data['publication_status']) === 1){
+            $data['published_at'] = date('Y-m-d H:i:s');
+        }
+        $data['posted_by'] = $current_user->id;
+
+        if($save = Announcement::create($data)){
+            //Actions if an image is uploaded
+            $owner = $save->owned()->select('name','prenom','id')->first() ;
+            //Each user has a folder where to save image and other eventual files
+            $user_folder = str_replace(' ','-',$owner->name)."_".str_replace(' ','-', $owner->prenom)."_".str_replace(' ','-',$owner->id);
+            if($request->has('images')){
+                $image = $request->file('images');
+                $image_name = $save->slug.".".\File::extension($image->getClientOriginalName());
+                $image_path = 'images/announcements';
+                $save_images = $image->storeAs($image_path,$image_name,'public');
+                $save->images = $image_name;
+                $save->save();
+                /* dd(route('announcement.image',$save->images));
+                dd($save->images,"We get a picture", $image_name ); */
+            }
+            return redirect()
+                    ->route('user.my_announcements')
+                    ->with('success',"Votre annonce a été enregistrée avec succès");
+        }
+        return redirect()->back();
+    }
+
+    public function showAnnouncement(Announcement $announcement)
+    {
+        $current_user = auth()->user();
+        //User can view annonce if is owner or publisher or announcement is validated and published
+        //Later we will have to set gates or policies for this
+        if(($announcement->publication_status !== 1 || $announcement->published_at !== 1) && ($current_user->id !== $announcement->owner && $current_user->id !== $announcement->posted_by)){
+            $message = "Ce contenu n'est pas encore disponible";
+            return view('frontend.feedback',compact('message'));
+        }
+        $announcement->countViews();
+        $announcement->countClicks();
+        return view('announcements.show_announcement', compact('announcement','current_user'));
+    }
+
+    public function editAnnouncement(Announcement $announcement)
+    {
+        $categories = Category::all();
+        $regions    = Region::pluck('name','id');
+        $cities     = City::pluck('name','id');
+        $status     = ['Enregistrer en brouillon','Publiée','Enregistrer en privée'];
+        $user       = auth()->user();
+        $children   = $user->godchildren()->select('name','prenom','email','id')->get();
+
+        return view('announcements.edit_announcement',compact('announcement','categories','regions','cities','status','children','user'));
+    }
+
+
+    public function updateAnnouncement(Request $request,Announcement $announcement)
+    {
+        $data = $request->validate([
+            'title'         => 'required',
+            'description'   => 'nullable',
+            'excerpt'       => 'nullable',
+            'category_id'   => 'required',
+            'images'        => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+            'parent'        => 'nullable',
+            'posted_by'     => 'required',
+            'region_id'     => 'nullable',
+            'city_id'       => 'nullable',
+            'publication_status'=> 'required',
+            'published_at'  => 'nullable',
+            'dates'         => 'nullable',
+        ]);
+        $current_user = auth()->user();
+        if(!isset($request->owner)){//If the owner is not defined the publisher become the publisher
+            $data['owner'] = $current_user->id;
+        }
+        //If annouce is published we set the published_at column
+        if(intval($data['publication_status']) === 1){
+            $data['published_at'] = date('Y-m-d H:i:s');
+        }
+        $data['posted_by'] = $current_user->id;
+        //dd($data);
+        $save = $announcement->update($data);
+        if($save){
+            //Actions if an image is uploaded
+            $owner = $announcement->owned()->select('name','prenom','id')->first() ;
+            //Each user has a folder where to save image and other eventual files
+            $user_folder = str_replace(' ','-',$owner->name)."_".str_replace(' ','-', $owner->prenom)."_".str_replace(' ','-',$owner->id);
+            if($request->has('images')){
+                $image = $request->file('images');
+                $image_name = $announcement->slug.".".\File::extension($image->getClientOriginalName());
+                $image_path = 'images/announcements';
+                $save_images = $image->storeAs($image_path,$image_name,'public');
+                $announcement->images = $image_name;
+                $announcement->save();
+            }
+            return redirect()
+                    ->back()
+                    ->with('success',"Votre annonce a été modifiée avec succès");
+        }
+        return redirect()
+                    ->back()
+                    ->with('error',"Il s'est produite une erreur");
+    }
+
+    public function deleteAnnouncement(Announcement $announcement)
+    {
+        if($announcement) {
+            //The publication is not trully deleted but rather hidden
+            $announcement->publication_status = 4;
+            $announcement->delete();
+            return redirect()
+                        ->route('user.my_announcements')
+                        ->with('success', "L'annonce a été supprimée");
+        }
     }
 }

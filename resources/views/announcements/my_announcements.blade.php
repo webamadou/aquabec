@@ -1,0 +1,105 @@
+@extends('layouts.front.app')
+
+@section('content')
+    <div class="row">
+        <div class="my-4 col-12 row">
+            <!-- <h2 class="my-0"> - </h2> -->
+        </div>
+        <div class="col-12 tab-content" id="nav-tabContent">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title font-weight-bold">Mes annonces</h2>
+                    <div class="card-tools">
+                        <a href="{{route('user.create_announcement')}}" class="btn btn-primary btn-sm">
+                            <i class="mr-2 fa fa-plus"></i> Ajouter une annonce
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table class="table table-success table-striped table-borderless" id="announcements-table">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Titre</th>
+                                <th>Categorie</th>
+                                <th>Proprietaire</th>
+                                <th>Region et Ville</th>
+                                <th>Date d'envoie</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
+@push('scripts')
+
+    <script defer>
+        $(function() {
+           $('#announcements-table').DataTable({
+                processing: true,
+                serverSide: true,
+                method:'post',
+                ajax: '{{ route("user.myAnnouncements-data") }}',
+                columns: [
+                    { data: null, name: 'title',
+                        render : data => {
+                            const title = (data.title.length > 35) ? `${data.title.substring(0,35)}...` :data.title;
+                            return `<img src="/images/announcements/${data.images}" alt="{{@$announcement->title}}" style="width:50px; height: auto"><br><strong><a href="/mes_annonces/announcement/${data.slug}">${title}</a></strong>`;
+                        }
+                    },
+                    { data: null, name: 'category_id',
+                        render : data => {
+                            return `${data.category?data.category.name:""}`;
+                        }
+                    },
+                    { data: null, name: 'owner',
+                        render : data => {
+                            let retour = `${data.owned?data.owned.name:""}`;
+                            if(data.owned.id !== data.posted.id)
+                                retour += `<br><strong> Postée par : ${data.posted.name}</strong>`;
+
+                            return `${retour}`
+                        }
+                    },
+                    { data: null, name: 'region_id',
+                        render: data => {
+                            return `<strong>Region : </strong>${data.region?data.region.name:""}<br><strong>Ville : </strong>${data.city?data.city.name:""}`;
+                        }
+                    },
+                    { data: 'updated_at', name: 'updated_at' }
+                ],
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ],
+                order: [[ 4, 'desc' ],[0,'asc']],
+                pageLength: 100,
+                responsive: true,
+                "oLanguage":{
+                      "sProcessing":     "<i class='fa fa-2x fa-spinner fa-pulse'>",
+                      "sSearch":         "Rechercher&nbsp;:",
+                      "sLengthMenu":     "Afficher _MENU_ &eacute;l&eacute;ments",
+                      "sInfo":           "Affichage de l'&eacute;lement _START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments",
+                      "sInfoEmpty":      "Affichage de l'&eacute;lement 0 &agrave; 0 sur 0 &eacute;l&eacute;ments",
+                      "sInfoFiltered":   "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",
+                      "sInfoPostFix":    "",
+                      "sLoadingRecords": "Chargement en cours...",
+                      "sZeroRecords":    "Aucun &eacute;l&eacute;ment &agrave; afficher",
+                      "sEmptyTable":     "Vous n'avez pas encore de transaction.",
+                      "oPaginate": {
+                        "sFirst":      "<| ",
+                        "sPrevious":   "Prec",
+                        "sNext":       " Suiv",
+                        "sLast":       " |>"
+                      },
+                      "oAria": {
+                        "sSortAscending":  ": activez pour trier la colonne par ordre croissant",
+                        "sSortDescending": ": activez pour trier la colonne par ordre décroissant"
+                      }
+                    }
+            });
+        });
+    </script>
+
+@endpush

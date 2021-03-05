@@ -160,8 +160,9 @@
                             @hasanyrole('admin')
                               @include('layouts.front.partials.admin')
                             @endrole
-                            @hasanyrole('client')
-                              -
+                            <hr>
+                            @hasanyrole('vendeur|super-admin|annonceur')
+                            <a class="dropdown-item" href="{{route('user.my_announcements')}}"><i class="fa fa-bullhorn"></i> Mes Annonces</a>
                             @endrole
                             <hr>
                             <a class="dropdown-item" href="{{route('user.infosperso')}}/infos-perso"><i class="fa fa-user"></i> Infos personelles</a>
