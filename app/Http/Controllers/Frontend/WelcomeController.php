@@ -27,8 +27,10 @@ class WelcomeController extends Controller
 		$last_published = array_merge($events->all(), $announcements->all());
 		shuffle($last_published);
 		$mont_array = ['','Jan','Fev','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Dec'];
-		//dd($last_published,$events, $announcements);
-        return view('frontend.welcome', compact('last_published','mont_array'));
+		$section_apropos 	= \App\Models\HomeSection::where('title','LIKE','%a propos%')->first();
+		$section_comment 	= \App\Models\HomeSection::where('title','LIKE','%comment%')->first();
+
+        return view('frontend.welcome', compact('last_published','mont_array','section_apropos','section_comment'));
     }
 
 	public function eventsRegion(Region $region)

@@ -3,16 +3,10 @@
 @section('content')
     <div class="row">
         <div class="offset-sm-2 col-10 text-blue mb-4"><h2><i class="fa fa-plus"></i> Enregistrement d'un évènement</h2></div>
+        @if(!$can_post)
+            <div class="badge badge-danger">Vous n'avez pas assez dans votre portefeuille pour publier votre annonce. Vous pouvez tout de même l'enregistrer en brouillon. Vous pouvez aussi <a href="{{route('purchase_currency')}}" class="btn btn-sm btn-primary"> recharger votre portefeuille.</a> </div>
+        @endif
         <div class="col-8 tab-content mx-auto" id="nav-tabContent">
-            <!-- @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif -->
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title font-weight-bold">- </h2>

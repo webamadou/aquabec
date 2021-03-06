@@ -243,7 +243,10 @@ class DashboardController extends Controller
         $current_user = auth()->user();
         if(!isset($request->owner)){//If the owner is not defined the publisher become the publisher
             $data['owner'] = $current_user->id;
+        } else {
+            $data['owner'] = $request->owner;
         }
+        //dd($data,$request->owner);
         //If annouce is published we set the published_at column
         if(intval($data['publication_status']) === 1){
             $data['published_at'] = date('Y-m-d H:i:s');
@@ -329,6 +332,8 @@ class DashboardController extends Controller
         $current_user = auth()->user();
         if(!isset($request->owner)){//If the owner is not defined the publisher become the publisher
             $data['owner'] = $current_user->id;
+        } else {
+            $data['owner'] = $request->owner;
         }
         //If annouce is published we set the published_at column
         if(intval($data['publication_status']) === 1){
@@ -448,6 +453,8 @@ class DashboardController extends Controller
         $current_user = auth()->user();
         if(!isset($request->owner)){//If the owner is not defined the publisher become the publisher
             $data['owner'] = $current_user->id;
+        } else {
+            $data['owner'] = $request->owner;
         }
         //If annouce is published we set the published_at column
         if(intval($data['publication_status']) === 1){
@@ -539,6 +546,8 @@ class DashboardController extends Controller
         $current_user = auth()->user();
         if(!isset($request->owner)){//If the owner is not defined the publisher become the publisher
             $data['owner'] = $current_user->id;
+        } else {
+            $data['owner'] = $request->owner;
         }
         //If annouce is published we set the published_at column
         if(intval($data['publication_status']) === 1){

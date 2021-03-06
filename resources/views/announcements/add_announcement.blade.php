@@ -12,8 +12,8 @@
                 </ul>
             </div>
         @endif -->
-        @if($can_post)
-            <div class="badge badge-danger">Vous n'avez pas assez dans votre portefeuille pour publier votre annonce. Vous pouvez tout de même l'enregistrer en brouillon. Vous pouvez aussi<a href="{{route('purchase_currency')}}" class="btn btn-sm btn-link"> recharger votre portefeuille.</a> </div>
+        @if(!$can_post)
+            <div class="badge badge-danger">Vous n'avez pas assez dans votre portefeuille pour publier votre annonce. Vous pouvez tout de même l'enregistrer en brouillon. Vous pouvez aussi <a href="{{route('purchase_currency')}}" class="btn btn-sm btn-primary"> recharger votre portefeuille.</a> </div>
         @endif
         <div class="col-8 tab-content mx-auto" id="nav-tabContent">
             <div class="card">

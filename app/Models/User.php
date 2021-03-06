@@ -313,10 +313,11 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $role_name = $this->hasAnyRole('vendeur|super-admin')?'super-admin':'annonceur';
         $role = $this->roles->wherein('name',['super-admin','vendeur','chef-vendeur'])->first();
-        //dd($role->name, $role,intval($this->setUserCurrency(1)->pivot->$type));
+        //dd($role->name, $role,intval($this->setUserCurrency(1)->pivot->$type),$role->$contenu_price);
         //$amount_to_spend = $role->annoucements_price;
         $amount_to_spend = intval($role->$contenu_price);
-        if($amount_to_spend >= intval($this->setUserCurrency(1)->pivot->$type)){
+        //dd($amount_to_spend <= intval($this->setUserCurrency(1)->pivot->$type));
+        if($amount_to_spend <= intval($this->setUserCurrency(1)->pivot->$type)){
             return true ;
         }
 

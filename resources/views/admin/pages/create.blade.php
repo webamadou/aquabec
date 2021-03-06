@@ -32,6 +32,7 @@
                         <textarea class="form-control ckeditor" name="content" cols="50" rows="10" id="content">{{old('content',@$page->content)}}</textarea> 
                     </div> 
                     <button class="btn bg-primary float-right" type="submit"><i class="fa fa-save mr-2"></i>Enregistrer</button>
+                    <a class="btn bg-success float-right mx-4" href="{{route('admin.settings.pages.index')}}"><i class="fa fa-reply"></i> Annuler</a>
                 </div>
                 @if(Route::currentRouteName() == 'admin.settings.security.permissions.edit')
                     <div class="card-footer">

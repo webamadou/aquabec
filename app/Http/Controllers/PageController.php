@@ -9,6 +9,7 @@ use Yajra\Datatables\Datatables;
 
 use App\Models\Page;
 use App\Forms\PageForm;
+use App\Models\HomeSection;
 
 class PageController extends Controller
 {
@@ -58,7 +59,8 @@ class PageController extends Controller
         $form   = $this->getForm();
         $current_user = auth()->user();
         $pages = Page::all();
-        return view('admin.pages.index',compact('form','current_user','pages'));
+        $pagesection = HomeSection::all();
+        return view('admin.pages.index',compact('form','current_user','pages','pagesection'));
     }
 
     /**
@@ -69,6 +71,11 @@ class PageController extends Controller
     public function create()
     {
         return view('admin.pages.create');
+    }
+
+    public function create_section()
+    {
+        return view('admin.pages.create_section');
     }
 
     /**
@@ -87,6 +94,20 @@ class PageController extends Controller
         $page = Page::create($data);
 
         return redirect()->route('admin.settings.pages.index')->with('success','La nouvelle page a été créé avec succès!');
+    }
+    public function store_section(Request $request)
+    {
+        /* $form = $this->getForm();
+        $data = $form->getFieldValues();
+
+        $form->redirectIfNotValid(); */
+        $data = $request->validate([
+            'title' => 'required',
+            'content' => 'nullable'
+        ]);
+        HomeSection::create($data);
+
+        return redirect()->route('admin.settings.pages.index')->with('success','La nouvelle section a été créé avec succès!');
     }
 
     /**
@@ -111,6 +132,11 @@ class PageController extends Controller
         return view("admin.pages.create",compact('page'));
     }
 
+    public function edit_section(HomeSection $home_section)
+    {
+        return view("admin.pages.create_section",compact('home_section'));
+    }
+
     /**
      * Update the specified resource in storage.
      *
@@ -128,6 +154,19 @@ class PageController extends Controller
 
         $page->update($data);
         return redirect()->route('admin.settings.pages.index')->with('success','La page a été mise à jour avec succès!');
+    }
+    /**
+     * 
+     */
+    public function update_section(Request $request, HomeSection $homeSection)
+    {
+        $data = $request->validate([
+            'title' => 'required',
+            'content' => 'nullable'
+        ]);
+
+        $page->update($data);
+        return redirect()->route('admin.settings.pages.index')->with('success','La section a été mise à jour avec succès!');
     }
 
     /**

@@ -14,7 +14,7 @@
                 </div>
                 <!-- Col End -->
                 <div class="col-md-7 ml-md-auto wow fadeInRight" data-wow-duration="1s">
-                    <p class="features-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis deserunt dicta eligendi est et, eveniet facere itaque laboriosam laudantium maiores nam odit perferendis provident reiciendis, sequi tempora totam ut voluptatum?   </p>
+                    <p class="features-text">{!!@$section_apropos->content!!}</p>
                 </div>
                 <!-- Col End -->
             </div>
@@ -204,12 +204,7 @@
                 <div class="col-lg-5 ml-auto col-md-12 wow fadeInRight" data-wow-duration="1s">
                     <h2 class="column-title">Comment çà marches ?</h2>
                     <span class="animate-border tw-mb-40"></span>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam at culpa cupiditate error et facilis laudantium minima molestiae natus nisi, obcaecati pariatur qui quos ratione reiciendis totam ut vel veniam.
-                    </p>
-                    <p>
-                        Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim
-                    </p>
+                    {!!$section_comment->content!!}
                     <!-- End Intro list -->
                     <a href="{{ route('register') }}" class="btn btn-primary">Créer un compte</a>
                     <!-- Default Round Btn -->

@@ -106,7 +106,7 @@
                     </div>
                     <div class="card-body">
                         <div class="">
-                            <textarea class="form-control" name="description" id="description" cols="30" rows="5" placeholder="ajouter une description de la fonction">{{old('description',$role->description)}}</textarea>
+                            <textarea class="form-control ckeditor" name="description" id="description" cols="30" rows="5" placeholder="ajouter une description de la fonction">{{old('description',$role->description)}}</textarea>
                         </div>
                     </div>
                 </div>
@@ -234,6 +234,12 @@
                 $(`#price_wrapper-${current_index}`).remove();
             });
 
+        });
+    </script>
+    <script src="{{asset('/dist/ckeditor/ckeditor.js')}}" defer></script>
+    <script type="text/javascript" defer>
+        $(document).ready(function () {
+            $('.ckeditor').ckeditor();
         });
     </script>
 
