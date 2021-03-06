@@ -22,6 +22,7 @@ use App\Http\Controllers\Backend\User\EventController;
 use App\Http\Controllers\Frontend\ContactController;
 use App\Http\Controllers\Frontend\WelcomeController;
 use App\Http\Controllers\Frontend\SubscriberController;
+use App\Http\Controllers\PageController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -67,6 +68,9 @@ Route::get('show/images/{filename?}', [UserDashboard::class, 'showImage'])->name
 //Search route
 Route::get('/chercher/',[WelcomeController::class, 'searchContent'])->name('search');
 
+//Pages route
+Route::get("/pages/{page:slug}",[WelcomeController::class, 'page'])->name("page");
+
 Route::get('/linkstorage', function () {
     Artisan::call('storage:link');
 });
@@ -106,6 +110,9 @@ Route::middleware(['auth','verified'])->group(function (){
         Route::get('/get-currency-logs/{id}', [App\Http\Controllers\TransferCreditsController::class, 'singleCurrencyLogsData'])->name('credit.logs');
         // Settings Routes...
         Route::name('settings.')->prefix('settings')->group(function () {
+            //Pages routes
+            Route::resource("pages",PageController::class);
+            Route::get('get-pages-data', [RoleController::class, 'pagesData'])->name('pages.data');
             // Security Routes...
             Route::name('security.')->prefix('security')->group(function () {
                 // Roles Routes...

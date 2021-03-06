@@ -54,4 +54,9 @@ class WelcomeController extends Controller
 		$mont_array = ['','Jan','Fev','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Dec'];
 		return view('frontend.search', compact('response','content_type','search_query','mont_array'));
 	}
+
+	public function page(\App\Models\Page $page)
+	{
+		return view('frontend.pages', compact('page'));
+	}
 }

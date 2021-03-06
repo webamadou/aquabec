@@ -174,6 +174,12 @@
                 @if(auth()->user()->hasRole('super-admin'))
                 <li><hr></li>
                 <li class="nav-item">
+                    <a href="{{ route('admin.settings.pages.index') }}" class="nav-link {{ side_nav_bar_menu_status('categories','active')  }}">
+                        <i class="fa fa-list nav-icon"></i>
+                        <p>Pages</p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="{{ route('admin.settings.categories.index') }}" class="nav-link {{ side_nav_bar_menu_status('categories','active')  }}">
                         <i class="fa fa-list nav-icon"></i>
                         <p>Catégories</p>

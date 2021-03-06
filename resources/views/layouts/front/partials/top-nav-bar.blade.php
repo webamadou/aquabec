@@ -4,10 +4,10 @@
             <div class="col-md-6 text-left">
                 <div class="top-contact-info top-bar-link">
                     <span>
-                        <a href="{{ route('get.started') }}">Bien Débuter</a>
+                        <a href="{{ url('/pages/bien-debuter') }}">Bien Débuter</a>
                     </span>
                     <span>
-                        <a href="{{ route('how.to.use') }}">Comment ?</a>
+                        <a href="{{ url('/pages/comment') }}">Comment ?</a>
                     </span>
                     <span>
                         <a href="{{ route('contact') }}">Nous Contacter</a>
