@@ -84,14 +84,14 @@ class Announcement extends Model
         $created_at = Carbon::make($value);
         return Carbon::createFromFormat('Y-m-d H:i:s', $created_at)->diffForHumans();
     }
-
+/* 
     public function getPublishedAtAttribute($value)
     {
         if($value === null)
         return " --- ";
         $published_at = Carbon::make($value);
         return Carbon::createFromFormat('Y-m-d H:i:s', $published_at)->diffForHumans();
-    }
+    } */
     /**
      * Format updated date value to custom
      *

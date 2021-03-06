@@ -42,4 +42,16 @@ class WelcomeController extends Controller
 		$announcements = Announcement::where('category_id',$category->id)->where('publication_status','1')->get();
 		return view('frontend.announcementCategory', compact('category','announcements'));	
 	}
+
+	public function searchContent(Request $request)
+	{
+		$search_query 	= $request->search_q;
+		$content_type 	= $request->content_type != 'evènement'?'annonce':'evènement';
+		$model 			= $request->content_type != 'evènement'? new Announcement(): new Event;
+		$response 		= $model->where("title","LIKE","%{$search_query}%")
+										->where('publication_status','1')
+										->get();
+		$mont_array = ['','Jan','Fev','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Dec'];
+		return view('frontend.search', compact('response','content_type','search_query','mont_array'));
+	}
 }

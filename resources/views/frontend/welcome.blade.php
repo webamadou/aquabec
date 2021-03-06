@@ -95,16 +95,19 @@
                         <span class="text-white">Trouvez tout ici</span>
                     </h2>
                     <div class="analysis-form">
-                        <form class="form-vertical">
+                        <form class="form-vertical" action="{{route('search')}}">
                             <div class="row justify-content-center">
                                 <div class="col-lg-4 col-md-12 no-padding">
                                     <div class="form-group tw-form-round-shape">
-                                        <input type="url" id="url" name="url" placeholder="Que cherchez vous ?" class="form-control">
+                                        <input type="text" id="search_q" name="search_q" placeholder="Que cherchez vous ?" class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-md-12 no-padding">
                                     <div class="form-group tw-form-round-shape">
-                                        <input type="email" id="email" name="email" placeholder="Où ?" class="form-control">
+                                        <select id="content_type" name="content_type" placeholder="Où ?" class="form-control">
+                                            <option value="evènement">Evènements</option>
+                                            <option value="annonce">Annonces</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-md-12 no-padding">

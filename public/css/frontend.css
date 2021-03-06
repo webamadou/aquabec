@@ -10731,3 +10731,9 @@ span.category {
     height: 80px;
     overflow: hidden;
 }
+.analysis-form input, .analysis-form select, .analysis-form input[type=email] {
+    border-radius: 50px;
+    padding: 15px 30px;
+    border: none;
+}
+select.form-control:not([size]):not([multiple]){height:calc(3.25rem + 2px)}

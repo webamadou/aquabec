@@ -64,6 +64,8 @@ Route::get("/evenement/{event:slug}", [UserDashboard::class, 'showEvent'])->name
 
 //We use following links to display images from storage folder
 Route::get('show/images/{filename?}', [UserDashboard::class, 'showImage'])->name('show.image');
+//Search route
+Route::get('/chercher/',[WelcomeController::class, 'searchContent'])->name('search');
 
 Route::get('/linkstorage', function () {
     Artisan::call('storage:link');
