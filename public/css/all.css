@@ -41474,3 +41474,10 @@ hr {
     border-top: none;
     color: #cacaca;
 }
+.list-event-dates {
+    padding: 3px 16px;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-radius: 1px;
+}

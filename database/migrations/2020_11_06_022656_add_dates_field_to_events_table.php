@@ -14,7 +14,9 @@ class AddDatesFieldToEventsTable extends Migration
     public function up()
     {
         Schema::table('events', function (Blueprint $table) {
-            $table->string('dates')->nullable();
+            if(!Schema::hasColumn('events', 'dates')){
+                $table->string('dates')->nullable();
+            }
         });
     }
 

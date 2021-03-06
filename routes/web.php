@@ -44,7 +44,7 @@ Auth::routes(['verify' => true]);
 
 
 /******************************/
-/*       FRONTEND ROUTES      */
+/*       PUBLIC ROUTES      */
 /******************************/
 
 Route::get('/', [WelcomeController::class, 'welcomePage'])->name('welcome');
@@ -56,16 +56,20 @@ Route::get('how-to-use', [ContactController::class, 'contactPage'])->name('how.t
 Route::get('get-started', [ContactController::class, 'contactPage'])->name('get.started');
 Route::post('contact', [ContactController::class, 'contactPost'])->name('contact.post');
 
+Route::get('/events/{region:slug}', [WelcomeController::class, 'eventsRegion'])->name('event_region');
+Route::get("/announcements/{category:slug}", [WelcomeController::class, 'announcementCategory'])->name('announcement_page');
+
 Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
+Route::get("/evenement/{event:slug}", [UserDashboard::class, 'showEvent'])->name('event_page');
 
 //We use following links to display images from storage folder
-Route::get('images/announcements/{filename?}', [UserDashboard::class, 'announcementImage'])->name('announcement.image');
+Route::get('show/images/{filename?}', [UserDashboard::class, 'showImage'])->name('show.image');
 
 Route::get('/linkstorage', function () {
     Artisan::call('storage:link');
 });
 /******************************/
-/*       BACKEND ROUTES       */
+/*  VERIFIED USERS ROUTES     */
 /******************************/
 
 Route::middleware(['auth','verified'])->group(function (){
@@ -171,6 +175,8 @@ Route::middleware(['auth','verified'])->group(function (){
      */
     //Route::middleware(['role:user|client'])->name('user.')->group(function () {
     Route::name('user.')->group(function () {
+        Route::get('/vendeur/{user:slug}', [UserDashboard::class, 'showProfile'])->name('show_profile');
+
         Route::get('dashboard', [UserDashboard::class, 'index'])->name('dashboard');
         Route::resource('events', EventController::class);
         Route::get('get-city-by-region/{region_id}', [EventController::class, 'getCityByRegion']);
@@ -184,7 +190,6 @@ Route::middleware(['auth','verified'])->group(function (){
         Route::post("/assign_role_checkout", [UserController::class, "assignRoleCheckout"])->name('assign_role_checkout');
         //FO currencies routes
         Route::get("/transfering/{currency:slug}",[UserDashboard::class, 'transferCurrency'])->name('currencies.transfer');
-    
     });
 
     //Routes for vendeurs and annonceurs
@@ -197,6 +202,15 @@ Route::middleware(['auth','verified'])->group(function (){
         Route::put("/mes_annonces/update/{announcement}", [UserDashboard::class, 'updateAnnouncement'])->name('update_announcement');
         Route::get("/myAnnouncements-data", [UserDashboard::class, 'myAnnouncementsData'])->name('myAnnouncements-data');
         Route::delete("/mes_annonces/delete/{announcement:slug}", [UserDashboard::class, 'deleteAnnouncement'])->name('delete_announcement');
+
+        Route::get("/mes_evenements", [UserDashboard::class, 'myEvents'])->name("my_events");
+        Route::get("/mes_evenements/create", [UserDashboard::class, 'createEvent'])->name('create_event');
+        Route::get("/mes_evenements/event/{event:slug}", [UserDashboard::class, 'showEvent'])->name('show_event');
+        Route::get("/mes_evenements/edit/{event:slug}", [UserDashboard::class, 'editEvent'])->name('edit_event');
+        Route::post("/mes_evenements/store", [UserDashboard::class, 'storeEvent'])->name('store_event');
+        Route::put("/mes_evenements/update/{event}", [UserDashboard::class, 'updateEvent'])->name('update_event');
+        Route::get("/myevents-data", [UserDashboard::class, 'myEventsData'])->name('myEvents-data');
+        Route::delete("/mes_evenements/delete/{event:slug}", [UserDashboard::class, 'deleteEvent'])->name('delete_event');
     });
     /**
      * User's subscription

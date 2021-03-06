@@ -10,7 +10,7 @@
                 <span class="info-box-icon bg-primary"><i class="fas fa-th-list"></i></span>
                 <div class="info-box-content">
                     <span class="info-box-text">Mes évènements</span>
-                    <span class="info-box-number">0</span>
+                    <span class="info-box-number">{{$events}}</span>
                 </div>
             </div>
         </div>
@@ -19,7 +19,7 @@
                 <span class="info-box-icon bg-primary"><i class="fas fa-award"></i></span>
                 <div class="info-box-content">
                     <span class="info-box-text">Mes annonces</span>
-                    <span class="info-box-number">0</span>
+                    <span class="info-box-number">{{$announcements}}</span>
                 </div>
             </div>
         </div>

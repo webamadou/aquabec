@@ -6,7 +6,7 @@
         <div class="container">
             <nav class="navbar navbar-expand-lg navbar-light bg-white">
                 <a class="navbar-brand tw-nav-brand" href="{{ route('welcome') }}">
-                    <img src="images/logo/logo.png" alt="seobin">
+                    <img src="{{asset('images/logo/logo.png')}}" alt="{{ config('app.name') }}">
                 </a>
                 <!-- End of Navbar Brand -->
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -31,7 +31,7 @@
                                                 <h3>Evenements par régions</h3>
                                             </li>
                                             @foreach(\App\Models\Region::skip(0)->take(6)->get() as $region)
-                                                <li><a href="#">{{ $region->name }}</a></li>
+                                                <li><a href="{{route('event_region',$region)}}">{{ $region->name }}</a></li>
                                             @endforeach
                                         </ul>
                                         <!-- End UL -->
@@ -43,7 +43,7 @@
                                                 <h3>&nbsp;</h3>
                                             </li>
                                             @foreach(\App\Models\Region::skip(6)->take(6)->get() as $region)
-                                                <li><a href="#">{{ $region->name }}</a></li>
+                                                <li><a href="{{route('event_region',$region)}}">{{ $region->name }}</a></li>
                                             @endforeach
                                         </ul>
                                         <!-- End UL -->
@@ -55,7 +55,7 @@
                                                 <h3>&nbsp;</h3>
                                             </li>
                                             @foreach(\App\Models\Region::skip(12)->take(6)->get() as $region)
-                                                <li><a href="#">{{ $region->name }}</a></li>
+                                                <li><a href="{{route('event_region',$region)}}">{{ $region->name }}</a></li>
                                             @endforeach
                                         </ul>
                                         <!-- End Ul -->
@@ -81,8 +81,8 @@
                                             <li class="tw-megamenu-title">
                                                 <h3>Annonces Classées</h3>
                                             </li>
-                                            @foreach(\App\Models\Category::where('type','announcement')->skip(0)->take(6)->get() as $category)
-                                            <li><a href="#">{{ $category->name }}</a></li>
+                                            @foreach(\App\Models\Category::where('type','annonce')->skip(0)->take(6)->get() as $category)
+                                            <li><a href="{{route('announcement_page',$category)}}">{{ $category->name }}</a></li>
                                             @endforeach
                                         </ul>
                                         <!-- End UL -->
@@ -93,8 +93,8 @@
                                             <li class="tw-megamenu-title">
                                                 <h3>&nbsp;</h3>
                                             </li>
-                                            @foreach(\App\Models\Category::where('type','announcement')->skip(6)->take(6)->get() as $category)
-                                                <li><a href="#">{{ $category->name }}</a></li>
+                                            @foreach(\App\Models\Category::where('type','annonce')->skip(6)->take(6)->get() as $category)
+                                                <li><a href="{{route('announcement_page',$category)}}">{{ $category->name }}</a></li>
                                             @endforeach
                                         </ul>
                                         <!-- End UL -->
@@ -105,8 +105,8 @@
                                             <li class="tw-megamenu-title">
                                                 <h3>&nbsp;</h3>
                                             </li>
-                                            @foreach(\App\Models\Category::where('type','announcement')->skip(12)->take(6)->get() as $category)
-                                                <li><a href="#">{{ $category->name }}</a></li>
+                                            @foreach(\App\Models\Category::where('type','annonce')->skip(12)->take(6)->get() as $category)
+                                                <li><a href="{{route('announcement_page',$category)}}">{{ $category->name }}</a></li>
                                             @endforeach
                                         </ul>
                                         <!-- End Ul -->
@@ -118,14 +118,14 @@
                                                 <h3>&nbsp;</h3>
                                             </li>
                                             @foreach(\App\Models\Category::where('type','announcement')->skip(18)->take(5)->get() as $category)
-                                                <li><a href="#">{{ $category->name }}</a></li>
+                                                <li><a href="{{route('announcement_page',$category)}}">{{ $category->name }}</a></li>
                                             @endforeach
-                                            <li>
+                                           <!--  <li>
                                                 <a href="#" class="text-primary">
                                                     Toutes les catégories d'annonces
                                                     <i class="ml-2 fa fa-arrow-right"></i>
                                                 </a>
-                                            </li>
+                                            </li> -->
                                         </ul>
                                         <!-- End Ul -->
                                     </div>
@@ -162,6 +162,7 @@
                             @endrole
                             <hr>
                             @hasanyrole('vendeur|super-admin|annonceur')
+                            <a class="dropdown-item" href="{{route('user.my_events')}}"><i class="fas fa-calendar-check"></i>  Mes évènements</a>
                             <a class="dropdown-item" href="{{route('user.my_announcements')}}"><i class="fa fa-bullhorn"></i> Mes Annonces</a>
                             @endrole
                             <hr>

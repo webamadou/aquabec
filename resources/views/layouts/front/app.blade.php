@@ -52,7 +52,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
         <div class="container">
             <a href="{{ route('welcome') }}" class="navbar-brand">
-                <img src="{{ asset('images/logo/logo.png') }}" alt="{{ config('app.name') }}" class="brand-image">
+                <img src="{{ asset('/images/logo/logo.png') }}" alt="{{ config('app.name') }}" class="brand-image">
             </a>
 
             <button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,7 +65,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <a href="{{ route('user.dashboard') }}" class="nav-link {{ side_nav_bar_menu_status('dashboard','active') }}"><i class="fa fa-user-cog"></i> Portrait</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('user.events.index') }}" class="nav-link {{ side_nav_bar_menu_status('events','active') }}"><i class="fas fa-calendar-check"></i> Mes évènements</a>
+                        <a href="{{ route('user.my_events') }}" class="nav-link {{ side_nav_bar_menu_status('events','active') }}"><i class="fas fa-calendar-check"></i> Mes évènements</a>
                     </li>
                     <li class="nav-item">
                         <a href="{{route('user.my_announcements')}}" class="nav-link"><i class="fa fa-bullhorn"></i> Mes annonces</a>

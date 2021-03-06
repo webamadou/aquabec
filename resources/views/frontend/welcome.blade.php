@@ -139,28 +139,29 @@
             </div>
             <!-- Row End -->
             <div class="row wow fadeInUp" data-wow-duration="1s" data-wow-delay=".2s">
-                <div class="col-lg-4 col-md-12">
+                @foreach($last_published as $key => $item)
+                <div class="col-lg-4 col-md-12 mb-4">
                     <div class="tw-latest-post">
                         <div class="latest-post-media text-center">
-                            <img src="images/news/post1.jpg" alt="blog_image_one" class="img-fluid">
+                                <img src="{{ route('show.image',$item->images) }}" alt="{{$item->title}}">
                         </div>
                         <!-- End Latest Post Media -->
                         <div class="post-body">
                             <div class="post-item-date">
                                 <div class="post-date">
-                                    <span class="date">29</span>
-                                    <span class="month">May</span>
+                                    <span class="date">{{date('d', strtotime($item->published_at))}}</span>
+                                    <span class="month">{{$mont_array[intval(date('m', strtotime($item->published_at)))] }}</span>
                                 </div>
                             </div>
                             <!-- End Post Item Date -->
                             <div class="post-info">
                                 <div class="post-meta">
                            <span class="post-author">
-                              Posted by <a href="#">Admin</a>
+                              Par <a href="{{route('user.show_profile',$item->owned->id)}}">{{$item->owned->prenom}} {{$item->owned->name}} {{$item->published_at}}</a>
                            </span>
                                 </div>
                                 <!-- End Post Meta -->
-                                <h3 class="post-title"><a href="#">SEO trend to look for the best in 2018</a></h3>
+                                <h3 class="post-title"><a href="#">{{$item->title}}</a></h3>
                                 <div class="entry-content">
                                     <p>
                                         One of the top 100 advertising of a marketing agencies know that how to grow your busines
@@ -174,80 +175,8 @@
                     </div>
                     <!-- End Tw Latest Post -->
                 </div>
-                <!-- End Col -->
-                <div class="col-lg-4 col-md-12">
-                    <div class="tw-latest-post">
-                        <div class="latest-post-media text-center">
-                            <img src="images/news/post2.jpg" alt="blog_image_one" class="img-fluid">
-                        </div>
-                        <!-- End Latest Post Media -->
-                        <div class="post-body">
-                            <div class="post-item-date">
-                                <div class="post-date">
-                                    <span class="date">29</span>
-                                    <span class="month">May</span>
-                                </div>
-                            </div>
-                            <!-- End Post Item Date -->
-                            <div class="post-info">
-                                <div class="post-meta">
-                           <span class="post-author">
-                              Posted by <a href="#">Admin</a>
-                           </span>
-                                </div>
-                                <!-- End Post Meta -->
-                                <h3 class="post-title"><a href="#">SEO trend to look for the best in 2018</a></h3>
-                                <div class="entry-content">
-                                    <p>
-                                        One of the top 100 advertising of a marketing agencies know that how to grow your busines
-                                    </p>
-                                </div>
-                                <!-- End Entry Content -->
-                            </div>
-                            <!-- End Post info -->
-                        </div>
-                        <!-- End Post Body -->
-                    </div>
-                    <!-- End Tw Latest Post -->
-                </div>
-                <!-- End Col -->
-                <div class="col-lg-4 col-md-12">
-                    <div class="tw-latest-post">
-                        <div class="latest-post-media text-center">
-                            <img src="images/news/post3.jpg" alt="blog_image_one" class="img-fluid">
-                        </div>
-                        <!-- End Latest Post Media -->
-                        <div class="post-body">
-                            <div class="post-item-date">
-                                <div class="post-date">
-                                    <span class="date">29</span>
-                                    <span class="month">May</span>
-                                </div>
-                            </div>
-                            <!-- End Post Item Date -->
-                            <div class="post-info">
-                                <div class="post-meta">
-                           <span class="post-author">
-                              Posted by <a href="#">Admin</a>
-                           </span>
-                                </div>
-                                <!-- End Post Meta -->
-                                <h3 class="post-title"><a href="#">SEO trend to look for the best in 2018</a></h3>
-                                <div class="entry-content">
-                                    <p>
-                                        One of the top 100 advertising of a marketing agencies know that how to grow your busines
-                                    </p>
-                                </div>
-                                <!-- End Entry Content -->
-                            </div>
-                            <!-- End Post info -->
-                        </div>
-                        <!-- End Post Body -->
-                    </div>
-                    <!-- End Tw Latest Post -->
-                </div>
-                <!-- End Col -->
-                <div class="col-md-12 text-center wow zoomIn" data-wow-duration="1s" data-wow-delay="1s"><a href="#" class="btn btn-primary btn-lg tw-mt-80">view all</a></div>
+                @endforeach
+                <!-- <div class="col-md-12 text-center wow zoomIn" data-wow-duration="1s" data-wow-delay="1s"><a href="#" class="btn btn-primary btn-lg tw-mt-80">view all</a></div> -->
             </div>
             <!-- End Row -->
         </div>

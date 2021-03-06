@@ -15,7 +15,7 @@
     @enderror
 </div>
 <div class="offset-sm-0 col-sm-12 col-md-6 form-group row">
-    <img src="{{ route('announcement.image',@$announcement->images) }}" alt="{{@$announcement->title}}" style="width:50%; height: auto">
+    <img src="{{ route('show.image',@$announcement->images) }}" alt="{{@$announcement->title}}" style="width:50%; height: auto">
 </div>
 <div class="offset-sm-0 col-sm-12 col-md-12 form-group row">
     <label for="title" class="col-sm-12 col-md-12">Categorie de l'annonce classée :* </label>
@@ -28,13 +28,7 @@
     {!! $errors->first('category_id', '<div class="error-message col-12">:message</div>') !!}
 </div>
 <div class="col-12"><hr/></div>
-<div class="offset-sm-0 col-sm-12 col-md-4 form-group row">
-    <label for="title" class="col-sm-12 col-md-12">Date de l'annonce : </label>
-    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-        <input name="date" id="datePick" class="form-control" />
-    </div>
-</div>
-<div class="offset-sm-0 col-sm-12 col-md-4 form-group row">
+<div class="offset-sm-0 col-sm-12 col-md-6 form-group row">
     <label for="title" class="col-sm-12 col-md-12">Region de l'annonce classée : </label>
     <select name="region_id" id="region_id" class="form-control">
         <option value=""> --- </option>
@@ -44,7 +38,7 @@
         @endforelse
     </select>
 </div>
-<div class="offset-sm-0 col-sm-12 col-md-4 form-group row">
+<div class="offset-sm-0 col-sm-12 col-md-6 form-group row">
     <label for="title" class="col-sm-12 col-md-12">Ville de l'annonce classée : </label>
     <select name="city_id" id="city_id" class="form-control">
         <option value=""> --- </option>
@@ -56,6 +50,7 @@
 </div>
 <div class="col-12"><hr></div>
 <div class="offset-sm-8 col-sm-12 col-md-4 form-group row">
+    @if($can_post)
     <label for="title" class="col-sm-12 col-md-12">Statut de lannonce : * </label>
     <select name="publication_status" id="publication_status" class="form-control">
         <option value=""> --- </option>
@@ -64,5 +59,8 @@
         @empty
         @endforelse
     </select>
+    @else
+    <input type="hidden" name="publication_status" id="publication_status" value="0">
+    @endif
     {!! $errors->first('publication_status', '<div class="error-message col-12">:message</div>') !!}
 </div>

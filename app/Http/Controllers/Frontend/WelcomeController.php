@@ -6,16 +6,40 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+use App\Models\Category;
+use App\Models\Region;
+use App\Models\Event;
+use App\Models\Announcement;
+
 class WelcomeController extends Controller
 {
     public function welcomePage()
     {
-
 		$user = Auth::user();
-		  //dd($user->getRoleNames());
-    	//Auth::logout();
-    	//$subscriptions = \App\Models\Subscription::orderBy('price','ASC')->get();
-    	//dd($subscriptions);
-        return view('frontend.welcome');
+		$events = Event::where('publication_status','1')
+							->orderby('published_at','desc')
+							->limit(3)
+							->get();
+		$announcements = Announcement::where('publication_status','1')
+							->orderby('published_at','desc')
+							->limit(3)
+							->get();
+		$last_published = array_merge($events->all(), $announcements->all());
+		shuffle($last_published);
+		$mont_array = ['','Jan','Fev','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Dec'];
+		//dd($last_published,$events, $announcements);
+        return view('frontend.welcome', compact('last_published','mont_array'));
     }
+
+	public function eventsRegion(Region $region)
+	{
+		$events = Event::where('region_id',$region->id)->where('publication_status','1')->get();
+		return view('frontend.eventRegion', compact('region','events'));
+	}
+
+	public function announcementCategory(Category $category)
+	{
+		$announcements = Announcement::where('category_id',$category->id)->where('publication_status','1')->get();
+		return view('frontend.announcementCategory', compact('category','announcements'));	
+	}
 }

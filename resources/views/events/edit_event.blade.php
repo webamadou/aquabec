@@ -2,36 +2,20 @@
 <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"> 
 @section('content')
     <div class="row">
-        <div class="offset-sm-2 col-10 text-blue mb-4"><h2><i class="fa fa-plus"></i> Enregistrement d'une annonce classée</h2></div>
-        <!-- @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif -->
-        @if($can_post)
-            <div class="badge badge-danger">Vous n'avez pas assez dans votre portefeuille pour publier votre annonce. Vous pouvez tout de même l'enregistrer en brouillon. Vous pouvez aussi<a href="{{route('purchase_currency')}}" class="btn btn-sm btn-link"> recharger votre portefeuille.</a> </div>
-        @endif
+        <div class="offset-sm-2 col-10 text-blue mb-4"><h2><i class="fa fa-plus"></i> Modification de l'évènement {{$event->title}}</h2></div>
         <div class="col-8 tab-content mx-auto" id="nav-tabContent">
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title font-weight-bold">- </h2>
-                    <!-- <div class="card-tools">
-                        <a href="{ {route('user.create_announcement')}}" class="btn btn-primary btn-sm">
-                            <i class="mr-2 fa fa-plus"></i> Ajouter une annonce
-                        </a>
-                    </div> -->
                 </div>
                 <div class="card-body">
-                    <form action="{{route('user.store_announcement')}}" method="post" enctype="multipart/form-data">
+                    <form action="{{route('user.update_event', $event)}}" method="post" enctype="multipart/form-data">
                         <div class="row">
                             @csrf
+                            @method("PUT")
                             @if($user->hasAnyRole(['chef-vendeur','vendeur']))
                             <div class="offset-sm-0 col-12 form-group row">
-                                <label for="owner" class="col-sm-12 col-md-12">Publiée l'annonce pour : </label>
+                                <label for="owner" class="col-sm-12 col-md-12">Publiée l'évènement pour : </label>
                                 <select name="owner" id="owner" class="form-control">
                                     <option value=""> --- </option>
                                     @forelse($children as $child)
@@ -43,8 +27,11 @@
                             </div>
                             @endif
                             <input type="hidden" name="posted_by" value="{{$user->id}}">
-                            @include("announcements.includes.announcement_form")
-                            <div class="offset-sm-4 col-sm-8 form-group row">
+                            @include("events.includes.event_form")
+                            <div class="col-sm-4 form-group row mt-5 mr-2">
+                                <a href="{{route('user.show_event',$event->slug)}}" class="btn btn-success"><i class="fa fa-reply"></i> Annuler</a>
+                            </div>
+                            <div class="col-sm-7 form-group row mt-5">
                                 <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Enregistrer</button>
                             </div>
                         </div>

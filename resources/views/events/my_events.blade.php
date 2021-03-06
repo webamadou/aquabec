@@ -8,19 +8,20 @@
         <div class="col-12 tab-content" id="nav-tabContent">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="card-title font-weight-bold">Mes annonces</h2>
+                    <h2 class="card-title font-weight-bold">Mes évènements</h2>
                     <div class="card-tools">
-                        <a href="{{route('user.create_announcement')}}" class="btn btn-primary btn-sm">
-                            <i class="mr-2 fa fa-plus"></i> Ajouter une annonce
+                        <a href="{{route('user.create_event')}}" class="btn btn-primary btn-sm">
+                            <i class="mr-2 fa fa-plus"></i> Ajouter un évènement
                         </a>
                     </div>
                 </div>
                 <div class="card-body">
-                    <table class="table table-success table-striped table-borderless" id="announcements-table">
+                    <table class="table table-success table-striped table-borderless" id="events-table">
                         <thead class="table-light">
                             <tr>
                                 <th>Titre</th>
                                 <th>Categorie</th>
+                                <th>Dates</th>
                                 <th>Proprietaire</th>
                                 <th>Region et Ville</th>
                                 <th>Date d'envoie</th>
@@ -37,21 +38,31 @@
 
     <script defer>
         $(function() {
-           $('#announcements-table').DataTable({
+           $('#events-table').DataTable({
                 processing: true,
                 serverSide: true,
                 method:'post',
-                ajax: '{{ route("user.myAnnouncements-data") }}',
+                ajax: '{{ route("user.myEvents-data") }}',
                 columns: [
                     { data: null, name: 'title',
                         render : data => {
                             const title = (data.title.length > 35) ? `${data.title.substring(0,35)}...` :data.title;
-                            return `<img src="/show/images/${data.images}" alt="{{@$announcement->title}}" style="width:50px; height: auto"><br><strong><a href="/mes_annonces/announcement/${data.slug}">${title}</a></strong>`;
+                            return `<img src="/show/images/${data.images}" alt="{{@$event->title}}" style="width:50px; height: auto"><br><strong><a href="/mes_evenements/event/${data.slug}">${title}</a></strong>`;
                         }
                     },
                     { data: null, name: 'category_id',
                         render : data => {
                             return `${data.category?data.category.name:""}`;
+                        }
+                    },
+                    { data: null, name: 'dates',
+                        render : data => {
+                            let formated_dates = '';
+                            const dates = data.dates.split(',');
+                            for(let i = 0; i < dates.length; i++){
+                                formated_dates += `<span class="badge badge-primary text-sm d-block my-1"> ${dates[i]} </span> ` ;
+                            }
+                            return formated_dates;
                         }
                     },
                     { data: null, name: 'owner',
@@ -73,7 +84,7 @@
                 buttons: [
                     'copy', 'csv', 'excel', 'pdf', 'print'
                 ],
-                order: [[ 4, 'desc' ],[0,'asc']],
+                order: [[ 5, 'desc' ],[0,'asc']],
                 pageLength: 100,
                 responsive: true,
                 "oLanguage":{

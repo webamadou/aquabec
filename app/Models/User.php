@@ -136,6 +136,17 @@ class User extends Authenticatable implements MustVerifyEmail
 
         return $announcements = Announcement::where('owner',$this->id);
     }
+
+    public function scopeMyEvents($query)
+    {
+        if($this->hasAnyRole(['chef-vendeur','vendeur'])){
+            return \App\Models\Event::where('posted_by',$this->id)->orWhere('owner',$this->id);
+        } elseif ($this->hasAnyRole(['super-admin','admin'])) {
+            return \App\Models\Event::where('posted_by',$this->id)->orWhere('owner',$this->id);
+        }
+
+        return $announcements = \App\Models\Event::where('owner',$this->id);
+    }
     
     /**
      * 
@@ -254,12 +265,14 @@ class User extends Authenticatable implements MustVerifyEmail
     public function setUserCurrency($currency_id, $pivot_field = [])
     {
         $currency = $this->getUserCurrency($currency_id);
+        //dd($currency->pivot->free_currency);
         if($currency == null)
         {//User has no ammount of picked currency
             $this->currencies()->attach([$currency_id => $pivot_field]);
         } else {//we just update the values
-            $pivot_field['free_currency'] += $currency->pivot->free_currency;
-            $pivot_field['paid_currency'] += $currency->pivot->paid_currency;
+            $pivot_field = ['free_currency' => null,'paid_currency' => null];
+            $pivot_field['free_currency'] += @$currency->pivot->free_currency;
+            $pivot_field['paid_currency'] += @$currency->pivot->paid_currency;
             $this->currencies()->updateExistingPivot($currency_id,$pivot_field);
         }
 
@@ -296,4 +309,17 @@ class User extends Authenticatable implements MustVerifyEmail
         return false;
     }
     
+    public function userHasEnoughCredit(String $contenu_price, String $type = 'free_currency')
+    {
+        $role_name = $this->hasAnyRole('vendeur|super-admin')?'super-admin':'annonceur';
+        $role = $this->roles->wherein('name',['super-admin','vendeur','chef-vendeur'])->first();
+        //dd($role->name, $role,intval($this->setUserCurrency(1)->pivot->$type));
+        //$amount_to_spend = $role->annoucements_price;
+        $amount_to_spend = intval($role->$contenu_price);
+        if($amount_to_spend >= intval($this->setUserCurrency(1)->pivot->$type)){
+            return true ;
+        }
+
+        return false ;
+    }
 }

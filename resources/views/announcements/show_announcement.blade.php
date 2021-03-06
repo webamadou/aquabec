@@ -9,7 +9,7 @@
             <div class="card">
                 <div class="card-body row overflow-hidden">
                     <div class="col-sm-12 col-md-3 announcement-side-bar">
-                        <div class="announcement-img-wrapper"><img src="{{ route('announcement.image',$announcement->images) }}" alt="{{$announcement->title}}"></div>
+                        <div class="announcement-img-wrapper"><img src="{{ route('show.image',$announcement->images) }}" alt="{{$announcement->title}}"></div>
                         <div class="announcement-meta-wrapper">
                             <div class="row justify-content-between announcement-metas">
                                 <div class="col-6"><strong>Une annonce de :</strong></div><div class="col-6 meta-value"><span> {{$announcement->owned->prenom}} {{$announcement->owned->name}} </span></div>
