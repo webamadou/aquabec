@@ -213,7 +213,7 @@
                 <div class="col-lg-5 ml-auto col-md-12 wow fadeInRight" data-wow-duration="1s">
                     <h2 class="column-title">Comment çà marches ?</h2>
                     <span class="animate-border tw-mb-40"></span>
-                    {!!$section_comment->content!!}
+                    {!!@$section_comment->content!!}
                     <!-- End Intro list -->
                     <a href="{{ route('register') }}" class="btn btn-primary">Créer un compte</a>
                     <!-- Default Round Btn -->
