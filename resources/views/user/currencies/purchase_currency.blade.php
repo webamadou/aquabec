@@ -22,7 +22,7 @@
                                 <input type="hidden" name="currency_id" value="1" >
                             @else
                                 <label for="currency_id" class="col-sm-12">Selectionnez la monnaie</label>
-                                <select name="currency_id" id="" class="form-control">
+                                <select name="currency_id" id="currency_id" class="form-control" autocomplete="off">
                                     @forelse($currencies as $key => $currency)
                                         <option value="{{$currency->id}}" {{old("currency_id") == $currency->id ? 'selected':''}}>{{ucfirst($currency->name)}} </option>
                                     @endforeach
@@ -33,13 +33,11 @@
                             <div class="row">
                                 <label for="sent_value" class="col-sm-12">Selectionnez le motant que vous désirez acheter *</label>
                                 <div class="col-sm-12 col-md-6 form-group">
-                                    <select name="amount" id="amount" class="form-control">
+                                    <select name="price" id="price" class="form-control" autocomplete="off" {{$currencies->count() <= 0?'':'style="display: none"'}}>
                                         <option value=""> Monnaie </option>
-                                        @for($i = 1 ; $i<=20; $i++)
-                                            <option value="{{$i}}"> {{ $i * 500 }} à ${{ $i }} CAD</option>
-                                        @endfor
+                                        {!!$price_options!!}
                                     </select>
-                                    {!! $errors->first('amount', '<div class="error-message col-12">:message</div>') !!}
+                                    {!! $errors->first('price', '<div class="error-message col-12">:message</div>') !!}
                                 </div>
 
                                 <div class="col-sm-12 col-md-6">
@@ -64,10 +62,27 @@
     <script src="{{asset('/dist/ckeditor/ckeditor.js')}}" defer></script>
     <script type="text/javascript" defer>
         $(document).ready(function () {
-            /* $('.ckeditor').ckeditor(); */
-            $('body').on("change","#amount", function(params) {
-                const amount = $(this).val();
-                $("#total_price").text(`Vous payez $${amount} CAD`);
+            update_prices(1);
+            $('body').on("change","#currency_id", function(params) {
+                const currency_id = $(this).val();
+                update_prices(currency_id);
+                $("#price").show();
+            })
+            function update_prices(currency_id)
+            {
+                const token = $("input[name='_token']").val();
+                $.ajax({
+                    type: 'post',
+                    url: `{{url('/update_prices_list')}}`,
+                    data: {'id': currency_id,'_token': token},
+                    success: function(res){
+                        price.innerHTML = `<option value=""> Monnaie </option>${res}`;
+                    }
+                });
+            }
+            $('body').on("change","#price", function(params) {
+                const price = $(this).val();
+                $("#total_price").text(`Vous payez $${price} CAD`);
             })
         });
     </script>

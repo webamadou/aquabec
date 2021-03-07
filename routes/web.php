@@ -240,6 +240,7 @@ Route::middleware(['auth','verified'])->group(function (){
     Route::post("/checkout", [\App\Http\Controllers\PaymentController::class, 'checkout'])->name('checkout');
 
     Route::get("/purchase", [CurrencyController::class, "purchase"])->name("purchase_currency");
+    Route::post("/update_prices_list", [CurrencyController::class, "updatePricesList"])->name("update_prices_list");
     Route::post("/process_purchase", [CurrencyController::class, "purchasing"])->name("process_purchase_currency");
     Route::post("/process_purchase_checkout", [CurrencyController::class, "purchasing_checkout"])->name("checkout_purchase_currency");
 });
