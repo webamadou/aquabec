@@ -15,7 +15,7 @@
                 </h2>
                 <div id="flush-collapse{{$fonction->id}}" class="accordion-collapse collapse" aria-labelledby="flush-heading{{$fonction->id}}" data-bs-parent="#accordionFlushExample">
                     <div class="accordion-body ">
-                        {{$fonction->description}}
+                        {!!$fonction->description!!}
                         @hasanyrole($fonction->name)
                             <div class="col-12 row aq-card-action">
                                 <a href="#" class="btn btn-success btn-sm">Vouse êtes déjà {{strtolower($fonction->name)}}</a>

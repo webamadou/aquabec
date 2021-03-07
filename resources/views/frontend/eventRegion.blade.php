@@ -27,9 +27,9 @@
                             <!-- End Latest Post Media -->
                             <div class="post-body">
                                 <div class="post-item-date">
-                                    <div class="post-date">
-                                        <span class="date">-</span>
-                                        <!-- <span class="month">May</span> -->
+                                    <div class="post-date {{class_basename($event) === 'Event'? 'event':''}}">
+                                        <span class="date">{{date('d', strtotime($event->published_at))}}</span>
+                                        <span class="month">{{@$month_array[intval(date('m', strtotime($event->published_at)))] }}</span>
                                     </div>
                                 </div>
                                 <!-- End Post Item Date -->
@@ -40,7 +40,9 @@
                                         </span>
                                     </div>
                                     <!-- End Post Meta -->
-                                    <h3 class="post-title"><a href="{{route('event_page',$event->slug)}}">{{$event->title}}</a></h3>
+                                    <h3 class="post-title">
+                                        <a href="{{route('page_event',$event->slug)}}">{{$event->title}}</a>
+                                    </h3>
                                     <div class="entry-content">
                                         <p>
                                             {!! substr($event->description, 0, 90); !!}...

@@ -15,7 +15,7 @@
                 </h2>
                 <div id="flush-collapse{{$fonction->id}}" class="accordion-collapse collapse" aria-labelledby="flush-heading{{$fonction->id}}" data-bs-parent="#accordionFlushExample">
                     <div class="accordion-body ">
-                        {{$fonction->description}}
+                        {!! $fonction->description !!}
                         @hasanyrole($fonction->name)
                             <div class="col-12 row aq-card-action">
                                 <a href="#" class="btn btn-success btn-sm">Vouse êtes déjà {{strtolower($fonction->name)}}</a>
@@ -23,7 +23,7 @@
                         @else
                             <hr size="60%" class="mx-auto">
                             <div class="col-12 row aq-card-action" id="{{$fonction->id}}">
-                                <a href="#" class="btn btn-primary btn-sm subscribe_role" data-role_id="{{$fonction->id}}" data-role_description="{{$fonction->description}}" data-role_name="{{$fonction->name}}"><i class="fa fa-plus"></i> S'inscrire à cette fonction</a>
+                                <a href="#" class="btn btn-primary btn-sm subscribe_role" data-role_id="{{$fonction->id}}" data-role_description="{!! $fonction->description !!}" data-role_name="{{$fonction->name}}"><i class="fa fa-plus"></i> S'inscrire à cette fonction</a>
                             </div>
                         @endrole
                     </div>
@@ -53,7 +53,7 @@
                     </div>
                     <div class="col-md-8">
                     <div class="card-body">
-                        <div class="card-title">{{$role->description}}</div>
+                        <div class="card-title">{!! $role->description !!}</div>
                     </div>
                     </div>
                 </div>
@@ -79,7 +79,7 @@
                 <div class="mb-3 row" id="price">
                     <input type="hidden" name="price" value="5" id="price">
                     <div type="button" class="btn btn-primary">
-                       <h3>Prix de l'inscription : <span class="badge bg-warning">5 CAD</span></h3>
+                       <h3>Prix de l'inscription : <span class="badge bg-warning">$5.00</span></h3>
                     </div>
                 </div>
                 <hr size="70%" class="mx-auto">
@@ -103,7 +103,8 @@ $(function(){
         const role_desc = $(this).data('role_description');
 
         $("#role_name").text(role_name);
-        $("#confirm_role_description").text(role_desc);
+        //$("#confirm_role_description").text(role_desc);
+        
         $("#form_role_id").val(role_id);
         $("#form_user_id").val({{$user->id}});
         $("#form_payment_title").val(`Inscription à la fonction ${role_name}`);

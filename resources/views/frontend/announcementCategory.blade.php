@@ -22,14 +22,14 @@
                     <div class="col-lg-4 col-md-12">
                         <div class="tw-latest-post">
                             <div class="latest-post-media text-center">
-                                <img src="{{ route('show.image',@$announcement->images) }}" alt="{{@$announcement->title}}">
+                            <a href="{{route('page_announcement',@$announcement->slug)}}"><img src="{{ route('show.image',@$announcement->images) }}" alt="{{@$announcement->title}}"></a>
                             </div>
                             <!-- End Latest Post Media -->
                             <div class="post-body">
                                 <div class="post-item-date">
-                                    <div class="post-date fancy-meta">
-                                        <span class="category">{{@$announcement->category->name}}</span>
-                                        <!-- <span class="month">May</span> -->
+                                    <div class="post-date {{class_basename(@$announcement) === 'Event'? 'event':''}}">
+                                        <span class="date">{{date('d', strtotime(@$announcement->published_at))}}</span>
+                                        <span class="month">{{@$month_array[intval(date('m', strtotime(@$announcement->published_at)))] }}</span>
                                     </div>
                                 </div>
                                 <!-- End Post Item Date -->
@@ -40,7 +40,7 @@
                                         </span>
                                     </div>
                                     <!-- End Post Meta -->
-                                    <h3 class="post-title"><a href="{{route('event_page',@$announcement->slug)}}">{{@$announcement->title}}</a></h3>
+                                    <h3 class="post-title"><a href="{{route('page_announcement',@$announcement->slug)}}">{{@$announcement->title}}</a></h3>
                                     <div class="entry-content">
                                         <p>
                                             {!! substr(@$announcement->description, 0, 90); !!}...

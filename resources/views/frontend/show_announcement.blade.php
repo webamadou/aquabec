@@ -1,16 +1,18 @@
 @php use Carbon\Carbon @endphp
-@extends('layouts.front.app')
+@extends('layouts.front.master')
 @section('content')
     <div class="row">
         <div class="my-4 col-12 row">
             <!-- <h2 class="my-0"> - </h2> -->
         </div>
-        <div class="col-12 tab-content" id="nav-tabContent">
+        <div class="col-12 tab-content " id="nav-tabContent">
             <div class="card">
-                <div class="card-body row overflow-hidden">
+                <div class="card-body row overflow-hidden position-relative" style="overflow: hidden">
                     <div class="col-sm-12 col-md-3 announcement-side-bar">
                         <div class="announcement-meta-wrapper">
-                            <div class="announcement-img-wrapper mb-3"><img src="{{ route('show.image',$announcement->images) }}" alt="{{$announcement->title}}"></div>
+                            <div class="announcement-img-wrapper mb-3">
+                                <img src="{{ route('show.image',$announcement->images) }}" alt="{{$announcement->title}}" class="img-fluid">
+                            </div>
                             <div class="row justify-content-between announcement-metas">
                                 <div class="col-6"><strong>Une annonce de :</strong></div><div class="col-6 meta-value"><span> {{$announcement->owned->prenom}} {{$announcement->owned->name}} </span></div>
                                 <div class="col-6"><strong>Catégorie :</strong></div><div class="col-6 meta-value"><span>{{$announcement->category->name}}</span></div>
@@ -19,9 +21,9 @@
                                         <strong>Posté le :</strong></div><div class="col-6 meta-value"><span> {{date('d/m/Y', strtotime($announcement->published_at))}} </span>
                                     @else
                                         @if(intval($announcement->publication_status) === 0)
-                                            <span class="badge badge-warning">Enregistrée en brouillon</span>
+                                            <span class="badge badge-">Brouillon</span>
                                         @elseif(intval($announcement->publication_status) === 2)
-                                            <span class="badge badge-primary"><i class="fa fa-user-lock"></i>Enregistrée en Privée</span>
+                                            <span class="badge badge-"><i class="fa fa-user-lock"></i> Privée</span>
                                         @endif
                                     @endif
                                 </div>
@@ -31,8 +33,9 @@
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-9 announcement-container">
-                        <h1 class="announcement-title">{{$announcement->title}}</h1>
+                        <h2 class="announcement-title">{{$announcement->title}}</h2>
                         <div class="announcement-description pt-5 pl-4">{!! $announcement->description !!}</div>
+                        <div class="announcement-dates">{{$announcement->dates}}</div>
                         <div class="announcement-stats">
                             <ul>
                                 <li><i class="fa fa-eye"></i>  {{$announcement->views}} vues</li>

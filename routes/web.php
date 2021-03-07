@@ -59,6 +59,9 @@ Route::post('contact', [ContactController::class, 'contactPost'])->name('contact
 
 Route::get('/events/{region:slug}', [WelcomeController::class, 'eventsRegion'])->name('event_region');
 Route::get("/announcements/{category:slug}", [WelcomeController::class, 'announcementCategory'])->name('announcement_page');
+Route::get("/announcement/{announcement:slug}", [WelcomeController::class, 'showAnnouncement'])->name('page_announcement');
+Route::get("/event/{event:slug}", [WelcomeController::class, 'showEvent'])->name('page_event');
+Route::get('/profil/{user:slug}', [WelcomeController::class, 'showProfile'])->name('user_profile');
 
 Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
 Route::get("/evenement/{event:slug}", [UserDashboard::class, 'showEvent'])->name('event_page');
