@@ -278,7 +278,29 @@ class User extends Authenticatable implements MustVerifyEmail
 
         return $this->getUserCurrency($currency_id);
     }
-
+    /**
+     * This methode is used to update the wallet of a user on publication of an announcement or event
+     * 
+     * $currency the currency
+     * $publication_column the publication column will tell if we are saving an annoucenement or an event
+     */
+    public function updateUserWallet($currency = 1, $publication_column="annoucements_price")
+    {
+        if($publication_column == "annoucements_price"){
+            $pivot_column = "free_currency";
+        } else {
+            $pivot_column = "paid_currency";
+            $publication_column = "events_price";
+        }
+           //Get amount to pauy from user's role
+        $price_to_pay = $this->roles->first()->$publication_column ;
+        //Get user's currencey data
+        $user_currencies = $this->setUserCurrency($currency);
+        //update currency value and save
+        $user_currencies->pivot->free_currency -= $price_to_pay;
+        return $user_currencies->pivot->save();
+        //dd($price_to_pay,$user_currencies->pivot->free_currency);
+    }
     /**
      * 
      * assign a role to a user through
@@ -311,7 +333,7 @@ class User extends Authenticatable implements MustVerifyEmail
     
     public function userHasEnoughCredit(String $contenu_price, String $type = 'free_currency')
     {
-        $role = $this->roles->wherein('name',['super-admin','vendeur','chef-vendeur'])->first();
+        $role = $this->roles->wherenotin('name',['chef-vendeur','banquier','banquier'])->first();
         $amount_to_spend = intval($role->$contenu_price);
         if($amount_to_spend <= intval($this->setUserCurrency(1)->pivot->$type)){
             return true ;

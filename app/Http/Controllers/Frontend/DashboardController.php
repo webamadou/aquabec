@@ -247,30 +247,31 @@ class DashboardController extends Controller
             $data['owner'] = $request->owner;
         }
         //dd($data,$request->owner);
-        //If annouce is published we set the published_at column
-        if(intval($data['publication_status']) === 1){
-            $data['published_at'] = date('Y-m-d H:i:s');
-        }
         //Check if user has enough to post
         $can_post   = $current_user->userHasEnoughCredit('annoucements_price','free_currency');
         $data['publication_status'] = $can_post ? $data["publication_status"] : 0;
 
         $data['posted_by'] = $current_user->id;
-
-        if($save = Announcement::create($data)){
+        //If announce is published we set the published_at column save the data and update user wallets
+        $data['published_at'] = $data['publication_status'] === 1 ? date('Y-m-d H:i:s') : null;
+        
+        $save_publication = Announcement::create($data);//save data
+        if($save_publication){
+            //If announce is published we update user's wallets
+            if(intval($data['publication_status']) === 1){
+                $current_user->updateUserWallet(1,"annoucements_price");
+            }
             //Actions if an image is uploaded
-            $owner = $save->owned()->select('name','prenom','id')->first() ;
+            $owner = $save_publication->owned()->select('name','prenom','id')->first() ;
             //Each user has a folder where to save image and other eventual files
             $user_folder = str_replace(' ','-',$owner->name)."_".str_replace(' ','-', $owner->prenom)."_".str_replace(' ','-',$owner->id);
             if($request->has('images')){
                 $image = $request->file('images');
-                $image_name = $save->slug.".".\File::extension($image->getClientOriginalName());
+                $image_name = $save_publication->slug.".".\File::extension($image->getClientOriginalName());
                 $image_path = 'images/announcements';
-                $save_images = $image->storeAs($image_path,$image_name,'public');
-                $save->images = $image_name;
-                $save->save();
-                /* dd(route('announcement.image',$save->images));
-                dd($save->images,"We get a picture", $image_name ); */
+                $save_publication_images = $image->storeAs($image_path,$image_name,'public');
+                $save_publication->images = $image_name;
+                $save_publication->save();
             }
             return redirect()
                     ->route('user.my_announcements')
@@ -346,6 +347,9 @@ class DashboardController extends Controller
 
         $save = $announcement->update($data);
         if($save){
+            if(intval($data['publication_status']) === 1){
+                $current_user->updateUserWallet(1,"annoucements_price");
+            }
             //Actions if an image is uploaded
             $owner = $announcement->owned()->select('name','prenom','id')->first() ;
             //Each user has a folder where to save image and other eventual files
