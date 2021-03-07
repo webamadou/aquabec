@@ -23,7 +23,7 @@
                                 <th>Categorie</th>
                                 <th>Proprietaire</th>
                                 <th>Region et Ville</th>
-                                <th>Date d'envoie</th>
+                                <th>Date d'enregistrement</th>
                             </tr>
                         </thead>
                     </table>
@@ -68,7 +68,29 @@
                             return `<strong>Region : </strong>${data.region?data.region.name:""}<br><strong>Ville : </strong>${data.city?data.city.name:""}`;
                         }
                     },
-                    { data: 'updated_at', name: 'updated_at' }
+                    { data: null, name: 'updated_at',
+                        render: data => {
+                            let annonce_status = '';
+                            switch (data.publication_status) {
+                                case 0:
+                                    annonce_status = `<span class="badge badge-warning">Bouillon</div>`  ;
+                                    break;
+                                case 1:
+                                    annonce_status = `<span class="badge badge-success">Publiée</div>`  ;
+                                    break;
+                                case 2:
+                                    annonce_status = `<span class="badge badge-primary">Privée</div>`  ;
+                                    break;
+                                case 4:
+                                    annonce_status = `<span class="badge badge-danger">Suprimée</div>`  ;
+                                    break;
+                            
+                                default:
+                                    break;
+                            }
+                            return `${data.updated_at} <br> ${annonce_status}`
+                        }
+                    }
                 ],
                 buttons: [
                     'copy', 'csv', 'excel', 'pdf', 'print'

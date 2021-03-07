@@ -64,24 +64,32 @@
                         <!-- End Latest Post Media -->
                         <div class="post-body">
                             <div class="post-item-date">
-                                <div class="post-date">
+                                <div class="post-date {{class_basename($item) === 'Event'? 'event':''}}">
                                     <span class="date">{{date('d', strtotime($item->published_at))}}</span>
-                                    <span class="month">{{@$mont_array[intval(date('m', strtotime($item->published_at)))] }}</span>
+                                    <span class="month">{{@$month_array[intval(date('m', strtotime($item->published_at)))] }}</span>
                                 </div>
                             </div>
                             <!-- End Post Item Date -->
                             <div class="post-info">
                                 <div class="post-meta">
-                           <span class="post-author">
-                              Par <a href="{{route('user.show_profile',$item->owned->id)}}">{{$item->owned->prenom}} {{$item->owned->name}} {{$item->published_at}}</a>
-                           </span>
+                                    <span class="post-author">
+                                        Par <a href="{{route('user_profile',$item->owned)}}">{{$item->owned->prenom}} {{$item->owned->name}}</a>
+                                        <div class="contenu-type {{class_basename($item) === 'Event' ? 'event':''}}">
+                                            {{class_basename($item) === "Event" ? 'Evénement':"Annonce"}}
+                                        </div>
+                                    </span>
                                 </div>
                                 <!-- End Post Meta -->
-                                <h3 class="post-title"><a href="#">{{$item->title}}</a></h3>
+                                <h3 class="post-title"><a href="#">
+                                    @if(class_basename($item) === 'Event')
+                                        <a href="{{route('page_event',$item->slug)}}">{{$item->title}}</a>
+                                    @else
+                                        <a href="{{route('page_announcement',$item->slug)}}">{{$item->title}}</a>
+                                    @endif
+                                </h3>
                                 <div class="entry-content">
                                     <p>
-                                    {{$item->published_at}}
-                                        One of the top 100 advertising of a marketing agencies know that how to grow your busines
+                                    {!! substr(@$announcement->description, 0, 90); !!}...
                                     </p>
                                 </div>
                                 <!-- End Entry Content -->

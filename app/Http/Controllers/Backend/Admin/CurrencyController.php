@@ -290,7 +290,12 @@ class CurrencyController extends Controller
     {
         $current_user = auth()->user();
         $currencies = $current_user->currencies;
-        $price_options = $current_user->buildPricesOptions($current_user->roles->first()->id);
+        if(!empty($current_user->roles->all())){
+            $price_options = $current_user->buildPricesOptions(@$current_user->roles->first()->id);
+        } else {
+            $current_user->assignRole('membre');
+            $price_options = $current_user->buildPricesOptions(@$current_user->roles->first()->id);
+        }
         //dd($current_user->roles->first()->name, $currencies,$price_options);
         return view("user.currencies.purchase_currency", compact('currencies','price_options'));
     }
@@ -309,7 +314,7 @@ class CurrencyController extends Controller
         $currency_prices   = $role->credit_prices()->where('price',$data['price'])->first();
 
         //dd( $currency_prices->price,$data['currency_id'], $user->getRoleFromCurrency($data['currency_id'])->credit_prices() );
-        $title  = "Vous allez acheter ".$currency_prices->credit_amount." $currency->name à $".$data['price']." CAD";
+        $title  = "Vous allez acheter ".$currency_prices->credit_amount." $currency->name à $".$data['price'].".00";
 
         $token  = \App\Models\Payment::buildPaymentToken();
         //We populare the sessions

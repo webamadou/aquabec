@@ -41420,10 +41420,9 @@ input.autofill-field,
 .announcement-meta-wrapper {
     background: #e2e2e2;
     height: inherit;
-    padding: 0 15px;
-    padding-top: 4rem;
-    position: absolute;
-    top: 8rem;
+    padding: 5px 15px;
+    position: relative;
+    top: 0;
     z-index: 9;
     border-radius: 4px;
     list-style: none !important;
