@@ -14,7 +14,7 @@
                             <div class="row justify-content-between announcement-metas">
                                 <div class="col-6"><strong>Un évènement de :</strong></div><div class="col-6 meta-value"><span> {{@$event->owned->prenom}} {{@$event->owned->name}} </span></div>
                                 <div class="col-6"><strong>Catégorie :</strong></div><div class="col-6 meta-value"><span>{{@$event->category->name}}</span></div>
-                                <div class="col-6">
+                                <div class="col-6"> 
                                     @if(intval($event->publication_status) === 1)
                                         <strong>Posté le :</strong></div><div class="col-6 meta-value"><span> {{date('d/m/Y', strtotime($event->published_at))}} </span>
                                     @else

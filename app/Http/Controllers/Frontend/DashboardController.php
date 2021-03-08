@@ -286,7 +286,11 @@ class DashboardController extends Controller
         $current_user = auth()->user();
         //User can view annonce if is owner or publisher or announcement is validated and published
         //Later we will have to set gates or policies for this
-        if(intval(@$announcement->publication_status) !== 1 && (@$current_user->id !== @$announcement->owner && @$current_user->id !== @$announcement->posted_by)){
+        if(intval(@$announcement->publication_status) !== 1 && (
+                intval(@$current_user->id) !== intval(@$announcement->owner) && 
+                intval(@$current_user->id) !== intval(@$announcement->posted_by)
+                )
+        ){
             $message = "Ce contenu n'est pas encore disponible";
             return view('frontend.feedback',compact('message'));
         }
@@ -499,7 +503,11 @@ class DashboardController extends Controller
         $current_user = auth()->user();
         //User can view annonce if is owner or publisher or event is validated and published
         //Later we will have to set gates or policies for this
-        if(intval(@$event->publication_status) !== 1 && (@$current_user->id !== @$event->owner && @$current_user->id !== @$event->posted_by)){
+        if(intval(@$event->publication_status) !== 1 && (
+                        intval(@$current_user->id) !== intval(@$event->owner) && 
+                        intval(@$current_user->id) !== intval(@$event->posted_by)
+                    )
+        ){
             $message = "Ce contenu n'est pas encore disponible";
             return view('frontend.feedback',compact('message'));
         }

@@ -71,7 +71,7 @@
                     { data: null, name: 'updated_at',
                         render: data => {
                             let annonce_status = '';
-                            switch (data.publication_status) {
+                            switch (parseInt(data.publication_status)) {
                                 case 0:
                                     annonce_status = `<span class="badge badge-warning">Bouillon</div>`  ;
                                     break;
