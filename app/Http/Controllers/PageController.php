@@ -165,7 +165,7 @@ class PageController extends Controller
             'content' => 'nullable'
         ]);
 
-        $page->update($data);
+        $homeSection->update($data);
         return redirect()->route('admin.settings.pages.index')->with('success','La section a été mise à jour avec succès!');
     }
 

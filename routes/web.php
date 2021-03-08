@@ -118,7 +118,7 @@ Route::middleware(['auth','verified'])->group(function (){
             Route::get("/pages_section/create",[PageController::class, 'create_section'])->name("create_section");
             Route::post("/pages_section",[PageController::class, 'store_section'])->name("store_section");
             Route::get("/pages_section/{home_section}/edit",[PageController::class, 'edit_section'])->name("edit_section");
-            Route::get("/pages_section/{home_section}/update",[PageController::class, 'update_section'])->name("update_section");
+            Route::put("/pages_section/{home_section}/update",[PageController::class, 'update_section'])->name("update_section");
             
             Route::get('get-pages-data', [RoleController::class, 'pagesData'])->name('pages.data');
             // Security Routes...
