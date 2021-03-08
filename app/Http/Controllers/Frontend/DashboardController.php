@@ -253,14 +253,13 @@ class DashboardController extends Controller
 
         $data['posted_by'] = $current_user->id;
         //If announce is published we set the published_at column save the data and update user wallets
-        $data['published_at'] = $data['publication_status'] === 1 ? date('Y-m-d H:i:s') : null;
+        $data['published_at'] = intval($data['publication_status']) === 1 ? date('Y-m-d H:i:s') : null;
         
         $save_publication = Announcement::create($data);//save data
         if($save_publication){
-            //If announce is published we update user's wallets
-            if(intval($data['publication_status']) === 1){
-                $current_user->updateUserWallet(1,"annoucements_price");
-            }
+            //We update user's wallet
+            $current_user->updateUserWallet(1,"annoucements_price");
+
             //Actions if an image is uploaded
             $owner = $save_publication->owned()->select('name','prenom','id')->first() ;
             //Each user has a folder where to save image and other eventual files
@@ -287,7 +286,7 @@ class DashboardController extends Controller
         $current_user = auth()->user();
         //User can view annonce if is owner or publisher or announcement is validated and published
         //Later we will have to set gates or policies for this
-        if(@$announcement->publication_status !== 1 && (@$current_user->id !== @$announcement->owner && @$current_user->id !== @$announcement->posted_by)){
+        if(intval(@$announcement->publication_status) !== 1 && (@$current_user->id !== @$announcement->owner && @$current_user->id !== @$announcement->posted_by)){
             $message = "Ce contenu n'est pas encore disponible";
             return view('frontend.feedback',compact('message'));
         }
@@ -347,9 +346,9 @@ class DashboardController extends Controller
 
         $save = $announcement->update($data);
         if($save){
-            if(intval($data['publication_status']) === 1){
+            /* if(intval($data['publication_status']) === 1){
                 $current_user->updateUserWallet(1,"annoucements_price");
-            }
+            } */
             //Actions if an image is uploaded
             $owner = $announcement->owned()->select('name','prenom','id')->first() ;
             //Each user has a folder where to save image and other eventual files
@@ -470,6 +469,9 @@ class DashboardController extends Controller
         $data['publication_status'] = $can_post ? $data["publication_status"] : 0;
 
         if($save = Event::create($data)){
+            //We update user's wallet after save
+            $current_user->updateUserWallet(1,"events_price");
+
             //Actions if an image is uploaded
             $owner = $save->owned()->select('name','prenom','id')->first() ;
             //Each user has a folder where to save image and other eventual files
@@ -497,7 +499,7 @@ class DashboardController extends Controller
         $current_user = auth()->user();
         //User can view annonce if is owner or publisher or event is validated and published
         //Later we will have to set gates or policies for this
-        if(@$event->publication_status !== 1 && (@$current_user->id !== @$event->owner && @$current_user->id !== @$event->posted_by)){
+        if(intval(@$event->publication_status) !== 1 && (@$current_user->id !== @$event->owner && @$current_user->id !== @$event->posted_by)){
             $message = "Ce contenu n'est pas encore disponible";
             return view('frontend.feedback',compact('message'));
         }
