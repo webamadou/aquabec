@@ -333,7 +333,7 @@ class User extends Authenticatable implements MustVerifyEmail
     
     public function userHasEnoughCredit(String $contenu_price, String $type = 'free_currency')
     {
-        $role = $this->roles->wherenotin('name',['chef-vendeur','banquier','banquier'])->first();
+        $role = $this->roles->wherenotin('name',['chef-vendeur','banquier','banquier','membre'])->first();
         $amount_to_spend = intval($role->$contenu_price);
         if($amount_to_spend <= intval($this->setUserCurrency(1)->pivot->$type)){
             return true ;
