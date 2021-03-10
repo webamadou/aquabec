@@ -32,9 +32,18 @@
 
 @include('layouts.front.partials.footer')
 
+<noscript>
+    <style>
+        .wrapper{ display: none;}
+    </style>
+    <div>
+        Vous avez désactivé Javascript sur votre navigateur. Un bon nombre de fonctionnalités sont exécutées avec Javascript.<br>Vous devez activer Javascript pour pouvoir utiliser le site.
+    </div>
+</noscript>
 <!-- Javascript File
    =============================================================================-->
 <script src="{{ asset('js/frontend.js') }}"></script>
+<script src="{{ asset('js/scripts.js') }}" defer></script>
 <script src="https://kit.fontawesome.com/9466c40bfd.js" crossorigin="anonymous"></script>
 </body>
 </html>

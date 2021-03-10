@@ -16,11 +16,11 @@ class ContactController extends Controller
     public function contactPost(Request $request)
     {
         $this->validate($request,[
-            'name' => 'required|string|min:3|max:250',
-            'phone' => 'required|string|numeric|digits_between:6,30',
+            'name' => 'required|string|min:2|max:250',
+            'phone' => 'required|string|max:1000',
             'email' => 'required|string|email|max:250',
             'subject' => 'required|string|min:3|max:250',
-            'message' => 'required|string|min:10|max:1000'
+            'message' => 'required|string|min:5|max:100000'
         ]);
 
         $user = new \App\Models\User();

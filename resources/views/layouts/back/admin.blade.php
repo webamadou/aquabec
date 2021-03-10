@@ -27,7 +27,6 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="{{asset('dist/icons-picker/js/bootstrap-iconpicker.bundle.min.js')}}" defer></script>
     <script src="{{asset('js/scripts.js')}}" defer></script>
-
     @stack('scripts')
 
     <!-- Theme style -->
@@ -74,6 +73,15 @@
         </footer>
     </div>
     <!-- ./wrapper -->
+
+    <noscript>
+        <style>
+            .wrapper{ display: none;}
+        </style>
+        <div>
+            Vous avez désactivé Javascript sur votre navigateur. Un bon nombre de fonctionnalités sont exécutées avec Javascript.<br>Vous devez activer Javascript pour pouvoir utiliser le site.
+        </div>
+    </noscript>
 @include('layouts.back.alerts.sweetalerts')
 </body>
 

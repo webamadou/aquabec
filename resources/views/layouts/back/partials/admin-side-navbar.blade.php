@@ -43,7 +43,7 @@
                             <li class="nav-item">
                                 <a href="{{ route('banker.currencies.accounts') }}" class="nav-link {{ side_nav_bar_menu_status('regions','active')  }}">
                                     <i class="fas fa-coins nav-icon"></i> 
-                                    <p>Mes Monnaies</p>
+                                    <p>Les monnaies</p>
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -77,13 +77,13 @@
                             Utilisateurs
                             @isset($users)
                               @if($users->count() > 0)
-                              <span class="ml-2 badge badge-danger">{{ $users->count() }}</span>
+                              <span class="ml-2 badge badge-danger"></span>
                               @endif
                             @endisset
                         </p>
                     </a>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a href="{{ route('admin.organisations.index') }}" class="nav-link {{ side_nav_bar_menu_status('organisations','active') }}">
                         <i class="nav-icon fas fa-address-card"></i>
                         <p>
@@ -103,7 +103,7 @@
                             Abonnements
                         </p>
                     </a>
-                </li>
+                </li> -->
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-th-list"></i>
@@ -174,7 +174,7 @@
                 @if(auth()->user()->hasRole('super-admin'))
                 <li><hr></li>
                 <li class="nav-item">
-                    <a href="{{ route('admin.settings.pages.index') }}" class="nav-link {{ side_nav_bar_menu_status('categories','active')  }}">
+                    <a href="{{ route('admin.settings.pages.index') }}" class="nav-link {{ side_nav_bar_menu_status('pages','active')  }}">
                         <i class="fa fa-list nav-icon"></i>
                         <p>Pages</p>
                     </a>
@@ -185,12 +185,12 @@
                         <p>Catégories</p>
                     </a>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a href="{{ route('admin.settings.caracteristics.index') }}" class="nav-link {{ side_nav_bar_menu_status('caracteristics','active')  }}">
                         <i class="fa fa-list-alt nav-icon"></i>
                         <p>Caractéristiques</p>
                     </a>
-                </li>
+                </li> -->
                 <li class="nav-item">
                     <a href="{{ route('admin.settings.age_ranges.index') }}" class="nav-link {{ side_nav_bar_menu_status('age_ranges','active')  }}">
                         <i class="fa fa-users-cog nav-icon"></i>

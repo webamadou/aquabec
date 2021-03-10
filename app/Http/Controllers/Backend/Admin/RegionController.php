@@ -69,6 +69,22 @@ class RegionController extends Controller
     }
 
     /**
+     * Edit a resource in storage.
+     *
+     * @param  Region id $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $region = Region::find($id);
+        $form = $this->getForm($region);
+        //$region = Region::where('status','<=',1)->get();
+        $user = auth()->user();//We need the current user's id for the generated_by field
+
+        return view('admin.regions.index',compact('form'));
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @return RedirectResponse
@@ -85,5 +101,26 @@ class RegionController extends Controller
         Region::create($data);
 
         return redirect()->route('admin.settings.regions.index')->with('success','Une region a été créée avec succès!');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @return RedirectResponse
+     */
+    public function update(Request $request, $region)
+    {
+        $form = $this->getForm();
+        $data = $form->getFieldValues();
+        $form->redirectIfNotValid();
+        $region = Region::find($region);
+        //dd($region);
+        /* $slug = Str::slug($form->getFieldValues()['name']);
+        $data = array_merge($data,compact('slug')); */
+
+        $region->update($data);
+        //Region::create($data);
+
+        return redirect()->route('admin.settings.regions.index')->with('success','La region a été éditée avec succès!');
     }
 }

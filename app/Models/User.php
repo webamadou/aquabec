@@ -49,10 +49,10 @@ class User extends Authenticatable implements MustVerifyEmail
             ]
         ];
     }
-    public function getRouteKeyName()
+    /* public function getRouteKeyName()
     {
         return 'slug';
-    }
+    } */
     /**
      * The attributes that should be hidden for arrays.
      *

@@ -61,6 +61,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <div class="collapse navbar-collapse order-3" id="navbarCollapse">
                 <!-- Left navbar links -->
                 <ul class="navbar-nav">
+                    @hasanyrole('banquier')
+                    <li class="nav-item">
+                        <a href="{{ route('banker.currencies.accounts') }}" class="nav-link {{ side_nav_bar_menu_status('dashboard','active') }}"><i class="fas fa-coins nav-icon pr-2"></i>Les Monnaies</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('banker.currencies.index') }}" class="nav-link {{ side_nav_bar_menu_status('dashboard','active') }}"><i class="fa fa-plus nav-icon pr-2"></i>Ajouter une monnaie</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('admin.credits.logs') }}" class="nav-link {{ side_nav_bar_menu_status('dashboard','active') }}"><i class="fa fa-list nav-icon pr-2"></i>Historique des transferts</a>
+                    </li>
+                    @endrole
+                    @hasanyrole('super-admin|admin|annonceur|vendeur')
                     <li class="nav-item">
                         <a href="{{ route('user.dashboard') }}" class="nav-link {{ side_nav_bar_menu_status('dashboard','active') }}"><i class="fa fa-user-cog"></i> Portrait</a>
                     </li>
@@ -70,19 +82,33 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <li class="nav-item">
                         <a href="{{route('user.my_announcements')}}" class="nav-link"><i class="fa fa-bullhorn"></i> Mes annonces</a>
                     </li>
+                    @endrole
                     @hasanyrole('chef-vendeur|vendeur')
                         <li class="nav-item"><a class="nav-link" href="{{route('vendeurs.my_team')}}"><i class="fa fa-user-friends"></i> Mon équipe</a></li>
                     @endrole
+                    @auth
                     <li class="nav-item dropdown">
-                        <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Mon Compte</a>
+                        <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Mon Profile</a>
                         <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
-                            <li><a class="dropdown-item" href="{{route('user.infosperso')}}/infos-perso"><i class="fa fa-user"></i> Infos personelles</a></li>
-                            <li><a class="dropdown-item link-success" href="{{route('user.infosperso')}}/transactions" title="Lsite de mes transactions"><i class="fas fa-exchange-alt" aria-hidden="true"></i> Mes Transactions</a></li>
-                            <li><a class="dropdown-item link-primary" href="{{route('user.infosperso')}}/wallet" title="Mon Portefeuille"><i class="fa fa-wallet" aria-hidden="true"></i> Mon Portefeuille </a></li>
+                            <li>
+                                <a class="dropdown-item" href="{{route('user.infosperso')}}/account"><i class="fa fa-cogs"></i> Mon Compte</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{route('user.infosperso')}}/infos-perso"><i class="fa fa-user"></i> Infos personelles</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item link-success" href="{{route('user.infosperso')}}/transactions" title="Lsite de mes transactions"><i class="fas fa-exchange-alt" aria-hidden="true"></i> Mes Transactions</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item link-primary" href="{{route('user.infosperso')}}/wallet" title="Mon Portefeuille"><i class="fa fa-wallet" aria-hidden="true"></i> Mon Portefeuille </a>
+                            </li>
                             <li class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="{{route('logout')}}"><i class="fa fa-power-off"></i> Se déconnecter</a></li>
+                            <li>
+                                <a class="dropdown-item link-primary" href="{{route('user.infosperso')}}/security" title="Mon Portefeuille"><i class="fa fa-wallet" aria-hidden="true"></i> Sécurité </a>
+                            </li>
                         </ul>
                     </li>
+                    @endauth
                     @hasanyrole('super-admin|admin')
                         <li class="nav-item dropdown">
                             <a href="{{route('admin.dashboard')}}" class="btn btn-primary"><i class="fa fa-user-shield"></i> Tableau de bord</a>
@@ -129,6 +155,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <!-- ./wrapper -->
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+<noscript>
+    <style>
+        .wrapper{ display: none;}
+    </style>
+    <div>
+        Vous avez désactivé Javascript sur votre navigateur. Un bon nombre de fonctionnalités sont exécutées avec Javascript.<br>Vous devez activer Javascript pour pouvoir utiliser le site.
+    </div>
+</noscript>
 @include('layouts.back.alerts.sweetalerts')
 </body>
 </html>

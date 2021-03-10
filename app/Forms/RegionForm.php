@@ -28,14 +28,14 @@ class RegionForm extends Form
                 'rules' => [
                     'required',
                     'numeric',
-                    Rule::unique('regions')->ignore($this->getModel()->id)
+                    /* Rule::unique('regions')->ignore($this->getModel()->id) */
                 ]
             ])
             ->add('name', 'text',[
                 'label' => 'Nom',
                 'rules' => [
                     'required',
-                    Rule::unique('regions')->ignore($this->getModel()->id)
+                    /* Rule::unique('regions')->ignore($this->getModel()->id) */
                 ]
             ])
             ->add('<i class="fa fa-save mr-2"></i>Enregistrer','submit',[

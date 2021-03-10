@@ -117,7 +117,7 @@ class CategoryController extends Controller
         $slug = Str::slug($form->getFieldValues()['name']);
         $data = array_merge($data,compact('slug'));
 
-        if ($data['parent_id'] == null) {
+        if (@$data['parent_id'] == null) {
             $data['parent_id'] = 0;
         }
 
@@ -150,7 +150,7 @@ class CategoryController extends Controller
         $data = $form->getFieldValues();
         $form->redirectIfNotValid();
 
-        if ($data['parent_id'] == null) {
+        if (@$data['parent_id'] == null) {
             $data['parent_id'] = 0;
         }
 

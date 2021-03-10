@@ -24,7 +24,7 @@ class CategoryForm extends Form
         ];
 
         $this
-            ->add('parent_id', 'entity',[
+            /* ->add('parent_id', 'entity',[
                 'label' => 'Parent',
                 'class' => Category::class,
                 'property' => 'name',
@@ -34,7 +34,7 @@ class CategoryForm extends Form
                     'numeric',
                     'exists:categories,id'
                 ]
-            ])
+            ]) */
             ->add('type', 'select',[
                 'label' => 'Type',
                 'choices' => ['evènement' => 'Evènement', 'annonce' => 'Annonce'],

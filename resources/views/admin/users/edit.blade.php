@@ -135,17 +135,10 @@
                 @endforelse
                 </div>
             </div>
-            <div class="mx-auto my-3 bg-gray-light col-12 row">
-                <div class="offset-sm-1 mx-auto col-5 form-group row">
-                    <label for="password" class="col-sm-12 col-md-12">Mot de passe : </label>
-                    <input id="password" type="password" name="password" class="form-control uk-input"  placeholder="Votre mot de passe">
-                </div>
-                <div class="offset-sm-1 mx-auto col-5 form-group row">
-                    <label for="password-confirm" class="col-sm-12 col-md-12">Confirmer le mot de passe : </label>
-                    <input id="password-confirm" type="password" name="password_confirmation" class="form-control uk-input" placeholder="Confirmation du mot de passe">
-                </div>
+            <div class="col-4 offset-2 mb-4">
+                <a href="{{route('admin.users.index')}}" class="btn btn-block btn-success" type="submit"><i class="fa fa-reply"></i> Retour vers la liste</a>
             </div>
-            <div class="col-4 offset-8 mb-4">
+            <div class="col-4 offset-2 mb-4">
                 <button class="btn btn-block btn-primary" type="submit"><i class="fa fa-save"></i> Enregistrer</button>
             </div>
         </form>

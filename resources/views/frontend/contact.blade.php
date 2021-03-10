@@ -45,7 +45,7 @@
                         <!-- Col end -->
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <input class="form-control @error('phone') border-danger is-invalid @enderror" name="phone" id="phone" placeholder="Téléphone" type="text" value="{{ old('phone') }}">
+                                <input class="form-control phone_number @error('phone') border-danger is-invalid @enderror " name="phone" id="phone" placeholder="Téléphone" type="text" value="{{ old('phone') }}">
                                 @error('phone')
                                 <span class="text-danger">
                                         {{ $message }}

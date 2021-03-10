@@ -65,7 +65,7 @@
                 ajax: '{{ url('admin/settings/get-categories-data') }}',
                 columns: [
                     { data: null, name: 'name',
-                        render: data => {return `<h4>${data.name}</h4>`}
+                        render: data => {return `<strong>${data.name}</strong>`}
                     },
                     { data: null, name: 'type',
                         render: data => {return `${data.type}`}
@@ -83,8 +83,8 @@
                       "sProcessing":     "<i class='fa fa-2x fa-spinner fa-pulse'>",
                       "sSearch":         "Rechercher&nbsp;:",
                       "sLengthMenu":     "Afficher _MENU_ &eacute;l&eacute;ments",
-                      "sInfo":           "Affichage de l'&eacute;lement _START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments",
-                      "sInfoEmpty":      "Affichage de l'&eacute;lement 0 &agrave; 0 sur 0 &eacute;l&eacute;ments",
+                      "sInfo":           "Affichage de l'&eacute;l&eacute;ment _START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments",
+                      "sInfoEmpty":      "Affichage de l'&eacute;l&eacute;ment 0 &agrave; 0 sur 0 &eacute;l&eacute;ments",
                       "sInfoFiltered":   "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",
                       "sInfoPostFix":    "",
                       "sLoadingRecords": "Chargement en cours...",

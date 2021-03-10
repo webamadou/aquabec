@@ -6,7 +6,7 @@
 <div class="offset-sm-0 col-sm-12 col-md-12 form-group row">
     <label for="dates" class="col-sm-12 col-md-12">Dates de l'annonce : * <br><small>Vous pouvez sélectionner plusieurs dates</small> </label>
     <input name="dates" id="datePick" class="form-control" value="{{old('dates',@$event->dates)}}"/>
-    {!! $errors->first('date', '<div class="error-message col-12">:message</div>') !!}
+    {!! $errors->first('dates', '<div class="error-message col-12">:message</div>') !!}
 </div>
 <div class="col-12"><hr/></div>
 <div class="offset-sm-0 col-sm-12 col-md-6 form-group row">

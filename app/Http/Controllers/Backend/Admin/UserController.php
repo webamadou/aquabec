@@ -31,7 +31,6 @@ class UserController extends Controller
 
     public function usersData()
     {
-        //$users = User::role(['membre','admin'])->with('roles')->get();
         $users = User::select('id','name','prenom','slug','email','updated_at')->where('profile_status','<=',1)->get();
 
         return datatables()
@@ -164,6 +163,7 @@ class UserController extends Controller
                             ->back()
                             ->with('success','Modifications enregistrées avec succès!');
         } else {
+            dd('fi erreur la');
             return redirect()
                             ->back()
                             ->with('error',"Il s'est produit une erreur");

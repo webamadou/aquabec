@@ -203,6 +203,10 @@ class RoleController extends Controller
             "date_credit" => 'required',
             "annoucements_price" => 'required',
         ]);
+        $unchageable_role = ['super-admin','admin','chef-vendeur','vendeur','banquier'];
+        if(in_array(@$role->name, $unchageable_role)){
+            unset($data["name"]);
+        }
         $data['description'] = @$request->input("description");
         $data['free_events'] = @$request->input("free_events") || 0;
         $data['free_annoncements'] = @$request->input("free_annoncements") || 0;
