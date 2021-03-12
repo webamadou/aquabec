@@ -5,7 +5,7 @@
 @section('content')
 
     <div class="row">
-        <div><a href="{{route('admin.users.create')}}" class="btn btn-primary mb-4 mb-4"><i class="fa fa-user-plus"></i> Ajouter un utilisateur </a></div>
+        <div><a href="{{route('admin.users.create')}}" class="btn btn-primary mb-4 mb-4"><i class="fa fa-user-plus"></i> Inscrire un équipier </a></div>
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-header">

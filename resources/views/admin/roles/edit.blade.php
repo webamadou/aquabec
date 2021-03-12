@@ -14,12 +14,12 @@
                     </div>
                     <div class="card-body row">
                         <div class="col-12 form-group row">
-                            <label for="Nom du groupe *" class="col-sm-12 col-md-3">Nom Du Groupe *</label>
+                            <label for="name" class="col-sm-12 col-md-3">Nom de la fonction *</label>
                             <input class="col-sm-12 col-md-9" name="name" type="text" value="{{$role->name}}">
                             {!! $errors->first('name', '<div class="error-message col-12">:message</div>') !!}
                         </div>
                         <div class="col-12 form-group row justify-content-center bg-light">
-                            <label for="free_events" class="col-sm-6 col-md-6">Evenements Gratuits</label>
+                            <label for="free_events" class="col-sm-6 col-md-6">Événements Gratuits</label>
                             <label class="label col-sm-6 col-md-6">
                                 <input class="label__checkbox" id="free_events" name="free_events" type="checkbox" value="1" {{ $role->free_events>=1 ?"checked": "" }}>
                                 <span class="label__text">
@@ -120,7 +120,7 @@
                                 <label for="Prix $" class="col-sm-12">Prix $</label>
                             </div>
                             <div class="col-xm-6">
-                                <label for="Credits" class="col-sm-12">Credits</label>
+                                <label for="Credits" class="col-sm-12">Montant</label>
                             </div>
                             <div id="credit_price_wrapper">
                                 @foreach($role->credit_prices as $key => $price)

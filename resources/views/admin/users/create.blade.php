@@ -1,6 +1,6 @@
 @extends('layouts.back.admin')
 
-@section('title',"Enregistrement d'un profil ")
+@section('title',"Ajout d'un profil ")
 
 @section('content')
     <div class="col-12 container-fluid bg-white">

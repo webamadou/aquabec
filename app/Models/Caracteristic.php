@@ -32,7 +32,7 @@ class Caracteristic extends Model
     {
         switch ($value) {
             case 0:
-                return "Text simple";
+                return "Texte simple";
                 break;
             
             case 1:
@@ -44,7 +44,7 @@ class Caracteristic extends Model
                 break;
             
             default:
-                return 'Text simple';
+                return 'Texte simple';
                 break;
         }
     }

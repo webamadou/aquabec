@@ -1,6 +1,6 @@
 @extends('layouts.back.admin')
 
-@section('title','Caracteristics ')
+@section('title','Caractéristiques ')
 
 @section('content')
     <div class="row">
@@ -21,7 +21,7 @@
                     <div class="card-footer">
                         <a class="btn btn-link float-right text-dark font-weight-bold" href="{{ route('admin.settings.caracteristics.index') }}">
                             <i class="mr-2 fa fa-plus"></i>
-                            Créer une nouvelle caracteristique
+                            Créer une nouvelle caractéristique
                         </a>
                     </div>
                 @endif
@@ -31,7 +31,7 @@
         <div class="col-sm-12 col-md-8">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="card-title font-weight-bold">Caracteristiques des catégories</h2>
+                    <h2 class="card-title font-weight-bold">Caractéristiques des catégories</h2>
                     <div class="card-tools"><!-- <a class="btn btn-success" href="#">Ajouter des options à une caractéristique</a> --> </div>
                 </div>
                 <div class="card-body">
@@ -39,7 +39,7 @@
                         <thead>
                         <tr>
                             <th>Nom</th>
-                            <th>Category</th>
+                            <th>Catégories</th>
                             <th>Dernière modification</th>
                             <th>Actions</th>
                         </tr>
@@ -68,14 +68,14 @@
                             //We could have done this on the model. But we want to be able to get the raw value of type some time. 
                             let type = null;
                             switch (data.type){
-                                case 0: type = "Text simple";
+                                case 0: type = "Texte simple";
                                 break;
                                 case 1: type = `Choix unique<br><a href='/admin/settings/caracteristic/${data.id}/caracteristic_options'>Gérer les options</>`;
                                 break;
                                 case 2: type = `Choix multiple<br><a href='/admin/settings/caracteristic/${data.id}/caracteristic_options'>Gérer les options</>`;
                                 break;
 
-                                default: type = "Text simple";
+                                default: type = "Texte simple";
                             }
                             return `<h4>${data.name}</h4>${type}`;
                         }

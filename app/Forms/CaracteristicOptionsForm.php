@@ -24,7 +24,7 @@ class CaracteristicOptionsForm extends Form
             'url' => $url
         ];
         $types = [
-            '0' => 'Text simple', '1' => 'Choix unique', '2' => 'Choix multiple'
+            '0' => 'Texte simple', '1' => 'Choix unique', '2' => 'Choix multiple'
         ];
 
         $this
@@ -47,7 +47,7 @@ class CaracteristicOptionsForm extends Form
                 ]
             ])
             ->add('type', 'select',[
-                'label' => "Type de d'entrée *",
+                'label' => "Type d'entrée *",
                 'choices' => $types,
                 'empty_value' => '=== Choisissez le type de catégorie ===',
                 'rules' => [

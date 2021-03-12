@@ -83,7 +83,7 @@ class CaracteristicController extends Controller
 
         Caracteristic::create($data);
 
-        return redirect()->route('admin.settings.caracteristics.index')->with('success','La caracteristique a été créée avec succès!');
+        return redirect()->route('admin.settings.caracteristics.index')->with('success','La caractéristique a été créée avec succès!');
     }
 
     /**

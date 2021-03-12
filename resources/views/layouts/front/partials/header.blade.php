@@ -28,7 +28,7 @@
                                     <div class="col-md-12 col-lg-3 no-padding">
                                         <ul>
                                             <li class="tw-megamenu-title">
-                                                <h3>Evenements par régions</h3>
+                                                <h3>Événements par régions</h3>
                                             </li>
                                             @foreach(\App\Models\Region::skip(0)->take(6)->get() as $region)
                                                 <li><a href="{{route('event_region',$region)}}">{{ $region->name }}</a></li>

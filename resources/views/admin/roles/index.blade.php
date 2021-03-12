@@ -38,13 +38,22 @@
 
     <script>
         $(function() {
+            const capitalize = (s) => {
+                if (typeof s !== 'string') return ''
+                return s.charAt(0).toUpperCase() + s.slice(1)
+            }
             $('#roles-table').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: '{{ url('admin/settings/security/get-role-data') }}',
                 columns: [
                     { data: 'id', name: 'id' },
-                    { data: 'name', name: 'name' },
+                    { data: null, name: 'name',
+                        render: data => {
+                            const name = data.name === 'chef-vendeur'?'chef':data.name;
+                            return capitalize(name);
+                        }
+                    },
                     { data: 'users_count', name: 'users_count' },
                     { data: 'updated_at', name: 'updated_at' },
                     { data: 'action', name: 'action', orderable: false, searchable: false }

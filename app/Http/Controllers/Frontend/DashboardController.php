@@ -482,7 +482,7 @@ class DashboardController extends Controller
             $user_folder = str_replace(' ','-',$owner->name)."_".str_replace(' ','-', $owner->prenom)."_".str_replace(' ','-',$owner->id);
             if($request->has('images')){
                 $image = $request->file('images');
-                $image_name = $save->slug.".".\File::extension($image->getClientOriginalName());
+                $image_name = config('app.name').'-'.$save->slug.".".\File::extension($image->getClientOriginalName());
                 $image_path = 'images/announcements';
                 $save_images = $image->storeAs($image_path,$image_name,'public');
                 $save->images = $image_name;

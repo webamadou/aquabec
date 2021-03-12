@@ -1,6 +1,6 @@
 @extends('layouts.back.admin')
 
-@section('title','Creation de fonctions')
+@section('title','Ajout d'une fonction')
 
 @section('content')
     @if(Route::currentRouteName() == 'admin.settings.security.roles.create')
@@ -22,7 +22,7 @@
                       {!! $errors->first('name', '<div class="error-message col-12">:message</div>') !!}
                     </div>
                     <div class="col-12 form-group row">
-                      {!! Form::label('Evenements Gratuits','', ['class' => 'col-sm-12 col-md-3']) !!}
+                      {!! Form::label('Événements Gratuits','', ['class' => 'col-sm-12 col-md-3']) !!}
                       {!! Form::checkbox('free_events',1,false,['class'=>'col-sm-12 col-md-9']) !!}
                     </div>
                     <div class="col-12 form-group row">

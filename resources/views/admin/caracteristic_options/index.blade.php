@@ -1,6 +1,6 @@
 @extends('layouts.back.admin')
 
-@section('title','Les options de la caracteristique '.@$caracteristic->name)
+@section('title','Les options de la caractéristique '.@$caracteristic->name)
 
 @section('content')
     <div class="row">
@@ -46,7 +46,7 @@
         <div class="col-sm-12 col-md-8">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="card-title font-weight-bold">Caracteristiques des catégories</h2>
+                    <h2 class="card-title font-weight-bold">Caractéristiques des catégories</h2>
                     <div class="card-tools"><!-- <a class="btn btn-success" href="#">Ajouter des options à une caractéristique</a> --> </div>
                 </div>
                 <div class="card-body">
