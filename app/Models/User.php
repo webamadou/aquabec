@@ -41,7 +41,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return [
             'slug' => [
-                 'source'             => ['prenom', 'name'],
+                 'source'             => ['username'],
                  'separator'          => '-',
                  'unique'             => true,
                  'onUpdate'           => true,

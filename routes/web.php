@@ -61,7 +61,7 @@ Route::get('/events/{region:slug}', [WelcomeController::class, 'eventsRegion'])-
 Route::get("/announcements/{category:slug}", [WelcomeController::class, 'announcementCategory'])->name('announcement_page');
 Route::get("/announcement/{announcement:slug}", [WelcomeController::class, 'showAnnouncement'])->name('page_announcement');
 Route::get("/event/{event:slug}", [WelcomeController::class, 'showEvent'])->name('page_event');
-Route::get('/profil/{user:slug}', [WelcomeController::class, 'showProfile'])->name('user_profile');
+Route::get('/profil/{user:slug?}', [WelcomeController::class, 'showProfile'])->name('user_profile');
 
 Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
 Route::get("/evenement/{event:slug}", [UserDashboard::class, 'showEvent'])->name('event_page');
@@ -123,6 +123,9 @@ Route::middleware(['auth','verified'])->group(function (){
             Route::get('get-pages-data', [RoleController::class, 'pagesData'])->name('pages.data');
             // Security Routes...
             Route::name('security.')->prefix('security')->group(function () {
+                // ***FOLLOWING ROOTS ARE USED TO UPDATE ADAPT THE CURRENT db TO ORIGINAL ONE ***
+                Route::get("/update_db",[\App\Http\Controllers\UpdateDBController::class, 'index']);
+                // ******************************************************************************
                 // Roles Routes...
                 Route::resource('roles', RoleController::class);
                 Route::get('get-role-data', [RoleController::class, 'roleData'])->name('roles.data');
@@ -192,7 +195,7 @@ Route::middleware(['auth','verified'])->group(function (){
      */
     //Route::middleware(['role:user|client'])->name('user.')->group(function () {
     Route::name('user.')->group(function () {
-        Route::get('/vendeur/{user:slug}', [UserDashboard::class, 'showProfile'])->name('show_profile');
+        Route::get('/vendeur/{user:slug?}', [UserDashboard::class, 'showProfile'])->name('show_profile');
 
         Route::get('dashboard', [UserDashboard::class, 'index'])->name('dashboard');
         Route::resource('events', EventController::class);
