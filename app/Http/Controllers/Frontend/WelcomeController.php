@@ -87,14 +87,14 @@ class WelcomeController extends Controller
 
 	public function eventsRegion(Region $region)
 	{
-		$events = Event::where('region_id',$region->id)->where('publication_status','1')->get();
+		$events = Event::where('region_id',$region->id)->where('publication_status','1')->paginate(15);
 		$month_array = ['','Jan','Fev','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Dec'];
 		return view('frontend.eventRegion', compact('region','events','month_array'));
 	}
 
 	public function announcementCategory(Category $category)
 	{
-		$announcements = Announcement::where('category_id',$category->id)->where('publication_status','1')->get();
+		$announcements = Announcement::where('category_id',$category->id)->where('publication_status','1')->paginate(15);
 		$month_array = ['','Jan','Fev','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Dec'];
 		return view('frontend.announcementCategory', compact('category','announcements','month_array'));	
 	}
@@ -106,7 +106,7 @@ class WelcomeController extends Controller
 		$model 			= $request->content_type != 'evènement'? new Announcement(): new Event;
 		$response 		= $model->where("title","LIKE","%{$search_query}%")
 										->where('publication_status','1')
-										->get();
+										->paginate(15);
 		$month_array = ['','Jan','Fev','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Dec'];
 		return view('frontend.search', compact('response','content_type','search_query','month_array'));
 	}
