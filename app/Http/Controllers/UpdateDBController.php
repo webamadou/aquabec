@@ -242,5 +242,62 @@ class UpdateDBController extends Controller
             }
         }
         //*/
+        /* ================= ADABT PAGES TABLE =================== */
+        // $pages = DB::connection('mysql2')->table('PH_pages')->orderby('id', 'asc')->limit(500)->get();
+        // $pages = DB::connection('mysql2')->table('PH_pages')->orderby('id', 'asc')->skip(500)->take(500)->get();
+        // $pages = DB::connection('mysql2')->table('PH_pages')->orderby('id', 'asc')->skip(1000)->take(500)->get();
+        $pages = DB::connection('mysql2')->table('PH_pages')->orderby('id', 'asc')->skip(1500)->take(500)->get();
+        foreach ($pages as $key => $item) {
+            if(@$item->nom != "" && @$item->texte !=""){
+                echo "Saving event $item->nom <br/>";
+                $page = \App\Models\Page::find(@$item->id);
+                $page = $page == null? new \App\Models\Page() : $page;
+
+                $page->title = @$item->nom;
+                $page->status = @$item->protected;
+                $page->content = @$item->texte;
+                $page->position = @$item->region;
+                $page->page_type = @$item->helppage;
+                $page->custom_link = @$item->custom_link;
+                /* 
+                $event->validated_at = @$item->validated_date;
+                $event->published_at = @$item->validated_date;
+                $event->publication_status = intval(substr(@$item->validated,0,1));
+                $event->validated = intval(substr(@$item->validated,0,1));
+                $event->category_id = intval(@$item->categorie);
+                $event->views = @$item->nombre_vues;
+                $event->rejection_reasons = @$item->reject_reason;
+                $event->created_at = @$item->date_added;
+                $event->updated_at = @$item->date_lastedit;
+                $user = DB::connection('mysql2')->table('comptes')->where('id',$item->id_utilisateur)->select('id','email')->first();
+                if(@$user->id){
+                    $user = User::select('id','email')->where('email',$user->email)->first();
+                    $event->posted_by = @$user->id;
+                    $event->owner = @$user->id;
+                } else {
+                    continue;
+                }
+                $user = DB::connection('mysql2')->table('comptes')->where('id',$item->validated_by)->select('id','email')->first();
+                if(@$user->id){
+                    $user = User::select('id','email')->where('email','LIKE',$user->email)->first();
+                    $event->validated_by = @$user->id;
+                }
+
+                $category = DB::table('categories')->where('name',"LIKE","%$item->categorie%")->select('id','name')->first(); 
+                //save category
+                if($category !== null){
+                    echo " categorie->".@$category->name."<br>";
+                    $event->category_id = @$category->id;
+                }
+                //save cities
+                $city = DB::table('cities')->where('name',"LIKE","%$item->ville%")->select('id','name')->first(); 
+                echo " ville->".@$city->name."<br>";
+                if($city !== null)
+                    $event->city_id = @$city->id; */
+
+                $page->save();
+            }
+        }
+        //*/
     }
 }

@@ -24,6 +24,13 @@
                         <input class="form-control" required="required" name="title" type="text" value="{{old('title',@$page->title)}}" id="title"> 
                     </div> 
                     <div class="form-group" data-children-count="1"> 
+                        <label for="subtitle" class="control-label">Type de page</label> 
+                        <select class="form-control" name="page_type" type="text" id="subtitle">
+                            <option value="0" {{intval(old("page_type",@$page->page_type)) === 0?"selected":""}}> Page générique </option>
+                            <option value="1" {{intval(old("page_type",@$page->page_type)) === 1?"selected":""}}> Page Aide </option>
+                        </select>
+                    </div> 
+                    <div class="form-group" data-children-count="1"> 
                         <label for="subtitle" class="control-label">sous-titre</label> 
                         <input class="form-control" name="subtitle" type="text" id="subtitle" value="{{old('subtitle',@$page->subtitle)}}"> 
                     </div> 

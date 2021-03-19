@@ -8,7 +8,7 @@
             <a href="{{route('admin.settings.pages.create')}}" class="btn btn-primary"><i class="fa fa-plus"></i>Ajouter une page </a>
             <a href="{{route('admin.settings.create_section')}}" class="btn btn-primary"><i class="fa fa-plus"></i>Ajouter une section </a>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-12">
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title font-weight-bold">Liste des pages</h2>
@@ -19,6 +19,7 @@
                             <tr>
                                 <th>Page</th>
                                 <th>url</th>
+                                <th>Type de page</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -27,6 +28,7 @@
                             <tr>
                                 <td>{{$page->title}}</td>
                                 <td>{{url('/')}}/pages/{{$page->slug}}</td>
+                                <td>{{intval($page->page_type) == 1?'Page aide':'Page générique'}}</td>
                                 <td>
                                     <div class="btn-group dropleft">
                                         <a class="dropdown-item text-primary text-bold" href="{{ route('admin.settings.pages.edit',$page) }}"><i class="fa fa-user-edit"></i> Modifier</a>
@@ -40,7 +42,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-12">
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title font-weight-bold">Liste des sections</h2>
@@ -97,7 +99,7 @@
                     { data: 'action', name: 'action', orderable: false, searchable: false }
                 ], */
                 order: [[ 2, 'asc' ]],
-                pageLength: 100,
+                pageLength: 25,
                 responsive: true,
                 "oLanguage":{
                       "sProcessing":     "<i class='fa fa-2x fa-spinner fa-pulse'>",

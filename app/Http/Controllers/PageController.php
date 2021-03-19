@@ -86,15 +86,20 @@ class PageController extends Controller
      */
     public function store(Request $request)
     {
-        $form = $this->getForm();
-        $data = $form->getFieldValues();
+        $data = $request->validate([
+            'title'     => 'required',
+            'page_type' => 'required',
+            'subtitle'  => 'nullable',
+            'content'   => 'nullable'
+        ]);
 
-        $form->redirectIfNotValid();
+        //$form->redirectIfNotValid();
 
         $page = Page::create($data);
 
         return redirect()->route('admin.settings.pages.index')->with('success','La nouvelle page a été créé avec succès!');
     }
+
     public function store_section(Request $request)
     {
         /* $form = $this->getForm();
@@ -147,9 +152,10 @@ class PageController extends Controller
     public function update(Request $request, Page $page)
     {
         $data = $request->validate([
-            'title' => 'required',
-            'subtitle' => 'nullable',
-            'content' => 'nullable'
+            'title'     => 'required',
+            'page_type' => 'required',
+            'subtitle'  => 'nullable',
+            'content'   => 'nullable'
         ]);
 
         $page->update($data);
