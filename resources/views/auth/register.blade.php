@@ -8,7 +8,7 @@
         @csrf
         <div class="uk-width-1-2@s">
             <div class="uk-form-group">
-                <label for="last-name" class="uk-form-label"> Nom</label>
+                <label for="last-name" class="uk-form-label"> Nom (<small>obligatoire</small>)</label>
                 <div class="uk-position-relative w-100">
                     <span class="uk-form-icon">
                         <i class="icon-feather-user"></i>
@@ -40,7 +40,23 @@
         </div>
         <div>
             <div class="uk-form-group">
-                <label for="email" class="uk-form-label"> Adresse Email</label>
+                <label for="email" class="uk-form-label"> Nom d'utilisateur (<small>obligatoire</small>)</label>
+                <div class="uk-position-relative w-100">
+                    <span class="uk-form-icon">
+                        <i class="icon-feather-mail"></i>
+                    </span>
+                    <input id="username" type="text" name="username" class="uk-input @error('username') is-invalid @enderror" placeholder="Votre nom d'utilisateur" value="{{ old('username') }}" required autocomplete="username">
+                </div>
+                @error('email')
+                    <span class="text-danger" role="alert">
+                        {{ $message }}
+                    </span>
+                @enderror
+            </div>
+        </div>
+        <div>
+            <div class="uk-form-group">
+                <label for="email" class="uk-form-label"> Adresse Email (<small>obligatoire</small>)</label>
                 <div class="uk-position-relative w-100">
                     <span class="uk-form-icon">
                         <i class="icon-feather-mail"></i>
@@ -56,7 +72,7 @@
         </div>
         <div class="uk-width-1-2@s">
             <div class="uk-form-group">
-                <label class="uk-form-label"> Mot de passe</label>
+                <label class="uk-form-label"> Mot de passe (<small>obligatoire</small>) </label>
                 <div class="uk-position-relative w-100">
                     <span class="uk-form-icon">
                         <i class="icon-feather-lock"></i>
@@ -72,7 +88,7 @@
         </div>
         <div class="uk-width-1-2@s">
             <div class="uk-form-group">
-                <label for="password-confirm" class="uk-form-label"> Confirmez</label>
+                <label for="password-confirm" class="uk-form-label"> Confirmez (<small>obligatoire</small>)</label>
                 <div class="uk-position-relative w-100">
                     <span class="uk-form-icon">
                         <i class="icon-feather-lock"></i>

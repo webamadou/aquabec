@@ -8,12 +8,12 @@
         @csrf
         <div>
             <div class="uk-form-group">
-                <label for="email" class="uk-form-label"> Adresse Email</label>
+                <label for="email" class="uk-form-label">Nom D'utilisateur <small>ou</small> Adresse Email</label>
                 <div class="uk-position-relative w-100">
                     <span class="uk-form-icon">
                         <i class="icon-feather-mail"></i>
                     </span>
-                    <input id="email" type="email" name="email" class="uk-input @error('email') is-invalid @enderror" placeholder="Votre adresse email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                    <input id="email" type="text" name="email" class="uk-input @error('email') is-invalid @enderror" placeholder="Votre adresse email" value="{{ old('email') }}" required autocomplete="email" autofocus>
                 </div>
                 @error('email')
                     <span class="text-danger" role="alert">

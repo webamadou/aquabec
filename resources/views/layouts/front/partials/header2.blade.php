@@ -175,9 +175,12 @@
                                         </ul>
                                         </li>
                                 @else
-                                <a href="{{ route('login') }}" class="btn btn-primary" id="client-area">
-                                    <i class="fa fa-user-circle-o mr-2"></i> Se connecter
-                                </a>
+                                
+                                <li class="nav-item dropdown tw-megamenu-wrapper">
+                                    <a href="{{ route('login') }}" class="" id="">
+                                        <i class="fa fa-user-circle-o mr-2"></i> Se connecter
+                                    </a>
+                                </li>
                                 @endauth
                             @endif
                         </ul>
