@@ -43,11 +43,6 @@
                                     <h3 class="post-title">
                                         <a href="{{route('page_event',$event->slug)}}">{{$event->title}}</a>
                                     </h3>
-                                    <div class="entry-content">
-                                        <p>
-                                            {!! substr($event->description, 0, 90); !!}...
-                                        </p>
-                                    </div>
                                     <div class="post-emplacements-meta">
                                         <div class="post-emplacements">
                                             <span class="redion">{{@$event->city->name}}</span>
