@@ -4138,6 +4138,8 @@ ul.navbar-nav > li.nav-item > a:after {
 ul.navbar-nav > li.nav-item > a.nav-link {
   position: relative;
   z-index: 2;
+  font-size: 0.9rem;
+  font-weight: normal;
 }
 
 /* ==========================
@@ -4268,7 +4270,11 @@ ul.tw-dropdown-menu li.active a {
 .tw-mega-menu p {
   color: #757575;
 }
-
+li.dropdown:hover ul.tw-dropdown-menu, li.dropdown:hover .tw-mega-menu {
+    display: block;
+    position: absolute;
+    z-index: 999;
+}
 /*.tw-mega-menu:after {
   position: absolute;
   right: -50px;
@@ -5785,6 +5791,7 @@ input.round-btn {
   position: relative;
   overflow: hidden;
   max-height: 45vh;
+  z-index: 1 !important;
 }
 
 .tw-latest-post:hover {
@@ -9718,6 +9725,15 @@ ul.comments-reply .comment-body {
         position: relative;
         top: -3px;
     }
+    .dashboard-link{
+		color: #0466e2;
+		font-weight: bold;
+		padding: 1rem 0 0;
+		margin-top: 1.3rem;
+		background: #dfdfdf;
+		border-radius: 0;
+		padding: 1rem 0.4rem;
+    }
     /* Search and Social links */
     .tw-social-links {
         width: 100%;
@@ -10892,4 +10908,14 @@ hr {
 #items-pagination svg.w-5.h-5 {
     width: 20px;
     height: 14px;
+}
+
+
+/*RESPONSIEVE*/
+@media (max-width: 1200px) {
+
+}
+
+@media (max-width: 12450px) {
+	
 }

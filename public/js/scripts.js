@@ -80,6 +80,6 @@ const phone_numbers = document.querySelectorAll(".phone_number").forEach(functio
     });
 }); */
 
-$(document).ready(function () {
+/* $(document).ready(function () {
     bsCustomFileInput.init();
-});
+}); */
