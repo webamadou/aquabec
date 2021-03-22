@@ -32,11 +32,17 @@
                             <input type="hidden" name="posted_by" value="{{$user->id}}">
                             @include("announcements.includes.announcement_form")
                             <div class="col-sm-4 form-group row mt-5 mr-2">
-                                <a href="{{route('user.show_announcement',$announcement->slug)}}" class="btn btn-success"><i class="fa fa-reply"></i> Annuler</a>
+                                <a href="{{route('user.show_announcement',$announcement->slug)}}" class="btn btn-light"><i class="fa fa-reply"></i> Annuler</a>
                             </div>
                             <div class="col-sm-7 form-group row mt-5">
-                                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Enregistrer</button>
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Enregistrer les modifications</button>
                             </div>
+                            @if(isset($announcement) && !empty($announcement))
+                                <div class="col-sm-12 form-group row mt-5">
+                                    <hr>
+                                    <a href="{{route('user.edit_event',@$announcement->event->slug)}}" type="submit" class="btn btn-success"><i class="fa fa-angle-double-left"></i> Éditer l'événement de l'annonce</a>
+                                </div>
+                            @endif
                         </div>
                     </form>
                 </div>

@@ -16,17 +16,16 @@ class WelcomeController extends Controller
     public function welcomePage()
     {
 		$user = Auth::user();
-		$events = Event::where('publication_status','1')
+		/* $events = Event::where('publication_status','1')
 							->orderby('published_at','desc')
 							->limit(3)
-							->get();
+							->get(); */
 		$announcements = Announcement::where('publication_status','1')
 							->orderby('published_at','desc')
-							->limit(3)
+							->limit(6)
 							->get();
-		$last_published = array_merge($events->all(), $announcements->all());
-		//dd($last_published);
-		shuffle($last_published);
+		$last_published = $announcements->all();
+		/* shuffle($last_published); */
 		$month_array = ['','Jan','Fev','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Dec'];
 		$section_apropos 	= \App\Models\HomeSection::where('title','LIKE','%a propos%')->first();
 		$section_comment 	= \App\Models\HomeSection::where('title','LIKE','%comment%')->first();
@@ -42,28 +41,7 @@ class WelcomeController extends Controller
         return view('frontend.user_profile', compact('user','current_user'));
     }
 
-    /**
-     * Show annoucement
-     */
-    public function showAnnouncement(Announcement $announcement)
-    {
-        $current_user = auth()->user();
-        //User can view annonce if is owner or publisher or announcement is validated and published
-        //Later we will have to set gates or policies for this
-        if(intval(@$announcement->publication_status) !== 1 && (
-                intval(@$current_user->id) !== intval(@$announcement->owner) &&
-                intval(@$current_user->id) !== intval(@$announcement->posted_by)
-            )
-        ){
-
-            $message = "Ce contenu n'est pas encore disponible";
-            return view('frontend.feedback',compact('message'));
-        }
-        $announcement->countViews();
-        $announcement->countClicks();
-        return view('frontend.show_announcement', compact('announcement','current_user'));
-    }
-
+   
     /**
      * Show event
      */

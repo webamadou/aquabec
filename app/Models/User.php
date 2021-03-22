@@ -333,14 +333,34 @@ class User extends Authenticatable implements MustVerifyEmail
     
     public function userHasEnoughCredit(String $contenu_price, String $type = 'free_currency')
     {
-        $role = $this->roles->wherenotin('name',['chef-vendeur','banquier','banquier','membre'])->first();
+        //First get the user role excluding some roles
+        $role = $this->roles->wherenotin('name',['chef-vendeur','banquier','membre'])->first();
+        //Get the amount to spend from the role
         $amount_to_spend = intval($role->$contenu_price);
-        if($amount_to_spend <= intval($this->setUserCurrency(1)->pivot->$type)){
+        //Make sure currency id is set
+        if(!$role->currency_id)
+            return false;
+        //Make sure user has enough of the needed currency 
+        if($amount_to_spend <= intval($this->setUserCurrency($role->currency_id)->pivot->$type)){
             return true ;
         }
 
         return false ;
     }
+    /**
+     * Each annoucement is linked to an event
+     * When saving a new annoucement we need to list the events that are not linked to any announcement
+     * This methods will help do that through a join between the announcements and events
+     */
+    public function getUnlinkedEvents()
+    {
+        return DB::table('events')
+                    ->leftjoin('announcements', 'events.id', '=', 'announcements.event_id')
+                    ->where('events.owner',@$this->id)
+                    ->where('announcements.event_id',NULL) ;
+                    /* ->select('events.title','events.id','announcements.event_id','events.owner') ->pluck('events.title','events.id') ;*/
+    }
+
     public function getRoleFromCurrency($currency_id)
     {
         return $this->currencies->where('id',$currency_id)->first()->roles->first();

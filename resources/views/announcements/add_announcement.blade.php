@@ -19,11 +19,6 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title font-weight-bold">- </h2>
-                    <!-- <div class="card-tools">
-                        <a href="{ {route('user.create_announcement')}}" class="btn btn-primary btn-sm">
-                            <i class="mr-2 fa fa-plus"></i> Ajouter une annonce
-                        </a>
-                    </div> -->
                 </div>
                 <div class="card-body">
                     <form action="{{route('user.store_announcement')}}" method="post" enctype="multipart/form-data">
@@ -44,8 +39,27 @@
                             @endif
                             <input type="hidden" name="posted_by" value="{{$user->id}}">
                             @include("announcements.includes.announcement_form")
+                            <hr class="my-2">
+                            @if(!empty(@$user_events))
+                                <div id="" class="offset-sm-0 col-sm-12 col-md-12 form-group row">
+                                    <label for="title" class="col-sm-12 col-md-12"><h3>Lier l'annonce à un événement :*</h3> </label>
+                                    <select name="event_id" id="event_id" class="form-control col-sm-12 col-md-6">
+                                        <option value=""> --- </option>
+                                        @foreach($user_events as $key => $title)
+                                            <option value="{{$key}}" {{old('event_id',@$announcement->event_id) === $key?'selected':''}}> {{$title}} </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            @endif
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="col-sm-12 col-md-6">
+                                        <label for="new_event">Ajouter un nouvel événement</label>
+                                        <input type="checkbox" name="new_event" value="1" id="new_event" />
+                                    </div>
+                                </div>
                             <div class="offset-sm-4 col-sm-8 form-group row">
-                                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Enregistrer</button>
+                                <button id="new_event_wrapper" class="btn btn-success" type="submit">Lier un nouvel événement <i class="fa fa-angle-double-right"></i>  <br><small>Créer un nouvel événement qui sera lier à votre annonce.</small></button>
+                                <button id="save_announcement" type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Enregistrer</button>
                             </div>
                         </div>
                     </form>
@@ -64,6 +78,23 @@
             $('#datePick').multiDatesPicker({
                 dateFormat: "d/m/yy",
                 minDate: 0, // today
+            });
+            //COntrolling the displaying of the create new event btn
+            function toggleNewEventBtn() {
+                const new_event = document.getElementById("new_event");
+                if (new_event.checked) {
+                    $('#new_event_wrapper').addClass("active");
+                    $('#save_announcement').hide();
+                    $('#event_id').val('').change();
+                    $('#event_id').hide();
+                } else {
+                    $('#new_event_wrapper').removeClass("active");
+                    $('#event_id').show();
+                    $('#save_announcement').show();
+                }
+            }
+            document.getElementById("new_event").addEventListener('change', function (event) {
+                toggleNewEventBtn();
             });
 
             //*** Select the cities of the selected region ***
@@ -92,7 +123,6 @@
 
     <script src="{{asset('/dist/ckeditor/ckeditor.js')}}" defer></script>
     <script>
-            //Load of ckeditor
             $(document).ready(function () {
                 $('.ckeditor').ckeditor();
             });

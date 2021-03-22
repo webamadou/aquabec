@@ -34,6 +34,10 @@ class Event extends Model
         ];
     }
 
+    public function announcement()
+    {
+        return $this->hasOne(\App\Models\Announcement::class);
+    }
     public function region()
     {
         return $this->belongsTo(\App\Models\Region::class);

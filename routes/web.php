@@ -17,12 +17,14 @@ use App\Http\Controllers\Backend\Admin\CurrencyController;
 use App\Http\Controllers\Backend\Admin\AgeRangeController;
 
 use App\Http\Controllers\Frontend\DashboardController as UserDashboard;
-use App\Http\Controllers\Backend\User\EventController;
+use App\Http\Controllers\Backend\User\EventController as EventsDashboard;
 
 use App\Http\Controllers\Frontend\ContactController;
 use App\Http\Controllers\Frontend\WelcomeController;
 use App\Http\Controllers\Frontend\SubscriberController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\AnnouncementController;
+use App\Http\Controllers\EventController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -198,9 +200,9 @@ Route::middleware(['auth','verified'])->group(function (){
         Route::get('/vendeur/{user:slug?}', [UserDashboard::class, 'showProfile'])->name('show_profile');
 
         Route::get('dashboard', [UserDashboard::class, 'index'])->name('dashboard');
-        Route::resource('events', EventController::class);
-        Route::get('get-city-by-region/{region_id}', [EventController::class, 'getCityByRegion']);
-        Route::get('get-events-data', [EventController::class, 'getEventsData']);
+        Route::resource('events', EventsDashboard::class);
+        Route::get('get-city-by-region/{region_id}', [EventsDashboard::class, 'getCityByRegion']);
+        Route::get('get-events-data', [EventsDashboard::class, 'getEventsData']);
         Route::get('/membres/{default_tab?}', [UserDashboard::class, 'infosPerso'])->name('infosperso');
         Route::post("/update/members/infosperso", [UserController::class, 'updateInfosPerso'])->name("updateInfosPerso");
         Route::get("select_cities/",[UserDashboard::class, "selectCities"])->name("select_cities");
@@ -215,22 +217,23 @@ Route::middleware(['auth','verified'])->group(function (){
     //Routes for vendeurs and annonceurs
     Route::middleware(['role:vendeur|annonceur|super-admin'])->name('user.')->group(function(){
         Route::get("/mes_annonces", [UserDashboard::class, 'myAnnouncements'])->name("my_announcements");
-        Route::get("/mes_annonces/create", [UserDashboard::class, 'createAnnouncement'])->name('create_announcement');
-        Route::get("/mes_annonces/announcement/{announcement:slug}", [UserDashboard::class, 'showAnnouncement'])->name('show_announcement');
-        Route::get("/mes_annonces/edit/{announcement:slug}", [UserDashboard::class, 'editAnnouncement'])->name('edit_announcement');
-        Route::post("/mes_annonces/store", [UserDashboard::class, 'storeAnnouncement'])->name('store_announcement');
-        Route::put("/mes_annonces/update/{announcement}", [UserDashboard::class, 'updateAnnouncement'])->name('update_announcement');
-        Route::get("/myAnnouncements-data", [UserDashboard::class, 'myAnnouncementsData'])->name('myAnnouncements-data');
-        Route::delete("/mes_annonces/delete/{announcement:slug}", [UserDashboard::class, 'deleteAnnouncement'])->name('delete_announcement');
+        Route::get("/mes_annonces/creation", [AnnouncementController::class, 'create'])->name('create_announcement');
+        // Route::post("/mes_annonces/store", [UserDashboard::class, 'storeAnnouncement'])->name('store_announcement');
+        Route::post("/mes_annonces/store", [AnnouncementController::class, 'store'])->name('store_announcement');
+        Route::get("/mes_annonces/announcement/{announcement:slug}", [AnnouncementController::class, 'show'])->name('show_announcement');
+        Route::get("/mes_annonces/edit/{announcement:slug}", [AnnouncementController::class, 'edit'])->name('edit_announcement');
+        Route::put("/mes_annonces/update/{announcement}", [AnnouncementController::class, 'update'])->name('update_announcement');
+        Route::get("/myAnnouncements-data", [AnnouncementController::class, 'myAnnouncementsData'])->name('myAnnouncements-data');
+        Route::delete("/mes_annonces/delete/{announcement:slug}", [AnnouncementController::class, 'delete'])->name('delete_announcement');
 
-        Route::get("/mes_evenements", [UserDashboard::class, 'myEvents'])->name("my_events");
-        Route::get("/mes_evenements/create", [UserDashboard::class, 'createEvent'])->name('create_event');
-        Route::get("/mes_evenements/event/{event:slug}", [UserDashboard::class, 'showEvent'])->name('show_event');
-        Route::get("/mes_evenements/edit/{event:slug}", [UserDashboard::class, 'editEvent'])->name('edit_event');
-        Route::post("/mes_evenements/store", [UserDashboard::class, 'storeEvent'])->name('store_event');
-        Route::put("/mes_evenements/update/{event}", [UserDashboard::class, 'updateEvent'])->name('update_event');
-        Route::get("/myevents-data", [UserDashboard::class, 'myEventsData'])->name('myEvents-data');
-        Route::delete("/mes_evenements/delete/{event:slug}", [UserDashboard::class, 'deleteEvent'])->name('delete_event');
+        Route::get("/mes_evenements", [EventController::class, 'myEvents'])->name("my_events");
+        Route::get("/mes_evenements/create/{announcement:slug?}", [EventController::class, 'create'])->name('create_event');
+        Route::post("/mes_evenements/store", [EventController::class, 'store'])->name('store_event');
+        Route::get("/mes_evenements/event/{event:slug}", [EventController::class, 'show'])->name('show_event');
+        Route::get("/mes_evenements/edit/{event:slug}", [EventController::class, 'edit'])->name('edit_event');
+        Route::put("/mes_evenements/update/{event}", [EventController::class, 'update'])->name('update_event');
+        Route::get("/myevents-data", [EventController::class, 'myEventsData'])->name('myEvents-data');
+        Route::delete("/mes_evenements/delete/{event:slug}", [EventController::class, 'delete'])->name('delete_event');
     });
     /**
      * User's subscription

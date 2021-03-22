@@ -29,9 +29,21 @@
                             </div>
                             @endif
                             <input type="hidden" name="posted_by" value="{{$user->id}}">
+                            @if(isset($announcement) && !empty($announcement))
+                                <input type="hidden" name="announcement_id" value="{{@$announcement->id}}">
+                                <h3>Enregistrement de l'événement pour l'annonce<br>{{@$announcement->title}}</h3>
+                            @endif
                             @include("events.includes.event_form")
-                            <div class="offset-sm-4 col-sm-8 form-group row mt-5">
-                                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Enregistrer</button>
+
+                            @if(isset($announcement) && !empty($announcement))
+                                <div class="col-sm-6 form-group row mt-5">
+                                    <a href="" class="btn btn-success"><i class="fa fa-angle-double-left"></i> Éditer l'annonce de cet événement</a>
+                                </div>
+                                <div class="offset-sm-0 col-sm-6 form-group row mt-5">
+                            @else
+                                <div class="offset-sm-4 col-sm-8 form-group row mt-5">
+                            @endif
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Enregistrer l'événement</button>
                             </div>
                         </div>
                     </form>

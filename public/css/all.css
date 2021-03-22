@@ -41400,7 +41400,7 @@ input.autofill-field,
 /* ANNOUNCEMENT*/
 .announcement-side-bar {
     position: relative;
-    height: 80vh;
+    height: auto;
     margin: 0;
     padding: 0;
 }
@@ -41479,4 +41479,10 @@ hr {
     font-size: 0.9rem;
     font-weight: 500;
     border-radius: 1px;
+}
+#new_event_wrapper {
+    display: none;
+}
+#new_event_wrapper.active {
+    display: initial;
 }

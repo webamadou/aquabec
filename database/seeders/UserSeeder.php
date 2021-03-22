@@ -21,24 +21,42 @@ class UserSeeder extends Seeder
         $superAdminData = [
             'email' => 'suadmin@lagenda.quebec',
             'name' => 'Super Admin',
+            'username' => 'superadmin',
             'email_verified_at' => Carbon::now(),
         'password' => Hash::make('@gend5ue$&c')
         ];
         $adminData = [
             'email' => 'admin@lagenda.quebec',
             'name' => 'Admin',
+            'username' => 'admin',
             'email_verified_at' => Carbon::now(),
         'password' => Hash::make('@gend5ue$&c')
         ];
         $banker = [
-            'name'  => 'Banquier',
             'email' => 'banker@lagenda.quebec',
+            'name'  => 'Banquier',
+            'username'  => 'banquier',
             'email_verified_at' => Carbon::now(),
         'password' => Hash::make('passer')
         ];
         $membre = [
-            'name' => 'membre',
             'email' => 'membre@lagenda.quebec',
+            'name' => 'membre',
+            'username' => 'membre',
+            'email_verified_at' => Carbon::now(),
+        'password' => Hash::make('passer')
+        ];
+        $user = [
+            'email' => 'user@lagenda.quebec',
+            'name' => 'membre',
+            'username' => 'user',
+            'email_verified_at' => Carbon::now(),
+        'password' => Hash::make('passer')
+        ];
+        $annonceur = [
+            'email' => 'annonceur@lagenda.quebec',
+            'name' => 'annonceur',
+            'username' => 'annonceur',
             'email_verified_at' => Carbon::now(),
         'password' => Hash::make('passer')
         ];
@@ -59,6 +77,12 @@ class UserSeeder extends Seeder
         $banker->givePermissionTo("Banquier");
 
         $membre     = User::updateOrCreate($membre);
+        $admin->assignRole('membre');
+
+        $membre     = User::updateOrCreate($user);
+        $admin->assignRole('membre');
+
+        $membre     = User::updateOrCreate($annonceur);
         $admin->assignRole('membre');
 
     }

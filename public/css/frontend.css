@@ -5790,7 +5790,8 @@ input.round-btn {
   transition: all 0.3s linear;
   position: relative;
   overflow: hidden;
-  max-height: 45vh;
+  height: 40vh;
+  max-height: 349px;
   z-index: 1 !important;
 }
 
@@ -5873,13 +5874,23 @@ input.round-btn {
 }
 
 .post-info {
-  margin-left: 80px;
-  position: relative;
+  margin-left: 0;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding-left: 0;
 }
 
 .post-info .post-title {
   padding-bottom: 7px;
-  font-size: 20px;
+  padding-left: 2.5rem;
+  padding: 1rem 0 1rem 2.5rem;
+  font-size: 1rem;
+  height: 80px;
+  overflow: hidden;
+  background: #ddd;
+  position: relative;
 }
 
 .post-info .post-title a {
@@ -5897,15 +5908,16 @@ input.round-btn {
 .post-meta {
     padding-top: 0;
     padding-bottom: 0;
-    right: 2vh;
+    right: -150vh;
     position: absolute;
-    top: -20vh;
+    top: -38vh;
     right: -100%;
     background: rgba(222, 222, 222, 0.54);
     padding: 5px 15px;
     line-height: 1.5;
     width: 45vh;
     transition: all 0.8s;
+    text-align: right;
 }
 .tw-latest-post:hover .post-meta {
     right: 0;
@@ -10758,8 +10770,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 .latest-post-media img {
     width: 100%;
-    height: 30vh;
-    height: auto;
+    height: 40vh;
+    max-height: 349px;
 }
 span.category {
     overflow: hidden;
@@ -10914,7 +10926,12 @@ hr {
     width: 20px;
     height: 14px;
 }
-
+#new_event_wrapper {
+    display: none;
+}
+#new_event_wrapper.active {
+    display: none;
+}
 /*RESPONSIEVE*/
 @media (max-width: 1200px) {
 

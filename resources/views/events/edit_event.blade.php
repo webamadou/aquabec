@@ -30,13 +30,24 @@
                             </div>
                             @endif
                             <input type="hidden" name="posted_by" value="{{$user->id}}">
+                            @if(isset($announcement) && !empty($announcement))
+                                <input type="hidden" name="announcement_id" value="{{@$announcement->id}}">
+                                <h3>Enregistrement de l'événement pour l'annonce<br>{{@$announcement->title}}</h3>
+                            @endif
                             @include("events.includes.event_form")
-                            <div class="col-sm-4 form-group row mt-5 mr-2">
-                                <a href="{{route('user.show_event',$event->slug)}}" class="btn btn-success"><i class="fa fa-reply"></i> Annuler</a>
+
+                            <div class="col-sm-5 form-group row mt-5 mr-2">
+                                <a href="{{route('user.show_event',$event->slug)}}" class="btn btn-light"><i class="fa fa-reply"></i> Annuler</a>
                             </div>
                             <div class="col-sm-7 form-group row mt-5">
                                 <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Enregistrer</button>
                             </div>
+                            @if(isset($announcement) && !empty($announcement))
+                                <div class="col-sm-12 form-group row mt-5">
+                                    <hr>
+                                    <a href="{{route('user.edit_announcement',@$announcement->slug)}}" type="submit" class="btn btn-success"><i class="fa fa-save"></i> Éditer l'annonce de cet événement</a>
+                                </div>
+                            @endif
                         </div>
                     </form>
                 </div>

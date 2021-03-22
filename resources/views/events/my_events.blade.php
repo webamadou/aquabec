@@ -58,7 +58,7 @@
                     { data: null, name: 'dates',
                         render : data => {
                             let formated_dates = '';
-                            const dates = data.dates.split(',');
+                            const dates = data.dates?data.dates.split(','):[data.dates];
                             for(let i = 0; i < dates.length; i++){
                                 formated_dates += `<span class="badge badge-primary text-sm d-block my-1"> ${dates[i]} </span> ` ;
                             }

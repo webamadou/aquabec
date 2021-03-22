@@ -27,7 +27,19 @@
                                 </div>
                             </div>
                             <hr>
-                            <i class="fa fa-map-marked-alt"></i><br> {{@@$announcement->city->name}} <br>  {{@@$announcement->region->name}}
+                            <i class="fa fa-map-marked-alt"></i><br> {{@$announcement->city->name}} <br>  {{@$announcement->region->name}}
+                            @if(!empty(@$announcement->event))
+                                <hr>
+                                <div class="bg-light p-2 mt-5">
+                                    <strong><i class="fa fa-bullhorm"></i> L'événement de l'annonce :</strong>
+                                    <h5><a class="btn-link" href="{{route('user.show_event',@$announcement->event->slug)}}">{{ucfirst($announcement->event->title)}}</a></h5>
+                                    <div>
+                                        <a href="{{route('user.show_event',@$announcement->event->slug)}}">
+                                            <img class="img-fluid" src="{{ route('show.image',@$announcement->event->images) }}" alt="{{@$announcement->event->title}}">
+                                        </a>
+                                    </div>
+                                </div>
+                            @endif
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-9 announcement-container">

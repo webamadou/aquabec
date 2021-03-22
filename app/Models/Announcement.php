@@ -50,6 +50,11 @@ class Announcement extends Model
         return $this->belongsTo(\App\Models\Category::class);
     }
 
+    public function event()
+    {
+        return $this->belongsTo(\App\Models\Event::class);
+    }
+
     public function posted()
     {
         return $this->belongsTo(\App\Models\User::class, 'posted_by', 'id' );
