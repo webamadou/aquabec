@@ -47,14 +47,14 @@ class NewAccount extends Notification
         $user = $this->user ;
         return (new MailMessage)
                     ->greeting("Hello $user->prenom $user->name")
-                    ->line("Bienvenu sur l'agenda du Québec.")
-                    ->line("Votre compte a été parfaitement comfiguré.")
+                    ->line("Bienvenu sur l'Agenda du Québec.")
+                    ->line("Votre compte a été parfaitement configuré.")
                     ->line("Vous pouvez vous connecter avec les accès suivants.")
-                    ->line("votre login : $user->email")
-                    ->line("votre mot de passe : ".$this->password)
+                    ->line("Votre login : $user->email")
+                    ->line("Votre mot de passe : ".$this->password)
                     ->line("")
-                    ->line("Vous pouvez toujours modifier votre mot de passe dans votre profil")
-                    ->action('Notification Action', url('/'))
+                    ->line("Vous pouvez toujours modifier votre mot de passe dans votre profil.")
+                    ->action("Retourner sur le site Web", url('/'))
                     ->line('Merci et à toute!')
                     ->subject("Votre compte l'Agenda du Quebec!");
     }

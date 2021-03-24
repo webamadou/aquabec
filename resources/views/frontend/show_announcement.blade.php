@@ -30,10 +30,21 @@
                             </div>
                             <hr>
                             <i class="fa fa-map-marked-alt"></i><br> {{@@$announcement->city->name}} <br>  {{@@$announcement->region->name}}
+                            @if(!empty(@$announcement->event))
+                                <hr>
+                                <div class="bg-light p-2 mt-5">
+                                    <strong><i class="fa fa-bullhorm"></i> L'événement de l'annonce :</strong>
+                                    <div>
+                                        <a href="{{route('page_event',@$announcement->event->slug)}}">
+                                            <img class="img-fluid rounded float-start" src="{{ route('show.image',@$announcement->event->images) }}" alt="{{@$announcement->event->title}}" style="height: 45px"> {{ucfirst($announcement->event->title)}}
+                                        </a>
+                                    </div>
+                                </div>
+                            @endif
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-9 announcement-container">
-                        <h2 class="announcement-title">{{@$announcement->title}}</h2>
+                        <h3 class="announcement-title">{{@$announcement->title}}</h3>
                         <div class="announcement-description pt-5 pl-4">{!! @$announcement->description !!}</div>
                         <div class="announcement-dates">{{@$announcement->dates}}</div>
                         <div class="announcement-stats">
@@ -44,7 +55,7 @@
                         </div>
                         <div class="d-flex  announcement-footer">
                         <!-- struggling to set a policy. Will do it latter -->
-                        @if(intval($current_user->id) === intval(@$announcement->owner) || intval($current_user->id) === intval(@$announcement->posted_by))
+                        @if(intval(@$current_user->id) === intval(@$announcement->owner) || intval(@$current_user->id) === intval(@$announcement->posted_by))
                             <div class="mx-2"><a href="{{route('user.edit_announcement',@$announcement->slug)}}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Editer </a></div>
                             <div class="mx-2">
                                 <a href="#" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-delete" data-whatever="{{route('user.delete_announcement',@$announcement->slug)}}"><i class="fa fa-user-times"></i> Supprimer</a>

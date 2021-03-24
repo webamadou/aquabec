@@ -41,7 +41,7 @@
                 ajax: '{{ url('admin/get-users-data') }}',
                 columns: [
                     { data: null, name: 'name',
-                        render: data => { return `<strong><i class="fa fa-user"></i> <a href="/admin/users/${data.slug}" class="text-link">${data.prenom?data.prenom:''} ${data.name?data.name:''}</a></strong>`; }
+                        render: data => { return `<strong><i class="fa fa-user"></i> <a href="/admin/users/${data.id}" class="text-link">${data.name?data.name:''} ${data.prenom?data.prenom:''} </a></strong>`; }
                     },
                     { data: 'email', name: 'email' },
                     { data: 'updated_at', name: 'updated_at', width: '150' },

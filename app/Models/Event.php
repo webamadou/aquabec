@@ -14,7 +14,7 @@ class Event extends Model
 
     protected $fillable = [
         'title', 'description', 'excerpt', 'slug', 'category_id', 'images', 'parent', 'posted_by','postal_code', 'region_id', 'city_id', 'publication_status', 'owner', 'published_at', 'dates','telephone', 'website',
-        'email',
+        'email','purchased'
     ];
     /**
      * Return the sluggable configuration array for this model.

@@ -27,11 +27,22 @@
                                 </div>
                             </div>
                             <hr>
-                            <i class="fa fa-map-marked-alt"></i><br> {{@@$event->city->name}} <br>  {{@@$event->region->name}}
+                            <i class="fa fa-map-marked-alt"></i><br> {{@$event->city->name}} <br>  {{@@$event->region->name}}
+                            @if(!empty(@$event->announcement))
+                                <hr>
+                                <div class="bg-light p-2 mt-5">
+                                    <strong><i class="fa fa-bullhorm"></i> L'annonce de l'évènement :</strong>
+                                    <div>
+                                        <a href="{{route('page_announcement',@$event->announcement->slug)}}">
+                                            <img class="img-fluid rounded float-start" src="{{ route('show.image',@$event->announcement->images) }}" alt="{{@$event->announcement->title}}" style="height: 45px"> {{ucfirst($event->announcement->title)}}
+                                        </a>
+                                    </div>
+                                </div>
+                            @endif
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-9 announcement-container">
-                        <h1 class="announcement-title">{{@$event->title}}</h1>
+                        <h3 class="announcement-title">{{@$event->title}}</h3>
                         <div class="announcement-description pt-5 pl-4">{!! @$event->description !!}</div>
                         <div class="announcement-dates">
                             <h5>Dates : </h5>

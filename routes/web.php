@@ -123,18 +123,18 @@ Route::middleware(['auth','verified'])->group(function (){
             Route::put("/pages_section/{home_section}/update",[PageController::class, 'update_section'])->name("update_section");
             
             Route::get('get-pages-data', [RoleController::class, 'pagesData'])->name('pages.data');
-            // Security Routes...
+            // Security Routes ...
             Route::name('security.')->prefix('security')->group(function () {
                 // ***FOLLOWING ROOTS ARE USED TO UPDATE ADAPT THE CURRENT db TO ORIGINAL ONE ***
                 Route::get("/update_db",[\App\Http\Controllers\UpdateDBController::class, 'index']);
                 // ******************************************************************************
-                // Roles Routes...
+                // Roles Routes ...
                 Route::resource('roles', RoleController::class);
                 Route::get('get-role-data', [RoleController::class, 'roleData'])->name('roles.data');
                 
                 Route::get('roles/{role}/permissions', [RoleController::class, 'getRolePermissions'])->name('roles.permissions');
                 Route::put('roles/{role}/permissions', [RoleController::class, 'assignRolePermissions'])->name('roles.permissions.assign');
-                // Permissions Routes...
+                // Permissions Routes ...
                 Route::resource('permissions', PermissionController::class);
                 Route::get('get-permission-data', [PermissionController::class, 'permissionData'])->name('permissions.data');
             });
@@ -187,10 +187,10 @@ Route::middleware(['auth','verified'])->group(function (){
         Route::get('get-my_team-data/{user_id?}', [UserDashboard::class, 'myTeamData'])->name('my_team_data');
         Route::get('/create/vendeur', [UserDashboard::class, 'createVendeur'])->name('create_vendeur');
         Route::post('/create/vendeur', [UserController::class, 'store'])->name('store_vendeur');
-        Route::get('/update/vendeur/{user}/edit', [UserDashboard::class, 'editVendeur'])->name('edit_vendeur');
-        Route::put('/update/vendeur/{user}', [UserController::class, 'update'])->name('update_vendeur');
+        Route::get('/update/vendeur/{user:slug}/edit', [UserDashboard::class, 'editVendeur'])->name('edit_vendeur');
+        Route::put('/update/vendeur/{user:slug}', [UserController::class, 'update'])->name('update_vendeur');
         Route::get('/vendeur/{user:slug}', [UserDashboard::class, 'showProfile'])->name('show_vendeur');
-        Route::delete('/vendeur/{user:slug}', [UserController::class, 'destroy'])->name('delete');
+        Route::delete('/vendeur/{user}', [UserController::class, 'destroy'])->name('delete');
     });
     /*
      * User's Routes

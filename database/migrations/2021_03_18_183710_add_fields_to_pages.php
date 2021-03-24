@@ -14,7 +14,6 @@ class AddFieldsToPages extends Migration
     public function up()
     {
         Schema::table('pages', function (Blueprint $table) {
-            //{position,help_page,custom_link,status}
             if(!Schema::hasColumn('pages','position')){
                 $table->string('position')->nullable(true)->after("content");
             }

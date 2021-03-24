@@ -13,7 +13,9 @@
             </div>
         @endif -->
         @if(!$can_post)
-            <div class="badge badge-danger">Vous n'avez pas assez dans votre portefeuille pour publier votre annonce. Vous pouvez tout de même l'enregistrer en brouillon. Vous pouvez aussi <a href="{{route('purchase_currency')}}" class="btn btn-sm btn-primary"> recharger votre portefeuille.</a> </div>
+            <div class="badge text-danger badge-light mb-4 py-2" style="line-height: 2.4;">
+                Vous n'avez pas assez de <strong>{{strtolower(@$role_currency->name)}}</strong> dans votre portefeuille pour publier votre annonce.<br>Vous pouvez tout de même l'enregistrer en brouillon. Vous pouvez aussi <a href="{{route('purchase_currency')}}" class="btn btn-sm btn-success"> recharger votre portefeuille.</a>
+            </div>
         @endif
         <div class="col-8 tab-content mx-auto" id="nav-tabContent">
             <div class="card">
@@ -41,7 +43,7 @@
                             @include("announcements.includes.announcement_form")
                             <hr class="my-2">
                             @if(!empty(@$user_events))
-                                <div id="" class="offset-sm-0 col-sm-12 col-md-12 form-group row">
+                                <div id="" class="col-sm-12 col-md-12 form-group row">
                                     <label for="title" class="col-sm-12 col-md-12"><h3>Lier l'annonce à un événement :*</h3> </label>
                                     <select name="event_id" id="event_id" class="form-control col-sm-12 col-md-6">
                                         <option value=""> --- </option>
@@ -49,14 +51,11 @@
                                             <option value="{{$key}}" {{old('event_id',@$announcement->event_id) === $key?'selected':''}}> {{$title}} </option>
                                         @endforeach
                                     </select>
-                                </div>
-                            @endif
-                                <div class="col-sm-12 col-md-6">
                                     <div class="col-sm-12 col-md-6">
-                                        <label for="new_event">Ajouter un nouvel événement</label>
-                                        <input type="checkbox" name="new_event" value="1" id="new_event" />
+                                        <label for="new_event">Ajouter un nouvel événement</label> <input type="checkbox" name="new_event" value="1" id="new_event" />
                                     </div>
                                 </div>
+                            @endif
                             <div class="offset-sm-4 col-sm-8 form-group row">
                                 <button id="new_event_wrapper" class="btn btn-success" type="submit">Lier un nouvel événement <i class="fa fa-angle-double-right"></i>  <br><small>Créer un nouvel événement qui sera lier à votre annonce.</small></button>
                                 <button id="save_announcement" type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Enregistrer</button>

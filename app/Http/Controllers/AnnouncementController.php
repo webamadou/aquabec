@@ -75,9 +75,10 @@ class AnnouncementController extends Controller
         $children   = $user->godchildren()->select('name','prenom','email','id')->get();
         //Check if user has enough of needed currency
         $can_post   = $user->userHasEnoughCredit('annoucements_price','paid_currency');
+        $role_currency = $user->mainRole()->currency;
         $user_events = $user->getUnlinkedEvents()->pluck("events.title","events.id")->all();
 
-        return view('announcements.add_announcement',compact('categories','regions','cities','status','children','user','can_post','user_events'));
+        return view('announcements.add_announcement',compact('categories','regions','cities','status','children','user','can_post','role_currency','user_events'));
     }
     /**
      * Store announcement
@@ -106,38 +107,42 @@ class AnnouncementController extends Controller
             $data['owner'] = $request->owner;
         }
         //Check if user has enough to post
-        $can_post   = $current_user->userHasEnoughCredit('annoucements_price','free_currency');
+        $can_post   = $current_user->userHasEnoughCredit('annoucements_price','paid_currency');
         $data['publication_status'] = $can_post ? $data["publication_status"] : 0;
 
         $data['posted_by'] = $current_user->id;
         //If announce is published we set the published_at column save the data and update user wallets
         $data['published_at'] = intval($data['publication_status']) === 1 ? date('Y-m-d H:i:s') : null;
         
-        $save_publication = Announcement::create($data);//save data
-        if($save_publication){
-            //We update user's wallet
-            $current_user->updateUserWallet(1,"annoucements_price");
-
+        $save_announcement = Announcement::create($data);//save data
+        if($save_announcement){
+            //We update user's wallet we make him/her spend the currency if is publishing
+            if(intval($data['publication_status']) === 1 ){
+                $current_user->updateUserWallet(1,"annoucements_price");
+                $save_announcement->purchased = 1;
+                // dd("You are publising",$save_announcement->purchased, $save_announcement);
+            }
             //Actions if an image is uploaded
-            $owner = $save_publication->owned()->select('name','prenom','id')->first() ;
+            $owner = $save_announcement->owned()->select('name','prenom','id')->first() ;
             //Each user has a folder where to save image and other eventual files
             $user_folder = str_replace(' ','-',$owner->name)."_".str_replace(' ','-', $owner->prenom)."_".str_replace(' ','-',$owner->id);
             if($request->has('images')){
                 $image = $request->file('images');
-                $image_name = $save_publication->slug.".".\File::extension($image->getClientOriginalName());
+                $image_name = $save_announcement->slug.".".\File::extension($image->getClientOriginalName());
                 $image_path = 'images/announcements';
-                $save_publication_images = $image->storeAs($image_path,$image_name,'public');
-                $save_publication->images = $image_name;
-                $save_publication->save();
+                $save_announcement_images = $image->storeAs($image_path,$image_name,'public');
+                $save_announcement->images = $image_name;
             }
+            $save_announcement->save();
+
             if(@$data['event_id'] !== null && @$data['event_id'] !== ""){
                 return redirect()
                         ->route('user.my_announcements')
                         ->with('success',"Votre annonce a été enregistrée avec succès");
             } else {
-                $annoucement_id = $save_publication->id;
+                $annoucement_id = $save_announcement->id;
                 return redirect()
-                        ->route('user.create_event',$save_publication)
+                        ->route('user.create_event',$save_announcement)
                         ->with('success',"Votre annonce a été enregistrée avec succès");
             }
         }
@@ -174,10 +179,11 @@ class AnnouncementController extends Controller
         $status     = ['Enregistrer en brouillon','Publiée','Enregistrer en privée'];
         $user       = auth()->user();
         $children   = $user->godchildren()->select('name','prenom','email','id')->get();
+        $role_currency = $user->mainRole()->currency;
         //Check if user has enough credit
         $can_post   = $user->userHasEnoughCredit('annoucements_price','paid_currency');
 
-        return view('announcements.edit_announcement',compact('announcement','categories','regions','cities','status','children','user','can_post'));
+        return view('announcements.edit_announcement',compact('announcement','categories','regions','cities','status','children','user','role_currency','can_post'));
     }
     /**
      * Update announcement
@@ -210,14 +216,17 @@ class AnnouncementController extends Controller
         }
         $data['posted_by'] = $current_user->id;
         //Make sure user has enough to publish
-        $can_post   = $current_user->userHasEnoughCredit('annoucements_price','free_currency');
+        $can_post   = $current_user->userHasEnoughCredit('annoucements_price','paid_currency');
         $data['publication_status'] = $can_post ? $data["publication_status"] : 0;
 
         $save = $announcement->update($data);
         if($save){
-            /* if(intval($data['publication_status']) === 1){
+            //We update user's wallet we make him/her spend the currency if is publishing
+            if( intval($data['publication_status']) === 1 && intval(@$announcement->purchased) === 0 ){
                 $current_user->updateUserWallet(1,"annoucements_price");
-            } */
+                $announcement->purchased = 1;
+            }
+
             //Actions if an image is uploaded
             $owner = $announcement->owned()->select('name','prenom','id')->first() ;
             //Each user has a folder where to save image and other eventual files
@@ -228,8 +237,9 @@ class AnnouncementController extends Controller
                 $image_path = 'images/announcements';
                 $save_images = $image->storeAs($image_path,$image_name,'public');
                 $announcement->images = $image_name;
-                $announcement->save();
             }
+            $announcement->save();
+
             return redirect()
                     ->back()
                     ->with('success',"Votre annonce a été modifiée avec succès");

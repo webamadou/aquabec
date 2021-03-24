@@ -36,8 +36,8 @@ class UserController extends Controller
         return datatables()
             ->collection($users)
             ->addColumn('action',function ($item) {
-                $edit_route = route('admin.users.edit',$item);
-                $delete_route = route('admin.users.destroy',$item);
+                $edit_route = route('admin.users.edit',$item->id);
+                $delete_route = route('admin.users.destroy',$item->id);
                 return view('layouts.back.datatables.actions-btn',compact('edit_route','delete_route'));
             })
             ->rawColumns(['action'])
@@ -67,6 +67,7 @@ class UserController extends Controller
         if($current_user->hasRole('super-admin') || $user->hasRole('admin'))
             return view('admin.users.show', compact('user','current_user'));
     }
+
     public function create()
     {
         $user = new User();
@@ -77,18 +78,6 @@ class UserController extends Controller
         $roles       = Role::pluck('name','id');
 
         return view('admin.users.create',compact('user','region_list','cities_list','age_group','vendors','roles'));
-    }
-
-    public function edit(User $user)
-    {
-        $region_list = Region::pluck('name','id');
-        $cities_list = City::where('region_id',$user->region_id)->pluck('name','id');       
-        $age_group   = AgeRange::ageSelect();
-
-        $vendors     = User::vendors()->where('id', '!=',$user->id)->get(['prenom','name','id']);
-        $roles       = Role::pluck('name','id');
-
-        return view('admin.users.edit',compact('user','region_list','cities_list','age_group','vendors','roles'));
     }
     /**
      * Store the specified resource in storage.
@@ -103,8 +92,8 @@ class UserController extends Controller
         //We generate a password for the user
         $password           = Str::random(8);
         $data['password']   = Hash::make($password);
-        //$data['must_update_password'] = Str::random(35);
         //If the password is changed we have to update the field must_update_password to force the user to change it's password
+        // dd($data);
         if($user = User::create($data)){
             $roles = Role::pluck('name','id');
             $last_role = '';//If at the end of the loop this var is still empty we need to assign a default role
@@ -137,6 +126,18 @@ class UserController extends Controller
         return redirect()
                     ->route('welcome')
                     ->with('success',"Il s'est produit une erreur lors de l'enregistrement!");
+    }
+
+    public function edit(User $user)
+    {
+        $region_list = Region::pluck('name','id');
+        $cities_list = City::where('region_id',$user->region_id)->pluck('name','id');       
+        $age_group   = AgeRange::ageSelect();
+
+        $vendors     = User::vendors()->where('id', '!=',$user->id)->get(['prenom','name','id']);
+        $roles       = Role::pluck('name','id');
+
+        return view('admin.users.edit',compact('user','region_list','cities_list','age_group','vendors','roles'));
     }
 
     /**

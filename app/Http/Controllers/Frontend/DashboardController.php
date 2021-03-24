@@ -85,6 +85,7 @@ class DashboardController extends Controller
 
     public function editVendeur(User $user)
     {
+        // dd($user->email);
         $current_user = auth()->user();
         $region_list = Region::pluck('name','id');
         $cities_list = City::where('region_id',$user->region_id)->pluck('name','id');

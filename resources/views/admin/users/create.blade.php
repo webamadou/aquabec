@@ -35,10 +35,15 @@
                 <label for="name" class="col-sm-6 col-md-6">Nom : *</label>
                 <input tabindex="6" class="form-control" name="name" id="name" type="text" value="{{old('name',$user->name)}}">
             </div>
-            <div class="offset-sm-1 mx-auto col-11 form-group row">
+            <div class="offset-sm-1 mx-auto col-5 form-group row">
                 <label for="email" class="col-sm-6 col-md-6">Adresse Électronique :*</label>
                 <input tabindex="6" class="form-control" name="email" id="email" type="text" value="{{old('email',$user->email)}}">
             </div>
+            <div class="offset-sm-1 mx-auto col-5 form-group row">
+                <label for="username" class="col-sm-6 col-md-6">Nom d'utilisateur :*</label>
+                <input tabindex="6" class="form-control" name="username" id="username" type="text" value="{{old('username',$user->username)}}">
+            </div>
+            <div class="col-12 text-center"> --- </div>
             <div class="offset-sm-1 mx-auto col-5 form-group row">
                 <label for="age_group" class="col-sm-6 col-md-6">Groupe d'age :</label>
                 <select name="age_group" id="age_group" class="form-control">
@@ -76,7 +81,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 mx-auto"><hr></div>
+            <div class="col-12 text-center"> --- </div>
             <div class="offset-sm-1 mx-auto col-5 form-group row">
                 <label for="Parrain" class="col-sm-6 col-md-6">Région de résidence :</label>
                 <select name="region_id" id="region_id" class="form-control">
@@ -114,6 +119,7 @@
                 <label for="mobile_phone" class="col-sm-6 col-md-6">Cellulaire :</label>
                 <input  class="form-control phone_number" id="mobile_phone" name="mobile_phone" type="text" value="{{old('mobile_phone', $user->mobile_phone)}}">
             </div>
+            <div class="col-12 text-center"> --- </div>
             <div class="offset-sm-1 mx-auto col-11 form-group row">
                 <label for="role" class="col-sm-12 col-md-12">Fonction : <br><small>Modifier la fonction du profil</small></label>
                 <div class="row bg-gray-light pt-2 justify-content-center">

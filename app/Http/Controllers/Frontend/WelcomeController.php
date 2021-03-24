@@ -41,7 +41,29 @@ class WelcomeController extends Controller
         return view('frontend.user_profile', compact('user','current_user'));
     }
 
-   
+    /**
+     * Show annoucement
+     */
+    public function showAnnouncement(Announcement $announcement)
+    {
+        $current_user = auth()->user();
+        //User can view annonce if is owner or publisher or announcement is validated and published
+        //Later we will have to set gates or policies for this
+        if(intval(@$announcement->publication_status) !== 1 && (
+                intval(@$current_user->id) !== intval(@$announcement->owner) &&
+                intval(@$current_user->id) !== intval(@$announcement->posted_by)
+            )
+        ){
+
+            $message = "Ce contenu n'est pas encore disponible";
+            return view('frontend.feedback',compact('message'));
+        }
+        $announcement->countViews();
+        $announcement->countClicks();
+
+        return view('frontend.show_announcement', compact('announcement','current_user'));
+    }
+
     /**
      * Show event
      */

@@ -29,8 +29,8 @@ class User extends Authenticatable implements MustVerifyEmail
     //protected $guard_name = 'api';
     protected $guard_name = 'web';
 
-    protected $fillable = [ 'name', 'email'.'username', 'password','prenom','region_id','city_id','postal_code','gender','num_civique','street','age_group','mobile_phone','num_tel','godfather' ];
-    //protected $guarded = [];
+    //protected $fillable = [ 'name', 'email'.'username', 'password','prenom','region_id','city_id','postal_code','gender','num_civique','street','age_group','mobile_phone','num_tel','godfather' ];
+    protected $guarded = [];
 
     /**
      * Return the sluggable configuration array for this model.
@@ -92,6 +92,14 @@ class User extends Authenticatable implements MustVerifyEmail
     public function currencies()
     {
         return $this->belongsToMany(Currency::class)->withPivot('free_currency','paid_currency')->withTimestamps();
+    }
+    /**
+     * 
+     * Setting up the relationship between users and currency. A many to many relationship
+     */
+    public function agerange()
+    {
+        return $this->belongsTo(\App\Models\AgeRange::class,'age_group','id');
     }
     /**
      * 
@@ -287,19 +295,18 @@ class User extends Authenticatable implements MustVerifyEmail
     public function updateUserWallet($currency = 1, $publication_column="annoucements_price")
     {
         if($publication_column == "annoucements_price"){
-            $pivot_column = "free_currency";
-        } else {
             $pivot_column = "paid_currency";
+        } else {
+            $pivot_column = "free_currency";
             $publication_column = "events_price";
         }
-           //Get amount to pauy from user's role
+        //Get amount to pauy from user's role
         $price_to_pay = $this->roles->first()->$publication_column ;
         //Get user's currencey data
         $user_currencies = $this->setUserCurrency($currency);
         //update currency value and save
-        $user_currencies->pivot->free_currency -= $price_to_pay;
+        $user_currencies->pivot->$pivot_column -= $price_to_pay;
         return $user_currencies->pivot->save();
-        //dd($price_to_pay,$user_currencies->pivot->free_currency);
     }
     /**
      * 
@@ -330,7 +337,13 @@ class User extends Authenticatable implements MustVerifyEmail
         }
         return false;
     }
-    
+    /**
+     * get the main role of a user excluding some roles
+     */
+    public function mainRole()
+    {
+        return $this->roles->wherenotin('name',['chef-vendeur','banquier','membre'])->first();
+    }
     public function userHasEnoughCredit(String $contenu_price, String $type = 'free_currency')
     {
         //First get the user role excluding some roles
@@ -341,6 +354,7 @@ class User extends Authenticatable implements MustVerifyEmail
         if(!$role->currency_id)
             return false;
         //Make sure user has enough of the needed currency 
+        // dd($amount_to_spend,intval($this->setUserCurrency($role->currency_id)->pivot->$type));
         if($amount_to_spend <= intval($this->setUserCurrency($role->currency_id)->pivot->$type)){
             return true ;
         }

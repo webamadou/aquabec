@@ -37,7 +37,7 @@
                                     <li class="d-flex mr-3">
                                         <span>Sexe :&nbsp; </span> <strong>{!! $user->gender == 1 ? " <i class='fa fa-mars'></i> masculin":" <i class='fa fa-venus'></i> feminin"!!}</strong>
                                     </li>
-                                    <li class="d-flex mx-3"><span>Groupe d'âge : </span> <strong>{{str_replace('_',' à ',$user->age_group)}}</strong></li>
+                                    <li class="d-flex mx-3"><span>Groupe d'âge :  </span> <strong>{{str_replace('_',' à ',$user->agerange->name)}}</strong></li>
                                 </ul>
                                 <hr size="60%" class="mx-auto">
                                 <ul class="about-info mt-4 px-md-0 px-2">
@@ -54,7 +54,7 @@
                     </div>
                 </div>
                 <div class="col-md-12 pr-lg-0 py-1" style="text-align: right">
-                @if($current_user->id === $user->id || $current_user->id === $user->godfather)
+                @if( $current_user->id !== null && ($current_user->id === $user->id || $current_user->id === $user->godfather))
                     <a class="btn btn-primary" href="{{route('vendeurs.edit_vendeur',$user)}}"><i class="fa fa-user-edit"></i> Editer</a>
                     <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#modal-delete" data-whatever="{{ route('vendeurs.delete',$user) }}"><i class="fa fa-user-times"></i> Supprimer</a>
                 @endcan

@@ -18,7 +18,7 @@
                 <div class="card-header">
                     <h2 class="card-title font-weight-bold"> - </h2>
                     <div class="card-tools">
-                        <a href="{{route('vendeurs.show_vendeur',$user)}}" class="btn btn-primary btn-sm">
+                        <a href="{{route('vendeurs.show_vendeur',@$user->slug)}}" class="btn btn-primary btn-sm">
                             <i class="mr-2 fa fa-user-circle"></i>
                             Afficher le profil
                         </a>

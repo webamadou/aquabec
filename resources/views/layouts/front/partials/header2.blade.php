@@ -132,9 +132,9 @@
                                 </div>
                                 <!-- End of Mega menu -->
                             </li>
-                            @hasanyrole('super-admin|annonceur')
+                            @hasanyrole('super-admin|annonceur|vendeur')
                                 <li class="nav-item dropdown tw-megamenu-wrapper">
-                                    <a href="{{route('user.create_announcement')}}"  class="nav-link"> Ajouter une annonce<i class="fa fa-bullhorn"></i></a>
+                                    <a href="{{route('user.create_announcement')}}"  class="nav-link"> Ajouter une annonce <i class="fa fa-bullhorn"></i></a>
                                 </li>
                                 <li class="nav-item dropdown tw-megamenu-wrapper">
                                     <a href="{{route('user.create_event')}}" class="nav-link" > Ajouter un évènement <i class="fa fa-calendar"></i></a>

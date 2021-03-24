@@ -10815,7 +10815,7 @@ select.form-control:not([size]):not([multiple]){height:calc(3.25rem + 2px)}
 /* ANNOUNCEMENT*/
 .announcement-side-bar {
     position: relative;
-    height: 80vh;
+    height: auto;
     margin: 0;
     padding: 0;
 }

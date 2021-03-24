@@ -74,10 +74,11 @@ class EventController extends Controller
         $status     = ['Enregistrer en brouillon','Publiée','Enregistrer en privée'];
         $user       = auth()->user();
         $children   = $user->godchildren()->select('name','prenom','email','id')->get();
+        $role_currency = $user->mainRole()->currency;
         //Check if user has enough credit
         $can_post   = $user->userHasEnoughCredit('events_price','free_currency');
 
-        return view('events.add_event',compact('announcement','categories','regions','cities','status','children','user','can_post'));
+        return view('events.add_event',compact('announcement','categories','regions','cities','status','children','user','role_currency','can_post'));
     }
 
     /**
@@ -110,38 +111,40 @@ class EventController extends Controller
         } else {
             $data['owner'] = $request->owner;
         }
-        //If annouce is published we set the published_at column
-        if(intval($data['publication_status']) === 1){
-            $data['published_at'] = date('Y-m-d H:i:s');
-        }
         $data['posted_by'] = $current_user->id;
         //Make sure user has enough to publish
         $can_post   = $current_user->userHasEnoughCredit('annoucements_price','free_currency');
         $data['publication_status'] = $can_post ? $data["publication_status"] : 0;
 
-        if($save = Event::create($data)){
-            //We update user's wallet after save
-            $current_user->updateUserWallet(1,"events_price");
-
+        $save_event = Event::create($data);//save data
+        if($save_event){
+            //We update user's wallet we make him/her spend the currency if is publishing
+            if(intval($data['publication_status']) === 1 ){
+                $save_event->published_at = date('Y-m-d H:i:s');
+                //We update user's wallet we make him/her spend the currency
+                $current_user->updateUserWallet(1,"events_price");
+                $save_event->purchased = 1;
+            }
             //Actions if an image is uploaded
-            $owner = $save->owned()->select('name','prenom','id')->first() ;
+            $owner = $save_event->owned()->select('name','prenom','id')->first() ;
             //Each user has a folder where to save image and other eventual files
             $user_folder = str_replace(' ','-',$owner->name)."_".str_replace(' ','-', $owner->prenom)."_".str_replace(' ','-',$owner->id);
             if($request->has('images')){
                 $image = $request->file('images');
-                $image_name = config('app.name').'-'.$save->slug.".".\File::extension($image->getClientOriginalName());
+                $image_name = config('app.name').'-'.$save_event->slug.".".\File::extension($image->getClientOriginalName());
                 $image_path = 'images/announcements';
-                $save_images = $image->storeAs($image_path,$image_name,'public');
-                $save->images = $image_name;
-                $save->save();
+                $save_event_images = $image->storeAs($image_path,$image_name,'public');
+                $save_event->images = $image_name;
             }
+            $save_event->save();
+
             //If we have an announcement in the request, we need to link it to the event
             if($request->announcement_id){
                 $announcement = Announcement::select('id','event_id')
                                     ->where('id',$request->announcement_id)
                                     ->first();
                 if($announcement){
-                    $announcement->event_id = $save->id;
+                    $announcement->event_id = $save_event->id;
                     $announcement->save();
                 }
             return redirect()
@@ -187,13 +190,13 @@ class EventController extends Controller
         $status     = ['Enregistrer en brouillon','Publiée','Enregistrer en privée'];
         $user       = auth()->user();
         $children   = $user->godchildren()->select('name','prenom','email','id')->get();
+        $role_currency = $user->mainRole()->currency;
         //Check if user has enough credit
         $can_post   = $user->userHasEnoughCredit('events_price','free_currency');
         $announcement = Announcement::where('event_id',$event->id)->first();
 
-        return view('events.edit_event',compact('event','categories','regions','cities','status','children','user','can_post','announcement'));
+        return view('events.edit_event',compact('event','categories','regions','cities','status','children','user','can_post','role_currency','announcement'));
     }
-
 
     /**
      * Update announcement
@@ -235,6 +238,12 @@ class EventController extends Controller
 
         $save = $event->update($data);
         if($save){
+            //We update user's wallet we make him/her spend the currency if is publishing
+            // dd( intval($data['publication_status']) ,intval(@$event->purchased) );
+            if( intval($data['publication_status']) === 1 && intval(@$event->purchased) === 0 ){
+                $current_user->updateUserWallet(1,"events_price");
+                $event->purchased = 1;
+            }
             //Actions if an image is uploaded
             $owner = $event->owned()->select('name','prenom','id')->first() ;
             //Each user has a folder where to save image and other eventual files
@@ -245,9 +254,9 @@ class EventController extends Controller
                 $image_path = 'images/announcements';
                 $save_images = $image->storeAs($image_path,$image_name,'public');
                 $event->images = $image_name;
-                $event->save();
             }
-            //dd("lep baax");
+            $event->save();
+
             return redirect()
                     ->back()
                     ->with('success',"Votre évènement a été modifié avec succès");

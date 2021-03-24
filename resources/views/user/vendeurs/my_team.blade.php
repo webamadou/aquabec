@@ -47,7 +47,10 @@
                 columns: [
                     { data: null, name: 'name',
                         render: data => {
-                            return data.name?`<strong><i class="fa fa-user-friends"><a href="{{url('/vendeur/${data.slug}')}}"> ${data.prenom} ${data.name}</a></strong>`:``;
+                            const slug      = data.slug ?? '';
+                            const prenom    = data.prenom ?? '';
+                            const name      = data.name ?? '';
+                            return data.name?`<strong><i class="fa fa-user-friends"><a href="{{url('/vendeur/${slug}')}}"> ${prenom} ${name}</a></strong>`:``;
                         }
                     },
                     { data: 'email', name: 'email'},

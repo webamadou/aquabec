@@ -13,7 +13,7 @@ class Announcement extends Model
     use Sluggable;
 
     protected $fillable = [
-        'title', 'description', 'excerpt', 'slug', 'category_id', 'images', 'parent', 'posted_by', 'region_id', 'city_id', 'publication_status', 'owner', 'published_at', 'dates'
+        'title', 'description', 'excerpt', 'slug', 'category_id', 'images', 'parent', 'posted_by', 'region_id', 'city_id', 'publication_status', 'owner', 'published_at', 'dates','purchased'
     ];
 
 
