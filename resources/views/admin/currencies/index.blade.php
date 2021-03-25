@@ -79,9 +79,11 @@
                                         </button>
                                         <div class="dropdown-menu">
                                             <a class="dropdown-item text-primary text-bold" href="{{ route('banker.currencies.edit',$currency) }}"><i class="fa fa-user-edit"></i> Modifier</a>
-                                            <a href="#" class="dropdown-item text-danger text-bold" data-toggle="modal" data-target="#modal-delete" data-whatever="{{ route('banker.currencies.destroy',$currency) }}"><i class="fa fa-user-times"></i> Supprimer</a>
+                                            <a class="dropdown-item text-primary text-bold" href="{{ route('banker.currencies.generate',$currency) }}"><i class="fa fa-plus-circle"></i> Générer</a>
+                                            <a class="dropdown-item text-primary text-bold" href="{{ route('banker.currencies.transfer',$currency) }}"><i class="fa fa-share-square"></i> Transférer</a>
+
                                             <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item text-primary text-bold" href="{{ route('banker.currencies.generate',$currency) }}">Générer</a>
+                                            <a href="#" class="dropdown-item text-danger text-bold" data-toggle="modal" data-target="#modal-delete" data-whatever="{{ route('banker.currencies.destroy',$currency) }}"><i class="fa fa-user-times"></i> Supprimer</a>
                                         </div>
                                     </div>
                                 </td>

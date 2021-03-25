@@ -32,7 +32,7 @@
         <div class="col-sm-6 col-md-8">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="card-title font-weight-bold">Catégories d'évènements</h2>
+                    <h2 class="card-title font-weight-bold">Catégories d'événements</h2>
                 </div>
                 <div class="card-body">
                     <table class="table table-bordered" id="event-categories-table">
@@ -62,6 +62,10 @@
             $('#event-categories-table').DataTable({
                 processing: true,
                 serverSide: true,
+                dom: 'Bfrliptip',
+                buttons: [
+                    'csv', 'excel', 'pdf'
+                ],
                 ajax: '{{ url('admin/settings/get-categories-data') }}',
                 columns: [
                     { data: null, name: 'name',

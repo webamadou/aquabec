@@ -173,9 +173,7 @@ class RoleController extends Controller
     public function edit(Role $role)
     {
         $unchageable_role = ['super-admin','admin','chef-vendeur','vendeur','banquier'];
-        /* if(in_array(@$role->name, $unchageable_role)){
-            return redirect()->route('admin.settings.security.roles.index');
-        } */
+
         $form = $this->getForm();
         $permission_array   = $this->persmission_group;
 

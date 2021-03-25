@@ -1,8 +1,9 @@
 @extends('layouts.front.app')
-<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"> 
+<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="{{asset('dist/timepicker/clocklet.css')}}">
 @section('content')
     <div class="row">
-        <div class="offset-sm-2 col-10 text-blue mb-4"><h2><i class="fa fa-plus"></i> Ajout d'un évènement</h2></div>
+        <div class="offset-sm-2 col-10 text-blue mb-4"><h2><i class="fa fa-plus"></i> Ajout d'un événement (Le montage)</h2></div>
         @if(!$can_post)
             <div class="badge text-danger badge-light mb-4 py-2" style="line-height: 2.4;">
                 Vous n'avez pas assez de <strong>{{strtolower(@$role_currency->name)}}</strong> dans votre portefeuille pour publier votre évènement.<br>Vous pouvez tout de même l'enregistrer en brouillon. Vous pouvez aussi <a href="{{route('purchase_currency')}}" class="btn btn-sm btn-success"> recharger votre portefeuille.</a>
@@ -59,8 +60,10 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js" defer></script>
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js" defer></script>
     <script src="{{asset('dist/multiple_dates_picker/jquery-ui.multidatespicker.js')}}" defer></script>
+    <script src="{{asset('dist/timepicker/clocklet.js')}}" defer></script>
     <script>
-        $(document).ready(function(){  
+        $(document).ready(function(){
+            //Date picker
             $('#datePick').multiDatesPicker({
                 dateFormat: "d/m/yy",
                 minDate: 0, // today

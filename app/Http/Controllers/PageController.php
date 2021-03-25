@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -70,7 +69,8 @@ class PageController extends Controller
      */
     public function create()
     {
-        return view('admin.pages.create');
+        $roles = \App\Models\Role::all();
+        return view('admin.pages.create',compact('roles'));
     }
 
     public function create_section()
@@ -90,14 +90,15 @@ class PageController extends Controller
             'title'     => 'required',
             'page_type' => 'required',
             'subtitle'  => 'nullable',
-            'content'   => 'nullable'
+            'content'   => 'nullable',
+            'is_public'   => 'nullable',
+            'roles'   => 'nullable',
         ]);
-
         //$form->redirectIfNotValid();
 
         $page = Page::create($data);
 
-        return redirect()->route('admin.settings.pages.index')->with('success','La nouvelle page a été créé avec succès!');
+        return redirect()->route('admin.settings.pages.index')->with('success','La nouvelle page a été créée avec succès!');
     }
 
     public function store_section(Request $request)
@@ -181,8 +182,12 @@ class PageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Page $page)
     {
-        //
+        if($page){
+            $page->delete();
+            return redirect()->back()->with('success','La page a été supprimée avec succès!');
+        }
+        return redirect()->back()->with('error','La page est introuvable');
     }
 }

@@ -8,11 +8,11 @@
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="card-title font-weight-bold">Ajout d'un évènement</h2>
+                    <h2 class="card-title font-weight-bold">Ajout d'un événement (Le montage)</h2>
                     <div class="card-tools">
                         <a href="{{ route('user.events.index') }}" class="btn btn-primary btn-sm">
                             <i class="mr-2 fa fa-list"></i>
-                            Liste d'évènements
+                            Liste d'événements
                         </a>
                     </div>
                 </div>
@@ -133,6 +133,10 @@
             $('#event-categories-table').DataTable({
                 processing: true,
                 serverSide: true,
+                dom: 'Bfrliptip',
+                buttons: [
+                    'csv', 'excel', 'pdf'
+                ],
                 ajax: '{{ url('admin/settings/get-event-categories-data') }}',
                 columns: [
                     { data: 'name', name: 'name' },
@@ -145,6 +149,10 @@
             $('#announcement-categories-table').DataTable({
                 processing: true,
                 serverSide: true,
+                dom: 'Bfrliptip',
+                buttons: [
+                    'csv', 'excel', 'pdf'
+                ],
                 ajax: '{{ url('admin/settings/get-announcement-categories-data') }}',
                 columns: [
                     { data: 'name', name: 'name' },

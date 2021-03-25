@@ -37,6 +37,10 @@
             $('#credits-table').DataTable({
                 processing: true,
                 serverSide: true,
+                dom: 'Bfrliptip',
+                buttons: [
+                    'csv', 'excel', 'pdf'
+                ],
                 ajax: '{{ url('admin/get-credits-logs') }}',
                 columns: [
                     {data: null, name: 'ref',

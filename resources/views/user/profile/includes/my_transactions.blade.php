@@ -25,7 +25,12 @@
             $('#my-transactions-table').DataTable({
                 processing: true,
                 serverSide: true,
+                dom: 'Bfrliptip',
+                buttons: [
+                    'csv', 'excel', 'pdf'
+                ],
                 method:'post',
+                dom: 'Bfrliptip',
                 ajax: '{{ route("user.userSentTransactions") }}',
                 columns: [
                     { data: null, name: 'action',

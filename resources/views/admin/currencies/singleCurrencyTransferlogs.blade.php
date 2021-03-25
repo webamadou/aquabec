@@ -46,6 +46,10 @@
             $('#credits-table').DataTable({
                 processing: true,
                 serverSide: true,
+                dom: 'Bfrliptip',
+                buttons: [
+                    'csv', 'excel', 'pdf'
+                ],
                 ajax: '{{ url("admin/get-currency-logs/".$currency->id) }}',
                 columns: [
                     { data: null, name: 'sent_by',

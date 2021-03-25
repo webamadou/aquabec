@@ -26,6 +26,7 @@
                 </div>
                 <div class="card-body">
                     <form action="{{route('vendeurs.update_vendeur',$user)}}" method="post">
+                        @method('PUT')
                         <input type="hidden" name="godfather" id="godfather" value="{{$current_user->id}}">
                         <input type="hidden" name="id" id="id" value="{{$user->id}}">
                         <input type="hidden" name="role_vendeur" id="role_vendeur" value="vendeur">

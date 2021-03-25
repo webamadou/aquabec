@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Backend\Admin;
 
 use App\Http\Controllers\Controller;
@@ -202,10 +201,16 @@ class CurrencyController extends Controller
             return route("banker.currencies.accounts");
         $user = auth()->user();
         //We need users with the role admin or super-admin
-        $users = User::whereHas("roles", function($q){ $q->where("name", "admin")
+        /* $users = User::whereHas("roles", function($q){ $q->where("name", "admin")
                      ->orWhere('name','super-admin'); })
-                     ->pluck('name','id');
-        //We need the data for the picked currency for the current user
+                     ->pluck('name','id'); */
+        $users = User::where("profile_status", '<', 2)
+                        ->where('name','!=','-----')
+                        ->where('prenom','!=','-----')
+                        ->select('prenom','username','name','id')
+                        ->orderby('name','asc')
+                        ->get();
+        //We need the current user's wallet valur for the picked currency
         $currency = $user->currencies()->wherePivot('currency_id',$currency->id)->first();
 
         return view('admin.currencies.transfering', compact("currency","user","users"));

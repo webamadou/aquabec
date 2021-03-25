@@ -57,7 +57,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <a href="{{ route('user.dashboard') }}" class="nav-link {{ side_nav_bar_menu_status('dashboard','active') }}">Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('user.events.index') }}" class="nav-link {{ side_nav_bar_menu_status('events','active') }}">Mes évènements</a>
+                        <a href="{{ route('user.events.index') }}" class="nav-link {{ side_nav_bar_menu_status('events','active') }}">Mes événements</a>
                     </li>
                     <li class="nav-item">
                         <a href="#" class="nav-link">Mes annonces</a>

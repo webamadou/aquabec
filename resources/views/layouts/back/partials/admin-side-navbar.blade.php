@@ -75,28 +75,20 @@
                         <i class="nav-icon fas fa-users"></i>
                         <p>
                             Utilisateurs
-                            @isset($users)
-                              @if($users->count() > 0)
-                              <span class="ml-2 badge badge-danger"></span>
-                              @endif
-                            @endisset
-                        </p>
-                    </a>
-                </li>
-                <!-- <li class="nav-item">
-                    <a href="{{ route('admin.organisations.index') }}" class="nav-link {{ side_nav_bar_menu_status('organisations','active') }}">
-                        <i class="nav-icon fas fa-address-card"></i>
-                        <p>
-                            Organisations
-                            @isset($organisations)
-                              @if($organisations->count() > 0)
-                              <span class="ml-2 badge badge-danger">{{ $organisations->count() }}</span>
-                              @endif
-                            @endisset
+                            <span class="ml-2 badge badge-danger">{{ App\Models\User::count() }}</span>
                         </p>
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="{{ route('admin.organisations.index') }}" class="nav-link {{ side_nav_bar_menu_status('organisations','active') }}">
+                        <i class="nav-icon fas fa-address-card"></i>
+                        <p>
+                            Organisations
+                            <span class="ml-2 badge badge-danger">{{ App\Models\Organisation::count() }}</span>
+                        </p>
+                    </a>
+                </li>
+                <!-- <li class="nav-item">
                     <a href="{{ route('admin.subscriptions.index') }}" class="nav-link {{ side_nav_bar_menu_status('subscriptions','active') }}">
                         <i class="nav-icon fas fa-credit-card"></i>
                         <p>
@@ -105,26 +97,26 @@
                     </a>
                 </li> -->
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-th-list"></i>
+                    <a href="{{route('admin.announcements')}}" class="nav-link {{ side_nav_bar_menu_status('announcements','active') }}">
+                        <i class="nav-icon fas fa-award"></i>
                         <p>
-                            Evènements
-                            {{--                            <span class="ml-2 badge badge-danger">{{ App\Models\User::count() }}</span>--}}
+                            Annonces
+                            <span class="ml-2 badge badge-danger">{{ App\Models\Announcement::count() }}</span>
                         </p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-award"></i>
+                    <a href="{{route('admin.listevents')}}" class="nav-link {{ side_nav_bar_menu_status('events','active') }}">
+                        <i class="nav-icon fas fa-th-list"></i>
                         <p>
-                            Annonces
-                            {{--                            <span class="ml-2 badge badge-danger">{{ App\Models\User::count() }}</span>--}}
+                            Événements
+                            <span class="ml-2 badge badge-danger">{{ App\Models\Event::count() }}</span>
                         </p>
                     </a>
                 </li>
                 <li><hr></li>
                 <li class="nav-item">
-                    <a href="{{route('admin.credits.logs')}}" class="nav-link">
+                    <a href="{{route('admin.credits.logs')}}" class="nav-link {{ side_nav_bar_menu_status('currencies','active') }}">
                         <i class="nav-icon fas fa-list"></i>
                         <p>
                             Transferts credits logs

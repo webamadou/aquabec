@@ -83,6 +83,10 @@
             $('#credits-table').DataTable({
                 processing: true,
                 serverSide: true,
+                dom: 'Bfrliptip',
+                buttons: [
+                    'csv', 'excel', 'pdf'
+                ],
                 ajax: '{{ url('banker/get-credits-data') }}',
                 columns: [
                     { data: 'ref', name: 'ref' },
