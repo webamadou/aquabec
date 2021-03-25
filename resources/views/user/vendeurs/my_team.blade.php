@@ -43,6 +43,10 @@
             $('#teams-table').DataTable({
                 processing: true,
                 serverSide: true,
+                dom: 'Bfrliptip',
+                buttons: [
+                    'csv', 'excel', 'pdf'
+                ],
                 ajax: '{{ route("vendeurs.my_team_data") }}',
                 columns: [
                     { data: null, name: 'name',

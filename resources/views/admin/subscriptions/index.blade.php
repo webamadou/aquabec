@@ -62,6 +62,10 @@
             $('#subscriptions-table').DataTable({
                 processing: true,
                 serverSide: true,
+                dom: 'Bfrliptip',
+                buttons: [
+                    'csv', 'excel', 'pdf'
+                ],
                 ajax: '{{ url('admin/get-subscriptions-data') }}',
                 columns: [
                     { data: 'title', name: 'title' },

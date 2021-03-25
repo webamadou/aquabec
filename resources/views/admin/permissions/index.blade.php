@@ -61,6 +61,10 @@
             $('#roles-table').DataTable({
                 processing: true,
                 serverSide: true,
+                dom: 'Bfrliptip',
+                buttons: [
+                    'csv', 'excel', 'pdf'
+                ],
                 ajax: '{{ url('admin/settings/security/get-permission-data') }}',
                 columns: [
                     { data: 'id', name: 'id' },

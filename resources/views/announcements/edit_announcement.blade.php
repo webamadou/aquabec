@@ -8,10 +8,14 @@
                 Vous n'avez pas assez de <strong>{{strtolower(@$role_currency->name)}}</strong> dans votre portefeuille pour publier votre annonce.<br>Vous pouvez tout de même l'enregistrer en brouillon. Vous pouvez aussi <a href="{{route('purchase_currency')}}" class="btn btn-sm btn-success"> recharger votre portefeuille.</a>
             </div>
         @endif
+        
         <div class="col-8 tab-content mx-auto" id="nav-tabContent">
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title font-weight-bold">- </h2>
+                    <div class="card-tools">
+                        <a href="{{route('user.show_announcement',$announcement->slug)}}" class="btn btn-success"><i class="fa fa-angle-double-left"></i> Afficher l'annonce</a>
+                    </div>
                 </div>
                 <div class="card-body">
                     <form action="{{route('user.update_announcement', $announcement)}}" method="post" enctype="multipart/form-data">
@@ -34,13 +38,28 @@
                             <input type="hidden" name="posted_by" value="{{$user->id}}">
                             <input type="hidden" name="purchased" value="{{intval($announcement->purchased)}}">
                             @include("announcements.includes.announcement_form")
-                            <div class="col-sm-4 form-group row mt-5 mr-2">
+                            <hr class="my-2">
+                            @if(!empty(@$user_events) && @$announcement->event_id == null)
+                                <div id="" class="bg-lightblue col-md-12 col-sm-12 form-group py-2 row">
+                                    <label for="title" class="col-sm-12 col-md-12"><h3>Lier l'annonce à un événement :*</h3> </label>
+                                    <select name="event_id" id="event_id" class="form-control col-sm-12 col-md-6">
+                                        <option value=""> --- </option>
+                                        @foreach($user_events as $key => $title)
+                                            <option value="{{$key}}" {{old('event_id',@$announcement->event_id) === $key?'selected':''}}> {{$title}} </option>
+                                        @endforeach
+                                    </select>
+                                    <div class="col-sm-12 col-md-6">
+                                        <label for="new_event">Ajouter un nouvel événement</label> <input type="checkbox" name="new_event" value="1" id="new_event" />
+                                    </div>
+                                </div>
+                            @endif
+                            <div class="col-sm-6 form-group row mt-5 mr-2">
                                 <a href="{{route('user.show_announcement',$announcement->slug)}}" class="btn btn-light"><i class="fa fa-reply"></i> Annuler</a>
                             </div>
-                            <div class="col-sm-7 form-group row mt-5">
+                            <div class="col-sm-6 form-group row mt-5">
                                 <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Enregistrer les modifications</button>
                             </div>
-                            @if(isset($announcement) && !empty($announcement))
+                            @if(isset($announcement->event) && !empty($announcement))
                                 <div class="col-sm-12 form-group row mt-5">
                                     <hr>
                                     <a href="{{route('user.edit_event',@$announcement->event->slug)}}" type="submit" class="btn btn-success"><i class="fa fa-angle-double-left"></i> Éditer l'événement de l'annonce</a>
@@ -63,6 +82,23 @@
             $('#datePick').multiDatesPicker({
                 dateFormat: "d/m/yy",
                 minDate: 0, // today
+            });
+
+            //*** Select the price type ***
+            document.getElementById("price_type").addEventListener('change',function(e){
+                const val = this.value;
+                let display_status = '';
+                switch (parseInt(val)) {
+                    case 1:
+                        display_status = "initial";
+                        break;
+                
+                    default:
+                        display_status = "none";
+                        break;
+                }
+                
+                document.getElementById("price_field_wrapper").style.display = display_status;
             });
 
             //*** Select the cities of the selected region ***

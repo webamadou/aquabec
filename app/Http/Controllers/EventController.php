@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\User;
@@ -78,7 +77,13 @@ class EventController extends Controller
         //Check if user has enough credit
         $can_post   = $user->userHasEnoughCredit('events_price','free_currency');
 
-        return view('events.add_event',compact('announcement','categories','regions','cities','status','children','user','role_currency','can_post'));
+        $event = new Event();
+        $event->postal_code = @$user->postal_code;
+        $event->email       = @$user->email;
+        $event->telephone   = @$user->num_tel;
+        $organisations      = \App\Models\Organisation::pluck("name","id");
+
+        return view('events.add_event',compact('event','announcement','categories','regions','cities','status','children','user','role_currency','can_post',"organisations"));
     }
 
     /**
@@ -86,7 +91,6 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        //dd("ici",$request->dates);
         $data = $request->validate([
             'title'         => 'required|max:250',
             'description'   => 'nullable',
@@ -104,6 +108,8 @@ class EventController extends Controller
             'publication_status'=> 'required',
             'published_at'  => 'nullable',
             'dates'         => 'required',
+            'event_time'    => 'nullable',
+            'organisation_id'    => 'nullable',
         ]);
         $current_user = auth()->user();
         if(!isset($request->owner)){//If the owner is not defined the publisher become the publisher
@@ -192,10 +198,15 @@ class EventController extends Controller
         $children   = $user->godchildren()->select('name','prenom','email','id')->get();
         $role_currency = $user->mainRole()->currency;
         //Check if user has enough credit
-        $can_post   = $user->userHasEnoughCredit('events_price','free_currency');
-        $announcement = Announcement::where('event_id',$event->id)->first();
+        $can_post       = $user->userHasEnoughCredit('events_price','free_currency');
+        $announcement   = Announcement::where('event_id',$event->id)->first();
 
-        return view('events.edit_event',compact('event','categories','regions','cities','status','children','user','can_post','role_currency','announcement'));
+        $event->postal_code = trim($event->postal_code) === ""?$user->postal_code:@$event->postal_code;
+        $event->email       = trim($event->email) === ""?$user->email:@$event->email;
+        $event->telephone   = trim($event->telephone) === ""?$user->num_tel:@$event->telephone;
+        $organisations      = \App\Models\Organisation::pluck("name","id");
+
+        return view('events.edit_event',compact('event','categories','regions','cities','status','children','user','can_post','role_currency','announcement','organisations'));
     }
 
     /**
@@ -220,7 +231,10 @@ class EventController extends Controller
             'publication_status'=> 'required',
             'published_at'  => 'nullable',
             'dates'         => 'required',
+            'event_time'    => 'nullable',
+            'organisation_id'    => 'nullable',
         ]);
+
         $current_user = auth()->user();
         if(!isset($request->owner)){//If the owner is not defined the publisher become the publisher
             $data['owner'] = $current_user->id;
@@ -237,6 +251,7 @@ class EventController extends Controller
         $data['publication_status'] = $can_post ? $data["publication_status"] : 0;
 
         $save = $event->update($data);
+        // dd($event->organisation_id,$data);
         if($save){
             //We update user's wallet we make him/her spend the currency if is publishing
             // dd( intval($data['publication_status']) ,intval(@$event->purchased) );

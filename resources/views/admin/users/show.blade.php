@@ -5,6 +5,7 @@
 @section('content')
     <section class="ftco-about ftco-section ftco-no-pt ftco-no-pb" id="about-section">
         <div class="container">
+            <div class="col-sm-12"><a class="btn btn-primary mb-3" href="{{route('admin.users.index')}}"><i class="fa fa-angle-double-left"></i> Retourner vers la liste</a> </div>
             <div class="row d-flex no-gutters">
                 <div class="col-md-3 col-lg-3 row">
                     <div class="col-12">

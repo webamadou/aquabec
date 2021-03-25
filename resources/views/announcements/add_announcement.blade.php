@@ -3,7 +3,7 @@
 @section('content')
     <div class="row">
         <div class="offset-sm-2 col-10 text-blue mb-4"><h2><i class="fa fa-plus"></i> Ajout d'une annonce classée</h2></div>
-        <!-- @if ($errors->any())
+        @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
                     @foreach ($errors->all() as $error)
@@ -11,7 +11,7 @@
                     @endforeach
                 </ul>
             </div>
-        @endif -->
+        @endif
         @if(!$can_post)
             <div class="badge text-danger badge-light mb-4 py-2" style="line-height: 2.4;">
                 Vous n'avez pas assez de <strong>{{strtolower(@$role_currency->name)}}</strong> dans votre portefeuille pour publier votre annonce.<br>Vous pouvez tout de même l'enregistrer en brouillon. Vous pouvez aussi <a href="{{route('purchase_currency')}}" class="btn btn-sm btn-success"> recharger votre portefeuille.</a>
@@ -43,8 +43,8 @@
                             @include("announcements.includes.announcement_form")
                             <hr class="my-2">
                             @if(!empty(@$user_events))
-                                <div id="" class="col-sm-12 col-md-12 form-group row">
-                                    <label for="title" class="col-sm-12 col-md-12"><h3>Lier l'annonce à un événement :*</h3> </label>
+                                <div id="" class="bg-lightblue col-md-12 col-sm-12 form-group py-2 row">
+                                    <label for="title" class="col-sm-12 col-md-12"><strong>Lier l'annonce à un événement :*</strong> </label>
                                     <select name="event_id" id="event_id" class="form-control col-sm-12 col-md-6">
                                         <option value=""> --- </option>
                                         @foreach($user_events as $key => $title)
@@ -52,7 +52,7 @@
                                         @endforeach
                                     </select>
                                     <div class="col-sm-12 col-md-6">
-                                        <label for="new_event">Ajouter un nouvel événement</label> <input type="checkbox" name="new_event" value="1" id="new_event" />
+                                        <label for="new_event">Ou ajouter un nouvel événement</label> <input type="checkbox" name="new_event" value="1" id="new_event" />
                                     </div>
                                 </div>
                             @endif
@@ -95,6 +95,24 @@
             document.getElementById("new_event").addEventListener('change', function (event) {
                 toggleNewEventBtn();
             });
+
+            //*** Select the price type ***
+            document.getElementById("price_type").addEventListener('change',function(e){
+                const val = this.value;
+                let display_status = '';
+                switch (parseInt(val)) {
+                    case 1:
+                        display_status = "initial";
+                        break;
+                
+                    default:
+                        display_status = "none";
+                        break;
+                }
+                
+                document.getElementById("price_field_wrapper").style.display = display_status;
+            });
+
 
             //*** Select the cities of the selected region ***
             const regions = document.getElementById("region_id");

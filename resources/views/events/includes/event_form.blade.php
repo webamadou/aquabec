@@ -1,16 +1,19 @@
 <div class="offset-sm-0 col-12 form-group row">
-    <label for="title" class="col-sm-12 col-md-12">Titre de l'évènement : *</label>
+    <label for="title" class="col-sm-12 col-md-12">Titre de l'événement : *</label>
     <input type="text" name="title" id="title" value="{{old('title',@$event->title)}}" class="form-control">
     {!! $errors->first('title', '<div class="error-message col-12">:message</div>') !!}
 </div>
-<div class="offset-sm-0 col-sm-12 col-md-12 form-group row">
-    <label for="dates" class="col-sm-12 col-md-12">Dates de l'annonce : * <br><small>Vous pouvez sélectionner plusieurs dates</small> </label>
+<div class="offset-sm-0 col-sm-12 col-md-6 form-group row">
+    <label for="datePick" class="col-sm-12 col-md-12">Dates de l'annonce : * <br><small>Vous pouvez sélectionner plusieurs dates</small> </label>
     <input name="dates" id="datePick" class="form-control" value="{{old('dates',@$event->dates)}}"/>
-    {!! $errors->first('dates', '<div class="error-message col-12">:message</div>') !!}
+</div>
+<div class="offset-sm-0 col-sm-12 col-md-6 form-group row">
+    <label for="timePick" class="col-sm-12 col-md-12">Heure de l'annonce : * <br><small>Précisez l'heure de l'activité</small> </label>
+    <input data-clocklet="format: H:mm" name="event_time" id="timePick" class="form-control" value="{{old('event_time',@$event->event_time)}}"/>
 </div>
 <div class="col-12"><hr/></div>
 <div class="offset-sm-0 col-sm-12 col-md-6 form-group row">
-    <label for="region_id" class="col-sm-12 col-md-12">Region de l'évènement : *</label>
+    <label for="region_id" class="col-sm-12 col-md-12">Region de l'événement : *</label>
     <select name="region_id" id="region_id" class="form-control">
         <option value=""> --- </option>
         @forelse($regions as $key => $region)
@@ -21,7 +24,7 @@
     {!! $errors->first('region_id', '<div class="error-message col-12">:message</div>') !!}
 </div>
 <div class="offset-sm-0 col-sm-12 col-md-6 form-group row">
-    <label for="city_id" class="col-sm-12 col-md-12">Ville de l'évènement : </label>
+    <label for="city_id" class="col-sm-12 col-md-12">Ville de l'événement : </label>
     <select name="city_id" id="city_id" class="form-control">
         <option value=""> --- </option>
         @forelse($cities as $key => $city)
@@ -43,13 +46,22 @@
     <label for="telephone" class="col-sm-12 col-md-12">Téléphone : </label>
     <input name="telephone" id="telephone" class="form-control phone_number" value="{{old('telephone',@$event->telephone)}}" />
 </div>
+<div class="offset-sm-0 col-sm-12 form-group row">
+    <label for="organiation_id" class="col-sm-12 col-md-12">Organisations : </label>
+    <select name="organisation_id" id="organisation_id" class="form-control">
+    <option value=""> --- </option>
+    @foreach($organisations as $key => $organisation)
+        <option value="{{$key}}" {{old('organisation_id',@$event->organisation_id) === $key ? 'selected':""}}>{{$organisation}}</option>
+    @endforeach
+    </select>
+</div>
 <div class="col-12"><hr/></div>
 <div class="offset-sm-0 col-12 form-group row">
-    <label for="description" class="col-sm-12 col-md-12">Description de l'évènement : </label>
+    <label for="description" class="col-sm-12 col-md-12">Description de l'événement (Le poumon) : </label>
     <div><textarea name="description" id="description" class="ckeditor form-control">{{old('description',@$event->description)}}</textarea></div>
 </div>
 <div class="offset-sm-0 col-sm-12 col-md-6 form-group row">
-    <label for="images" class="col-sm-12 col-md-12">images de l'évènement : </label>
+    <label for="images" class="col-sm-12 col-md-12">images de l'événement : </label>
     <input type="file" name="images" id="images" class="form-control">
     @error('image') <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div> @enderror
 </div>
@@ -58,7 +70,7 @@
 </div>
 <div class="col-12"><hr/></div>
 <div class="offset-sm-0 col-sm-12 col-md-6 form-group row">
-    <label for="category_id" class="col-sm-12 col-md-12">Categorie de l'évènement : </label>
+    <label for="category_id" class="col-sm-12 col-md-12">Categorie de l'événement : </label>
     <select name="category_id" id="category_id" class="form-control">
         <option value=""> --- </option>
         @foreach($categories as $category)

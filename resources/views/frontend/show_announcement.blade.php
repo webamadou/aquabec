@@ -27,6 +27,7 @@
                                         @endif
                                     @endif
                                 </div>
+                                <div class="col-6"><strong>N° de l'annonce :</strong></div><div class="col-6 meta-value px-4"><span>{{sprintf("%05d",@$announcement->id)}}</span></div>
                             </div>
                             <hr>
                             <i class="fa fa-map-marked-alt"></i><br> {{@@$announcement->city->name}} <br>  {{@@$announcement->region->name}}

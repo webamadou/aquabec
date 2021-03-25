@@ -132,7 +132,7 @@
                                 </div>
                                 <!-- End of Mega menu -->
                             </li>
-                            @hasanyrole('super-admin|annonceur|vendeur')
+                            @hasanyrole('super-admin|admin|annonceur|vendeur')
                                 <li class="nav-item dropdown tw-megamenu-wrapper">
                                     <a href="{{route('user.create_announcement')}}"  class="nav-link"> Ajouter une annonce <i class="fa fa-bullhorn"></i></a>
                                 </li>
@@ -163,8 +163,8 @@
                                                 @include('layouts.front.partials.admin')
                                             @endrole
                                             <hr>
-                                            @hasanyrole('vendeur|super-admin|annonceur')
-                                                <a class="dropdown-item" href="{{route('user.my_events')}}"><i class="fas fa-calendar-check"></i>  Mes évènements</a>
+                                            @hasanyrole('vendeur|super-admin|annonceur|admin')
+                                                <a class="dropdown-item" href="{{route('user.my_events')}}"><i class="fas fa-calendar-check"></i>  Mes événements</a>
                                                 <a class="dropdown-item" href="{{route('user.my_announcements')}}"><i class="fa fa-bullhorn"></i> Mes Annonces</a>
                                             @endrole
                                             <hr>

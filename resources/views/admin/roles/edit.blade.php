@@ -11,6 +11,9 @@
                 <div class="card">
                     <div class="card-header bg-primary">
                         <h2 class="card-title font-weight-bold">Informations de base</h2>
+                        <div class="card-tools">
+                            <a href="{{route('admin.settings.security.roles.index')}}" class="btn btn-success"><i class="fa fa-angle-double-left"></i> Retourner vers la liste</a>
+                        </div>
                     </div>
                     <div class="card-body row">
                         <div class="col-12 form-group row">

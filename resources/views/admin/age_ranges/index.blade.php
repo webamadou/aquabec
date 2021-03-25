@@ -61,6 +61,10 @@
             $('#age_groupe-table').DataTable({
                 processing: true,
                 serverSide: true,
+                dom: 'Bfrliptip',
+                buttons: [
+                    'csv', 'excel', 'pdf'
+                ],
                 ajax: '{{ url('admin/settings/get-age_ranges-data') }}',
                 columns: [
                     { data: 'name', name: 'name' },

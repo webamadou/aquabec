@@ -21,6 +21,7 @@
                             <tr>
                                 <th>Titre</th>
                                 <th>Categorie</th>
+                                <th>Prix</th>
                                 <th>Proprietaire</th>
                                 <th>Region et Ville</th>
                                 <th>Date d'enregistrement</th>
@@ -37,21 +38,39 @@
 
     <script defer>
         $(function() {
+            // Create our number formatter.
+            var formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            });
+
+
            $('#announcements-table').DataTable({
                 processing: true,
                 serverSide: true,
+                dom: 'Bfrliptip',
+                buttons: [
+                    'csv', 'excel', 'pdf'
+                ],
                 method:'post',
+                dom: 'Bfrliptip',
                 ajax: '{{ route("user.myAnnouncements-data") }}',
                 columns: [
                     { data: null, name: 'title',
                         render : data => {
                             const title = (data.title.length > 35) ? `${data.title.substring(0,35)}...` :data.title;
-                            return `<img src="/show/images/${data.images}" alt="{{@$announcement->title}}" style="width:50px; height: auto"><br><strong><a href="/mes_annonces/announcement/${data.slug}">${title}</a></strong>`;
+                            return `<a href="/mes_annonces/announcement/${data.slug}"><img src="/show/images/${data.images}" alt="{{@$announcement->title}}" style="width:50px; height: auto"><br><strong>${title}</strong></a>`;
                         }
                     },
                     { data: null, name: 'category_id',
                         render : data => {
                             return `${data.category?data.category.name:""}`;
+                        }
+                    },
+                    { data: null, name: 'price',
+                        render : data => {
+                            const prix = data?.price_type == 1? `${formatter.format(data.price)}`:(data?.price_type == 3?"Échange":"Gratuit");
+                            return prix;
                         }
                     },
                     { data: null, name: 'owner',
@@ -95,7 +114,7 @@
                 buttons: [
                     'copy', 'csv', 'excel', 'pdf', 'print'
                 ],
-                order: [[ 4, 'desc' ],[0,'asc']],
+                order: [[ 4, 'desc' ]],
                 pageLength: 100,
                 responsive: true,
                 "oLanguage":{

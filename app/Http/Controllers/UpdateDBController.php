@@ -20,10 +20,10 @@ class UpdateDBController extends Controller
 {
     public function index() {
         /* ================= ADABT USERS TABLE =================== *
-        // $request_fromorigin = DB::connection('mysql2')->table('comptes')->limit(5)->get();
+        // $request_fromorigin = DB::connection('mysql2')->table('comptes')->limit(450)->get();
         //$request_fromorigin = DB::connection('mysql2')->table('comptes')->limit(450)->get();
-        //$request_fromorigin = DB::connection('mysql2')->table('comptes')->skip(450)->take(450)->get();
-        //$request_fromorigin = DB::connection('mysql2')->table('comptes')->skip(900)->take(100)->get();
+        // $request_fromorigin = DB::connection('mysql2')->table('comptes')->skip(450)->take(450)->get();
+        // $request_fromorigin = DB::connection('mysql2')->table('comptes')->skip(900)->take(100)->get();
         ####Updateing users from comptes
         foreach ($request_fromorigin as $key => $item) {
             $user = new User();
@@ -102,11 +102,11 @@ class UpdateDBController extends Controller
         }
         //*/
         /* ================= ADABT TRANSACTIONS TABLE =================== *
-        $transactions = DB::connection('mysql2')->table('credits_transactions')->limit(500)->get();
+        // $transactions = DB::connection('mysql2')->table('credits_transactions')->limit(500)->get();
         // $transactions = DB::connection('mysql2')->table('credits_transactions')->skip(500)->take(500)->get();
         // $transactions = DB::connection('mysql2')->table('credits_transactions')->skip(1000)->take(500)->get();
         // $transactions = DB::connection('mysql2')->table('credits_transactions')->skip(1500)->take(500)->get();
-        // $transactions = DB::connection('mysql2')->table('credits_transactions')->skip(2000)->take(500)->get();
+        $transactions = DB::connection('mysql2')->table('credits_transactions')->skip(2000)->take(500)->get();
         foreach ($transactions as $key => $item) {
             echo "Saving transaction $item->id <br/>";
             $payment = Payment::find(@$item->id);
@@ -142,7 +142,9 @@ class UpdateDBController extends Controller
                 $annonce->price_type = "fixed";
                 $annonce->website = substr(@$item->site_web,0,250);
                 $annonce->telephone = substr(@$item->telephone,0,50);
+                $annonce->postal_code = substr(@$item->code_postal,0,50);
                 $annonce->email = substr(@$item->email,0,150);
+                $annonce->advertiser_type = substr(@$item->type_annonceur,0,150);
                 $annonce->validated_at = @$item->validated_date;
                 $annonce->published_at = @$item->validated_date;
                 $annonce->publication_status = intval(substr(@$item->validated,0,1));
@@ -184,12 +186,12 @@ class UpdateDBController extends Controller
             }
         }
         //*/
-        /* ================= ADABT ANNOUNCEMENT TABLE =================== *
+        /* ================= ADABT  EVENTS TABLE =================== *
         // $events = DB::connection('mysql2')->table('evenements')->limit(500)->get();
-        //$events = DB::connection('mysql2')->table('evenements')->skip(500)->take(500)->get();
+        // $events = DB::connection('mysql2')->table('evenements')->skip(500)->take(500)->get();
         // $events = DB::connection('mysql2')->table('evenements')->skip(1000)->take(500)->get();
         // $events = DB::connection('mysql2')->table('evenements')->skip(1500)->take(500)->get();
-        // $events = DB::connection('mysql2')->table('evenements')->skip(2000)->take(100)->get();
+        $events = DB::connection('mysql2')->table('evenements')->skip(2000)->take(100)->get();
         foreach ($events as $key => $item) {
             if(@$item->titre != ""){
                 echo "Saving event $item->titre <br/>";
@@ -199,10 +201,12 @@ class UpdateDBController extends Controller
                 $event->images = @$item->image;
                 $event->title = @$item->titre;
                 $event->description = @$item->description;
+                $event->event_time = @$item->heure;
                 $event->region_id = @$item->region;
                 $event->website = substr(@$item->site_web,0,250);
                 $event->telephone = substr(@$item->telephone,0,50);
                 $event->email = substr(@$item->email,0,150);
+                $event->postal_code = substr(@$item->code_postal,0,150);
                 $event->validated_at = @$item->validated_date;
                 $event->published_at = @$item->validated_date;
                 $event->publication_status = intval(substr(@$item->validated,0,1));
@@ -212,6 +216,11 @@ class UpdateDBController extends Controller
                 $event->rejection_reasons = @$item->reject_reason;
                 $event->created_at = @$item->date_added;
                 $event->updated_at = @$item->date_lastedit;
+                //get in organisation table name like $item->organisation
+                $organisation = DB::table('organisations')->where('name',$item->organisation)->first();
+                if(@$organisation){
+                    $event->organisation_id = $organisation->id;
+                }
                 $user = DB::connection('mysql2')->table('comptes')->where('id',$item->id_utilisateur)->select('id','email')->first();
                 if(@$user->id){
                     $user = User::select('id','email')->where('email',$user->email)->first();
@@ -242,7 +251,7 @@ class UpdateDBController extends Controller
             }
         }
         //*/
-        /* ================= ADABT PAGES TABLE =================== */
+        /* ================= ADABT PAGES TABLE =================== *
         // $pages = DB::connection('mysql2')->table('PH_pages')->orderby('id', 'asc')->limit(500)->get();
         // $pages = DB::connection('mysql2')->table('PH_pages')->orderby('id', 'asc')->skip(500)->take(500)->get();
         // $pages = DB::connection('mysql2')->table('PH_pages')->orderby('id', 'asc')->skip(1000)->take(500)->get();
@@ -256,46 +265,32 @@ class UpdateDBController extends Controller
                 $page->title = @$item->nom;
                 $page->status = @$item->protected;
                 $page->content = @$item->texte;
-                $page->position = @$item->region;
+                $page->position = @$item->position;
+                $page->is_a_separator = @$item->is_a_separator;
                 $page->page_type = @$item->helppage;
                 $page->custom_link = @$item->custom_link;
-                /* 
-                $event->validated_at = @$item->validated_date;
-                $event->published_at = @$item->validated_date;
-                $event->publication_status = intval(substr(@$item->validated,0,1));
-                $event->validated = intval(substr(@$item->validated,0,1));
-                $event->category_id = intval(@$item->categorie);
-                $event->views = @$item->nombre_vues;
-                $event->rejection_reasons = @$item->reject_reason;
-                $event->created_at = @$item->date_added;
-                $event->updated_at = @$item->date_lastedit;
-                $user = DB::connection('mysql2')->table('comptes')->where('id',$item->id_utilisateur)->select('id','email')->first();
-                if(@$user->id){
-                    $user = User::select('id','email')->where('email',$user->email)->first();
-                    $event->posted_by = @$user->id;
-                    $event->owner = @$user->id;
-                } else {
-                    continue;
-                }
-                $user = DB::connection('mysql2')->table('comptes')->where('id',$item->validated_by)->select('id','email')->first();
-                if(@$user->id){
-                    $user = User::select('id','email')->where('email','LIKE',$user->email)->first();
-                    $event->validated_by = @$user->id;
-                }
-
-                $category = DB::table('categories')->where('name',"LIKE","%$item->categorie%")->select('id','name')->first(); 
-                //save category
-                if($category !== null){
-                    echo " categorie->".@$category->name."<br>";
-                    $event->category_id = @$category->id;
-                }
-                //save cities
-                $city = DB::table('cities')->where('name',"LIKE","%$item->ville%")->select('id','name')->first(); 
-                echo " ville->".@$city->name."<br>";
-                if($city !== null)
-                    $event->city_id = @$city->id; */
 
                 $page->save();
+            }
+        }
+        //*/
+        /* ================= ADABT MENUS TABLE =================== */
+        $menus = DB::connection('mysql2')->table('PH_menu')->orderby('id', 'asc')->limit(500)->get();
+        foreach ($menus as $key => $item) {
+            if(@$item->name != ""){
+                echo "Saving menus $item->name <br/>";
+                $menu = \App\Models\Menu::find(@$item->id);
+                $menu = $menu == null? new \App\Models\Menu() : $menu;
+
+                $menu->name     = @$item->name;
+                $menu->position = @$item->position;
+                $menu->roles    = @$item->permission;
+                $menu->public   = intval($item->locked) === 1 ? 0 : 1;
+                $menu->visible  = @$item->visible;
+                /* $menu->page_type = @$item->helppage;
+                $menu->custom_link = @$item->custom_link; */
+
+                $menu->save();
             }
         }
         //*/

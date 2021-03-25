@@ -37,8 +37,10 @@
                                 <label for="send_to" class="col-sm-12">Selectionnez le destinataire *</label>
                                 <select name="send_to" id="" class="form-control">
                                     <option value="">--- Destinataire ---</option>
-                                    @forelse($users as $key => $value)
-                                        <option value="{{$key}}" {{@$_POST['send_to'] == $key ? 'selected':''}}>{{$value}}</option>
+                                    @forelse($users as $user)
+                                        <option value="{{$user->id}}" {{old('send_to') == $user->id ? 'selected':''}}>
+                                        <strong>{{$user->id}} {{$username}}</strong>
+                                        </option>
                                     @endforeach
                                 </select>
                                 {!! $errors->first('send_to', '<div class="error-message col-12">:message</div>') !!}

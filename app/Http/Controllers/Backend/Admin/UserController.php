@@ -31,7 +31,7 @@ class UserController extends Controller
 
     public function usersData()
     {
-        $users = User::select('id','name','prenom','slug','email','updated_at')->where('profile_status','<=',1)->get();
+        $users = User::select('id','name','prenom','slug','email','updated_at')->with('roles')->where('profile_status','<=',1)->get();
 
         return datatables()
             ->collection($users)
@@ -78,6 +78,21 @@ class UserController extends Controller
         $roles       = Role::pluck('name','id');
 
         return view('admin.users.create',compact('user','region_list','cities_list','age_group','vendors','roles'));
+    }
+    /**
+     * 
+     */
+    public function createVendeur()
+    {
+        $current_user   = auth()->user();
+        $user           = new User();
+        $region_list    = Region::pluck('name','id');
+        $cities_list    = City::where('region_id',$user->region_id)->pluck('name','id');
+        $age_group      = AgeRange::ageSelect();
+        $title          = $current_user->hasRole('vendeur')?"Enregistrer un annonceur dans votre équipe":"Enregistrer un vendeur dans votre équipe";
+        $role_name          = $current_user->hasRole('vendeur')?"vendeur":"annonceur";
+
+        return view('user.vendeurs.cvcreate', compact('title','current_user','user','region_list','cities_list','age_group','role_name'));
     }
     /**
      * Store the specified resource in storage.
@@ -128,6 +143,21 @@ class UserController extends Controller
                     ->with('success',"Il s'est produit une erreur lors de l'enregistrement!");
     }
 
+    /**
+     * 
+     */
+    public function editVendeur(User $user)
+    {
+        $current_user = auth()->user();
+        $region_list = Region::pluck('name','id');
+        $cities_list = City::where('region_id',$user->region_id)->pluck('name','id');
+        $age_group   = AgeRange::ageSelect();
+
+        return view('user.vendeurs.cvedit', compact('current_user','user','region_list','cities_list','age_group'));
+    }
+    /**
+     * 
+     */
     public function edit(User $user)
     {
         $region_list = Region::pluck('name','id');
@@ -180,7 +210,6 @@ class UserController extends Controller
     
         return response()->json($res);
     }
-
     public function updateInfosPerso(Request $request)
     {
         $data = $request->validate([
@@ -205,7 +234,6 @@ class UserController extends Controller
 
         return redirect()->back()->with("error","Une erreur s'est produite!");
     }
-
     public function updatePWD(Request $request)
     {
         $request->validate([

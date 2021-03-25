@@ -41486,3 +41486,18 @@ hr {
 #new_event_wrapper.active {
     display: initial;
 }
+/* datatable */
+.dt-button {
+    margin: 0 0 14px 0;
+    padding: 0.1vh 1vw;
+    background: #0e78fa;
+    border: 2px solid #0e78fa;
+    border-radius: 5px;
+    color: #fff;
+    font-size: small;
+}
+a.paginate_button.current {
+    font-size: x-small;
+    border-radius: 10px;
+}
+/* datatable */

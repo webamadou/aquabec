@@ -3,6 +3,7 @@
 @section('title',"Ajout d'un profil ")
 
 @section('content')
+    <a class="btn btn-primary mb-3" href="{{route('admin.users.index')}}"><i class="fa fa-angle-double-left"></i> Retourner vers la liste</a>
     <div class="col-12 container-fluid bg-white">
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -17,7 +18,7 @@
             @csrf
             <input type="hidden" name="id" value="{{$user->id}}">
             <div class="offset-sm-1 mx-auto col-11 form-group row">
-                <label for="godfather" class="col-sm-6 col-md-6">Parain : <br><small>Ce champ est utile pour lier cet utilisateur à un chef vendeur ou a un vendeur.</small></label>
+                <label for="godfather" class="col-sm-6 col-md-6">Parain : <br><small>Ce champ est utile pour inscrire un équipier dans une équipe.</small></label>
                 <select name="godfather" id="godfather" class="form-control">
                     <option value=""> --- </option>
                     @forelse($vendors as $vendor)

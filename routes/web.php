@@ -15,6 +15,8 @@ use App\Http\Controllers\Backend\Admin\CreditPackController;
 use App\Http\Controllers\Backend\Admin\CreditsController;
 use App\Http\Controllers\Backend\Admin\CurrencyController;
 use App\Http\Controllers\Backend\Admin\AgeRangeController;
+use App\Http\Controllers\Backend\Admin\MenuController;
+use App\Http\Controllers\Backend\Admin\MenuLinkController;
 
 use App\Http\Controllers\Frontend\DashboardController as UserDashboard;
 use App\Http\Controllers\Backend\User\EventController as EventsDashboard;
@@ -24,7 +26,9 @@ use App\Http\Controllers\Frontend\WelcomeController;
 use App\Http\Controllers\Frontend\SubscriberController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\AnnouncementController;
+use App\Http\Controllers\Backend\Admin\AnnouncementController as BOAnnouncementController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\Backend\Admin\EventController as BOEventController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -117,15 +121,21 @@ Route::middleware(['auth','verified'])->group(function (){
         Route::name('settings.')->prefix('settings')->group(function () {
             //Pages routes
             Route::resource("pages",PageController::class);
+            Route::get('get-pages-data', [RoleController::class, 'pagesData'])->name('pages.data');
+
             Route::get("/pages_section/create",[PageController::class, 'create_section'])->name("create_section");
             Route::post("/pages_section",[PageController::class, 'store_section'])->name("store_section");
             Route::get("/pages_section/{home_section}/edit",[PageController::class, 'edit_section'])->name("edit_section");
             Route::put("/pages_section/{home_section}/update",[PageController::class, 'update_section'])->name("update_section");
             
-            Route::get('get-pages-data', [RoleController::class, 'pagesData'])->name('pages.data');
+            Route::resource("menus",MenuController::class);
+            Route::get('get-menu-data', [MenuController::class, 'menusData'])->name('menus.data');
+            
+            Route::resource("menu_links",MenuLinkController::class);
+            Route::get('get-menu-links-data', [MenuLinkController::class, 'menusData'])->name('menulinks.data');
             // Security Routes ...
             Route::name('security.')->prefix('security')->group(function () {
-                // ***FOLLOWING ROOTS ARE USED TO UPDATE ADAPT THE CURRENT db TO ORIGINAL ONE ***
+                // ***FOLLOWING ROUT IS USE TO UPDATE/ADAPT THE CURRENT db TO ORIGINAL ONE ***
                 Route::get("/update_db",[\App\Http\Controllers\UpdateDBController::class, 'index']);
                 // ******************************************************************************
                 // Roles Routes ...
@@ -177,6 +187,29 @@ Route::middleware(['auth','verified'])->group(function (){
         // Subscriptions Routes
         Route::resource('subscriptions', SubscriptionController::class);
         Route::get('get-subscriptions-data', [SubscriptionController::class, 'subscriptionsData'])->name('subscriptions.data');
+        //BO annoucements routes
+        Route::get("/myAnnouncements-data", [BOAnnouncementController::class, 'myAnnouncementsData'])->name('myAnnouncements-data');
+        Route::get('announcements',[BOAnnouncementController::class, 'index'])->name('announcements');
+        Route::get("/creation", [BOAnnouncementController::class, 'create'])->name('create_announcement');
+        // Route::post("/store", [UserDashboard::class, 'storeAnnouncement'])->name('store_announcement');
+        Route::post("/store", [BOAnnouncementController::class, 'store'])->name('store_announcement');
+        Route::get("/announcement/{announcement:id}", [BOAnnouncementController::class, 'show'])->name('show_announcement');
+        Route::get("/edit/{announcement:id}", [BOAnnouncementController::class, 'edit'])->name('edit_announcement');
+        Route::put("/update/{announcement}", [BOAnnouncementController::class, 'update'])->name('update_announcement');
+        Route::delete("/delete_announcement/{announcement}", [BOAnnouncementController::class, 'delete'])->name('delete_announcement');
+        Route::post("/validation_announcement/{announcement}", [BOAnnouncementController::class, 'validation'])->name('validation_announcement');
+        
+        Route::get("/myevents-data", [BOEventController::class, 'myEventsData'])->name('myEvents-data');
+        Route::get("/index", [BOEventController::class, 'myEvents'])->name("listevents");
+        Route::get("/create_event/{announcement?}", [BOEventController::class, 'create'])->name('create_event');
+        Route::post("/store_event", [BOEventController::class, 'store'])->name('store_event');
+        Route::get("/event/{event}", [BOEventController::class, 'show'])->name('show_event');
+        Route::get("/edit_event/{event}", [BOEventController::class, 'edit'])->name('edit_event');
+        Route::put("/update_events/{event}", [BOEventController::class, 'update'])->name('update_event');
+        Route::delete("/delete_event/{event}", [BOEventController::class, 'delete'])->name('delete_event');
+        Route::post("/validation_event/{event}", [BOEventController::class, 'validation'])->name('validation_event');
+
+
     });
 
     /*
@@ -185,9 +218,9 @@ Route::middleware(['auth','verified'])->group(function (){
     Route::middleware(['role:chef-vendeur|vendeur'])->name('vendeurs.')->group(function () {
         Route::get('/my_team', [UserDashboard::class, 'myTeam'])->name('my_team');
         Route::get('get-my_team-data/{user_id?}', [UserDashboard::class, 'myTeamData'])->name('my_team_data');
-        Route::get('/create/vendeur', [UserDashboard::class, 'createVendeur'])->name('create_vendeur');
+        Route::get('/create/vendeur', [UserController::class, 'createVendeur'])->name('create_vendeur');
         Route::post('/create/vendeur', [UserController::class, 'store'])->name('store_vendeur');
-        Route::get('/update/vendeur/{user:slug}/edit', [UserDashboard::class, 'editVendeur'])->name('edit_vendeur');
+        Route::get('/edit/vendeur/{user:slug}/edit', [UserController::class, 'editVendeur'])->name('edit_vendeur');
         Route::put('/update/vendeur/{user:slug}', [UserController::class, 'update'])->name('update_vendeur');
         Route::get('/vendeur/{user:slug}', [UserDashboard::class, 'showProfile'])->name('show_vendeur');
         Route::delete('/vendeur/{user}', [UserController::class, 'destroy'])->name('delete');
@@ -215,7 +248,7 @@ Route::middleware(['auth','verified'])->group(function (){
     });
 
     //Routes for vendeurs and annonceurs
-    Route::middleware(['role:vendeur|annonceur|super-admin'])->name('user.')->group(function(){
+    Route::middleware(['role:vendeur|annonceur|super-admin|admin'])->name('user.')->group(function(){
         Route::get("/mes_annonces", [UserDashboard::class, 'myAnnouncements'])->name("my_announcements");
         Route::get("/mes_annonces/creation", [AnnouncementController::class, 'create'])->name('create_announcement');
         // Route::post("/mes_annonces/store", [UserDashboard::class, 'storeAnnouncement'])->name('store_announcement');

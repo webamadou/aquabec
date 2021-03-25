@@ -1,5 +1,6 @@
 @extends('layouts.front.app')
-<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"> 
+<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="{{asset('dist/timepicker/clocklet.css')}}">
 @section('content')
     <div class="row">
         <div class="offset-sm-2 col-10 text-blue mb-4"><h2><i class="fa fa-plus"></i> Modification de l'évènement {{$event->title}}</h2></div>
@@ -12,6 +13,9 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title font-weight-bold">- </h2>
+                    <div class="card-tools">
+                        <a href="{{route('user.my_events')}}" class="btn btn-sm btn-primary"><i class="fa fa-angle-double-left"></i> Retour vers la liste</a>
+                    </div>
                 </div>
                 <div class="card-body">
                     <form action="{{route('user.update_event', $event)}}" method="post" enctype="multipart/form-data">
@@ -62,6 +66,7 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js" defer></script>
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js" defer></script>
     <script src="{{asset('dist/multiple_dates_picker/jquery-ui.multidatespicker.js')}}" defer></script>
+    <script src="{{asset('dist/timepicker/clocklet.js')}}" defer></script>
     <script>
         $(document).ready(function(){  
             $('#datePick').multiDatesPicker({

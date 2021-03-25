@@ -78,7 +78,12 @@ class AnnouncementController extends Controller
         $role_currency = $user->mainRole()->currency;
         $user_events = $user->getUnlinkedEvents()->pluck("events.title","events.id")->all();
 
-        return view('announcements.add_announcement',compact('categories','regions','cities','status','children','user','can_post','role_currency','user_events'));
+        $announcement = new Announcement();
+        $announcement->postal_code = @$user->postal_code;
+        $announcement->email       = @$user->email;
+        $announcement->telephone   = @$user->num_tel;
+
+        return view('announcements.add_announcement',compact('announcement','categories','regions','cities','status','children','user','can_post','role_currency','user_events'));
     }
     /**
      * Store announcement
@@ -90,6 +95,7 @@ class AnnouncementController extends Controller
             'description'   => 'nullable',
             'excerpt'       => 'nullable',
             'category_id'   => 'required',
+            'advertiser_type'=> 'required',
             'images'        => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
             'parent'        => 'nullable',
             'posted_by'     => 'required',
@@ -99,6 +105,12 @@ class AnnouncementController extends Controller
             'published_at'  => 'nullable',
             'dates'         => 'nullable',
             'event_id'      => 'nullable',
+            'price_type'    => 'required',
+            'price'         => 'nullable',
+            'postal_code'   => 'nullable',
+            'telephone'     => 'nullable',
+            'email'         => 'nullable',
+            'website'       => 'nullable',
         ]);
         $current_user = auth()->user();
         if(!isset($request->owner)){//If the owner is not defined the publisher become the owner
@@ -113,8 +125,15 @@ class AnnouncementController extends Controller
         $data['posted_by'] = $current_user->id;
         //If announce is published we set the published_at column save the data and update user wallets
         $data['published_at'] = intval($data['publication_status']) === 1 ? date('Y-m-d H:i:s') : null;
-        
+        //If price type is set to 1 we need to be sure the price is set
+        if(intval(@$data['price_type']) === 1 && (trim(@$data['price']) == "" || intval($data['price']) < 0)){
+            return redirect()
+                        ->back()
+                        ->with("error", "Vous devez preciser le prix de votre annonce")
+                        ->withInput();
+        }
         $save_announcement = Announcement::create($data);//save data
+        // dd($data['event_id'],$save_announcement);
         if($save_announcement){
             //We update user's wallet we make him/her spend the currency if is publishing
             if(intval($data['publication_status']) === 1 ){
@@ -182,8 +201,13 @@ class AnnouncementController extends Controller
         $role_currency = $user->mainRole()->currency;
         //Check if user has enough credit
         $can_post   = $user->userHasEnoughCredit('annoucements_price','paid_currency');
+        $user_events = $user->getUnlinkedEvents()->pluck("events.title","events.id")->all();
 
-        return view('announcements.edit_announcement',compact('announcement','categories','regions','cities','status','children','user','role_currency','can_post'));
+        $announcement->postal_code = trim($announcement->postal_code) === ""?$user->postal_code:@$announcement->postal_code;
+        $announcement->email       = trim($announcement->email) === ""?$user->email:@$announcement->email;
+        $announcement->telephone   = trim($announcement->telephone) === ""?$user->num_tel:@$announcement->telephone;
+
+        return view('announcements.edit_announcement',compact('announcement','categories','regions','cities','status','children','user','role_currency','can_post','user_events'));
     }
     /**
      * Update announcement
@@ -195,6 +219,7 @@ class AnnouncementController extends Controller
             'description'   => 'nullable',
             'excerpt'       => 'nullable',
             'category_id'   => 'required',
+            'advertiser_type'=> 'required',
             'images'        => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
             'parent'        => 'nullable',
             'posted_by'     => 'required',
@@ -203,7 +228,15 @@ class AnnouncementController extends Controller
             'publication_status'=> 'required',
             'published_at'  => 'nullable',
             'dates'         => 'nullable',
+            'price_type'    => 'required',
+            'price'         => 'nullable',
+            'event_id'      => 'nullable',
+            'postal_code'   => 'nullable',
+            'telephone'     => 'nullable',
+            'email'         => 'nullable',
+            'website'       => 'nullable',
         ]);
+        // dd($data);
         $current_user = auth()->user();
         if(!isset($request->owner)){//If the owner is not defined the publisher become the publisher
             $data['owner'] = $current_user->id;
@@ -220,6 +253,7 @@ class AnnouncementController extends Controller
         $data['publication_status'] = $can_post ? $data["publication_status"] : 0;
 
         $save = $announcement->update($data);
+        // dd($announcement);
         if($save){
             //We update user's wallet we make him/her spend the currency if is publishing
             if( intval($data['publication_status']) === 1 && intval(@$announcement->purchased) === 0 ){

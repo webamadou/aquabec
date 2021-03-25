@@ -15,8 +15,10 @@
                     <table class="table table-bordered" id="event-users-table">
                         <thead>
                         <tr>
+                            <th> - </th>
                             <th>Nom & Prénom</th>
                             <th>Adresse Email</th>
+                            <th>Fonctions</th>
                             <th>Dernière modification</th>
                             <th>Actions</th>
                         </tr>
@@ -38,16 +40,36 @@
             $('#event-users-table').DataTable({
                 processing: true,
                 serverSide: true,
+                dom: 'Bfrliptip',
+                buttons: [
+                    'csv', 'excel', 'pdf'
+                ],
                 ajax: '{{ url('admin/get-users-data') }}',
                 columns: [
+                    { data: 'id', name: 'id' },
                     { data: null, name: 'name',
                         render: data => { return `<strong><i class="fa fa-user"></i> <a href="/admin/users/${data.id}" class="text-link">${data.name?data.name:''} ${data.prenom?data.prenom:''} </a></strong>`; }
                     },
                     { data: 'email', name: 'email' },
+                    { data: null, name: 'fonctions',
+                        render : data => {
+                            let user_roles = '';
+                            if(data.roles != null){
+                                const roles = data.roles;
+                                for(let role in roles){
+                                    if(roles.hasOwnProperty(role)){
+                                        user_roles += `<span class="badge badge-primary">${roles[role].name}</span> <br>`
+                                    }
+                                }
+                            }
+                            return user_roles;
+                            return data.roles ? data.roles.name : 'non defini';
+                        }
+                    },
                     { data: 'updated_at', name: 'updated_at', width: '150' },
                     { data: 'action', name: 'action', orderable: false, searchable: false, width: '80' }
                 ],
-                order: [[ 0, 'asc' ]],
+                order: [[ 5, 'asc' ]],
                 pageLength: 100,
                 responsive: true,
                 "oLanguage":{
@@ -74,14 +96,14 @@
                     }
             });
 
-            $('#modal-delete').on('show.bs.modal', function (event) {
+            /* $('#modal-delete').on('show.bs.modal', function (event) {
                 var button = $(event.relatedTarget) // Button that triggered the modal
                 var link = button.data('whatever') // Extract info from data-* attributes
                 // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
                 // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
                 var modal = $(this)
                 modal.find('.yes-delete-btn').attr({'href' : link})
-            })
+            }) */
         });
     </script>
 

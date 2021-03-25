@@ -8,10 +8,10 @@
         <div class="col-12 tab-content" id="nav-tabContent">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="card-title font-weight-bold">Mes évènements</h2>
+                    <h2 class="card-title font-weight-bold">Mes événements</h2>
                     <div class="card-tools">
                         <a href="{{route('user.create_event')}}" class="btn btn-primary btn-sm">
-                            <i class="mr-2 fa fa-plus"></i> Ajouter un évènement
+                            <i class="mr-2 fa fa-plus"></i> Ajouter un événement
                         </a>
                     </div>
                 </div>
@@ -22,9 +22,10 @@
                                 <th>Titre</th>
                                 <th>Categorie</th>
                                 <th>Dates</th>
+                                <th>Heure</th>
                                 <th>Proprietaire</th>
                                 <th>Region et Ville</th>
-                                <th>Date d'envoie</th>
+                                <th>Date d'enregistrement</th>
                             </tr>
                         </thead>
                     </table>
@@ -41,7 +42,12 @@
            $('#events-table').DataTable({
                 processing: true,
                 serverSide: true,
+                dom: 'Bfrliptip',
+                buttons: [
+                    'csv', 'excel', 'pdf'
+                ],
                 method:'post',
+                dom: 'Bfrliptip',
                 ajax: '{{ route("user.myEvents-data") }}',
                 columns: [
                     { data: null, name: 'title',
@@ -65,6 +71,7 @@
                             return formated_dates;
                         }
                     },
+                    { data:"event_time",name: "event_time" },
                     { data: null, name: 'owner',
                         render : data => {
                             let retour = `${data.owned?data.owned.name:""}`;
@@ -106,7 +113,7 @@
                 buttons: [
                     'copy', 'csv', 'excel', 'pdf', 'print'
                 ],
-                order: [[ 5, 'desc' ],[0,'asc']],
+                order: [[ 6, 'desc' ]],
                 pageLength: 100,
                 responsive: true,
                 "oLanguage":{

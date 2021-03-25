@@ -60,6 +60,10 @@
             $('#roles-table').DataTable({
                 processing: true,
                 serverSide: true,
+                dom: 'Bfrliptip',
+                buttons: [
+                    'csv', 'excel', 'pdf'
+                ],
                 ajax: '{{ url('admin/settings/get-cities-data') }}',
                 columns: [
                     { data: 'full_name', name: 'full_name' },
