@@ -72,13 +72,16 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js" defer></script>
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js" defer></script>
     <script src="{{asset('dist/multiple_dates_picker/jquery-ui.multidatespicker.js')}}" defer></script>
+    <!-- Froala 2.7.3 -->
+    <script type='text/javascript' src="https://cdn.jsdelivr.net/npm/froala-editor@2.9.1/js/froala_editor.pkgd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/froala-editor@2.9.1/js/languages/fr.js"></script>
     <script>
-        $(document).ready(function(){  
+        $(document).ready(function(){
             $('#datePick').multiDatesPicker({
                 dateFormat: "d/m/yy",
                 minDate: 0, // today
             });
-            //COntrolling the displaying of the create new event btn
+            //Controlling the displaying of the create new event btn
             function toggleNewEventBtn() {
                 const new_event = document.getElementById("new_event");
                 if (new_event.checked) {
@@ -92,27 +95,32 @@
                     $('#save_announcement').show();
                 }
             }
-            document.getElementById("new_event").addEventListener('change', function (event) {
-                toggleNewEventBtn();
-            });
+            const new_event = document.getElementById("new_event") ;
+            if(new_event !== null){
+                document.getElementById("new_event").addEventListener('change', function (event) {
+                    toggleNewEventBtn();
+                });
+            }
 
             //*** Select the price type ***
-            document.getElementById("price_type").addEventListener('change',function(e){
-                const val = this.value;
-                let display_status = '';
-                switch (parseInt(val)) {
-                    case 1:
-                        display_status = "initial";
-                        break;
-                
-                    default:
-                        display_status = "none";
-                        break;
-                }
-                
-                document.getElementById("price_field_wrapper").style.display = display_status;
-            });
+            const price_type = document.getElementById("price_type");
+            if(price_type !== null){
+                price_type.addEventListener('change',function(e){
+                    const val = this.value;
+                    let display_status = '';
+                    switch (parseInt(val)) {
+                        case 1:
+                            display_status = "initial";
+                            break;
+                    
+                        default:
+                            display_status = "none";
+                            break;
+                    }
 
+                    document.getElementById("price_field_wrapper").style.display = display_status;
+                });
+            }
 
             //*** Select the cities of the selected region ***
             const regions = document.getElementById("region_id");
@@ -127,14 +135,11 @@
                         const cities_field = document.getElementById("city_id");
                         cities_field.innerHTML = `<option value=""> --- </option>`;
                         for(const [key,region] of entries){
-                            console.log(key);
                             cities_field.innerHTML += `<option value="${key}">${region}</option>`;
                         }
                     }
                 });
             });
-
-
         });
     </script>
 

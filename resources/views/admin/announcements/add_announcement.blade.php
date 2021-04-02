@@ -100,26 +100,32 @@
                     $('#save_announcement').show();
                 }
             }
-            document.getElementById("new_event").addEventListener('change', function (event) {
-                toggleNewEventBtn();
-            });
+            const new_event = document.getElementById("new_event") ;
+            if(new_event !== null){
+                new_event.addEventListener('change', function (event) {
+                    toggleNewEventBtn();
+                });
+            }
 
             //*** Select the price type ***
-            document.getElementById("price_type").addEventListener('change',function(e){
-                const val = this.value;
-                let display_status = '';
-                switch (parseInt(val)) {
-                    case 1:
-                        display_status = "initial";
-                        break;
-                
-                    default:
-                        display_status = "none";
-                        break;
-                }
-                
-                document.getElementById("price_field_wrapper").style.display = display_status;
-            });
+            const price_type = document.getElementById("price_type");
+            if(price_type !== null){
+                price_type.addEventListener('change',function(e){
+                    const val = this.value;
+                    let display_status = '';
+                    switch (parseInt(val)) {
+                        case 1:
+                            display_status = "initial";
+                            break;
+                    
+                        default:
+                            display_status = "none";
+                            break;
+                    }
+
+                    document.getElementById("price_field_wrapper").style.display = display_status;
+                });
+            }
 
 
             //*** Select the cities of the selected region ***

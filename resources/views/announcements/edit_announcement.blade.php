@@ -114,7 +114,6 @@
                         const cities_field = document.getElementById("city_id");
                         cities_field.innerHTML = `<option value=""> --- </option>`;
                         for(const [key,region] of entries){
-                            console.log(key);
                             cities_field.innerHTML += `<option value="${key}">${region}</option>`;
                         }
                     }
