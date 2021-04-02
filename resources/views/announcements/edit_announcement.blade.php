@@ -23,12 +23,12 @@
                             @csrf
                             @method("PUT")
                             @if($user->hasAnyRole(['chef-vendeur','vendeur']))
-                            <div class="offset-sm-0 col-12 form-group row">{{@$announcement->owner}}
-                                <label for="owner" class="col-sm-12 col-md-12">Publiée l'annonce pour : </label>
+                            <div class="offset-sm-0 col-12 form-group row">
+                                <label for="owner" class="col-sm-12 col-md-12">Publiée l'annonce pour :</label>
                                 <select name="owner" id="owner" class="form-control">
                                     <option value=""> --- </option>
                                     @forelse($children as $child)
-                                        <option value="{{$child->id}}" {{old("owner",@$announcement->owner) == $child->id }}> {{$child->name}} </option>
+                                        <option value="{{$child->id}}" {{old("owner",@$announcement->owner) == $child->id?'selected':'' }}> {{$child->username}} </option>
                                     @empty
                                     <option value="{{$user->id}}">Vous n'avez enregistré aucun équipier.</option>
                                     @endforelse
@@ -114,7 +114,6 @@
                         const cities_field = document.getElementById("city_id");
                         cities_field.innerHTML = `<option value=""> --- </option>`;
                         for(const [key,region] of entries){
-                            console.log(key);
                             cities_field.innerHTML += `<option value="${key}">${region}</option>`;
                         }
                     }

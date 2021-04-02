@@ -15,11 +15,13 @@
                             </div>
                             <div class="row justify-content-between announcement-metas">
                                 <div class="col-6"><strong>Catégorie :</strong></div><div class="col-6 meta-value"><span>{{@$announcement->category->name}}</span></div>
-                                <div class="col-6"> 
-                                    @if(intval($announcement->publication_status) === 1)
-                                        <strong>Posté le :</strong></div><div class="col-6 meta-value"><span> {{date('d/m/Y', strtotime($announcement->published_at))}} </span>
+                                <div class="col-12 row"> 
+                                    @if(intval($announcement->lock_publication) === 1)
+                                        <div class="mt-2 alert alert-warning">La publication de cette annonce est bloquée. Elle doit étre liée à un événement pour être publier.</div>
                                     @else
-                                        @if(intval($announcement->publication_status) === 0)
+                                        @if(intval($announcement->publication_status) === 1 )
+                                            <div class="col-6"><strong>Posté le :</strong></div><div class="col-6 meta-value"> <span>{{date('d/m/Y', strtotime($announcement->published_at))}}</span> </div>
+                                        @elseif(intval($announcement->publication_status) === 0)
                                             <span class="badge badge-warning">Enregistrée en brouillon</span>
                                         @elseif(intval($announcement->publication_status) === 2)
                                             <span class="badge badge-primary"><i class="fa fa-user-lock"></i>Enregistrée en Privée</span>

@@ -30,14 +30,15 @@
                     <div class="py-md-1">
                         <div class="row justify-content-start pb-3">
                             <div class="col-md-12 heading-section ftco-animate fadeInUp ftco-animated">
-                                <span class="subheading">{{$user->name}}</span>
-                                <h2 class="mb-4" style="font-size: 34px; text-transform: capitalize;">{{$user->prenom}} {{$user->nom}}</h2>
+                                <h3  style="font-size: 34px; text-transform: capitalize;">{{@$user->username}}</h3>
+                                {!! (@$user->name !== "" && @$user->prenom !== "") ? '<span class="subheading">Nom : '.$user->name.'</span><br>' : "" !!}
+                                <h5 class="mb-4 font-bold">Prenom :{{ @$user->prenom !== "" ? $user->prenom : $user->nom }}</h5>
                                 <p class="p-0 m-0 text-blue">{{$user->email}}</p>
                                 <ul class="about-info d-flex px-0">
                                     <li class="d-flex mr-3">
                                         <span>Sexe :&nbsp; </span> <strong>{!! $user->gender == 1 ? " <i class='fa fa-mars'></i> masculin":" <i class='fa fa-venus'></i> feminin"!!}</strong>
                                     </li>
-                                    <li class="d-flex mx-3"><span>Groupe d'âge :  </span> <strong>{{str_replace('_',' à ',$user->agerange->name)}}</strong></li>
+                                    <li class="d-flex mx-3"><span>Groupe d'âge :  </span> <strong>{{str_replace('_',' à ',@$user->agerange->name)}}</strong></li>
                                 </ul>
                                 <hr size="60%" class="mx-auto">
                                 <ul class="about-info mt-4 px-md-0 px-2">

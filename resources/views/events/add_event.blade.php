@@ -24,7 +24,7 @@
                                 <select name="owner" id="owner" class="form-control">
                                     <option value=""> --- </option>
                                     @forelse($children as $child)
-                                    <option value="{{$child->id}}"> {{$child->name}} </option>
+                                    <option value="{{$child->id}}" {{old("owner",@$event->owner) == $child->id?'selected':'' }}> {{$child->username}} </option>
                                     @empty
                                     <option value="{{$user->id}}">Vous n'avez enregistré aucun équipier.</option>
                                     @endforelse
@@ -40,7 +40,7 @@
 
                             @if(isset($announcement) && !empty($announcement))
                                 <div class="col-sm-6 form-group row mt-5">
-                                    <a href="" class="btn btn-success"><i class="fa fa-angle-double-left"></i> Éditer l'annonce à relier à cette activité</a>
+                                    <a href="{{route('user.edit_announcement',@$announcement)}}" class="btn btn-success"><i class="fa fa-angle-double-left"></i> Éditer l'annonce à relier à cette activité</a>
                                 </div>
                                 <div class="offset-sm-0 col-sm-6 form-group row mt-5">
                             @else

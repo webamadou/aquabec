@@ -59,7 +59,7 @@
                     { data: null, name: 'title',
                         render : data => {
                             const title = (data.title.length > 35) ? `${data.title.substring(0,35)}...` :data.title;
-                            return `<a href="/mes_annonces/announcement/${data.slug}"><img src="/show/images/${data.images}" alt="{{@$announcement->title}}" style="width:50px; height: auto"><br><strong>${title}</strong></a>`;
+                            return `<a href="/mes_annonces/announcement/${data.slug}"><img src="/voir/images/${data.images}" alt="{{@$announcement->title}}" style="width:50px; height: auto"><br><strong>${title}</strong></a>`;
                         }
                     },
                     { data: null, name: 'category_id',
@@ -107,7 +107,7 @@
                                 default:
                                     break;
                             }
-                            return `${annonce_status}`
+                            return parseInt(data.lock_publication) == 1 ? '<span class="badge badge-warning"><i class="fa fa-ban"></i> Publication bloquée</span>':`${annonce_status}`;
                         }, width: '40'
                     }
                 ],

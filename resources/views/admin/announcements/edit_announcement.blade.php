@@ -58,7 +58,7 @@
                                     <select name="event_id" id="event_id" class="form-control col-sm-12 col-md-6">
                                         <option value=""> --- </option>
                                         @foreach($user_events as $key => $title)
-                                            <option value="{{$key}}" {{old('event_id',@$announcement->event_id) === $key?'selected':''}}> {{$title}} </option>
+                                            <option value="{{$key}}" {{intval(old('event_id',@$event->event_id)) === $key?'selected':''}}> {{$title}} </option>
                                         @endforeach
                                     </select>
                                     <div class="col-sm-12 col-md-6">

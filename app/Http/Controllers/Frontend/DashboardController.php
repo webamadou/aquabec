@@ -288,12 +288,14 @@ class DashboardController extends Controller
         $current_user = auth()->user();
         //User can view annonce if is owner or publisher or announcement is validated and published
         //Later we will have to set gates or policies for this
-        if(intval(@$announcement->publication_status) !== 1 && (
+        if((
+                intval(@$announcement->publication_status) !== 1 || 
+                intval(@$announcement->lock_publication) === 1) 
+        && (
                 intval(@$current_user->id) !== intval(@$announcement->owner) && 
                 intval(@$current_user->id) !== intval(@$announcement->posted_by)
-                )
-        ){
-            $message = "Ce contenu n'est pas encore disponible";
+        )){
+            $message = "Ce contenu n'est pas disponible";
             return view('frontend.feedback',compact('message'));
         }
         $announcement->countViews();

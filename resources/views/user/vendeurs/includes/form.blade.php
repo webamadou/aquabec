@@ -2,6 +2,10 @@
    <!--  <form action="{ {route('user.updateInfosPerso')}}" method="post" class="row col-12"> -->
         @csrf
         <div class="offset-sm-1 col-5 form-group row">
+            <label for="prenom" class="col-sm-12 col-md-12">Nom d'utilisateur :*</label>
+            <input class="form-control" name="username" id="username" type="text" value="{{old('username',$user->username)}}">
+        </div>
+        <div class="offset-sm-1 col-5 form-group row">
             <label for="prenom" class="col-sm-12 col-md-12">Prénom :</label>
             <input class="form-control" name="prenom" id="prenom" type="text" value="{{old('prenom',$user->prenom)}}">
         </div>
@@ -12,10 +16,6 @@
         <div class="offset-sm-1 col-5 form-group row">
             <label for="email" class="col-sm-12 col-md-12">Adresse e-mail :* <small>L'utilisateur recevra un message à cette adresse avec tous les détails d'authentification</small></label>
             <input class="form-control" id="email" name="email" type="text" value="{{ old('email', $user->email) }}">
-        </div>
-        <div class="offset-sm-1 col-5 form-group row">
-            <label for="username" class="col-sm-12 col-md-12">Nom d'utilisateur :* <br> - </label>
-            <input class="form-control" id="username" name="username" type="text" value="{{ old('username', $user->username) }}">
         </div>
         <div class="offset-sm-1 col-11 text-center"> --- </div>
         <div class="offset-sm-1 col-5 form-group row">

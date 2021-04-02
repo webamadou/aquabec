@@ -44,7 +44,7 @@ class User extends Authenticatable implements MustVerifyEmail
                  'source'             => ['username'],
                  'separator'          => '-',
                  'unique'             => true,
-                 'onUpdate'           => true,
+                 'onUpdate'           => false,
                  'includeTrashed'     => false,
             ]
         ];
@@ -370,7 +370,8 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return DB::table('events')
                     ->leftjoin('announcements', 'events.id', '=', 'announcements.event_id')
-                    ->where('events.owner',@$this->id)
+                    ->orWhere('events.owner',@$this->id)
+                    ->orWhere('events.posted_by',@$this->id)
                     ->where('announcements.event_id',NULL) ;
                     /* ->select('events.title','events.id','announcements.event_id','events.owner') ->pluck('events.title','events.id') ;*/
     }

@@ -40,7 +40,7 @@
                                 <select name="owner" id="owner" class="form-control">
                                     <option value=""> --- </option>
                                     @forelse($children as $child)
-                                    <option value="{{$child->id}}"> {{$child->name}} </option>
+                                    <option value="{{$child->id}}" {{old("owner",@$event->owner) == $child->id?'selected':'' }}> {{$child->username}} </option>
                                     @empty
                                     <option value="{{$user->id}}">Vous n'avez enregistré aucun équipier.</option>
                                     @endforelse
@@ -56,7 +56,7 @@
                                     <select name="event_id" id="event_id" class="form-control col-sm-12 col-md-6">
                                         <option value=""> --- </option>
                                         @foreach($user_events as $key => $title)
-                                            <option value="{{$key}}" {{old('event_id',@$announcement->event_id) === $key?'selected':''}}> {{$title}} </option>
+                                            <option value="{{$key}}" {{intval(old('event_id',@$announcement->event_id)) === $key ? 'selected' : ''}}> {{$title}} </option>
                                         @endforeach
                                     </select>
                                     <div class="col-sm-12 col-md-6">
@@ -100,26 +100,32 @@
                     $('#save_announcement').show();
                 }
             }
-            document.getElementById("new_event").addEventListener('change', function (event) {
-                toggleNewEventBtn();
-            });
+            const new_event = document.getElementById("new_event") ;
+            if(new_event !== null){
+                new_event.addEventListener('change', function (event) {
+                    toggleNewEventBtn();
+                });
+            }
 
             //*** Select the price type ***
-            document.getElementById("price_type").addEventListener('change',function(e){
-                const val = this.value;
-                let display_status = '';
-                switch (parseInt(val)) {
-                    case 1:
-                        display_status = "initial";
-                        break;
-                
-                    default:
-                        display_status = "none";
-                        break;
-                }
-                
-                document.getElementById("price_field_wrapper").style.display = display_status;
-            });
+            const price_type = document.getElementById("price_type");
+            if(price_type !== null){
+                price_type.addEventListener('change',function(e){
+                    const val = this.value;
+                    let display_status = '';
+                    switch (parseInt(val)) {
+                        case 1:
+                            display_status = "initial";
+                            break;
+                    
+                        default:
+                            display_status = "none";
+                            break;
+                    }
+
+                    document.getElementById("price_field_wrapper").style.display = display_status;
+                });
+            }
 
 
             //*** Select the cities of the selected region ***

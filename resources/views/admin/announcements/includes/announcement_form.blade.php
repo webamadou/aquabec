@@ -23,13 +23,13 @@
         <option value=""> Sélectionez le type de prix </option>
         <option value="1" {{intval(old('price_type',@$announcement->price_type)) === 1?"selected":"" }}>Entrez le prix</option>
         <option value="3" {{intval(old('price_type',@$announcement->price_type)) === 3?"selected":"" }}>Gratuit</option>
-        <option value="2" {{intval(old('price_type',@$announcement->price_type)) === "2"?"selected":"" }}>Échange</option>
+        <option value="2" {{intval(old('price_type',@$announcement->price_type)) === 2?"selected":"" }}>Échange</option>
     </select>
     {!! $errors->first('price_type', '<div class="error-message col-12">:message</div>') !!}
 </div>
 <div id="price_field_wrapper" class="offset-sm-0 col-sm-12 col-md-6 form-group row" style="{{intval(old('price_type',@$announcement->price_type)) === 1?'':'display:none'}}">
-    <label for="images" class="col-sm-12 col-md-12">Price : </label>
-    <input type="number" name="price" id="price" min="0.00" step="0.01" value="{{old('price',@$announcement->price)}}" class="form-control" placeholder="Entrez le prix de votre annonce">
+    <label for="images" class="col-sm-12 col-md-12">Le prix : </label>
+    <input type="number" name="price" id="price" min="0.00" step="0.01" value="{{old('price',@$announcement->price)}}" class="form-control" placeholder="Entrez le prix de votre annonce. Ex : 7.5">
 </div>
 <div class="col-12"><hr/></div>
 <div class="offset-sm-0 col-sm-12 col-md-6 form-group row">
@@ -37,7 +37,7 @@
     <select name="category_id" id="category_id" class="form-control">
         <option value=""> --- </option>
         @foreach($categories as $category)
-            <option value="{{$category->id}}" {{old('category_id',@$announcement->category_id) == $category->id?'selected':''}}> {{$category->name}} </option>
+            <option value="{{$category->id}}" {{intval(old('category_id',@$announcement->category_id)) === $category->id?'selected':''}}> {{$category->name}} </option>
         @endforeach
     </select>
     {!! $errors->first('category_id', '<div class="error-message col-12">:message</div>') !!}
@@ -56,7 +56,7 @@
     <select name="region_id" id="region_id" class="form-control">
         <option value=""> --- </option>
         @forelse($regions as $key => $region)
-            <option value="{{$key}}" {{ @$announcement->region_id == $key ? "selected":"" }}>{{$region}}</option>
+            <option value="{{$key}}" {{ old('region_id',@$announcement->region_id) == $key ? "selected":"" }}>{{$region}}</option>
         @empty
         @endforelse
     </select>
@@ -66,7 +66,7 @@
     <select name="city_id" id="city_id" class="form-control">
         <option value=""> --- </option>
         @forelse($cities as $key => $city)
-            <option value="{{$key}}" {{  @$announcement->city_id == $key ? "selected":"" }}>{{$city}}</option>
+            <option value="{{$key}}" {{  old('city_id',@$announcement->city_id) == $key ? "selected":"" }}>{{$city}}</option>
         @empty
         @endforelse
     </select>
@@ -91,7 +91,7 @@
     <select name="publication_status" id="publication_status" class="form-control">
         <option value=""> --- </option>
         @forelse($status as $key => $statu)
-            <option value="{{$key}}" {{  old('publication_status',@$announcement->publication_status) == $key ? "selected":"" }}>{{$statu}}</option>
+            <option value="{{$key}}" {{ intval(old('publication_status',@$announcement->publication_status)) == $key ? "selected":"" }}>{{$statu}}</option>
         @empty
         @endforelse
     </select>

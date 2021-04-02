@@ -87,7 +87,7 @@
                                 default:
                                     break;
                             }
-                            return `<a href="/admin/announcement/${data.id}"><img src="/show/images/${data.images}" alt="{{@$announcement->title}}" style="width:50px; height: auto"><br><strong>${title}</strong></a> <br> ${annonce_status}`;
+                            return `<a href="/admin/announcement/${data.id}"><img src="/voir/images/${data.images}" alt="{{@$announcement->title}}" style="width:50px; height: auto"><br><strong>${title}</strong></a> <br> ${annonce_status}`;
                         }
                     },
                     { data: null, name: 'category_id',

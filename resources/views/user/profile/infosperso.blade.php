@@ -11,12 +11,12 @@
                 <img src="{{asset('dist/img/avatar5.png')}}" alt="" class="rounded-circle" width="50">
             </div>
             <div class="col-11"> 
-                <h2 class="my-0">{{$user->prenom}} {{$user->name}}</h2>
+                <h2 class="my-0">{{$user->username}}</h2>
                 <div><span class="my-0">{{$user->email}}</span></div>
                 @foreach(@$user->roles as $role)
                     <span class="badge bg-info">{{$role->name}}</span> 
                 @endforeach
-                <small>Compte crée {{$user->created_at}}</small>
+                <br><small>Compte crée {{$user->created_at}}</small>
             </div>
         </div>
         <nav class="col-12">

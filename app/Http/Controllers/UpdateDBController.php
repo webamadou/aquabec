@@ -287,8 +287,8 @@ class UpdateDBController extends Controller
                 $menu->roles    = @$item->permission;
                 $menu->public   = intval($item->locked) === 1 ? 0 : 1;
                 $menu->visible  = @$item->visible;
-                /* $menu->page_type = @$item->helppage;
-                $menu->custom_link = @$item->custom_link; */
+                // $menu->page_type = @$item->helppage;
+                //$menu->custom_link = @$item->custom_link; 
 
                 $menu->save();
             }

@@ -2,6 +2,19 @@
     <form action="{{route('user.updateInfosPerso')}}" method="post" class="row col-12">
         @csrf
         <input type="hidden" name="id" value="{{$user->id}}">
+        <div class="offset-sm-2 col-8 form-group row">
+            <label for="Région de résidence:" class="col-sm-12 col-md-12">Nom d'utilisateur : </label>
+            <input tabindex="6" class="form-control" name="username" id="username" type="text" value="{{old('username',$user->username)}}">
+        </div>
+        <div class="offset-sm-1 col-5 form-group row">
+            <label for="prenom" class="col-sm-12 col-md-12">Prénom : </label>
+            <input tabindex="6" class="form-control" name="prenom" id="prenom" type="text" value="{{old('prenom',$user->prenom)}}">
+        </div>
+        <div class="offset-sm-1 col-5 form-group row">
+            <label for="name" class="col-sm-12 col-md-12">Nom : *</label>
+            <input class="form-control" id="name" name="name" type="text" value="{{ old('name', $user->name) }}">
+        </div>
+        <div class="col-12 mx-auto"> <hr> </div>
         <div class="offset-sm-1 col-5 form-group row">
             <label for="Région de résidence:" class="col-sm-12 col-md-12">Région de résidence : </label>
             <select name="region_id" id="region_id" class="form-control">
@@ -13,10 +26,6 @@
             </select>
         </div>
         <div class="offset-sm-1 col-5 form-group row">
-            <label for="prenom" class="col-sm-12 col-md-12">Prénom : </label>
-            <input tabindex="6" class="form-control" name="prenom" id="prenom" type="text" value="{{old('prenom',$user->prenom)}}">
-        </div>
-        <div class="offset-sm-1 col-5 form-group row">
             <label for="city_id" class="col-sm-12 col-md-12">Ville de résidence : </label>
             <select name="city_id" id="city_id" class="form-control">
                 <option value=""> --- </option>
@@ -25,10 +34,6 @@
                 @empty
                 @endforelse
             </select>
-        </div>
-        <div class="offset-sm-1 col-5 form-group row">
-            <label for="name" class="col-sm-12 col-md-12">Nom : *</label>
-            <input class="form-control" id="name" name="name" type="text" value="{{ old('name', $user->name) }}">
         </div>
         <div class="offset-sm-1 col-5 form-group row">
             <label for="postal_code" class="col-sm-12 col-md-12">Code postal : </label>

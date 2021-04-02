@@ -13,6 +13,9 @@ use App\Models\Announcement;
 
 class WelcomeController extends Controller
 {
+    /**
+     * Home page
+     */
     public function welcomePage()
     {
 		$user = Auth::user();
@@ -21,6 +24,7 @@ class WelcomeController extends Controller
 							->limit(3)
 							->get(); */
 		$announcements = Announcement::where('publication_status','1')
+                            ->where('lock_publication','!=',1)
 							->orderby('published_at','desc')
 							->limit(6)
 							->get();
@@ -42,20 +46,21 @@ class WelcomeController extends Controller
     }
 
     /**
-     * Show annoucement
+     * Show an annoucement page
      */
     public function showAnnouncement(Announcement $announcement)
     {
         $current_user = auth()->user();
         //User can view annonce if is owner or publisher or announcement is validated and published
         //Later we will have to set gates or policies for this
-        if(intval(@$announcement->publication_status) !== 1 && (
-                intval(@$current_user->id) !== intval(@$announcement->owner) &&
+        if((
+                intval(@$announcement->publication_status) !== 1 || 
+                intval(@$announcement->lock_publication) === 1) 
+        && (
+                intval(@$current_user->id) !== intval(@$announcement->owner) && 
                 intval(@$current_user->id) !== intval(@$announcement->posted_by)
-            )
-        ){
-
-            $message = "Ce contenu n'est pas encore disponible";
+        )){
+            $message = "Ce contenu n'est pas disponible";
             return view('frontend.feedback',compact('message'));
         }
         $announcement->countViews();
@@ -65,7 +70,7 @@ class WelcomeController extends Controller
     }
 
     /**
-     * Show event
+     * Show an event page
      */
     public function showEvent(Event $event)
     {
@@ -87,14 +92,20 @@ class WelcomeController extends Controller
 
 	public function eventsRegion(Region $region)
 	{
-		$events = Event::where('region_id',$region->id)->where('publication_status','1')->paginate(15);
+		$events = Event::where('region_id',$region->id)
+                        ->where('publication_status','1')
+                        ->where('lock_publication','!=','1')
+                        ->paginate(15);
 		$month_array = ['','Jan','Fev','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Dec'];
 		return view('frontend.eventRegion', compact('region','events','month_array'));
 	}
 
 	public function announcementCategory(Category $category)
 	{
-		$announcements = Announcement::where('category_id',$category->id)->where('publication_status','1')->paginate(15);
+		$announcements = Announcement::where('category_id',$category->id)
+                                    ->where('publication_status','1')
+                                    ->where('lock_publication','!=','1')
+                                    ->paginate(15);
 		$month_array = ['','Jan','Fev','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Dec'];
 		return view('frontend.announcementCategory', compact('category','announcements','month_array'));	
 	}
@@ -106,6 +117,7 @@ class WelcomeController extends Controller
 		$model 			= $request->content_type != 'evènement'? new Announcement(): new Event;
 		$response 		= $model->where("title","LIKE","%{$search_query}%")
 										->where('publication_status','1')
+										->where('lock_publication','!=','1')
 										->paginate(15);
 		$month_array = ['','Jan','Fev','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Dec'];
 		return view('frontend.search', compact('response','content_type','search_query','month_array'));

@@ -53,7 +53,7 @@
                     { data: null, name: 'title',
                         render : data => {
                             const title = (data.title.length > 35) ? `${data.title.substring(0,35)}...` :data.title;
-                            return `<img src="/show/images/${data.images}" alt="{{@$event->title}}" style="width:50px; height: auto"><br><strong><a href="/mes_evenements/event/${data.slug}">${title}</a></strong>`;
+                            return `<img src="/voir/images/${data.images}" alt="{{@$event->title}}" style="width:50px; height: auto"><br><strong><a href="/mes_evenements/event/${data.slug}">${title}</a></strong>`;
                         }
                     },
                     { data: null, name: 'category_id',

@@ -193,7 +193,7 @@ Route::middleware(['auth','verified'])->group(function (){
         // Route::post("/store", [UserDashboard::class, 'storeAnnouncement'])->name('store_announcement');
         Route::post("/store", [BOAnnouncementController::class, 'store'])->name('store_announcement');
         Route::get("/announcement/{announcement:id}", [BOAnnouncementController::class, 'show'])->name('show_announcement');
-        Route::get("/edit/{announcement:id}", [BOAnnouncementController::class, 'edit'])->name('edit_announcement');
+        Route::get("/announcement/edit/{announcement:id}", [BOAnnouncementController::class, 'edit'])->name('edit_announcement');
         Route::put("/update/{announcement}", [BOAnnouncementController::class, 'update'])->name('update_announcement');
         Route::delete("/delete_announcement/{announcement}", [BOAnnouncementController::class, 'delete'])->name('delete_announcement');
         Route::post("/validation_announcement/{announcement}", [BOAnnouncementController::class, 'validation'])->name('validation_announcement');

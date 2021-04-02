@@ -49,12 +49,12 @@
                 ],
                 ajax: '{{ route("vendeurs.my_team_data") }}',
                 columns: [
-                    { data: null, name: 'name',
+                    { data: null, name: 'username',
                         render: data => {
                             const slug      = data.slug ?? '';
                             const prenom    = data.prenom ?? '';
-                            const name      = data.name ?? '';
-                            return data.name?`<strong><i class="fa fa-user-friends"><a href="{{url('/vendeur/${slug}')}}"> ${prenom} ${name}</a></strong>`:``;
+                            const username      = data.username ?? '';
+                            return data.name?`<strong><i class="fa fa-user-friends"><a href="{{url('/vendeur/${slug}')}}"> ${username}</a></strong>`:``;
                         }
                     },
                     { data: 'email', name: 'email'},

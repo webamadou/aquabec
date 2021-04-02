@@ -24,11 +24,11 @@
                             @method("PUT")
                             @if($user->hasAnyRole(['chef-vendeur','vendeur']))
                             <div class="offset-sm-0 col-12 form-group row">
-                                <label for="owner" class="col-sm-12 col-md-12">Publiée l'évènement pour : </label>
+                                <label for="owner" class="col-sm-12 col-md-12">Publiée l'évènement pour : {{@$announcement->owner}} </label>
                                 <select name="owner" id="owner" class="form-control">
                                     <option value=""> --- </option>
                                     @forelse($children as $child)
-                                    <option value="{{$child->id}}"> {{$child->name}} </option>
+                                    <option value="{{$child->id}}" {{intval(old("owner",@$event->owner)) === $child->id?'selected':'' }}> {{$child->username}} </option>
                                     @empty
                                     <option value="{{$user->id}}">Vous n'avez enregistré aucun équipier.</option>
                                     @endforelse

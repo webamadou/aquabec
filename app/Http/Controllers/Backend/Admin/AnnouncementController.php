@@ -157,6 +157,8 @@ class AnnouncementController extends Controller
                         ->route('admin.announcements')
                         ->with('success',"L'annonce a été enregistrée avec succès");
             } else {
+                $save_announcement->lock_publication = 1;
+                $save_announcement->save();
                 $annoucement_id = $save_announcement->id;
                 return redirect()
                         ->route('admin.create_event',$save_announcement)
@@ -260,7 +262,6 @@ class AnnouncementController extends Controller
             'email'         => 'nullable',
             'website'       => 'nullable',
         ]);
-        // dd($data);
         $current_user = auth()->user();
         if(!isset($request->owner)){//If the owner is not defined the publisher become the publisher
             $data['owner'] = $current_user->id;
@@ -277,7 +278,6 @@ class AnnouncementController extends Controller
         $data['publication_status'] = $can_post ? $data["publication_status"] : 0;
 
         $save = $announcement->update($data);
-        // dd($announcement);
         if($save){
             //We update user's wallet we make him/her spend the currency if is publishing
             if( intval($data['publication_status']) === 1 && intval(@$announcement->purchased) === 0 ){
@@ -296,11 +296,20 @@ class AnnouncementController extends Controller
                 $save_images = $image->storeAs($image_path,$image_name,'public');
                 $announcement->images = $image_name;
             }
+            if($announcement->event == null){
+                $announcement->lock_publication = 1;
+                $announcement->save();
+
+                return redirect()
+                        ->route('admin.create_event',$announcement)
+                        ->with('success',"Votre annonce a été modifiée avec succès. Vous devez maintenant la lier à un événement");
+            }
+
             $announcement->save();
 
             return redirect()
                     ->back()
-                    ->with('success',"Votre annonce a été modifiée avec succès");
+                    ->with('success',"Votre annonce a été enregistrée avec succès");
         }
         return redirect()
                     ->back()

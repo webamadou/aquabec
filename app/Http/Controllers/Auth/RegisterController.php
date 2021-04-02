@@ -86,7 +86,7 @@ class RegisterController extends Controller
         $user->email = $data['email'];
         $user->username = $data['username'];
         $user->password = Hash::make($data['password']);
-        // dd($data);
+        //dd($data);
 
         $user->save();
         return $user;
@@ -120,7 +120,7 @@ class RegisterController extends Controller
 
         $role = $request->role;//We get the picked role
         event(new Registered($user = $this->create($request->all())));
-        $user->assignRole($role);//We assign the role to the user
+        $user->assignRole("membre");//We assign the role to the user
         //We need to prepare the data to apply to the default credit amount to assign to the user
         $role = $user->roles->first();
         $free_credit_amount = $role != null ? intval($role->free_credit) : 0;

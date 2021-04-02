@@ -187,6 +187,7 @@ class EventController extends Controller
                                     ->first();
                 if($announcement){
                     $announcement->event_id = $save_event->id;
+                    $announcement->lock_publication = 0;
                     $announcement->save();
                 }
             return redirect()
@@ -322,6 +323,13 @@ class EventController extends Controller
     public function delete(Event $event)
     {
         if($event) {
+            //Before deletion we need to get the event announcement if any, and update the values.
+            $announcement = $event->announcement ;
+            if($announcement){
+                $announcement->lock_publication = 1 ;
+                $announcement->event_id = null;
+                $announcement->save();
+            }
             $event->delete();
             return redirect()
                         ->route('admin.listevents')

@@ -179,6 +179,7 @@ class UserController extends Controller
      */
     public function update(User $user, UpdateUserRequest $request)
     {
+        // dd($request->username);
         $data = $request->validated();
         if($user->update($data)){
             $roles = Role::pluck('name','id');

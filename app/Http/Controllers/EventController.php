@@ -72,7 +72,10 @@ class EventController extends Controller
         $cities     = City::pluck('name','id');
         $status     = ['Enregistrer en brouillon','Publiée','Enregistrer en privée'];
         $user       = auth()->user();
-        $children   = $user->godchildren()->select('name','prenom','email','id')->get();
+        $children   = $user->godchildren()
+                            ->where('profile_status','<=',1)
+                            ->select('username','id')
+                            ->get();
         $role_currency = $user->mainRole()->currency;
         //Check if user has enough credit
         $can_post   = $user->userHasEnoughCredit('events_price','free_currency');
@@ -132,9 +135,9 @@ class EventController extends Controller
                 $save_event->purchased = 1;
             }
             //Actions if an image is uploaded
-            $owner = $save_event->owned()->select('name','prenom','id')->first() ;
+            $owner = $save_event->owned()->select('username','prenom','id')->first() ;
             //Each user has a folder where to save image and other eventual files
-            $user_folder = str_replace(' ','-',$owner->name)."_".str_replace(' ','-', $owner->prenom)."_".str_replace(' ','-',$owner->id);
+            $user_folder = str_replace(' ','-',$owner->username).str_replace(' ','-',$owner->id);
             if($request->has('images')){
                 $image = $request->file('images');
                 $image_name = config('app.name').'-'.$save_event->slug.".".\File::extension($image->getClientOriginalName());
@@ -151,6 +154,7 @@ class EventController extends Controller
                                     ->first();
                 if($announcement){
                     $announcement->event_id = $save_event->id;
+                    $announcement->lock_publication = 0;
                     $announcement->save();
                 }
             return redirect()
@@ -195,7 +199,10 @@ class EventController extends Controller
         $cities     = City::pluck('name','id');
         $status     = ['Enregistrer en brouillon','Publiée','Enregistrer en privée'];
         $user       = auth()->user();
-        $children   = $user->godchildren()->select('name','prenom','email','id')->get();
+        $children   = $user->godchildren()
+                        ->where("profile_status",'<=',1)
+                        ->select('username','id')
+                        ->get();
         $role_currency = $user->mainRole()->currency;
         //Check if user has enough credit
         $can_post       = $user->userHasEnoughCredit('events_price','free_currency');
@@ -251,16 +258,15 @@ class EventController extends Controller
         $data['publication_status'] = $can_post ? $data["publication_status"] : 0;
 
         $save = $event->update($data);
-        // dd($event->organisation_id,$data);
+
         if($save){
             //We update user's wallet we make him/her spend the currency if is publishing
-            // dd( intval($data['publication_status']) ,intval(@$event->purchased) );
             if( intval($data['publication_status']) === 1 && intval(@$event->purchased) === 0 ){
                 $current_user->updateUserWallet(1,"events_price");
                 $event->purchased = 1;
             }
             //Actions if an image is uploaded
-            $owner = $event->owned()->select('name','prenom','id')->first() ;
+            $owner = $event->owned()->select('username','id')->first() ;
             //Each user has a folder where to save image and other eventual files
             $user_folder = str_replace(' ','-',$owner->name)."_".str_replace(' ','-', $owner->prenom)."_".str_replace(' ','-',$owner->id);
             if($request->has('images')){
@@ -286,7 +292,15 @@ class EventController extends Controller
     public function delete(Event $event)
     {
         if($event) {
+            //Before deletion we need to get the event announcement if any, and update the values.
+            $announcement = $event->announcement ;
+            if($announcement){
+                $announcement->lock_publication = 1 ;
+                $announcement->event_id = null;
+                $announcement->save();
+            }
             $event->delete();
+
             return redirect()
                         ->route('user.my_events')
                         ->with('success', "L'évènement a été supprimé");

@@ -51,7 +51,7 @@
     <select name="organisation_id" id="organisation_id" class="form-control">
     <option value=""> --- </option>
     @foreach($organisations as $key => $organisation)
-        <option value="{{$key}}" {{old('organisation_id',@$event->organisation_id) === $key ? 'selected':""}}>{{$organisation}}</option>
+        <option value="{{$key}}" {{intval(old('organisation_id',@$event->organisation_id)) === $key ? 'selected':""}}>{{$organisation}}</option>
     @endforeach
     </select>
 </div>
@@ -74,7 +74,7 @@
     <select name="category_id" id="category_id" class="form-control">
         <option value=""> --- </option>
         @foreach($categories as $category)
-            <option value="{{$category->id}}" {{old('category_id',@$event->category_id) === $category->id?'selected':''}}> {{$category->name}} </option>
+            <option value="{{$category->id}}" {{intval(old('category_id',@$event->category_id)) === $category->id?'selected':''}}> {{$category->name}} </option>
         @endforeach
     </select>
     {!! $errors->first('category_id', '<div class="error-message col-12">:message</div>') !!}
@@ -84,7 +84,7 @@
     <select name="publication_status" id="publication_status" class="form-control">
         <option value=""> --- </option>
         @forelse($status as $key => $statu)
-            <option value="{{$key}}" {{  @$event->publication_status === $key ? "selected":"" }}>{{$statu}}</option>
+            <option value="{{$key}}" {{intval(old('publication_status',@$event->publication_status)) === $key ? "selected":"" }}>{{$statu}}</option>
         @empty
         @endforelse
     </select>
