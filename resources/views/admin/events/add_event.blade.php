@@ -41,7 +41,7 @@
 
                             @if(isset($announcement) && !empty($announcement))
                                 <div class="col-sm-6 form-group row mt-5">
-                                    <a href="" class="btn btn-success"><i class="fa fa-angle-double-left"></i> Éditer l'annonce de cet événement</a>
+                                    <a href="" class="btn btn-success"><i class="fa fa-angle-double-left"></i> Éditer l'annonce à relier à cette activité</a>
                                 </div>
                                 <div class="offset-sm-0 col-sm-6 form-group row mt-5">
                             @else

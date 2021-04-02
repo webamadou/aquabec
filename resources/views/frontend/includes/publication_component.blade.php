@@ -2,9 +2,9 @@
     <div class="tw-latest-post">
         <div class="latest-post-media text-center">
             @if(class_basename(@$item) === 'Event')
-                <a href="{{route('page_event',@$item->slug)}}"><img src="{{ route('show.image',@$item->images) }}" alt="{{@$item->title}}"></a>
+                <a href="{{route('page_evenement',@$item->slug)}}"><img src="{{ route('show_image',@$item->images) }}" alt="{{@$item->title}}"></a>
             @else
-                <a href="{{route('page_announcement',@$item->slug)}}"><img src="{{ route('show.image',@$item->images) }}" alt="{{@$item->title}}"></a>
+                <a href="{{route('page_annonce',@$item->slug)}}"><img src="{{ route('show_image',@$item->images) }}" alt="{{@$item->title}}"></a>
             @endif
         </div>
         <!-- End Latest Post Media -->
@@ -29,9 +29,9 @@
                 <!-- End Post Meta -->
                 <h3 class="post-title">
                     @if(class_basename(@$item) === 'Event')
-                        <a href="{{route('page_event',@$item->slug)}}">{{@$item->title}}</a>
+                        <a href="{{route('page_evenement',@$item->slug)}}">{{@$item->title}}</a>
                     @else
-                        <a href="{{route('page_announcement',@$item->slug)}}">{{@$item->title}}</a>
+                        <a href="{{route('page_annonce',@$item->slug)}}">{{@$item->title}}</a>
                     @endif
                 </h3>
                 <div class="entry-content">

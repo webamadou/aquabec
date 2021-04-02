@@ -25,9 +25,8 @@
                                 <th>Titre</th>
                                 <th>Categorie</th>
                                 <th>Prix</th>
-                                <th>Proprietaire</th>
+                                <th>Identité</th>
                                 <th>Region et Ville</th>
-                                <th>Date d'enregistrement</th>
                                 <th>Status</th>
                                 <th>Validated</th>
                                 <th>Actions</th>
@@ -104,9 +103,9 @@
                     },
                     { data: null, name: 'owner',
                         render : data => {
-                            let retour = `${data.owned?data.owned.name:""}`;
+                            let retour = `${data.owned?data.owned.username:""}`;
                             if(data.owned.id !== data.posted.id)
-                                retour += `<br><strong> Postée par : ${data.posted.name}</strong>`;
+                                retour += `<br><strong> Postée par : ${data.posted.username}</strong>`;
 
                             return `${retour}`
                         }
@@ -116,11 +115,8 @@
                             return `<strong>Region : </strong>${data.region?data.region.name:""}<br><strong>Ville : </strong>${data.city?data.city.name:""}`;
                         }
                     },
-                    { data: null, name: 'updated_at',
-                        render: data => {
-                            return `${data.updated_at}`
-                        }
-                    },
+                    /* 
+                     */
                     {data: null, name: 'validated',
                         render: data => {
                             let validated = '';

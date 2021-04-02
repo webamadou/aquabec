@@ -10956,6 +10956,10 @@ hr {
     border: none;
     padding: 0.1rem 1rem;
 }
+.tw-blog {
+    background-color: #F7F9F8;
+    padding-top: 1rem;
+}
 /*RESPONSIEVE*/
 @media (max-width: 1200px) {
 

@@ -62,7 +62,7 @@
                     { data: 'action', name: 'action' }
                 ],
                 buttons: [
-                    'copy', 'csv', 'excel', 'pdf', 'print'
+                    'csv', 'excel', 'pdf'
                 ],
                 order: [[ 0, 'desc' ]],
                 pageLength: 100,

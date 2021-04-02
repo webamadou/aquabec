@@ -18,7 +18,7 @@
                     <div class="col-sm-12 col-md-3 announcement-side-bar">
                         <div class="announcement-meta-wrapper">
                             <div class="announcement-img-wrapper mb-3">
-                                <img src="{{ route('show.image',@$event) }}" alt="{{@$event->title}}">
+                                <img src="{{ route('show_image',@$event) }}" alt="{{@$event->title}}">
                             </div>
                             <div class="row justify-content-between announcement-metas">
                                 <div class="col-6"><strong>Catégorie :</strong></div><div class="col-6 meta-value"><span>{{@$event->category->name}}</span></div>
@@ -53,11 +53,11 @@
                             @if(!empty($event->announcement))
                                 <hr>
                                 <div class="bg-light p-2 mt-5">
-                                    <strong><i class="fa fa-bullhorm"></i> L'annonce de l'événement :</strong>
+                                    <strong><i class="fa fa-bullhorm"></i> Vers l'annonce de l'activité :</strong>
                                     <h5><a class="btn-link" href="{{route('admin.show_announcement',@$event->announcement)}}">{{ucfirst($event->announcement->title)}}</a></h5>
                                     <div>
                                         <a href="{{route('admin.show_announcement',@$event->announcement)}}">
-                                            <img class="img-fluid" src="{{ route('show.image',@$event->announcement->images) }}" alt="{{@$event->title}}" style="width:12vh">
+                                            <img class="img-fluid" src="{{ route('show_image',@$event->announcement->images) }}" alt="{{@$event->title}}" style="width:12vh">
                                         </a>
                                     </div>
                                 </div>

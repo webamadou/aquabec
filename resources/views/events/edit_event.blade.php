@@ -51,7 +51,7 @@
                             @if(isset($announcement) && !empty($announcement))
                                 <div class="col-sm-12 form-group row mt-5">
                                     <hr>
-                                    <a href="{{route('user.edit_announcement',@$announcement->slug)}}" type="submit" class="btn btn-success"><i class="fa fa-save"></i> Éditer l'annonce de cet événement</a>
+                                    <a href="{{route('user.edit_announcement',@$announcement->slug)}}" type="submit" class="btn btn-success"><i class="fa fa-save"></i> Éditer l'annonce à relier à cette activité</a>
                                 </div>
                             @endif
                         </div>

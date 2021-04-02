@@ -11,7 +11,7 @@
                     <div class="col-sm-12 col-md-3 announcement-side-bar">
                         <div class="announcement-meta-wrapper">
                             <div class="announcement-img-wrapper mb-3">
-                                <img src="{{ route('show.image',@$announcement->images) }}" alt="{{@$announcement->title}}">
+                                <img src="{{ route('show_image',@$announcement->images) }}" alt="{{@$announcement->title}}">
                             </div>
                             <div class="row justify-content-between announcement-metas">
                                 <div class="col-6"><strong>Catégorie :</strong></div><div class="col-6 meta-value"><span>{{@$announcement->category->name}}</span></div>
@@ -27,27 +27,25 @@
                                     @endif
                                 </div>
                                 <div class="col-12 text-center mt-2">  </div>
-                                <div class="col-6"><strong>N° de l'annonce :</strong></div><div class="col-6 meta-value px-4"><span>{{sprintf("%05d",@$announcement->id)}}</span></div>
                                 <div class="col-12 text-center"> <hr> </div>
                                 <div class="col-12"> <strong>Publié par :</strong> </div>
                                 <ul class="list-group">
-                                    <li class="list-group-item"><i class="fa fa-user"></i> {{@$announcement->owned->prenom}} {{@$announcement->owned->name}} <br><strong><i class="fa fa-caret-right"></i> {{@$announcement->advertiser}}</strong></li>
+                                    <li class="list-group-item"><i class="fa fa-user"></i> {{@$announcement->owned->username}} <br><strong><i class="fa fa-caret-right"></i> {{@$announcement->advertiser}}</strong></li>
                                     @if(trim(@$announcement->owned->mainRole()->name) !== "")<li class="list-group-item"> <strong><i class="fa fa-user-lock"></i> Fonction</strong> {{@$announcement->owned->mainRole()->name}} </li>@endif
-                                    <li class="list-group-item"><i class="fa fa-envelope"></i> {{@$announcement->email}}</li>
+                                    <!-- email -->
                                     @if(trim(@$announcement->telephone) !== "")<li class="list-group-item"><i class="fa fa-phone-alt"></i> {{@$announcement->telephone}}</li>@endif
-                                    @if(trim(@$announcement->postal_code) !== "")<li class="list-group-item"><i class="fa fa-mail-bulk"> Codparticuliere Postal</i> {{@$announcement->postal_code}}</li>@endif
-                                    @if(trim(@$announcement->website) !== "")<li class="list-group-item"><i class="fa fa-home"></i> {{@$announcement->website}}</li>@endif
+                                    @if(trim(@$announcement->postal_code) !== "")<li class="list-group-item"><i class="fa fa-mail-bulk"> Code Postal</i> {{@$announcement->postal_code}}</li>@endif
+                                    @if(trim(@$announcement->website) !== "")<li class="list-group-item"><i class="fa fa-home"></i> <a href="{{@$announcement->website}}" target="_blank">{{@$announcement->website}}</a></li>@endif
                                 </ul>
                             </div>
                             <!-- <hr> -->
                             @if(!empty($announcement->event))
                                 <hr>
                                 <div class="bg-light p-2 mt-5">
-                                    <strong><i class="fa fa-bullhorm"></i> L'annonce de l'événement :</strong>
-                                    <h5><a class="btn-link" href="{{route('user.show_event',@$announcement->event->slug)}}">{{ucfirst($announcement->event->title)}}</a></h5>
+                                    <strong><i class="fa fa-bullhorm"></i> Vers l'activité de l'annonce :</strong>
                                     <div>
-                                        <a href="{{route('user.show_announcement',@$announcement->event->slug)}}">
-                                            <img class="img-fluid" src="{{ route('show.image',@$announcement->event->images) }}" alt="{{@$event->title}}" style="width:12vh">
+                                        <a href="{{route('user.show_event',@$announcement->event->slug)}}">
+                                            <img class="img-fluid" src="{{ route('show_image',@$announcement->event->images) }}" alt="{{@$event->title}}" style="width:6vh"> {{ucfirst($announcement->event->title)}}
                                         </a>
                                     </div>
                                 </div>
@@ -58,9 +56,10 @@
                         <h1 class="announcement-title">{{@$announcement->title}}</h1>
                         <div class="announcement-description pt-5 pl-4">{!! @$announcement->description !!}</div>
                         <div class="announcement-dates mt-3 bg-gray-light px-3 py-3">
-                            <strong>Prix de l'événement : </strong>
-                            <h3 class="badge badge-primary list-event-dates"><i class="fa fa-calendar"></i> {{$announcement->getPrice()}} </h3>
+                            <strong>Prix : </strong>
+                            <h3 class="badge badge-primary list-event-dates">{{$announcement->getPrice()}} </h3>
                         </div>
+                        <div class="col-12"><strong>N° de l'annonce : </strong> <span>{{sprintf("%05d",@$announcement->id)}}</span></div>
                         <div class="announcement-stats">
                             <ul>
                                 <li><i class="fa fa-eye"></i>  {{@$announcement->views}} vues</li>

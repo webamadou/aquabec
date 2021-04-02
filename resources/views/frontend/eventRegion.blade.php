@@ -17,7 +17,7 @@
                 <!-- Col end -->
             </div>
             <!-- Row End -->
-            <div class="row wow fadeInDown" data-wow-duration="1s" data-wow-delay=".2s">
+            <div class="row wow" data-wow-duration="1s" data-wow-delay=".2s">
                 @forelse($events as $key => $item)
                     @include("frontend.includes.publication_component")
                 @empty

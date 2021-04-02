@@ -152,7 +152,7 @@ class Announcement extends Model
                 break;
             
             default:
-                return "";
+                return "Non Précisé";
                 break;
         }
     }

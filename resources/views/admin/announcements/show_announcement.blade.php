@@ -10,7 +10,7 @@
                     <div class="col-sm-12 col-md-3 announcement-side-bar">
                         <div class="announcement-meta-wrapper">
                             <div class="announcement-img-wrapper mb-3">
-                                <img src="{{ route('show.image',@$announcement->images) }}" alt="{{@$announcement->title}}">
+                                <img src="{{ route('show_image',@$announcement->images) }}" alt="{{@$announcement->title}}">
                             </div>
                             <div class="row justify-content-between announcement-metas">
                                 <div class="col-6"><strong>Catégorie :</strong></div><div class="col-6 meta-value"><span>{{@$announcement->category->name}}</span></div>
@@ -42,11 +42,11 @@
                             @if(!empty($announcement->event))
                                 <hr>
                                 <div class="bg-light p-2 mt-5">
-                                    <strong><i class="fa fa-bullhorm"></i> L'annonce de l'événement :</strong>
+                                    <strong><i class="fa fa-bullhorm"></i> Vers l'activité de l'annonce :</strong>
                                     <h5><a class="btn-link" href="{{route('admin.show_event',@$announcement->event)}}">{{ucfirst($announcement->event->title)}}</a></h5>
                                     <div>
-                                        <a href="{{route('admin.show_announcement',@$announcement->event)}}">
-                                            <img class="img-fluid" src="{{ route('show.image',@$announcement->event->images) }}" alt="{{@$event->title}}" style="width:12vh">
+                                        <a href="{{route('admin.show_event',@$announcement->event)}}">
+                                            <img class="img-fluid" src="{{ route('show_image',@$announcement->event->images) }}" alt="{{@$event->title}}" style="width:12vh">
                                         </a>
                                     </div>
                                 </div>

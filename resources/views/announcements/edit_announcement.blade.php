@@ -2,7 +2,7 @@
 <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"> 
 @section('content')
     <div class="row">
-        <div class="offset-sm-2 col-10 text-blue mb-4"><h2><i class="fa fa-plus"></i> Modification de l'annonce {{$announcement->title}}</h2></div>
+        <div class="offset-sm-2 col-10 text-blue mb-4"><h2><i class="fa fa-plus"></i> Modification de l'annonce {{$announcement->title}} (le montage)</h2></div>
         @if(!$can_post and intval($announcement->purchased) === 0)
             <div class="badge text-danger badge-light mb-4 py-2" style="line-height: 2.4;">
                 Vous n'avez pas assez de <strong>{{strtolower(@$role_currency->name)}}</strong> dans votre portefeuille pour publier votre annonce.<br>Vous pouvez tout de même l'enregistrer en brouillon. Vous pouvez aussi <a href="{{route('purchase_currency')}}" class="btn btn-sm btn-success"> recharger votre portefeuille.</a>
@@ -23,12 +23,12 @@
                             @csrf
                             @method("PUT")
                             @if($user->hasAnyRole(['chef-vendeur','vendeur']))
-                            <div class="offset-sm-0 col-12 form-group row">
+                            <div class="offset-sm-0 col-12 form-group row">{{@$announcement->owner}}
                                 <label for="owner" class="col-sm-12 col-md-12">Publiée l'annonce pour : </label>
                                 <select name="owner" id="owner" class="form-control">
                                     <option value=""> --- </option>
                                     @forelse($children as $child)
-                                    <option value="{{$child->id}}"> {{$child->name}} </option>
+                                        <option value="{{$child->id}}" {{old("owner",@$announcement->owner) == $child->id }}> {{$child->name}} </option>
                                     @empty
                                     <option value="{{$user->id}}">Vous n'avez enregistré aucun équipier.</option>
                                     @endforelse

@@ -25,9 +25,8 @@
                                 <th>Categorie</th>
                                 <th>Dates</th>
                                 <th>Heure</th>
-                                <th>Proprietaire</th>
+                                <th>Identité</th>
                                 <th>Region et Ville</th>
-                                <th>Date d'enregistrement</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
@@ -73,7 +72,9 @@
                             let formated_dates = '';
                             const dates = data.dates?data.dates.split(','):[data.dates];
                             for(let i = 0; i < dates.length; i++){
-                                formated_dates += `<span class="badge badge-primary text-sm d-block my-1"> ${dates[i]} </span> ` ;
+                                if(dates[i] !== null){
+                                    formated_dates += `<span class="badge badge-primary text-sm d-block my-1"> ${dates[i]} </span> ` ;
+                                }
                             }
                             return formated_dates;
                         }
@@ -81,9 +82,9 @@
                     { data:"event_time",name: "event_time" },
                     { data: null, name: 'owner',
                         render : data => {
-                            let retour = `${data.owned?data.owned.name:""}`;
+                            let retour = `${data.owned?data.owned.username:""}`;
                             if(data.owned.id !== data.posted.id)
-                                retour += `<br><strong> Postée par : ${data.posted.name}</strong>`;
+                                retour += `<br><strong> Postée par : ${data.posted.username}</strong>`;
 
                             return `${retour}`
                         }
@@ -93,7 +94,7 @@
                             return `<strong>Region : </strong>${data.region?data.region.name:""}<br><strong>Ville : </strong>${data.city?data.city.name:""}`;
                         }
                     },
-                    { data: null, name: 'updated_at',
+                    /* { data: null, name: 'updated_at',
                         render: data => {
                             let annonce_status = '';
                             switch (parseInt(data.publication_status)) {
@@ -115,7 +116,7 @@
                             }
                             return `${data.updated_at} <br> ${annonce_status}`
                         }
-                    },
+                    }, */
                     {data: null, name: 'validated',
                         render: data => {
                             let validated = '';

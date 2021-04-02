@@ -58,25 +58,24 @@ Route::get('/', [WelcomeController::class, 'welcomePage'])->name('welcome');
 Route::get('/home', [WelcomeController::class, 'welcomePage'])->name('home');
 Route::get('/index', [WelcomeController::class, 'welcomePage'])->name('index');
 Route::get('/accueil', [WelcomeController::class, 'welcomePage'])->name('accueil');
-Route::get('contact-us', [ContactController::class, 'contactPage'])->name('contact');
-Route::get('how-to-use', [ContactController::class, 'contactPage'])->name('how.to.use');
-Route::get('get-started', [ContactController::class, 'contactPage'])->name('get.started');
-Route::post('contact', [ContactController::class, 'contactPost'])->name('contact.post');
+Route::get('contactez-nous', [ContactController::class, 'contactPage'])->name('contact');
+Route::get('mode-utilisation', [ContactController::class, 'contactPage'])->name('how.to.use');
+Route::get('bien-debuter', [ContactController::class, 'contactPage'])->name('get.started');
+Route::post('contactez-nous', [ContactController::class, 'contactPost'])->name('contact.post');
 
-Route::get('/events/{region:slug}', [WelcomeController::class, 'eventsRegion'])->name('event_region');
-Route::get("/announcements/{category:slug}", [WelcomeController::class, 'announcementCategory'])->name('announcement_page');
-Route::get("/announcement/{announcement:slug}", [WelcomeController::class, 'showAnnouncement'])->name('page_announcement');
-Route::get("/event/{event:slug}", [WelcomeController::class, 'showEvent'])->name('page_event');
+Route::get('/evenements/region/{region:slug}', [WelcomeController::class, 'eventsRegion'])->name('event_region');
+Route::get("/evenement/{event:slug}", [WelcomeController::class, 'showEvent'])->name('page_evenement');
+Route::get("/annonces/categorie/{category:slug}", [WelcomeController::class, 'announcementCategory'])->name('announcement_page');
+Route::get("/annonce/{announcement:slug}", [WelcomeController::class, 'showAnnouncement'])->name('page_annonce');
+
 Route::get('/profil/{user:slug?}', [WelcomeController::class, 'showProfile'])->name('user_profile');
-
-Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
-Route::get("/evenement/{event:slug}", [UserDashboard::class, 'showEvent'])->name('event_page');
-
-//We use following links to display images from storage folder
-Route::get('show/images/{filename?}', [UserDashboard::class, 'showImage'])->name('show.image');
+Route::get('/deconnexion', '\App\Http\Controllers\Auth\LoginController@logout');
+Route::get("/evenements/list/{event:slug}", [UserDashboard::class, 'showEvent'])->name('event_page');
 //Search route
 Route::get('/chercher/',[WelcomeController::class, 'searchContent'])->name('search');
 
+//We use following links to display images from storage folder
+Route::get('voir/images/{filename?}', [UserDashboard::class, 'showImage'])->name('show_image');
 //Pages route
 Route::get("/pages/{page:slug}",[WelcomeController::class, 'page'])->name("page");
 
@@ -249,7 +248,7 @@ Route::middleware(['auth','verified'])->group(function (){
 
     //Routes for vendeurs and annonceurs
     Route::middleware(['role:vendeur|annonceur|super-admin|admin'])->name('user.')->group(function(){
-        Route::get("/mes_annonces", [UserDashboard::class, 'myAnnouncements'])->name("my_announcements");
+        Route::get("/mes_annonces", [AnnouncementController::class, 'myAnnouncements'])->name("my_announcements");
         Route::get("/mes_annonces/creation", [AnnouncementController::class, 'create'])->name('create_announcement');
         // Route::post("/mes_annonces/store", [UserDashboard::class, 'storeAnnouncement'])->name('store_announcement');
         Route::post("/mes_annonces/store", [AnnouncementController::class, 'store'])->name('store_announcement');

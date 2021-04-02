@@ -7,7 +7,7 @@
     <section id="tw-blog" class="tw-blog">
         <div class="container">
             <div class="row text-center">
-                <div class="col section-heading wow fadeInDown" data-wow-duration="1s" data-wow-delay=".5s">
+                <div class="col section-heading wow" data-wow-duration="1s" data-wow-delay=".5s">
                     <h2>
                         <small>Annonce</small>
                         <span>Catégorie / {{@$category->name}}</span>
@@ -17,7 +17,7 @@
                 <!-- Col end -->
             </div>
             <!-- Row End -->
-            <div class="row wow fadeInDown" data-wow-duration="1s" data-wow-delay=".2s">
+            <div class="row fadeInDown" data-wow-duration="1s" data-wow-delay=".2s">
                 @forelse(@$announcements as $key => $item)
                     @include("frontend.includes.publication_component")
                 @empty

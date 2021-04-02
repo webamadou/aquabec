@@ -66,7 +66,7 @@
     @error('image') <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div> @enderror
 </div>
 <div class="offset-sm-0 col-sm-12 col-md-6 form-group row">
-    <img src="{{ route('show.image',@$event->images) }}" alt="{{@$event->title}}" style="width:50%; height: auto">
+    <img src="{{ route('show_image',@$event->images) }}" alt="{{@$event->title}}" style="width:50%; height: auto">
 </div>
 <div class="col-12"><hr/></div>
 <div class="offset-sm-0 col-sm-12 col-md-6 form-group row">

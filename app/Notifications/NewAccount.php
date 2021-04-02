@@ -46,7 +46,7 @@ class NewAccount extends Notification
     {
         $user = $this->user ;
         return (new MailMessage)
-                    ->greeting("Hello $user->prenom $user->name")
+                    ->greeting("Bonjour $user->prenom $user->name")
                     ->line("Bienvenu sur l'Agenda du Québec.")
                     ->line("Votre compte a été parfaitement configuré.")
                     ->line("Vous pouvez vous connecter avec les accès suivants.")

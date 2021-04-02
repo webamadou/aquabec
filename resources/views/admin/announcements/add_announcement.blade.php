@@ -4,7 +4,7 @@
 <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"> 
 @section('content')
     <div class="row">
-        <div class="offset-sm-2 col-10 text-blue mb-4"><h2><i class="fa fa-plus"></i> Ajout d'une annonce classée</h2></div>
+        <div class="offset-sm-2 col-10 text-blue mb-4"><h2><i class="fa fa-plus"></i> Ajout d'une annonce classée (le montage) </h2></div>
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -80,7 +80,7 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js" defer></script>
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js" defer></script>
     <script src="{{asset('dist/multiple_dates_picker/jquery-ui.multidatespicker.js')}}" defer></script>
-    <script>
+    <script defer>
         $(document).ready(function(){  
             $('#datePick').multiDatesPicker({
                 dateFormat: "d/m/yy",

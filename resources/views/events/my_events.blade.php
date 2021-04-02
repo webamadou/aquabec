@@ -25,7 +25,7 @@
                                 <th>Heure</th>
                                 <th>Proprietaire</th>
                                 <th>Region et Ville</th>
-                                <th>Date d'enregistrement</th>
+                                <th>Etat Publication</th>
                             </tr>
                         </thead>
                     </table>
@@ -74,9 +74,9 @@
                     { data:"event_time",name: "event_time" },
                     { data: null, name: 'owner',
                         render : data => {
-                            let retour = `${data.owned?data.owned.name:""}`;
+                            let retour = `${data.owned?data.owned.username:""}`;
                             if(data.owned.id !== data.posted.id)
-                                retour += `<br><strong> Postée par : ${data.posted.name}</strong>`;
+                                retour += `<br><strong> Postée par : ${data.posted.username}</strong>`;
 
                             return `${retour}`
                         }
@@ -91,27 +91,28 @@
                             let annonce_status = '';
                             switch (parseInt(data.publication_status)) {
                                 case 0:
-                                    annonce_status = `<span class="badge badge-warning">Bouillon</div>`  ;
+                                    annonce_status = `<span class="text-md badge badge-warning">Bouillon</div>`  ;
                                     break;
                                 case 1:
-                                    annonce_status = `<span class="badge badge-success">Publiée</div>`  ;
+                                    annonce_status = `<span class="text-md badge badge-success">Publiée</div>`  ;
                                     break;
                                 case 2:
-                                    annonce_status = `<span class="badge badge-primary">Privée</div>`  ;
+                                    annonce_status = `<span class="text-md badge badge-primary">Privée</div>`  ;
                                     break;
                                 case 4:
-                                    annonce_status = `<span class="badge badge-danger">Suprimée</div>`  ;
+                                    annonce_status = `<span class="text-md badge badge-danger">Suprimée</div>`  ;
                                     break;
                             
                                 default:
                                     break;
                             }
-                            return `${data.updated_at} <br> ${annonce_status}`
+                            return `${annonce_status}`
+                            // return `${data.updated_at} <br> ${annonce_status}`
                         }
                     }
                 ],
                 buttons: [
-                    'copy', 'csv', 'excel', 'pdf', 'print'
+                    'csv', 'excel', 'pdf'
                 ],
                 order: [[ 6, 'desc' ]],
                 pageLength: 100,

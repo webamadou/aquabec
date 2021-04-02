@@ -57,7 +57,7 @@
                     { data: 'updated_at', name: 'updated_at' }
                 ],
                 buttons: [
-                    'copy', 'csv', 'excel', 'pdf', 'print'
+                    'csv', 'excel', 'pdf'
                 ],
                 order: [[ 3, 'desc' ]],
                 pageLength: 100,

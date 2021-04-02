@@ -4,7 +4,7 @@
     {!! $errors->first('title', '<div class="error-message col-12">:message</div>') !!}
 </div>
 <div class="offset-sm-0 col-12 form-group row">
-    <label for="title" class="col-sm-12 col-md-12">Description de l'annonce : </label>
+    <label for="title" class="col-sm-12 col-md-12">Description de l'annonce ( le poumon ) : </label>
     <div><textarea name="description" id="description" class="ckeditor form-control">{{old('description',@$announcement->description)}}</textarea></div>
 </div>
 <div class="offset-sm-0 col-sm-12 col-md-6 form-group row">
@@ -15,7 +15,7 @@
     @enderror
 </div>
 <div class="offset-sm-0 col-sm-12 col-md-6 form-group row">
-    <img src="{{ route('show.image',@$announcement->images) }}" alt="{{@$announcement->title}}" style="width:50%; height: auto">
+    <img src="{{ route('show_image',@$announcement->images) }}" alt="{{@$announcement->title}}" style="width:50%; height: auto">
 </div>
 <div class="offset-sm-0 col-sm-12 col-md-6 form-group row">
     <label for="images" class="col-sm-12 col-md-12">Type de prix : </label>
