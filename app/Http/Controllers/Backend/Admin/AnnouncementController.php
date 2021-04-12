@@ -10,6 +10,8 @@ use App\Models\Announcement;
 use App\Models\Category;
 use App\Models\Region;
 use App\Models\City;
+use Yajra\Datatables\Datatables;
+use Illuminate\Support\Facades\DB;
 
 class AnnouncementController extends Controller
 {
@@ -21,6 +23,128 @@ class AnnouncementController extends Controller
     public function __construct()
     {
         $this->middleware('auth',['role:admin|super-admin']);
+    }
+
+    /**
+     * list anoucements of current announcements
+     */
+    public function index(Request $request)
+    {
+        $user = auth()->user();
+        if ($request->ajax()) {
+            $data = Announcement::where('publication_status','<',2);
+            return Datatables::of($data)
+                    ->addIndexColumn()
+                    ->addColumn('publication',function ($row) {
+                        $annonce_status = "";
+                        if($row->lock_publication)
+                            return '<span class="badge badge-warning position-relative"><span class="text-danger"><i class="fa fa-ban"></i></span> Publication bloquée: ';
+                        switch (intval($row->publication_status)){
+                            case 0:
+                                $annonce_status = '<span class="badge badge-warning font-bold">Bouillon</span>';
+                                break;
+                            case 1:
+                                $annonce_status = '<span class="badge badge-success font-bold">Publiée</span>';
+                                break;
+                            case 2:
+                                $annonce_status = '<span class="badge badge-primary font-bold">Privée</span>';
+                                break;
+                            case 4:
+                                $annonce_status = '<span class="badge badge-danger font-bold">Suprimée</span>';
+                                break;
+                        
+                            default:
+                                break;
+                        }
+                        $validation_status = intval($row->validated) === 1?'<span class="badge badge-success"><i class="fa fa-check"></i> Validée</span>':(intval($row->validated > 1)?'<span class="badge badge-danger">Rejetée</span>':'<span class="badge badge-primary">Validation en attente</span>');
+                        return $validation_status."<br>".$annonce_status;
+                    })
+                    ->addColumn('title',function ($row) {
+                        return '<a href="'.url("/mes_annonces/announcement/$row->slug").'"><img src="'.url("/voir/images/$row->images").'" alt="'.@$row->title.'" style="width:50px; height: auto"><strong>'.$row->title.'</strong></a>';
+                    })
+                    ->addColumn("category_id", function($row){
+                        return @$row->category->name;
+                    })
+                    ->addColumn('price',function($row){
+                        $prix = intval($row->price_type) === 1? '$'.number_format($row->price,2,'.',''):(intval($row->price_type) === 3?"Gratuit":"Échange");
+                        return $prix;
+                    })
+                    ->addColumn('owner', function($row){
+                        $retour = $row->owned?$row->owned->username:"";
+                        if($row->owned->id !== $row->posted->id)
+                            $retour .= '<br><strong> Postée par :'. @$row->posted->username.'</strong>';
+
+                        return $retour;
+                    })
+                    ->addColumn('region_id', function($row){
+                        return '<strong>Region : </strong>'.@$row->region->name.'<br><strong>Ville : </strong>'.@$row->city->name;
+                    })
+                    ->addColumn('action',function ($row) {
+                        $edit_route = route('admin.edit_announcement',$row->id);
+                        $delete_route = route('admin.delete_announcement',$row->id);
+                        $modal_togglers = [
+                            [
+                                'name' => "Valider l'annonce classée",
+                                'route' => route('admin.validation_announcement',$row->id),
+                                'modal_title' => "Confirmer ou rejeter la validation de l'annonce <strong>$row->title</strong>"
+                            ]
+                        ];
+                        return view('layouts.back.datatables.actions-btn',compact('edit_route','delete_route','modal_togglers'));
+                    })
+                   ->filter(function ($instance) use ($request) {
+                        if ($request->get('region_id') != '') {
+                           $instance->where('region_id', $request->get('region_id'));
+                        }
+                        if ($request->get('city_id') != '') {
+                           $instance->where('city_id', $request->get('city_id'));
+                        }
+                        if ($request->get('filter_categ_id') != '') {
+                           $instance->where('category_id', $request->get('filter_categ_id'));
+                        }
+                        if ($request->get('postal_code') != '') {
+                            $postal_code = $request->get('postal_code');
+                           $instance->where('postal_code','LIKE', "%$postal_code%");
+                        }
+                        if ($request->get('price_type') == '3' || $request->get('price_type') == '2') {
+                           $instance->where('price_type', $request->get('price_type'));
+                        }
+                        if ($request->get('price_min') != '' && $request->get('price_max') != '' ) {
+                           $instance->where('price','>=', $request->get('price_min'))->where('price','<=', $request->get('price_max'));
+                        }
+                        if ($request->get('price_min') != '' && $request->get('price_max') == '' ) {
+                           $instance->where('price','>=', $request->get('price_min'));
+                        }
+                        if ($request->get('price_min') == '' && $request->get('price_max') != '' ) {
+                           $instance->where('price','<=', $request->get('price_max'));
+                        }
+                        if ($request->get('pub_type') != '') {
+                           $instance->where('publication_status', $request->get('pub_type'));
+                        }
+                        if ($request->get('date_min') != '') {
+                           $instance->where('published_at', '>=', date('Y-m-d', strtotime($request->get('date_min'))));
+                        }
+                        if ($request->get('date_max') != '') {
+                           $instance->where('published_at', '<=', date('Y-m-d', strtotime($request->get('date_max'))));
+                        }
+                        if (!empty($request->get('search'))) {
+                            $instance->where(function($w) use($request){
+                               $search = $request->get('search');
+                               $w->orWhere('announcements.title', 'LIKE', "%$search%");
+                           });
+                        }
+                   })
+                   ->rawColumns(['title','category_id','price','owner','region_id','publication','action'])
+                   ->make(true);
+        }
+        
+        //$form       = $this->getForm();
+        $regions    = Region::pluck('name','id');
+        $cities     = City::orderby('name')->pluck('name','id');
+        $categories = Category::pluck('name','id');
+        $regions    = \App\Models\Region::pluck('name','id');
+        $announcements = null;
+
+        return view('admin.announcements.index', compact('user','announcements','cities','categories','regions'));
     }
     /*
      * Get current user announcements data for datatable
@@ -49,16 +173,6 @@ class AnnouncementController extends Controller
             })
             ->rawColumns(['action'])
             ->make(true);
-    }
-    /**
-     * list anoucements of current user
-     */
-    public function index()
-    {
-        $user = auth()->user();
-        $announcements = $user->myAnnouncements();
-
-        return view('admin.announcements.my_announcements', compact('user','announcements'));
     }
     /**
      * Create annoucement

@@ -16,6 +16,15 @@
                     </div>
                 </div>
                 <div class="card-body">
+                    <div class="form-group">
+                        <label><strong>Regions :</strong></label>
+                        <select id='filter_region_id' class="form-control" style="width: 200px">
+                            <option value="">--Filtrer par region--</option>
+                            @foreach(@$regions as $key => $value)
+                                <option value="{{$key}}">{{$value}}</option>
+                            @endforeach
+                        </select>
+                    </div>
                     <table class="table table-success table-striped table-borderless" id="announcements-table">
                         <thead class="table-light">
                             <tr>
@@ -127,7 +136,7 @@
                       "sInfoPostFix":    "",
                       "sLoadingRecords": "Chargement en cours...",
                       "sZeroRecords":    "Aucun &eacute;l&eacute;ment &agrave; afficher",
-                      "sEmptyTable":     "Vous n'avez pas encore de transaction.",
+                      "sEmptyTable":     "Vous n'avez aucune annonce.",
                       "oPaginate": {
                         "sFirst":      "<| ",
                         "sPrevious":   "Prec",

@@ -10,6 +10,8 @@ use App\Models\Announcement;
 use App\Models\Category;
 use App\Models\Region;
 use App\Models\City;
+use Yajra\Datatables\Datatables;
+use Illuminate\Support\Facades\DB;
 
 class EventController extends Controller
 {
@@ -28,10 +30,122 @@ class EventController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
-        //dd(User::with('roles')->get());
-        return view('home');
+        $user = auth()->user();
+        if ($request->ajax()) {
+            $data = Event::where('publication_status','<',2);
+            return Datatables::of($data)
+                    ->addIndexColumn()
+                    ->addColumn('publication',function ($row) {
+                        $annonce_status = "";
+                        if($row->lock_publication)
+                            return '<span class="badge badge-warning position-relative"><span class="text-danger"><i class="fa fa-ban"></i></span> Publication bloquée: ';
+                        switch (intval($row->publication_status)){
+                            case 0:
+                                $annonce_status = '<span class="badge badge-warning font-bold">Bouillon</span>';
+                                break;
+                            case 1:
+                                $annonce_status = '<span class="badge badge-success font-bold">Publiée</span>';
+                                break;
+                            case 2:
+                                $annonce_status = '<span class="badge badge-primary font-bold">Privée</span>';
+                                break;
+                            case 4:
+                                $annonce_status = '<span class="badge badge-danger font-bold">Suprimée</span>';
+                                break;
+                        
+                            default:
+                                break;
+                        }
+                        $validation_status = intval($row->validated) === 1?'<span class="badge badge-success"><i class="fa fa-check"></i> Validé</span>':(intval($row->validated > 1)?'<span class="badge badge-danger">Rejeté</span>':'<span class="badge badge-primary">Validation en attente</span>');
+                        return $validation_status."<br>".$annonce_status;
+                    })
+                    ->addColumn('title',function ($row) {
+                        return '<a href="'.url("/mes_evenements/event/$row->slug").'"><img src="'.url("/voir/images/$row->images").'" alt="'.@$row->title.'" style="width:50px; height: auto"><strong>'.$row->title.'</strong></a>';
+                    })
+                    ->addColumn("organisation", function($row){
+                        return @$row->organisation->name;
+                    })
+                    ->addColumn('dates',function($row){
+                        $dates = $row->event_dates;
+                        $dates_string = "";
+                        if($dates){
+                            foreach ($dates as $key => $date) {
+                                if(trim($date->event_date) != "")
+                                    $dates_string .= '<span class="badge badge-primary text-sm d-block my-1"> '.date('d-m-Y H:i', strtotime($date->event_date)).'</span> ';
+                            }
+                            return $dates_string;
+                        }
+                        $prix = intval($row->price_type) === 1? '$'.number_format($row->price,2,'.',''):(intval($row->price_type) === 3?"Gratuit":"Échange");
+                        return $prix;
+                    })
+                    ->addColumn('owner', function($row){
+                        $retour = $row->owned?$row->owned->username:"";
+                        if($row->owned->id !== $row->posted->id)
+                            $retour .= '<br><strong> Postée par :'. @$row->posted->username.'</strong>';
+
+                        return $retour;
+                    })
+                    ->addColumn('region_id', function($row){
+                        return '<strong>Region : </strong>'.@$row->region->name.'<br><strong>Ville : </strong>'.@$row->city->name;
+                    })
+                     ->addColumn('action',function ($row) {
+                        $edit_route = "#";
+                        $modal_togglers = [
+                            [
+                                'name' => "Valider l'événement",
+                                'route' => route('admin.validation_event',$row->id),
+                                'modal_title' => "Confirmer ou rejeter la validation de l'événement <strong>$row->title</strong>"
+                            ]
+                        ];
+
+                        return view('layouts.back.datatables.actions-btn',compact('edit_route','modal_togglers'));
+                    })
+                   ->filter(function ($instance) use ($request) {
+                        if ($request->get('region_id') != '') {
+                           $instance->where('region_id', $request->get('region_id'));
+                        }
+                        if ($request->get('city_id') != '') {
+                           $instance->where('city_id', $request->get('city_id'));
+                        }
+                        if ($request->get('filter_categ_id') != '') {
+                           $instance->where('category_id', $request->get('filter_categ_id'));
+                        }
+                        if ($request->get('postal_code') != '') {
+                            $postal_code = $request->get('postal_code');
+                           $instance->where('postal_code','LIKE', "%$postal_code%");
+                        }
+                        if ($request->get('price_type') == '3' || $request->get('price_type') == '2') {
+                           $instance->where('price_type', $request->get('price_type'));
+                        }
+                        if ($request->get('organisateur') != '' ) {
+                           $instance->where('organisation_id','<=', $request->get('organisateur'));
+                        }
+                        if ($request->get('pub_type') != '') {
+                           $instance->where('publication_status', $request->get('pub_type'));
+                        }
+                        if (!empty($request->get('search'))) {
+                            $instance->where(function($w) use($request){
+                               $search = $request->get('search');
+                               $w->orWhere('title', 'LIKE', "%$search%");
+                           });
+                        }
+                   })
+                   ->rawColumns(['title','organisation','dates','owner','region_id','publication','action'])
+                   ->make(true);
+        }
+        $data = Event::where('publication_status','<',2);
+        
+        //$form       = $this->getForm();
+        $regions    = Region::pluck('name','id');
+        $cities     = City::orderby('name')->pluck('name','id');
+        $organisations = \App\Models\Organisation::pluck('name','id');
+        $categories = Category::pluck('name','id');
+        $regions    = \App\Models\Region::pluck('name','id');
+        $announcements = null;
+
+        return view('admin.events.index', compact('user','announcements','regions','cities','organisations','categories'));
     }
 
     /** *** EVENTS METHODS *** */

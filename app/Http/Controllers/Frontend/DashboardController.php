@@ -109,10 +109,17 @@ class DashboardController extends Controller
         return view('user.profile.infosperso',compact('region_list','cities_list', 'age_group','user','default_tab','fonctions'));
     }
 
+    /**
+     * Method used to select the cities of a region and return them in json format
+     */
     public function selectCities(Request $request)
     {
-        $res = Region::find($request->id)->cities->pluck('name','id');
-
+        $res = [];
+        $region = Region::find($request->id);
+        if($region){
+            $region->cities->pluck('name','id');
+            $res = $region->cities->pluck('name','id');
+        }
         return response()->json($res);
     }
     /**

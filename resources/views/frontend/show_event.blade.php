@@ -31,7 +31,12 @@
                                 <div class="col-12"> <strong>Publié par :</strong> </div>
                                 <ul class="list-group list-group-flush px-4 list-metas">
                                     <li class="list-group-item"><i class="fa fa-user"></i> {{@$event->owned->username}} </li>
-                                    @if(trim(@$event->owned->mainRole()->name) !== "")<li class="list-group-item"> <strong><i class="fa fa-user-lock"></i> Fonction</strong> {{@$event->owned->mainRole()->name}} </li>@endif
+                                    @if(trim(@$event->owned->mainRole()->name) !== "")
+                                        <li class="list-group-item"> <strong><i class="fa fa-user-lock"></i> Fonction</strong> {{@$event->owned->mainRole()->name}} </li>
+                                    @endif
+                                    @if(trim(@$event->advertiser_type) !== "")
+                                        <li class="list-group-item"> <strong><i class="fa fa-user-lock"></i> </strong> {{@$event->advertiser_type}} </li>
+                                    @endif
                                     <!-- -- -->
                                     @if(trim(@$event->telephone) !== "")<li class="list-group-item"><i class="fa fa-phone-alt"></i> {{@$event->telephone}}</li>@endif
                                     @if(trim(@$event->website) !== "")<li class="list-group-item"><i class="fa fa-laptop-house"></i> <a href="{{@$event->website}}" target="_blank">{{@$event->website}}</a> </li>@endif
@@ -69,14 +74,14 @@
                         <div class="row announcement-dates mt-3 bg-gray-light px-3 py-3">
                             <div class="col-sm-12 col-md-3"><span class="small font-bold">Date(s) de l'événement : </span></div>
                             <div class="col-sm-12 col-md-9">
-                                @foreach(explode(',',@$event->dates) as $key => $date )
-                                    <span class="badge badge-primary list-event-dates"><i class="fa fa-calendar"></i> {{$date}} </span>
+                                @foreach(@$event->event_dates as $date )
+                                    <span class="badge badge-primary list-event-dates"><i class="fa fa-calendar"></i> {{ date( "d-m-Y H:i",strtotime($date->event_date) )}} </span>
                                 @endforeach
                             </div>
-                            <div class="col-sm-12 col-md-3"><span class="small font-bold">Heure de l'événement : </span></div>
+                            <!-- <div class="col-sm-12 col-md-3"><span class="small font-bold">Heure de l'événement : </span></div>
                             <div class="col-sm-12 col-md-9">
                                     <span class="badge badge-warning list-event-dates"><i class="fa fa-clock"></i> {{$event->event_time}} </span>
-                            </div>
+                            </div> -->
                         </div>
                         <div class="announcement-stats">
                             <ul>

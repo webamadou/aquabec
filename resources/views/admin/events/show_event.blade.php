@@ -73,13 +73,15 @@
                         </div>
                         <div class="announcement-dates mt-3 bg-gray-light px-3 py-3">
                             <strong>Date(s) de l'événement : </strong>
-                            @foreach(explode(',',@$event->dates) as $key => $date )
-                                <span class="badge badge-primary list-event-dates"><i class="fa fa-calendar"></i> {{$date}} </span>
-                            @endforeach
-                            <div>
+                            <div class="col-sm-12 col-md-9">
+                                @foreach(@$event->event_dates as $date )
+                                    <span class="badge badge-primary list-event-dates"><i class="fa fa-calendar"></i> {{ date( "d/m/Y H:i",strtotime($date->event_date) )}} </span>
+                                @endforeach
+                            </div>
+                            <!-- <div>
                                 <strong>Heure de l'événement : </strong>
                                 <span class="badge badge-warning list-event-dates"><i class="fa fa-clock"></i> {{$event->event_time}} </span>
-                            </div>
+                            </div> -->
                         </div>
                         <div class="announcement-stats">
                             <ul>

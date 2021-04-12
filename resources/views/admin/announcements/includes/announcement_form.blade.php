@@ -18,7 +18,7 @@
     <img src="{{ route('show_image',@$announcement->images) }}" alt="{{@$announcement->title}}" style="width:50%; height: auto">
 </div>
 <div class="offset-sm-0 col-sm-12 col-md-6 form-group row">
-    <label for="images" class="col-sm-12 col-md-12">Type de prix : </label>
+    <label for="price_type" class="col-sm-12 col-md-12">Type de prix : </label>
     <select name="price_type" id="price_type" class="form-control">
         <option value=""> Sélectionez le type de prix </option>
         <option value="1" {{intval(old('price_type',@$announcement->price_type)) === 1?"selected":"" }}>Entrez le prix</option>
@@ -28,7 +28,7 @@
     {!! $errors->first('price_type', '<div class="error-message col-12">:message</div>') !!}
 </div>
 <div id="price_field_wrapper" class="offset-sm-0 col-sm-12 col-md-6 form-group row" style="{{intval(old('price_type',@$announcement->price_type)) === 1?'':'display:none'}}">
-    <label for="images" class="col-sm-12 col-md-12">Le prix : </label>
+    <label for="price" class="col-sm-12 col-md-12">Le prix : </label>
     <input type="number" name="price" id="price" min="0.00" step="0.01" value="{{old('price',@$announcement->price)}}" class="form-control" placeholder="Entrez le prix de votre annonce. Ex : 7.5">
 </div>
 <div class="col-12"><hr/></div>

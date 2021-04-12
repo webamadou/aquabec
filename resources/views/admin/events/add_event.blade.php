@@ -64,11 +64,11 @@
     <script src="{{asset('dist/timepicker/clocklet.js')}}" defer></script>
     <script>
         $(document).ready(function(){
-            //Date picker
+            /* //Date picker
             $('#datePick').multiDatesPicker({
                 dateFormat: "d/m/yy",
                 minDate: 0, // today
-            });
+            }); */
 
             //*** Select the cities of the selected region ***
             const regions = document.getElementById("region_id");
