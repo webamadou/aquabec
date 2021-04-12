@@ -192,7 +192,7 @@ class UpdateDBController extends Controller
             }
         }
         //*/
-        /* ================= ADABT  EVENTS TABLE =================== *
+        /* ================= ADABT  EVENTS TABLE =================== */
         // $events = DB::connection('mysql2')->table('evenements')->limit(500)->get();
         $events = DB::connection('mysql2')->table('evenements')->skip(500)->take(500)->get();
         // $events = DB::connection('mysql2')->table('evenements')->skip(1000)->take(500)->get();
