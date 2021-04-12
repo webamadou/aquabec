@@ -91,6 +91,8 @@
         </div>
     </noscript>
 @include('layouts.back.alerts.sweetalerts')
+<script src="{{asset('dist/datepicker/bootstrap-datepicker.js')}}" defer></script>
+<script src="{{asset('js/bootstrap-datepicker.js')}}" defer></script>
 </body>
 
 </html>

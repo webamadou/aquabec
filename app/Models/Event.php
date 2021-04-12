@@ -73,6 +73,11 @@ class Event extends Model
         return $this->belongsTo(\App\Models\Organisation::class);
     }
 
+    public function event_dates()
+    {
+        return $this->hasMany(\App\Models\EventDate::class);
+    }
+
     public function getImagesAttribute($value)
     {
         if($value === null )

@@ -166,6 +166,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
         Vous avez désactivé Javascript sur votre navigateur. Un bon nombre de fonctionnalités sont exécutées avec Javascript.<br>Vous devez activer Javascript pour pouvoir utiliser le site.
     </div>
 </noscript>
+<script src="{{asset('dist/datepicker/bootstrap-datepicker.js')}}" defer></script>
+<script src="{{asset('js/bootstrap-datepicker.js')}}" defer></script>
+
 <!-- Froala 2.7.3 -->
 <script type='text/javascript' src="https://cdn.jsdelivr.net/npm/froala-editor@2.9.1/js/froala_editor.pkgd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/froala-editor@2.9.1/js/languages/fr.js"></script>

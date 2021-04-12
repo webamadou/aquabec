@@ -3,12 +3,17 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+use DateInterval;
+use DatePeriod;
 
 use App\Models\Event;
 use App\Models\Announcement;
 use App\Models\Category;
 use App\Models\Region;
 use App\Models\City;
+use Yajra\Datatables\Datatables;
+use Illuminate\Support\Facades\DB;
 
 class EventController extends Controller
 {
@@ -27,10 +32,154 @@ class EventController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
-        //dd(User::with('roles')->get());
-        return view('home');
+        /* $begin = new Carbon("01-01-2021");
+        $end = new Carbon("01-05-2021");
+
+        $interval   = DateInterval::createFromDateString('1 day');
+        $period     = new \DatePeriod($begin, $interval, $end);
+        $test = "";
+        foreach ($period as $dt) {
+            echo '"%'.$dt->format("Y-m-d").'%"<br>';
+        }
+        die(); */
+        $user = auth()->user();
+        if ($request->ajax()) {
+            if($user->hasAnyRole(['chef-vendeur','vendeur'])){
+                $data = Event::where('posted_by',$user->id)
+                                    ->where('publication_status','<',2);
+            } else {
+                $data = Event::where('posted_by',$user->id)
+                                    ->where('publication_status','<',2);
+            }
+            return Datatables::of($data)
+                    ->addIndexColumn()
+                    ->addColumn('publication',function ($row) {
+                        $annonce_status = "";
+                        if($row->lock_publication)
+                            return '<span class="badge badge-warning position-relative"><span class="text-danger"><i class="fa fa-ban"></i></span> Publication bloquée: ';
+                        switch (intval($row->publication_status)){
+                            case 0:
+                                $annonce_status = '<span class="badge badge-warning font-bold">Bouillon</span>';
+                                break;
+                            case 1:
+                                $annonce_status = '<span class="badge badge-success font-bold">Publiée</span>';
+                                break;
+                            case 2:
+                                $annonce_status = '<span class="badge badge-primary font-bold">Privée</span>';
+                                break;
+                            case 4:
+                                $annonce_status = '<span class="badge badge-danger font-bold">Suprimée</span>';
+                                break;
+                        
+                            default:
+                                break;
+                        }
+                        $validation_status = intval($row->validated) === 1?'<span class="badge badge-success"><i class="fa fa-check"></i> Validé</span>':(intval($row->validated > 1)?'<span class="badge badge-danger">Rejeté</span>':'<span class="badge badge-primary">Validation en attente</span>');
+                        return $validation_status."<br>".$annonce_status;
+                    })
+                    ->addColumn('title',function ($row) {
+                        return '<a href="'.url("/mes_evenements/event/$row->slug").'"><img src="'.url("/voir/images/$row->images").'" alt="'.@$row->title.'" style="width:50px; height: auto"><strong>'.$row->title.'</strong></a>';
+                    })
+                    ->addColumn("organisation", function($row){
+                        return @$row->organisation->name;
+                    })
+                    ->addColumn('dates',function($row){
+                        $dates = $row->event_dates;
+                        $dates_string = "";
+                        if($dates){
+                            foreach ($dates as $key => $date) {
+                                if(trim($date->event_date) != "")
+                                    $dates_string .= '<span class="badge badge-primary text-sm d-block my-1"> '.date('d-m-Y H:i', strtotime($date->event_date)).'</span> ';
+                            }
+                            return $dates_string;
+                        }
+                        $prix = intval($row->price_type) === 1? '$'.number_format($row->price,2,'.',''):(intval($row->price_type) === 3?"Gratuit":"Échange");
+                        return $prix;
+                    })
+                    ->addColumn('owner', function($row){
+                        $retour = $row->owned?$row->owned->username:"";
+                        if($row->owned->id !== $row->posted->id)
+                            $retour .= '<br><strong> Postée par :'. @$row->posted->username.'</strong>';
+
+                        return $retour;
+                    })
+                    ->addColumn('region_id', function($row){
+                        return '<strong>Region : </strong>'.@$row->region->name.'<br><strong>Ville : </strong>'.@$row->city->name;
+                    })
+                   ->filter(function ($instance) use ($request) {
+                        if ($request->get('region_id') != '') {
+                           $instance->where('region_id', $request->get('region_id'));
+                        }
+                        if ($request->get('city_id') != '') {
+                           $instance->where('city_id', $request->get('city_id'));
+                        }
+                        if ($request->get('filter_categ_id') != '') {
+                           $instance->where('category_id', $request->get('filter_categ_id'));
+                        }
+                        if ($request->get('postal_code') != '') {
+                            $postal_code = $request->get('postal_code');
+                           $instance->where('postal_code','LIKE', "%$postal_code%");
+                        }
+                        if ($request->get('price_type') == '3' || $request->get('price_type') == '2') {
+                           $instance->where('price_type', $request->get('price_type'));
+                        }
+                        /* if ($request->get('price_min') != '' && $request->get('price_max') != '' ) {
+                           $instance->where('price','>=', $request->get('price_min'))->where('price','<=', $request->get('price_max'));
+                        }
+                        if ($request->get('price_min') != '' && $request->get('price_max') == '' ) {
+                           $instance->where('price','>=', $request->get('price_min'));
+                        } */
+                        if ($request->get('organisateur') != '' ) {
+                           $instance->where('organisation_id','<=', $request->get('organisateur'));
+                        }
+                        if ($request->get('pub_type') != '') {
+                           $instance->where('publication_status', $request->get('pub_type'));
+                        }
+                        /*if ($request->get('date_min') != '' && $request->get('date_max') != '') {
+                            $date_min = date( 'Y-m-d H:i:s', strtotime( $request->get( 'date_min' ) ) );
+                            $date_max = date( 'Y-m-d H:i:s', strtotime( $request->get( 'date_max' ) ) );
+                            dd($instance->where("id","!=","")->toSql());
+
+                             $instance->join( 'event_dates','events.id','=','event_dates.event_id' )
+                            ->where('event_dates.event_date','>=', $date_min )
+                            ->where('event_dates.event_date','<=', $date_max )
+                            ->select('events.id', 'events.title', 'events.images', 'events.dates', 'events.region_id', 'events.city_id', 'events.owner', 'events.posted_by', 'events.publication_status', 'events.created_at','event_dates.id','event_dates.id','event_dates.event_date','event_dates.event_id'); *
+
+                            $instance = DB::table('events')
+                                        ->join('event_dates', 'events.id', '=', 'event_dates.event_id')
+                                        ->where('event_dates.event_date','>=',"$date_min") 
+                                        ->where('event_dates.event_date','<=',"$date_max") 
+                                        ->where('events.posted_by',$user->id) 
+                                        ->where('events.publiation_status','<',2) 
+                                        ->select('events.id', 'events.title', 'events.images', 'events.dates', 'events.region_id', 'events.city_id', 'events.owner', 'events.posted_by', 'events.publication_status', 'events.created_at','event_dates.id','event_dates.id','event_dates.event_date','event_dates.event_id')
+                                        ->distinct(); //
+                            // dd($instance)->toSql();
+                        }*/
+                        /* if ($request->get('date_max') != '') {
+                           $instance->where('published_at', '<=', date('Y-m-d', strtotime($request->get('date_max'))));
+                        } */
+                        if (!empty($request->get('search'))) {
+                            $instance->where(function($w) use($request){
+                               $search = $request->get('search');
+                               $w->orWhere('title', 'LIKE', "%$search%");
+                           });
+                        }
+                   })
+                   ->rawColumns(['title','organisation','dates','owner','region_id','publication'])
+                   ->make(true);
+        }
+        
+        //$form       = $this->getForm();
+        $regions    = Region::pluck('name','id');
+        $cities     = City::orderby('name')->pluck('name','id');
+        $organisations = \App\Models\Organisation::pluck('name','id');
+        $categories = Category::pluck('name','id');
+        $regions    = \App\Models\Region::pluck('name','id');
+        $announcements = null;
+
+        return view('events.index', compact('user','announcements','regions','cities','organisations','categories'));
     }
 
     /** *** EVENTS METHODS *** */
@@ -114,6 +263,9 @@ class EventController extends Controller
             'event_time'    => 'nullable',
             'organisation_id'    => 'nullable',
         ]);
+        //21-04-09*09:30;21-04-10*09:30;21-04-16*09:30;
+        // dd($data);
+        // $date['dates'] = explode(";",$date['dates']);
         $current_user = auth()->user();
         if(!isset($request->owner)){//If the owner is not defined the publisher become the publisher
             $data['owner'] = $current_user->id;
@@ -124,9 +276,20 @@ class EventController extends Controller
         //Make sure user has enough to publish
         $can_post   = $current_user->userHasEnoughCredit('annoucements_price','free_currency');
         $data['publication_status'] = $can_post ? $data["publication_status"] : 0;
+        $data['dates'] = str_replace("*", " ", $data['dates']);
+        $event_dates = explode(";",$data['dates']);//Save the dates in an array
+        // unset($data['dates']);
 
         $save_event = Event::create($data);//save data
         if($save_event){
+            foreach ($event_dates as $key => $date) {
+                if(trim($date) != ""){
+                    \App\Models\EventDate::create( [
+                        'event_id'      => $save_event->id,
+                        'event_date'    => date('Y-m-d H:i:s', strtotime($date) ) 
+                    ] );
+                }
+            }
             //We update user's wallet we make him/her spend the currency if is publishing
             if(intval($data['publication_status']) === 1 ){
                 $save_event->published_at = date('Y-m-d H:i:s');
@@ -256,10 +419,20 @@ class EventController extends Controller
         //Make sure user has enough to publish
         $can_post   = $current_user->userHasEnoughCredit('annoucements_price','free_currency');
         $data['publication_status'] = $can_post ? $data["publication_status"] : 0;
+        $event_dates = explode(";",str_replace("*", " ", $data['dates']));//Save the dates in an array
+        // unset($data['dates']);
 
         $save = $event->update($data);
 
         if($save){
+            foreach ($event_dates as $key => $date) {
+                if(trim($date) != ""){
+                    \App\Models\EventDate::updateOrCreate( [
+                        'event_id'      => $event->id,
+                        'event_date'    => date('Y-m-d H:i:s', strtotime($date) ) 
+                    ] );
+                }
+            }
             //We update user's wallet we make him/her spend the currency if is publishing
             if( intval($data['publication_status']) === 1 && intval(@$event->purchased) === 0 ){
                 $current_user->updateUserWallet(1,"events_price");

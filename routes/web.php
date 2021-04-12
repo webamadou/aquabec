@@ -199,7 +199,7 @@ Route::middleware(['auth','verified'])->group(function (){
         Route::post("/validation_announcement/{announcement}", [BOAnnouncementController::class, 'validation'])->name('validation_announcement');
         
         Route::get("/myevents-data", [BOEventController::class, 'myEventsData'])->name('myEvents-data');
-        Route::get("/index", [BOEventController::class, 'myEvents'])->name("listevents");
+        Route::get("/events", [BOEventController::class, 'index'])->name("listevents");
         Route::get("/create_event/{announcement?}", [BOEventController::class, 'create'])->name('create_event');
         Route::post("/store_event", [BOEventController::class, 'store'])->name('store_event');
         Route::get("/event/{event}", [BOEventController::class, 'show'])->name('show_event');
@@ -248,7 +248,7 @@ Route::middleware(['auth','verified'])->group(function (){
 
     //Routes for vendeurs and annonceurs
     Route::middleware(['role:vendeur|annonceur|super-admin|admin'])->name('user.')->group(function(){
-        Route::get("/mes_annonces", [AnnouncementController::class, 'myAnnouncements'])->name("my_announcements");
+        Route::get("/mes_annonces", [AnnouncementController::class, 'index'])->name("my_announcements");
         Route::get("/mes_annonces/creation", [AnnouncementController::class, 'create'])->name('create_announcement');
         // Route::post("/mes_annonces/store", [UserDashboard::class, 'storeAnnouncement'])->name('store_announcement');
         Route::post("/mes_annonces/store", [AnnouncementController::class, 'store'])->name('store_announcement');
@@ -258,7 +258,7 @@ Route::middleware(['auth','verified'])->group(function (){
         Route::get("/myAnnouncements-data", [AnnouncementController::class, 'myAnnouncementsData'])->name('myAnnouncements-data');
         Route::delete("/mes_annonces/delete/{announcement:slug}", [AnnouncementController::class, 'delete'])->name('delete_announcement');
 
-        Route::get("/mes_evenements", [EventController::class, 'myEvents'])->name("my_events");
+        Route::get("/mes_evenements", [EventController::class, 'index'])->name("my_events");
         Route::get("/mes_evenements/create/{announcement:slug?}", [EventController::class, 'create'])->name('create_event');
         Route::post("/mes_evenements/store", [EventController::class, 'store'])->name('store_event');
         Route::get("/mes_evenements/event/{event:slug}", [EventController::class, 'show'])->name('show_event');

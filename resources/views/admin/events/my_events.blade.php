@@ -164,7 +164,7 @@
                       "sInfoPostFix":    "",
                       "sLoadingRecords": "Chargement en cours...",
                       "sZeroRecords":    "Aucun &eacute;l&eacute;ment &agrave; afficher",
-                      "sEmptyTable":     "Vous n'avez pas encore de transaction.",
+                      "sEmptyTable":     "Vous n'avez aucun événement.",
                       "oPaginate": {
                         "sFirst":      "<| ",
                         "sPrevious":   "Prec",

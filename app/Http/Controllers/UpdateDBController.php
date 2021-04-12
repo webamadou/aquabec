@@ -15,15 +15,16 @@ use App\Models\Category;
 use App\Models\Payment;
 use App\Models\Announcement;
 use App\Models\Event;
+use App\Models\EventDate;
 
 class UpdateDBController extends Controller
 {
     public function index() {
         /* ================= ADABT USERS TABLE =================== *
         // $request_fromorigin = DB::connection('mysql2')->table('comptes')->limit(450)->get();
-        //$request_fromorigin = DB::connection('mysql2')->table('comptes')->limit(450)->get();
+        // $request_fromorigin = DB::connection('mysql2')->table('comptes')->limit(450)->get();
         // $request_fromorigin = DB::connection('mysql2')->table('comptes')->skip(450)->take(450)->get();
-        // $request_fromorigin = DB::connection('mysql2')->table('comptes')->skip(900)->take(100)->get();
+        $request_fromorigin = DB::connection('mysql2')->table('comptes')->skip(900)->take(100)->get();
         ####Updateing users from comptes
         foreach ($request_fromorigin as $key => $item) {
             $user = new User();
@@ -138,7 +139,7 @@ class UpdateDBController extends Controller
                 $annonce->title = @$item->titre;
                 $annonce->description = @$item->description;
                 $annonce->region_id = @$item->region;
-                $annonce->price = @$item->prix;
+                $annonce->price = number_format(intval(@$item->prix));
                 $annonce->price_type = "fixed";
                 $annonce->website = substr(@$item->site_web,0,250);
                 $annonce->telephone = substr(@$item->telephone,0,50);
@@ -156,8 +157,13 @@ class UpdateDBController extends Controller
                 $annonce->updated_at = @$item->date_lastedit;
                 $annonce->event_id = @$item->linked_event;
 
-                $user = DB::connection('mysql2')->table('comptes')->where('id',$item->id_utilisateur)->select('id','email')->first();
-                if(@$user->id){
+                $user = DB::connection('mysql2')
+                            ->table('comptes')
+                            ->where('id',$item->id_utilisateur)
+                            ->select('id','email')
+                            ->first();
+                // dd($user);
+                if(@$user !== null){
                     $user = User::select('id','email')->where('email',$user->email)->first();
                     $annonce->posted_by = @$user->id;
                     $annonce->owner = @$user->id;
@@ -186,12 +192,12 @@ class UpdateDBController extends Controller
             }
         }
         //*/
-        /* ================= ADABT  EVENTS TABLE =================== *
+        /* ================= ADABT  EVENTS TABLE =================== */
         // $events = DB::connection('mysql2')->table('evenements')->limit(500)->get();
-        // $events = DB::connection('mysql2')->table('evenements')->skip(500)->take(500)->get();
+        $events = DB::connection('mysql2')->table('evenements')->skip(500)->take(500)->get();
         // $events = DB::connection('mysql2')->table('evenements')->skip(1000)->take(500)->get();
         // $events = DB::connection('mysql2')->table('evenements')->skip(1500)->take(500)->get();
-        $events = DB::connection('mysql2')->table('evenements')->skip(2000)->take(100)->get();
+        // $events = DB::connection('mysql2')->table('evenements')->skip(2000)->take(100)->get();
         foreach ($events as $key => $item) {
             if(@$item->titre != ""){
                 echo "Saving event $item->titre <br/>";
@@ -216,6 +222,9 @@ class UpdateDBController extends Controller
                 $event->rejection_reasons = @$item->reject_reason;
                 $event->created_at = @$item->date_added;
                 $event->updated_at = @$item->date_lastedit;
+                $event->validated = @$item->validated;
+                $event->validated_by = 1;
+                $event->validated_at = @$item->validated_date;
                 //get in organisation table name like $item->organisation
                 $organisation = DB::table('organisations')->where('name',$item->organisation)->first();
                 if(@$organisation){
@@ -248,6 +257,14 @@ class UpdateDBController extends Controller
                     $event->city_id = @$city->id;
 
                 $event->save();
+                //Save dates 
+                $event_dates_oroginal = $event_dates = DB::connection('mysql2')->table('evenements_dates')->where('id',$item->id)->get();
+                foreach ($event_dates_oroginal as $dates){
+                    EventDate::create([
+                                        'event_id'=>$event->id,
+                                        'event_date'=>date('Y-m-d H:i:s', strtotime($dates->date.' '.$dates->heure)),
+                                    ]);
+                }
             }
         }
         //*/

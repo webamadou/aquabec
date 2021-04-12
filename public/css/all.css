@@ -41486,6 +41486,14 @@ hr {
 #new_event_wrapper.active {
     display: initial;
 }
+.datatable-filter select,.datatable-filter input {
+    padding: 0 1rem;
+    font-size: 0.7rem;
+    line-height: 1;
+    height: 2vw;
+    border: 1px solid #ddd;
+    border-radius: 2px;
+}
 /* datatable */
 .dt-button {
     margin: 0 0 14px 0;
@@ -41499,5 +41507,26 @@ hr {
 a.paginate_button.current {
     font-size: x-small;
     border-radius: 10px;
+}
+.datepicker-incon-wrapper{
+    width: 3vw;
+    height: 2.9vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: xx-large;
+    background: #f3ecec;
+}
+.input-group-filter-min.date, .input-group-filter-max.date {
+    display: flex;
+    position: relative;
+}
+.date span.input-group-addon {
+    background: #ffffff;
+    border: 1px solid #ddd;
+    border-left: 1px solid #ffffff;
+    margin-left: -2px;
+    display: inline-block;
 }
 /* datatable */
