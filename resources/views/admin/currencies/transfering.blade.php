@@ -39,7 +39,7 @@
                                     <option value="">--- Destinataire ---</option>
                                     @forelse($users as $user)
                                         <option value="{{$user->id}}" {{old('send_to') == $user->id ? 'selected':''}}>
-                                        <strong>{{$user->id}} {{$username}}</strong>
+                                        <strong>{{$user->username}} {{$user->id}} </strong>
                                         </option>
                                     @endforeach
                                 </select>

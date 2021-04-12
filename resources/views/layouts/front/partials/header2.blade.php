@@ -117,12 +117,18 @@
                                                 @foreach(\App\Models\Category::where('type','announcement')->skip(18)->take(5)->get() as $category)
                                                     <li><a href="{{route('announcement_page',$category)}}">{{ $category->name }}</a></li>
                                                 @endforeach
-                                            <!--  <li>
-                                                    <a href="#" class="text-primary">
-                                                        Toutes les catégories d'annonces
-                                                        <i class="ml-2 fa fa-arrow-right"></i>
-                                                    </a>
-                                                </li> -->
+                                            </ul>
+                                            <!-- End Ul -->
+                                        </div>
+                                        <!-- End Col -->
+                                        <div class="col-md-12 col-lg-3 no-padding">
+                                            <ul>
+                                                <li class="tw-megamenu-title">
+                                                    <h3>&nbsp;</h3>
+                                                </li>
+                                                @foreach(\App\Models\Category::where('type','announcement')->skip(23)->take(5)->get() as $category)
+                                                    <li><a href="{{route('announcement_page',$category)}}">{{ $category->name }}</a></li>
+                                                @endforeach
                                             </ul>
                                             <!-- End Ul -->
                                         </div>
