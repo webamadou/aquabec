@@ -205,10 +205,8 @@ class CurrencyController extends Controller
                      ->orWhere('name','super-admin'); })
                      ->pluck('name','id'); */
         $users = User::where("profile_status", '<', 2)
-                        ->where('name','!=','-----')
-                        ->where('prenom','!=','-----')
                         ->select('prenom','username','name','id')
-                        ->orderby('name','asc')
+                        ->orderby('id','asc')
                         ->get();
         //We need the current user's wallet valur for the picked currency
         $currency = $user->currencies()->wherePivot('currency_id',$currency->id)->first();
