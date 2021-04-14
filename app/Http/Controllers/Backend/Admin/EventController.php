@@ -62,7 +62,7 @@ class EventController extends Controller
                         return $validation_status."<br>".$annonce_status;
                     })
                     ->addColumn('title',function ($row) {
-                        return '<a href="'.url("/mes_evenements/event/$row->slug").'"><img src="'.url("/voir/images/$row->images").'" alt="'.@$row->title.'" style="width:50px; height: auto"><strong>'.$row->title.'</strong></a>';
+                        return '<a href="'.url("/admin/event/$row->id").'"><img src="'.url("/voir/images/$row->images").'" alt="'.@$row->title.'" style="width:50px; height: auto"><strong>'.$row->title.'</strong></a>';
                     })
                     ->addColumn("organisation", function($row){
                         return @$row->organisation->name;
@@ -73,7 +73,7 @@ class EventController extends Controller
                         if($dates){
                             foreach ($dates as $key => $date) {
                                 if(trim($date->event_date) != "")
-                                    $dates_string .= '<span class="badge badge-primary text-sm d-block my-1"> '.date('d-m-Y H:i', strtotime($date->event_date)).'</span> ';
+                                    $dates_string .= '<span class="badge badge-primary text-sm d-block my-1 font-weight-normal"> '.date('d-m-Y H:i', strtotime($date->event_date)).'</span> ';
                             }
                             return $dates_string;
                         }
@@ -91,7 +91,7 @@ class EventController extends Controller
                         return '<strong>Region : </strong>'.@$row->region->name.'<br><strong>Ville : </strong>'.@$row->city->name;
                     })
                      ->addColumn('action',function ($row) {
-                        $edit_route = "#";
+                        $edit_route = route("admin.edit_event",$row->id);
                         $modal_togglers = [
                             [
                                 'name' => "Valider l'événement",

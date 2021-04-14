@@ -73,7 +73,7 @@ class UpdateDBController extends Controller
         }
         return "I see fire";
         //*/
-        /* ================= ADABT CATEGORIES TABLE =================== *
+        /* ================= ADABT CATEGORIES TABLE =================== */
         $category_annonce = DB::connection('mysql2')->table('categories_annonces')->get();
         foreach ($category_annonce as $key => $item) {
             echo "Saving annonce category $item->categorie <br/>";
@@ -127,7 +127,7 @@ class UpdateDBController extends Controller
             $payment->save();
         }
         //*/
-        /* ================= ADABT ANNOUNCEMENT TABLE =================== */
+        /* ================= ADABT ANNOUNCEMENT TABLE =================== *
         $annonces = DB::connection('mysql2')->table('annonces')->get();
         foreach ($annonces as $key => $item) {
             if(@$item->titre != ""){
@@ -192,7 +192,7 @@ class UpdateDBController extends Controller
             }
         }
         //*/
-        /* ================= ADABT  EVENTS TABLE =================== */
+        /* ================= ADABT  EVENTS TABLE =================== *
         // $events = DB::connection('mysql2')->table('evenements')->limit(500)->get();
         $events = DB::connection('mysql2')->table('evenements')->skip(500)->take(500)->get();
         // $events = DB::connection('mysql2')->table('evenements')->skip(1000)->take(500)->get();

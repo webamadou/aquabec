@@ -91,7 +91,7 @@ class EventController extends Controller
                         if($dates){
                             foreach ($dates as $key => $date) {
                                 if(trim($date->event_date) != "")
-                                    $dates_string .= '<span class="badge badge-primary text-sm d-block my-1"> '.date('d-m-Y H:i', strtotime($date->event_date)).'</span> ';
+                                    $dates_string .= '<span class="badge badge-primary text-sm d-block my-1 font-weight-normal"> '.date('d-m-Y H:i', strtotime($date->event_date)).'</span> ';
                             }
                             return $dates_string;
                         }

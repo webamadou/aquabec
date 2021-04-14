@@ -41533,3 +41533,16 @@ a.paginate_button.current {
 .dataTables_wrapper .dataTables_processing{
     top: 0 !important;
 }
+#images,.file {
+    visibility: hidden;
+    position: absolute;
+}
+td.today.day {
+    border-bottom: 2px solid #0e78fa;
+}
+td.active.day {
+    border-bottom: 2px solid #0e98fa;
+}
+#themodal .form-group {
+    display: flex;
+}
