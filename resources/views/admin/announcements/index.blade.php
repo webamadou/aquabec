@@ -10,7 +10,7 @@
                 <div class="card-header">
                     <h2 class="card-title font-weight-bold">Mes annonces</h2>
                     <div class="card-tools">
-                        <a href="{{route('user.create_announcement')}}" class="btn btn-primary btn-sm">
+                        <a href="{{route('admin.create_announcement')}}" class="btn btn-primary btn-sm">
                             <i class="mr-2 fa fa-plus"></i> Ajouter une annonce
                         </a>
                     </div>

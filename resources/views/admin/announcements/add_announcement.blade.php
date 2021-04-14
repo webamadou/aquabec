@@ -48,7 +48,7 @@
                             </div>
                             @endif
                             <input type="hidden" name="posted_by" value="{{$user->id}}">
-                            @include("admin.announcements.includes.announcement_form")
+                            @include("announcements.includes.announcement_form")
                             <hr class="my-2">
                             @if(!empty(@$user_events))
                                 <div id="" class="bg-lightblue col-md-12 col-sm-12 form-group py-2 row">

@@ -10,12 +10,13 @@
 <div class="offset-sm-0 col-sm-12 col-md-6 form-group row">
     <label for="images" class="col-sm-12 col-md-12">Image de l'annonce : </label>
     <input type="file" name="images" id="images" class="form-control">
+    <button id="uploadBtn"  type="button" class="browse form-control btn btn-primary">Choisir une image</button>
     @error('image')
         <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
     @enderror
 </div>
 <div class="offset-sm-0 col-sm-12 col-md-6 form-group row">
-    <img src="{{ route('show_image',@$announcement->images) }}" alt="{{@$announcement->title}}" style="width:50%; height: auto">
+    <img id="preview" src="{{ route('show_image',@$announcement->images) }}" alt="{{@$announcement->title}}" style="width:50%; height: auto">
 </div>
 <div class="offset-sm-0 col-sm-12 col-md-6 form-group row">
     <label for="images" class="col-sm-12 col-md-12">Type de prix : {{@$announcement->price_type}}</label>

@@ -80,6 +80,28 @@ const phone_numbers = document.querySelectorAll(".phone_number").forEach(functio
     });
 }); */
 
-/* $(document).ready(function () {
-    bsCustomFileInput.init();
-}); */
+$(document).ready(function () {
+    //bsCustomFileInput.init();
+
+    //processing upload of image
+    $(document).on("click", ".browse", function() {
+     let file = $(this)
+        .parent()
+        .parent()
+        .parent()
+        .find("#images");
+      file.trigger("click");
+    });
+    $('input[type="file"]').change(function(e) {
+        let fileName = e.target.files[0].name;
+        $("#file").val(fileName);
+
+        let reader = new FileReader();
+        reader.onload = function(e) {
+        // get loaded data and render thumbnail.
+        document.getElementById("preview").src = e.target.result;
+        };
+        // read the image file as a data URL.
+        reader.readAsDataURL(this.files[0]);
+    });
+});

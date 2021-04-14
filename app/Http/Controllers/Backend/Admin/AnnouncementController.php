@@ -60,7 +60,7 @@ class AnnouncementController extends Controller
                         return $validation_status."<br>".$annonce_status;
                     })
                     ->addColumn('title',function ($row) {
-                        return '<a href="'.url("/mes_annonces/announcement/$row->slug").'"><img src="'.url("/voir/images/$row->images").'" alt="'.@$row->title.'" style="width:50px; height: auto"><strong>'.$row->title.'</strong></a>';
+                        return '<a href="'.url("/admin/announcement/$row->id").'"> <img src="'.url("/voir/images/$row->images").'" alt="'.@$row->title.'" style="width:50px; height: auto"> <strong>'.$row->title.'</strong></a>';
                     })
                     ->addColumn("category_id", function($row){
                         return @$row->category->name;

@@ -17,7 +17,7 @@
                                 <div class="col-6"><strong>Catégorie :</strong></div><div class="col-6 meta-value"><span>{{@$announcement->category->name}}</span></div>
                                 <div class="col-12 row"> 
                                     @if(intval($announcement->lock_publication) === 1)
-                                        <div class="mt-2 alert alert-warning">La publication de cette annonce est bloquée. Elle doit étre liée à un événement pour être publier.</div>
+                                        <div class="mt-2 alert alert-warning">La publication de cette annonce est bloquée. Elle doit étre liée à un événement pour être publiée.</div>
                                     @else
                                         @if(intval($announcement->publication_status) === 1 )
                                             <div class="col-6"><strong>Posté le :</strong></div><div class="col-6 meta-value"> <span>{{date('d/m/Y', strtotime($announcement->published_at))}}</span> </div>
