@@ -8,7 +8,7 @@ $(document).ready(function () {
                 },
             });
     }
-    $(".SaveFinalDate").click(function () {
+    $(".SaveFinalDate").on('click',function () {
         var a = "";
         $(".hourselected").each(function (b) {
             void 0 != $(this).data("date") && (a += $(this).data("date") + "*" + $(this).val() + ";");
@@ -16,7 +16,7 @@ $(document).ready(function () {
             $("#datefinal").val(a),
             $("#HoursPickupModal").modal("toggle");
     }),
-        $(".btn-TimeSelection").click(function () {
+        $(".btn-TimeSelection").on('click',function () {
             a();
         });
     var b = [],
@@ -26,7 +26,7 @@ $(document).ready(function () {
             },
         },
         d = {};
-    $(".AjoutFinalise").click(function () {
+    $(".AjoutFinalise").on('click',function () {
         if (((b = []), $("#AjoutForm").isValid(d, c, !0))) {
             var a = $("#datefinal").val().slice(0, -1).split(";");
             a.sort();
@@ -54,7 +54,16 @@ $(document).ready(function () {
                     $(".btn-TimeSelection").removeClass("hide"), a();
                 }
             }),
-        $("#date").click(function () {
+        $("#date").on('click',function () {
             $(this).datepickup();
+        });
+        //Date picker for event filter
+        $('#dates_id,#filter_date_max_id').datepicker({
+            todayBtn: true,
+            clearBtn: true,
+            language: "fr",
+            autoclose: true,
+            todayHighlight: true,
+            toggleActive: true
         });
 });

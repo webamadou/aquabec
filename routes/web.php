@@ -78,14 +78,19 @@ Route::get('/chercher/',[WelcomeController::class, 'searchContent'])->name('sear
 Route::get('voir/images/{filename?}', [UserDashboard::class, 'showImage'])->name('show_image');
 //Pages route
 Route::get("/pages/{page:slug}",[WelcomeController::class, 'page'])->name("page");
-
+//Route to autocomplete a users list field
+Route::get("/autocomplete-user",[UserDashboard::class, 'autocomplete'])->name('autocomplete-user');
 Route::get('/linkstorage', function () {
     Artisan::call('storage:link');
 });
+/*Routes to update list of items with Ajax through a filter*/
+Route::get('/filter/announcements', [WelcomeController::class, 'filterAnnouncements']);
+Route::get('/filter/events', [WelcomeController::class, 'filterEvents']);
+//Select the cities of a selected region
+Route::get("select_cities/",[UserDashboard::class, "selectCities"])->name("select_cities");
 /******************************/
 /*  VERIFIED USERS ROUTES     */
 /******************************/
-
 Route::middleware(['auth','verified'])->group(function (){
     /*
     * Admin's Routes
@@ -237,7 +242,7 @@ Route::middleware(['auth','verified'])->group(function (){
         Route::get('get-events-data', [EventsDashboard::class, 'getEventsData']);
         Route::get('/membres/{default_tab?}', [UserDashboard::class, 'infosPerso'])->name('infosperso');
         Route::post("/update/members/infosperso", [UserController::class, 'updateInfosPerso'])->name("updateInfosPerso");
-        Route::get("select_cities/",[UserDashboard::class, "selectCities"])->name("select_cities");
+        //Route::get("select_cities/",[UserDashboard::class, "selectCities"])->name("select_cities");
         Route::get("user_sent_transactions/",[UserDashboard::class, "userSentTransactions"])->name("userSentTransactions");
         Route::post("/update_password", [UserController::class, "updatePWD"])->name('update_password');
         Route::post("/assign_role", [UserController::class, "assignRole"])->name('assign_role');

@@ -50,7 +50,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     </script>
 </head>
-<body class="hold-transition layout-top-nav" base_route="{{ config('app.url') }}">
+<body class="hold-transition layout-top-nav" siteurl="{{ config('app.url') }}">
 <div class="wrapper">
     <!-- Navbar -->
     <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">

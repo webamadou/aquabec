@@ -122,30 +122,32 @@
                 });
             }
 
-            //*** Select the cities of the selected region *** 
-            const regions = document.getElementById("region_id");
-            regions.addEventListener('change', function (event) {
-                const selected_region = this.value;
-                $.ajax({
-                    type: 'get',
-                    url: `{{url('/select_cities')}}`,
-                    data: {'id': selected_region},
-                    success: function(res){
-                        const entries = Object.entries(res);
-                        const cities_field = document.getElementById("city_id");
-                        cities_field.innerHTML = `<option value=""> --- </option>`;
-                        for(const [key,region] of entries){
-                            cities_field.innerHTML += `<option value="${key}">${region}</option>`;
-                        }
-                    }
-                });
-            });
         });
     </script>
 
     <script src="{{asset('/dist/ckeditor/ckeditor.js')}}" defer></script>
     <script>
             $(document).ready(function () {
+                //*** Select the cities of the selected region ***
+                const regions = document.getElementById("region_id");
+                document.getElementById("region_id").addEventListener('change', function (event) {
+                    const selected_region = this.value;
+                    $.ajax({
+                        type: 'get',
+                        url: `{{url('/select_cities')}}`,
+                        data: {'id': selected_region},
+                        success: function(res){
+                            const entries = Object.entries(res);
+                            const cities_field = document.getElementById("city_id");
+                            cities_field.innerHTML = `<option value=""> --- </option>`;
+                            for(const [key,region] of entries){
+                                console.log(key);
+                                cities_field.innerHTML += `<option value="${key}">${region}</option>`;
+                            }
+                        }
+                    });
+                });
+
                 $('.ckeditor').ckeditor();
             });
     </script>

@@ -216,8 +216,7 @@ class User extends Authenticatable implements MustVerifyEmail
                                            ->Where('name','!=','banquier'); 
                                         })
                         ->where('id','!=',$this->id)
-                        ->where('profile_status',1)
-                        ;
+                        ->where('profile_status','<',2) ;
         }
 
         return $users;

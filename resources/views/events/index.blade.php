@@ -16,7 +16,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    @include("layouts.front.partials.events_filters")
+                    @include("layouts.front.partials.   ")
                     <table class="table table-success table-striped table-borderless" id="events-table">
                         <thead class="table-light">
                             <tr>
