@@ -16,7 +16,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    @include("layouts.front.partials.   ")
+                    @include("layouts.front.partials.events_filters")
                     <table class="table table-success table-striped table-borderless" id="events-table">
                         <thead class="table-light">
                             <tr>
@@ -39,7 +39,13 @@
 
     <script defer>
         $(function() {
-           let table = $('#events-table').DataTable({
+            $('body').on('click','.uncolapser',function(e){
+                let $id = $(this).data('item');
+                //$(this).toggleClass('fa-folder-open');
+                $("#date-"+$id).toggleClass("uncolapse");
+            })
+
+            let table = $('#events-table').DataTable({
                 processing: true,
                 serverSide: true,
                 dom: 'Bfrliptip',

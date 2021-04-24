@@ -56,7 +56,7 @@
                 </div>
                 <div class="col-md-12 pr-lg-0 py-1 row justify-content-end">
                 @can('update', $user)
-                    <a class="btn btn-primary btn-sm" href="{{route('admin.users.edit',$user)}}"><i class="fa fa-user-edit"></i> Editer</a>
+                    <a class="btn btn-primary btn-sm" href="{{route('admin.users.edit',$user)}}"><i class="fa fa-user-edit"></i> Modifier</a>
                 @endcan
                 </div>
             </div>

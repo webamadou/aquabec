@@ -31,7 +31,7 @@ class UserController extends Controller
 
     public function usersData()
     {
-        $users = User::select('id','name','prenom','slug','email','updated_at')->with('roles')->where('profile_status','<=',1)->get();
+        $users = User::select('id','name','prenom','username','slug','email','updated_at')->with('roles')->where('profile_status','<=',1)->get();
 
         return datatables()
             ->collection($users)
@@ -214,7 +214,7 @@ class UserController extends Controller
     public function updateInfosPerso(Request $request)
     {
         $data = $request->validate([
-            "name"          => "required",
+            "name"          => "nullable",
             "prenom"        => "nullable",
             "region_id"     => "nullable",
             "city_id"       => "nullable",

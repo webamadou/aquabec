@@ -24,7 +24,7 @@
                         @foreach($user->currencies as $currency)
                             <tr>
                                 <td style="text-align: center">
-                                    <div class="info-box-icon text-primary"><i class="{{$currency->icons}}"></i> <strong class="text-danger"> {{$currency->name}}</strong></div>
+                                    <div class="text-primary"><i class="{{$currency->icons}}"></i> <strong class="text-danger"> {{$currency->name}}</strong></div>
                                 </td>
                                 <td>{!! $currency->description !!}</td>
                                 <td>

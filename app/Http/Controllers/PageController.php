@@ -135,7 +135,8 @@ class PageController extends Controller
      */
     public function edit(Page $page)
     {
-        return view("admin.pages.create",compact('page'));
+        $roles = \App\Models\Role::all();
+        return view("admin.pages.create",compact('page','roles'));
     }
 
     public function edit_section(HomeSection $home_section)

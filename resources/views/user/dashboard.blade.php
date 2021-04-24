@@ -1,6 +1,6 @@
 @extends('layouts.front.app')
 
-@section('title','Dashboard')
+@section('title','Tableau de bord')
 
 @section('content')
 

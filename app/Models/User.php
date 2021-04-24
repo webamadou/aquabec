@@ -206,6 +206,14 @@ class User extends Authenticatable implements MustVerifyEmail
                             ->where('profile_status','<=',1);
         } elseif($this->hasAnyRole(['chef-vendeur','vendeur'])){
             $users = $this->godchildren();
+        } elseif($this->hasAnyRole(['banquier','banker'])){
+            $users = $query->whereHas("roles", function($q){
+                                         $q->where('name','super-admin')
+                                           ->orWhere('name','admin')
+                                           ->orWhere('name','banquier');
+                                        })
+                        ->where('id','!=',$this->id)
+                        ->where('profile_status','<',2) ;
         }
         else{
             $users = $query->whereHas("roles", function($q){
@@ -367,11 +375,19 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function getUnlinkedEvents()
     {
-        return DB::table('events')
+        return DB::table("events")
                     ->leftjoin('announcements', 'events.id', '=', 'announcements.event_id')
-                    ->orWhere('events.owner',@$this->id)
-                    ->orWhere('events.posted_by',@$this->id)
+                    ->where(function($query){
+                        $query->where('events.owner',1)
+                                ->orWhere('events.posted_by',@$this->id);
+                    })
                     ->where('announcements.event_id',NULL) ;
+
+        /* return DB::table('events')
+                    ->leftjoin('announcements', 'events.id', '=', 'announcements.event_id')
+                    ->where('events.owner',@$this->id)
+                    ->orWhere('events.posted_by',@$this->id)
+                    ->where('announcements.event_id',NULL) ; */
                     /* ->select('events.title','events.id','announcements.event_id','events.owner') ->pluck('events.title','events.id') ;*/
     }
 

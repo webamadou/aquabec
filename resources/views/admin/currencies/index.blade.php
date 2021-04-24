@@ -109,6 +109,7 @@
                 order: [[ 0, 'asc' ]],
                 pageLength: 100,
                 responsive: true,
+                dom: 'Bfrliptip',
                 "oLanguage":{
                       "sProcessing":     "<i class='fa fa-2x fa-spinner fa-pulse'>",
                       "sSearch":         "Rechercher&nbsp;:",

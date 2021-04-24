@@ -101,3 +101,8 @@
     @endif
     {!! $errors->first('publication_status', '<div class="error-message col-12">:message</div>') !!}
 </div>
+
+<script>
+    $(document).ready(function () {
+    });
+</script>

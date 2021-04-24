@@ -1,13 +1,13 @@
 @extends('layouts.back.admin')
 
-@section('title','Historique des transferts de credit')
+@section('title','Historique des transferts de monnaies')
 
 @section('content')
     <div class="row">
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="card-title font-weight-bold">Liste des transactions</h2>
+                    <h2 class="card-title font-weight-bold">Liste des transferts</h2>
                 </div>
                 <div class="card-body">
                     <table class="table table-bordered" id="credits-table">
@@ -45,12 +45,12 @@
                     { data: 'ref', name: 'ref' },
                     { data: null, name: 'sent_by',
                         render: data => {
-                                return `<strong>${data.sent_by.name}</strong><br><span>Réserve initial: ${data.sender_initial_credit}</span><br><span>Réserve final: ${data.sender_new_credit}</span><br>`;
+                                return `<strong>${data.sent_by.username}</strong><br><span>Réserve initial: ${data.sender_initial_credit}</span><br><span>Réserve final: ${data.sender_new_credit}</span><br>`;
                             }
                     },
                     { data: null, name: 'sent_to',
                         render: data => { 
-                                return `<strong>${data.sent_to.name}</strong><br><span>Réserve initial: ${data.recipient_initial_credit}</span><br><span>Réserve final: ${data.recipient_new_credit}</span><br>`;
+                                return `<strong>${data.sent_to.username}</strong><br><span>Réserve initial: ${data.recipient_initial_credit}</span><br><span>Réserve final: ${data.recipient_new_credit}</span><br>`;
                             }
                     },
                     { data: 'sent_value', name: 'sent_value' },

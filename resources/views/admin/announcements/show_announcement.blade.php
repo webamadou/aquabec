@@ -67,7 +67,7 @@
                             </ul>
                         </div>
                         <div class="d-flex  announcement-footer">
-                            <div class="mx-2"><a href="{{route('admin.edit_announcement',@$announcement)}}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Editer </a></div>
+                            <div class="mx-2"><a href="{{route('admin.edit_announcement',@$announcement)}}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Modifier </a></div>
                             <div class="mx-2">
                                 <a href="#" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-delete" data-whatever="{{route('admin.delete_announcement',@$announcement)}}"><i class="fa fa-user-times"></i> Supprimer</a>
                             </div>

@@ -39,7 +39,7 @@ $(document).ready(function () {
         $(".input-group.date")
             .datepicker({ clearBtn: !0, language: "fr", multidate: !0, multidateSeparator: ",", startDate: "today", todayHighlight: !0,format: "dd-mm-yyyy" })
             .on("hide", function (b) {
-                var c = $("").val().split(",");
+                var c = $("#datetimepicker1").val().split(",");
                 if (c.length >= 1 && "" != c[0]) {
                     $("#themodal").html(""), c.sort();
                     for (var d = 0; d < c.length; d++)

@@ -61,6 +61,9 @@ class EventController extends Controller
                         $validation_status = intval($row->validated) === 1?'<span class="badge badge-success"><i class="fa fa-check"></i> Validé</span>':(intval($row->validated > 1)?'<span class="badge badge-danger">Rejeté</span>':'<span class="badge badge-primary">Validation en attente</span>');
                         return $validation_status."<br>".$annonce_status;
                     })
+                    ->addColumn('id',function ($row) {
+                        return $row->id;
+                    })
                     ->addColumn('title',function ($row) {
                         return '<a href="'.url("/admin/event/$row->id").'"><img src="'.url("/voir/images/$row->images").'" alt="'.@$row->title.'" style="width:50px; height: auto"><strong>'.$row->title.'</strong></a>';
                     })
@@ -69,13 +72,16 @@ class EventController extends Controller
                     })
                     ->addColumn('dates',function($row){
                         $dates = $row->event_dates;
-                        $dates_string = "";
+                        $dates_string = '<div class="collapsable-dates" id="date-'.$row->slug.'">';
                         if($dates){
+                            $i = 0;
                             foreach ($dates as $key => $date) {
+                                ++$i;
                                 if(trim($date->event_date) != "")
                                     $dates_string .= '<span class="badge badge-primary text-sm d-block my-1 font-weight-normal"> '.date('d-m-Y H:i', strtotime($date->event_date)).'</span> ';
                             }
-                            return $dates_string;
+                            $uncollapse = $i > 1?'<span class="uncolapser" data-item="'.$row->slug.'"><i class="fa fa-folder-open"></i><u class="d-none">'.$i.'</u></span>':$i;
+                            return $dates_string.$uncollapse.'</div>';
                         }
                         $prix = intval($row->price_type) === 1? '$'.number_format($row->price,2,'.',''):(intval($row->price_type) === 3?"Gratuit":"Échange");
                         return $prix;
@@ -102,7 +108,7 @@ class EventController extends Controller
 
                         return view('layouts.back.datatables.actions-btn',compact('edit_route','modal_togglers'));
                     })
-                   ->filter(function ($instance) use ($request) {
+                    ->filter(function ($instance) use ($request) {
                         if ($request->get('region_id') != '') {
                            $instance->where('region_id', $request->get('region_id'));
                         }
@@ -116,6 +122,12 @@ class EventController extends Controller
                             $postal_code = $request->get('postal_code');
                            $instance->where('postal_code','LIKE', "%$postal_code%");
                         }
+                        if ($request->get('date_min') != '') {
+                            $dates = date( 'Y-m-d', strtotime($request->get('date_min')) );
+                            $instance
+                                /* ->join('event_dates','events.id','=','event_dates.event_id') */
+                                ->where('events.dates','LIKE', "%".$dates."%");
+                        }
                         if ($request->get('price_type') == '3' || $request->get('price_type') == '2') {
                            $instance->where('price_type', $request->get('price_type'));
                         }
@@ -128,12 +140,55 @@ class EventController extends Controller
                         if (!empty($request->get('search'))) {
                             $instance->where(function($w) use($request){
                                $search = $request->get('search');
-                               $w->orWhere('title', 'LIKE', "%$search%");
+                               $w->orWhere('title', 'LIKE', "%$search%")
+                                    ->orWhere('dates', 'LIKE', "%$search%")
+                                    ->orWhere('id', 'LIKE', "%$search%");
                            });
                         }
-                   })
-                   ->rawColumns(['title','organisation','dates','owner','region_id','publication','action'])
-                   ->make(true);
+                    })
+                    ->order(function ($instance) use ($request){
+                            $order = @$request->get('order')[0];
+                            switch ($order['column']) {
+                                case 0:
+                                    $instance->orderby('events.id', $order['dir']);
+                                    break;
+                                case 1:
+                                    $instance->orderby('events.title', $order['dir']);
+                                    break;
+                                case 2:
+                                    $instance
+                                        ->join('event_dates','event_dates.event_id','=','events.id')
+                                        ->orderby('event_dates.event_date', $order['dir']);
+                                    break;
+                                case 3:
+                                    $instance->orderby('events.region_id', $order['dir'])
+                                                ->orderby('events.city_id', $order['dir']);
+                                    break;
+                                case 4:
+                                    $instance->orderby('events.owner', $order['dir']);
+                                    break;
+                                /* case 5:
+                                    $instance->orderby('region_id', $order['dir'])
+                                                ->orderby('city_id', $order['dir']);
+                                    break; */
+                                case 6:
+                                    $instance->orderby('events.publication_status', $order['dir']);
+                                    break;
+                                
+                                default:
+                                    $instance->orderby('events.updated_at', "desc");
+                                    break;
+                            }
+                            $instance
+                                /* ->join('event_dates','event_dates.event_id','=','events.id')
+                                ->groupby('events.id') */
+                                ->skip( @$request->get('start') )
+                                ->take( @$request->get('lenght') );
+                            
+                            // echo $instance->join('event_dates','event_dates.event_id','=','events.id')->groupby('events.id')->toSql();
+                    })
+                    ->rawColumns(['id','title','organisation','dates','owner','region_id','publication','action'])
+                    ->make(true);
         }
         $data = Event::where('publication_status','<',2);
         

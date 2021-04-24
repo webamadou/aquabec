@@ -20,6 +20,7 @@
                     <table class="table table-success table-striped table-borderless" id="events-table">
                         <thead class="table-light">
                             <tr>
+                                <th>Id</th>
                                 <th>Titre</th>
                                 <th>Date(s)</th>
                                 <th>Région et Ville</th>
@@ -41,7 +42,13 @@
 
     <script defer>
         $(function() {
-           let table = $('#events-table').DataTable({
+            $('body').on('click','.uncolapser',function(e){
+                let $id = $(this).data('item');
+                //$(this).toggleClass('fa-folder-open');
+                $("#date-"+$id).toggleClass("uncolapse");
+            })
+
+            let table = $('#events-table').DataTable({
                 processing: true,
                 serverSide: true,
                 dom: 'Bfrliptip',
@@ -56,7 +63,7 @@
                             d.search            = $('input[type="search"]').val(),
                             d.city_id           = $('#filter_city_id').val(),
                             d.date_min          = $('#filter_date_min_id').val(),
-                            d.date_max          = $('#filter_date_max_id').val(),
+                            /* d.date_max          = $('#filter_date_max_id').val(), */
                             d.pub_type          = $('#filter_publication_type_id').val(),
                             d.organisateur      = $('#filter_organisation_id').val(),
                             d.price_min         = $('#filter_price_min_id').val(),
@@ -67,6 +74,7 @@
                         }
                 },
                 columns: [
+                    { data: "id", name: 'id'},
                     { data: "title", name: 'title'},
                     { data: "dates", name: 'dates'},
                     { data: "region_id", name: 'region_id'},
