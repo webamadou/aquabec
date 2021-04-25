@@ -226,7 +226,7 @@ $(document).on('ready', function () {
     if (autocomplete_field !== null) {
         autocomplete_field.addEventListener('keyup', function (e) {
             $.ajax({
-                url: `${SITE_URL}/autocomplete-user`,
+                url: `${SITE_URL}/autocomplete-users-publications`,
                 type: "get",
                 data: {
                     "_token": $('meta[name="csrf-token"]').attr('content'),

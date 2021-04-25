@@ -31,7 +31,11 @@ class DashboardController extends Controller
         $announcements  = $current_user->myAnnouncements()->count() ;
         return view('user.dashboard', compact('notifications','events','announcements'));
     }
-
+    /**
+     * Autocompletion method
+     * List user with username like user's request
+     * Use in transfering currencies
+     */
     public function autocomplete(Request $request)
     {
         $user = auth()->user();
@@ -49,6 +53,33 @@ class DashboardController extends Controller
                         ->orderby('username')
                         ->select('id','name','prenom','username')
                         ->get();
+        // dd($users,'"%'.$input.'%"');
+        return response()->json($users);
+    }
+
+    /**
+     * Autocompletion method
+     * List user with username like user's request
+     * Use in filtering publication by author
+     */
+    public function autocompleteUserPublication(Request $request)
+    {
+        $user = auth()->user();
+        if(!$user){//If user is not logged in
+            $user = new User();
+        }
+        $input = strtolower( trim( $request->get('autocomplete_user') ) );
+        $users = User::where('username','LIKE',"%$input%")
+                        ->orWhere('id',$input)
+                        ->orderby('username')
+                        ->select('id','name','prenom','username')
+                        ->get();
+        /* $users = $user->recipientList()
+                        ->where('username','LIKE',"%$input%")
+                        ->orWhere('id',$input)
+                        ->orderby('username')
+                        ->select('id','name','prenom','username')
+                        ->get(); */
         // dd($users,'"%'.$input.'%"');
         return response()->json($users);
     }

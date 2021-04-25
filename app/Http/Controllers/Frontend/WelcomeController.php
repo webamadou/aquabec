@@ -192,7 +192,13 @@ class WelcomeController extends Controller
                             ->join('categories', 'announcements.category_id','=','categories.id')
                             ->join('users', 'announcements.owner','=','users.id')
                             ->select( 'announcements.title', 'announcements.slug', 'announcements.images', 'announcements.price', 'announcements.price_type', 'categories.name as categ_name','users.username as owner' )
-                            ->paginate(12);
+                            ->get();
+            
+            /* $announcements = Announcement::where('category_id',$category->id)
+                                    ->where('publication_status','1')
+                                    ->where('lock_publication','!=','1')
+                                    ->where('validated','1')
+                                    ->paginate(12); */
         }
         return response()->json($components   , 200);
     }

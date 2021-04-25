@@ -80,6 +80,7 @@ Route::get('voir/images/{filename?}', [UserDashboard::class, 'showImage'])->name
 Route::get("/pages/{page:slug}",[WelcomeController::class, 'page'])->name("page");
 //Route to autocomplete a users list field
 Route::get("/autocomplete-user",[UserDashboard::class, 'autocomplete'])->name('autocomplete-user');
+Route::get("/autocomplete-users-publications",[UserDashboard::class, 'autocompleteUserPublication'])->name('autocomplete-user-publication');
 Route::get('/linkstorage', function () {
     Artisan::call('storage:link');
 });
