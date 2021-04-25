@@ -20,7 +20,7 @@ class PermissionSeeder extends Seeder
             ['name' => 'est un represntant', 'permission_group' => 'base'],
             ['name' => 'Transferer du crédit', 'permission_group' => 'base'],
             ['name' => 'Transferer du crédit', 'permission_group' => 'base'],
-            ['name' => 'Editer des pages', 'permission_group' => 'general'],
+            ['name' => 'Modifier des pages', 'permission_group' => 'general'],
             ['name' => 'Gérer des organisations', 'permission_group' => 'general'],
             ['name' => 'Gérer des organisations', 'permission_group' => 'general'],
             ['name' => 'Gérer les catégories', 'permission_group' => 'general'],

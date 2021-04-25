@@ -20,7 +20,7 @@
     <![endif]-->
 
 </head>
-<body>
+<body siteurl="{{ config('app.url') }}">
 
 @include('frontend.includes.sidebar')
 
@@ -42,6 +42,9 @@
 </noscript>
 <!-- Javascript File
    =============================================================================-->
+<script src="{{asset('dist/datepicker/bootstrap-datepicker.js')}}" defer></script>
+<script src="{{asset('js/bootstrap-datepicker.js')}}" defer></script>
+<script src="{{asset('dist/moment.js')}}" defer></script>
 <script src="{{ asset('js/frontend.js') }}"></script>
 <script src="{{ asset('js/scripts.js') }}" defer></script>
 <script src="https://kit.fontawesome.com/9466c40bfd.js" crossorigin="anonymous"></script>

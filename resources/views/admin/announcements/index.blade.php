@@ -20,6 +20,7 @@
                     <table class="table table-success table-striped table-borderless" id="announcements-table">
                         <thead class="table-light">
                             <tr>
+                                <th>N°</th>
                                 <th>Titre</th>
                                 <th>Categorie</th>
                                 <th>Prix</th>
@@ -81,6 +82,7 @@
 
             let table = $('#announcements-table').DataTable({
                             processing: true,
+                            ordering: true,
                             serverSide: true,
                             dom: 'Bfrliptip',
                             buttons: [
@@ -103,6 +105,7 @@
                                 }
                             },
                             columns: [
+                                { data: 'id', name: 'id' },
                                 { data: 'title', name: 'title' },
                                 { data: 'category_id', name: 'category_id' },
                                 { data: 'price', name: 'price' },
@@ -111,7 +114,7 @@
                                 { data: 'publication', name: 'publication'},
                                 { data: 'action', name: 'action'},
                             ],
-                            order: [[ 5, 'asc' ]],
+                            order: [[ 0, 'asc' ]],
                             pageLength: 100,
                             responsive: true,
                             "oLanguage":{

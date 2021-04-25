@@ -122,31 +122,58 @@
                 });
             }
 
-            //*** Select the cities of the selected region *** 
-            const regions = document.getElementById("region_id");
-            regions.addEventListener('change', function (event) {
-                const selected_region = this.value;
-                $.ajax({
-                    type: 'get',
-                    url: `{{url('/select_cities')}}`,
-                    data: {'id': selected_region},
-                    success: function(res){
-                        const entries = Object.entries(res);
-                        const cities_field = document.getElementById("city_id");
-                        cities_field.innerHTML = `<option value=""> --- </option>`;
-                        for(const [key,region] of entries){
-                            cities_field.innerHTML += `<option value="${key}">${region}</option>`;
-                        }
-                    }
-                });
-            });
         });
     </script>
 
-    <script src="{{asset('/dist/ckeditor/ckeditor.js')}}" defer></script>
     <script>
             $(document).ready(function () {
-                $('.ckeditor').ckeditor();
+                
+
+                //processing upload of image
+                $(document).on("click", ".browse", function () {
+                    let file = $(this)
+                        .parent()
+                        .parent()
+                        .parent()
+                        .find("#images");
+                    file.trigger("click");
+                });
+                $('input[type="file"]').on('change', function (e) {
+                    let fileName = e.target.files[0].name;
+                    $("#file").val(fileName);
+
+                    let reader = new FileReader();
+                    reader.onload = function (e) {
+                        // get loaded data and render thumbnail.
+                        document.getElementById("preview").src = e.target.result;
+                    };
+                    // read the image file as a data URL.
+                    reader.readAsDataURL(this.files[0]);
+                });
+
+                //*** Select the cities of the selected region ***
+                const regions = document.getElementById("region_id");
+                document.getElementById("region_id").addEventListener('change', function (event) {
+                    const selected_region = this.value;
+                    $.ajax({
+                        type: 'get',
+                        url: `{{url('/select_cities')}}`,
+                        data: {'id': selected_region},
+                        success: function(res){
+                            const entries = Object.entries(res);
+                            const cities_field = document.getElementById("city_id");
+                            cities_field.innerHTML = `<option value=""> --- </option>`;
+                            for(const [key,region] of entries){
+                                console.log(key);
+                                cities_field.innerHTML += `<option value="${key}">${region}</option>`;
+                            }
+                        }
+                    });
+                });
             });
+    </script>
+    <script src="{{asset('/dist/ckeditor/ckeditor.js')}}" defer></script>
+    <script>
+        $('.ckeditor').ckeditor();
     </script>
 @endpush

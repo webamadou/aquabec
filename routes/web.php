@@ -78,14 +78,19 @@ Route::get('/chercher/',[WelcomeController::class, 'searchContent'])->name('sear
 Route::get('voir/images/{filename?}', [UserDashboard::class, 'showImage'])->name('show_image');
 //Pages route
 Route::get("/pages/{page:slug}",[WelcomeController::class, 'page'])->name("page");
-
+//Route to autocomplete a users list field
+Route::get("/autocomplete-user",[UserDashboard::class, 'autocomplete'])->name('autocomplete-user');
 Route::get('/linkstorage', function () {
     Artisan::call('storage:link');
 });
+/*Routes to update list of items with Ajax through a filter*/
+Route::get('/filter/announcements', [WelcomeController::class, 'filterAnnouncements']);
+Route::get('/filter/events', [WelcomeController::class, 'filterEvents']);
+//Select the cities of a selected region
+Route::get("select_cities/",[UserDashboard::class, "selectCities"])->name("select_cities");
 /******************************/
 /*  VERIFIED USERS ROUTES     */
 /******************************/
-
 Route::middleware(['auth','verified'])->group(function (){
     /*
     * Admin's Routes
@@ -108,6 +113,7 @@ Route::middleware(['auth','verified'])->group(function (){
     });
 
     Route::middleware(['role:super-admin|admin|banker|banquier'])->name('admin.')->prefix('admin')->group(function () {
+        Route::get("/autocomplete_user",[UserDashboard::class, 'autocomplete'])->name('autocomplete-user');
         // Dashboard Routes...
         Route::get('dashboard', [AdminDashboard::class, 'index'])->name('dashboard');
         //Logs des transferts de credit
@@ -237,7 +243,7 @@ Route::middleware(['auth','verified'])->group(function (){
         Route::get('get-events-data', [EventsDashboard::class, 'getEventsData']);
         Route::get('/membres/{default_tab?}', [UserDashboard::class, 'infosPerso'])->name('infosperso');
         Route::post("/update/members/infosperso", [UserController::class, 'updateInfosPerso'])->name("updateInfosPerso");
-        Route::get("select_cities/",[UserDashboard::class, "selectCities"])->name("select_cities");
+        //Route::get("select_cities/",[UserDashboard::class, "selectCities"])->name("select_cities");
         Route::get("user_sent_transactions/",[UserDashboard::class, "userSentTransactions"])->name("userSentTransactions");
         Route::post("/update_password", [UserController::class, "updatePWD"])->name('update_password');
         Route::post("/assign_role", [UserController::class, "assignRole"])->name('assign_role');
@@ -252,7 +258,7 @@ Route::middleware(['auth','verified'])->group(function (){
         Route::get("/mes_annonces/creation", [AnnouncementController::class, 'create'])->name('create_announcement');
         // Route::post("/mes_annonces/store", [UserDashboard::class, 'storeAnnouncement'])->name('store_announcement');
         Route::post("/mes_annonces/store", [AnnouncementController::class, 'store'])->name('store_announcement');
-        Route::get("/mes_annonces/announcement/{announcement:slug}", [AnnouncementController::class, 'show'])->name('show_announcement');
+        Route::get("/mes_annonces/annonce/{announcement:slug}", [AnnouncementController::class, 'show'])->name('show_announcement');
         Route::get("/mes_annonces/edit/{announcement:slug}", [AnnouncementController::class, 'edit'])->name('edit_announcement');
         Route::put("/mes_annonces/update/{announcement}", [AnnouncementController::class, 'update'])->name('update_announcement');
         Route::get("/myAnnouncements-data", [AnnouncementController::class, 'myAnnouncementsData'])->name('myAnnouncements-data');

@@ -4,14 +4,14 @@
         <input type="hidden" name="id" value="{{$user->id}}">
         <div class="offset-sm-2 col-8 form-group row">
             <label for="Région de résidence:" class="col-sm-12 col-md-12">Nom d'utilisateur : </label>
-            <input tabindex="6" class="form-control" name="username" id="username" type="text" value="{{old('username',$user->username)}}">
+            <input tabindex="6" class="form-control" name="username" id="username" type="text" value="{{old('username',$user->username)}}" readonly>
         </div>
         <div class="offset-sm-1 col-5 form-group row">
             <label for="prenom" class="col-sm-12 col-md-12">Prénom : </label>
             <input tabindex="6" class="form-control" name="prenom" id="prenom" type="text" value="{{old('prenom',$user->prenom)}}">
         </div>
         <div class="offset-sm-1 col-5 form-group row">
-            <label for="name" class="col-sm-12 col-md-12">Nom : *</label>
+            <label for="name" class="col-sm-12 col-md-12">Nom : </label>
             <input class="form-control" id="name" name="name" type="text" value="{{ old('name', $user->name) }}">
         </div>
         <div class="col-12 mx-auto"> <hr> </div>

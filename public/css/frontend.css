@@ -10960,6 +10960,141 @@ hr {
     background-color: #F7F9F8;
     padding-top: 1rem;
 }
+/* mozaique design */
+#item_img {
+    height: 176px;
+    width: 100%;
+}
+#item_img img {
+    width: 100%;
+    height: 230px;
+}
+#item_title {
+    height: 56px;
+    background: #1a3d82;
+    color: #ffffff;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    padding: 0 5px;
+    margin: 0;
+}
+#item_title a {
+    color: #ffffff;
+    display: inline-block;
+    line-height: 1;
+    font-size: large;
+}#item_price {
+    padding: 0 5px;
+    text-align: right;
+    padding-right: 8px !important;
+    font-size: small;
+    font-weight: bold;
+    background: #0d8ed1;
+    color: #ffffff;
+    border-bottom: 0.1vh solid #2d97ce;
+}
+.mozaique-item.visible{
+	display: initial;
+}
+.mozaique-item.hide{
+	display: none;
+}
+#item_category,#item_author {
+    background: #0b8ed1;
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: bold;
+    line-height: 1.6;
+}
+.water-mark {
+    width: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #b5b4b4;
+}
+.mozaique-item .card.shadow-sm.p-0 {
+    border: 3px solid #ffffff;
+    box-shadow: none;
+    transition: all 0.5s ease-in-out;
+}
+.mozaique-item .card.shadow-sm.p-0:hover {
+    box-shadow: 0px 1px 9px #969696;
+}
+/* mozaique design */
+/* datepicker design */
+.table td, .table th {
+    padding: .5rem;
+    vertical-align: top;
+    border-top: 1px solid #e9ecef;
+    font-size: x-small;
+    font-weight: bold;
+    text-align: center;
+}
+td.today.day {
+    border-bottom: 3px solid #1a3d82;
+}
+td.active.day {
+    border-bottom: 3px solid #0d8ed1;
+}
+/* datepicker design */
+/* filter design */
+#autocompletes {
+    list-style: none;
+    background: #fff;
+    border: 1px solid #1a3d82;
+    border-top: navajowhite;
+    margin-top: -0.6px;
+    padding: 0;
+    margin: 0;
+    max-height: 150px;
+    overflow: auto;
+}
+#autocompletes li {
+    padding: 6px 0;
+    line-height: 1.5;
+    cursor: pointer;
+    padding: 5px 6px;
+}
+#autocompletes li:hover {
+	background-color: #dedede;
+}
+.close-autocomplete {
+    color: #ffffff;
+    background: #d00f0f;
+    position: absolute;
+    right: 19px;
+    padding: 0px 8px;
+    border-radius: 0;
+    font-size: small;
+    line-height: 1.8;
+    cursor: pointer;
+}
+.filter-side-bar {
+    position: relative;
+    background: #ffffff;
+    width: 100%;
+    overflow: hidden;
+}
+.filter-side-bar .form-control {
+    height: 32px !important;
+    padding: 0;
+    font-size: small;
+}
+.filter-side-bar label {
+    font-size: small;
+    margin: 10px 0 0 0;
+    font-weight: bold;
+}
+.filter-side-bar #delete-filters {
+    padding: 1vh 1vw;
+    font-size: x-small;
+    text-transform: unset;
+}
+
+/* filter design */
 /*RESPONSIEVE*/
 @media (max-width: 1200px) {
 

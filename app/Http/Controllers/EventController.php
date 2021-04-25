@@ -24,7 +24,7 @@ class EventController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth',['role:vendeur|annonceur|super-admin']);
+        $this->middleware('auth',['role:vendeur|annonceur|super-admin|admin']);
     }
 
     /**
@@ -34,24 +34,22 @@ class EventController extends Controller
      */
     public function index(Request $request)
     {
-        /* $begin = new Carbon("01-01-2021");
-        $end = new Carbon("01-05-2021");
-
-        $interval   = DateInterval::createFromDateString('1 day');
-        $period     = new \DatePeriod($begin, $interval, $end);
-        $test = "";
-        foreach ($period as $dt) {
-            echo '"%'.$dt->format("Y-m-d").'%"<br>';
-        }
-        die(); */
         $user = auth()->user();
         if ($request->ajax()) {
             if($user->hasAnyRole(['chef-vendeur','vendeur'])){
                 $data = Event::where('posted_by',$user->id)
-                                    ->where('publication_status','<',2);
+                                    ->where('publication_status','<',2)
+                                    ->where(function($query){
+                                                $query->where('events.owner',1)
+                                                        ->orWhere('events.posted_by',@$this->id);
+                                            });
             } else {
                 $data = Event::where('posted_by',$user->id)
-                                    ->where('publication_status','<',2);
+                                    ->where('publication_status','<',2)
+                                    ->where(function($query){
+                                                $query->where('events.owner',1)
+                                                        ->orWhere('events.posted_by',@$this->id);
+                                            });
             }
             return Datatables::of($data)
                     ->addIndexColumn()
@@ -87,13 +85,16 @@ class EventController extends Controller
                     })
                     ->addColumn('dates',function($row){
                         $dates = $row->event_dates;
-                        $dates_string = "";
+                        $dates_string = '<div class="collapsable-dates" id="date-'.$row->slug.'">';
                         if($dates){
+                            $i = 0;
                             foreach ($dates as $key => $date) {
+                                ++$i;
                                 if(trim($date->event_date) != "")
                                     $dates_string .= '<span class="badge badge-primary text-sm d-block my-1 font-weight-normal"> '.date('d-m-Y H:i', strtotime($date->event_date)).'</span> ';
                             }
-                            return $dates_string;
+                            $uncollapse = $i > 1?'<span class="uncolapser" data-item="'.$row->slug.'"><i class="fa fa-folder-open"></i></span>':$i;
+                            return $dates_string.$uncollapse.'</div>';
                         }
                         $prix = intval($row->price_type) === 1? '$'.number_format($row->price,2,'.',''):(intval($row->price_type) === 3?"Gratuit":"Échange");
                         return $prix;
@@ -108,67 +109,107 @@ class EventController extends Controller
                     ->addColumn('region_id', function($row){
                         return '<strong>Region : </strong>'.@$row->region->name.'<br><strong>Ville : </strong>'.@$row->city->name;
                     })
-                   ->filter(function ($instance) use ($request) {
-                        if ($request->get('region_id') != '') {
-                           $instance->where('region_id', $request->get('region_id'));
-                        }
-                        if ($request->get('city_id') != '') {
-                           $instance->where('city_id', $request->get('city_id'));
-                        }
-                        if ($request->get('filter_categ_id') != '') {
-                           $instance->where('category_id', $request->get('filter_categ_id'));
-                        }
-                        if ($request->get('postal_code') != '') {
-                            $postal_code = $request->get('postal_code');
-                           $instance->where('postal_code','LIKE', "%$postal_code%");
-                        }
-                        if ($request->get('price_type') == '3' || $request->get('price_type') == '2') {
-                           $instance->where('price_type', $request->get('price_type'));
-                        }
-                        /* if ($request->get('price_min') != '' && $request->get('price_max') != '' ) {
-                           $instance->where('price','>=', $request->get('price_min'))->where('price','<=', $request->get('price_max'));
-                        }
-                        if ($request->get('price_min') != '' && $request->get('price_max') == '' ) {
-                           $instance->where('price','>=', $request->get('price_min'));
-                        } */
-                        if ($request->get('organisateur') != '' ) {
-                           $instance->where('organisation_id','<=', $request->get('organisateur'));
-                        }
-                        if ($request->get('pub_type') != '') {
-                           $instance->where('publication_status', $request->get('pub_type'));
-                        }
-                        /*if ($request->get('date_min') != '' && $request->get('date_max') != '') {
-                            $date_min = date( 'Y-m-d H:i:s', strtotime( $request->get( 'date_min' ) ) );
-                            $date_max = date( 'Y-m-d H:i:s', strtotime( $request->get( 'date_max' ) ) );
-                            dd($instance->where("id","!=","")->toSql());
+                    ->filter(function ($instance) use ($request) {
+                            if ($request->get('region_id') != '') {
+                            $instance->where('region_id', $request->get('region_id'));
+                            }
+                            if ($request->get('city_id') != '') {
+                            $instance->where('city_id', $request->get('city_id'));
+                            }
+                            if ($request->get('filter_categ_id') != '') {
+                            $instance->where('category_id', $request->get('filter_categ_id'));
+                            }
+                            if ($request->get('postal_code') != '') {
+                                $postal_code = $request->get('postal_code');
+                            $instance->where('postal_code','LIKE', "%$postal_code%");
+                            }
+                            if ($request->get('price_type') == '3' || $request->get('price_type') == '2') {
+                            $instance->where('price_type', $request->get('price_type'));
+                            }
+                            /* if ($request->get('price_min') != '' && $request->get('price_max') != '' ) {
+                            $instance->where('price','>=', $request->get('price_min'))->where('price','<=', $request->get('price_max'));
+                            }
+                            if ($request->get('price_min') != '' && $request->get('price_max') == '' ) {
+                            $instance->where('price','>=', $request->get('price_min'));
+                            } */
+                            if ($request->get('organisateur') != '' ) {
+                            $instance->where('organisation_id','<=', $request->get('organisateur'));
+                            }
+                            if ($request->get('pub_type') != '') {
+                            $instance->where('publication_status', $request->get('pub_type'));
+                            }
+                            /*if ($request->get('date_min') != '' && $request->get('date_max') != '') {
+                                $date_min = date( 'Y-m-d H:i:s', strtotime( $request->get( 'date_min' ) ) );
+                                $date_max = date( 'Y-m-d H:i:s', strtotime( $request->get( 'date_max' ) ) );
+                                dd($instance->where("id","!=","")->toSql());
 
-                             $instance->join( 'event_dates','events.id','=','event_dates.event_id' )
-                            ->where('event_dates.event_date','>=', $date_min )
-                            ->where('event_dates.event_date','<=', $date_max )
-                            ->select('events.id', 'events.title', 'events.images', 'events.dates', 'events.region_id', 'events.city_id', 'events.owner', 'events.posted_by', 'events.publication_status', 'events.created_at','event_dates.id','event_dates.id','event_dates.event_date','event_dates.event_id'); *
+                                $instance->join( 'event_dates','events.id','=','event_dates.event_id' )
+                                ->where('event_dates.event_date','>=', $date_min )
+                                ->where('event_dates.event_date','<=', $date_max )
+                                ->select('events.id', 'events.title', 'events.images', 'events.dates', 'events.region_id', 'events.city_id', 'events.owner', 'events.posted_by', 'events.publication_status', 'events.created_at','event_dates.id','event_dates.id','event_dates.event_date','event_dates.event_id'); *
 
-                            $instance = DB::table('events')
-                                        ->join('event_dates', 'events.id', '=', 'event_dates.event_id')
-                                        ->where('event_dates.event_date','>=',"$date_min") 
-                                        ->where('event_dates.event_date','<=',"$date_max") 
-                                        ->where('events.posted_by',$user->id) 
-                                        ->where('events.publiation_status','<',2) 
-                                        ->select('events.id', 'events.title', 'events.images', 'events.dates', 'events.region_id', 'events.city_id', 'events.owner', 'events.posted_by', 'events.publication_status', 'events.created_at','event_dates.id','event_dates.id','event_dates.event_date','event_dates.event_id')
-                                        ->distinct(); //
-                            // dd($instance)->toSql();
-                        }*/
-                        /* if ($request->get('date_max') != '') {
-                           $instance->where('published_at', '<=', date('Y-m-d', strtotime($request->get('date_max'))));
-                        } */
-                        if (!empty($request->get('search'))) {
-                            $instance->where(function($w) use($request){
-                               $search = $request->get('search');
-                               $w->orWhere('title', 'LIKE', "%$search%");
-                           });
-                        }
-                   })
-                   ->rawColumns(['title','organisation','dates','owner','region_id','publication'])
-                   ->make(true);
+                                $instance = DB::table('events')
+                                            ->join('event_dates', 'events.id', '=', 'event_dates.event_id')
+                                            ->where('event_dates.event_date','>=',"$date_min") 
+                                            ->where('event_dates.event_date','<=',"$date_max") 
+                                            ->where('events.posted_by',$user->id) 
+                                            ->where('events.publiation_status','<',2) 
+                                            ->select('events.id', 'events.title', 'events.images', 'events.dates', 'events.region_id', 'events.city_id', 'events.owner', 'events.posted_by', 'events.publication_status', 'events.created_at','event_dates.id','event_dates.id','event_dates.event_date','event_dates.event_id')
+                                            ->distinct(); //
+                                // dd($instance)->toSql();
+                            }*/
+                            /* if ($request->get('date_max') != '') {
+                            $instance->where('published_at', '<=', date('Y-m-d', strtotime($request->get('date_max'))));
+                            } */
+                            if (!empty($request->get('search'))) {
+                                $instance->where(function($w) use($request){
+                                $search = $request->get('search');
+                                $w->orWhere('title', 'LIKE', "%$search%");
+                            });
+                            }
+                    })
+                    ->order(function ($instance) use ($request){
+                            $order = @$request->get('order')[0];
+                            switch ($order['column']) {
+                                /* case 0:
+                                    $instance->orderby('events.id', $order['dir']);
+                                    break; */
+                                case 0:
+                                    $instance->orderby('events.title', $order['dir']);
+                                    break;
+                                case 1:
+                                    $instance
+                                        ->orderby('events.dates', $order['dir']);
+                                    break;
+                                case 2:
+                                    $instance->orderby('events.region_id', $order['dir'])
+                                                ->orderby('events.city_id', $order['dir']);
+                                    break;
+                                case 3:
+                                    $instance->orderby('events.owner', $order['dir']);
+                                    break;
+                                /* case 5:
+                                    $instance->orderby('region_id', $order['dir'])
+                                                ->orderby('city_id', $order['dir']);
+                                    break; */
+                                case 5:
+                                    $instance->orderby('events.publication_status', $order['dir']);
+                                    break;
+                                
+                                default:
+                                    $instance->orderby('events.updated_at', "desc");
+                                    break;
+                            }
+                            $instance
+                                /* ->join('event_dates','event_dates.event_id','=','events.id')
+                                ->groupby('events.id') */
+                                ->skip( @$request->get('start') )
+                                ->take( @$request->get('lenght') );
+                            
+                            // echo $instance->join('event_dates','event_dates.event_id','=','events.id')->groupby('events.id')->toSql();
+                    })
+                    ->rawColumns(['title','organisation','dates','owner','region_id','publication'])
+                    ->make(true);
         }
         
         //$form       = $this->getForm();

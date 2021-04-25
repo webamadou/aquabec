@@ -3,7 +3,7 @@
         <div class="col-sm-12 col-md-2 px-0">
             <label><small>Régions :</small></label>
             <select id='filter_region_id' class="form-control">
-                <option value="">--Filtrer par region--</option>
+                <option value=""> --- </option>
                 @foreach($regions as $key => $value)
                     <option value="{{$key}}">{{$value}}</option>
                 @endforeach
@@ -12,7 +12,7 @@
         <div class="col-sm-12 col-md-2 px-0">
             <label><small> Villes :</small></label>
             <select id='filter_city_id' class="form-control">
-                <option value="">--Filtrer par ville--</option>
+                <option value=""> --- </option>
                 @foreach($cities as $key => $value)
                     <option value="{{$key}}">{{$value}}</option>
                 @endforeach
@@ -21,7 +21,7 @@
         <div class="col-sm-12 col-md-2 px-0">
             <label><small> Catégories :</small></label>
             <select id='filter_categ_id' class="form-control">
-                <option value="">--Filtrer par catégorie--</option>
+                <option value=""> --- </option>
                 @foreach($categories as $key => $value)
                     <option value="{{$key}}">{{$value}}</option>
                 @endforeach
@@ -30,7 +30,7 @@
         <div class="col-sm-12 col-md-2 px-0">
             <label><small>Type de publication :</small></label>
             <select id='filter_publication_type_id' class="form-control">
-                <option value="">--Filtrer par types de publication--</option>
+                <option value=""> --- </option>
                 <option value="0"> Enregistrée en brouillon </option>
                 <option value="1"> Publiée </option>
                 <option value="2"> Enregistrée en privé </option>
@@ -38,12 +38,12 @@
         </div>
         <div class="col-sm-12 col-md-2 px-0">
             <label><small>Code postal :</small></label>
-            <input  id='filter_postal_code_id' type="text" name="postal_code" placeholder="Filtrer par code postal" />
+            <input  id='filter_postal_code_id' type="text" name="postal_code" placeholder="---" />
         </div>
     </div>
     <div class="col-sm-12 col-md-4 row justify-content-end p-0 bg-light">
         <div class="col-sm-12 col-md-6 px-0">
-            <label for="filterdates"><small>Filtrer par publication :</small></label>
+            <label for="filterdates"><small>Filtrer par date publication :</small></label>
             <div class="input-group-filter-min date">
                 <input type="text" class="form-control" id="filter_date_min_id"/>
                 <!-- <span class="input-group-addon">

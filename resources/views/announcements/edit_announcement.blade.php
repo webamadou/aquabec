@@ -120,6 +120,27 @@
                 });
             });
 
+            //processing upload of image
+            $(document).on("click", ".browse", function () {
+                let file = $(this)
+                    .parent()
+                    .parent()
+                    .parent()
+                    .find("#images");
+                file.trigger("click");
+            });
+            $('input[type="file"]').on('change', function (e) {
+                let fileName = e.target.files[0].name;
+                $("#file").val(fileName);
+
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                    // get loaded data and render thumbnail.
+                    document.getElementById("preview").src = e.target.result;
+                };
+                // read the image file as a data URL.
+                reader.readAsDataURL(this.files[0]);
+            });
 
         });
     </script>

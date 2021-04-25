@@ -35,10 +35,12 @@ class AnnouncementController extends Controller
         if ($request->ajax()) {
             if($user->hasAnyRole(['chef-vendeur','vendeur'])){
                 $data = Announcement::where('posted_by',$user->id)
-                                    ->where('publication_status','<',2);
+                                    ->where('publication_status','<',2)
+                                    ->with('event');
             } else {
                 $data = Announcement::where('posted_by',$user->id)
-                                    ->where('publication_status','<',2);
+                                    ->where('publication_status','<',2)
+                                    ->with('event');
             }
             return Datatables::of($data)
                     ->addIndexColumn()
@@ -67,7 +69,11 @@ class AnnouncementController extends Controller
                         return $validation_status."<br>".$annonce_status;
                     })
                     ->addColumn('title',function ($row) {
-                        return '<a href="'.url("/mes_annonces/announcement/$row->slug").'"><img src="'.url("/voir/images/$row->images").'" alt="'.@$row->title.'" style="width:50px; height: auto"><strong>'.$row->title.'</strong></a>';
+                        $event = \App\Models\Event::where('id',@$row->event_id)
+                                                    ->select('id','title','slug','images')
+                                                    ->first();
+                        $event = $event?"<br><strong>Evenement</strong> : <a href='".route('user.show_announcement',$event->slug)."'>$event->slug</a>":'';
+                        return '<a href="'.url("/mes_annonces/annonce/$row->slug").'"><img src="'.url("/voir/images/$row->images").'" alt="'.@$row->title.'" style="width:50px; height: auto"><strong>'.$row->title.'</strong></a> '.$event;
                     })
                     ->addColumn("category_id", function($row){
                         return $row->category->name;
@@ -86,50 +92,92 @@ class AnnouncementController extends Controller
                     ->addColumn('region_id', function($row){
                         return '<strong>Region : </strong>'.@$row->region->name.'<br><strong>Ville : </strong>'.@$row->city->name;
                     })
-                   ->filter(function ($instance) use ($request) {
-                        if ($request->get('region_id') != '') {
-                           $instance->where('region_id', $request->get('region_id'));
-                        }
-                        if ($request->get('city_id') != '') {
-                           $instance->where('city_id', $request->get('city_id'));
-                        }
-                        if ($request->get('filter_categ_id') != '') {
-                           $instance->where('category_id', $request->get('filter_categ_id'));
-                        }
-                        if ($request->get('postal_code') != '') {
-                            $postal_code = $request->get('postal_code');
-                           $instance->where('postal_code','LIKE', "%$postal_code%");
-                        }
-                        if ($request->get('price_type') == '3' || $request->get('price_type') == '2') {
-                           $instance->where('price_type', $request->get('price_type'));
-                        }
-                        if ($request->get('price_min') != '' && $request->get('price_max') != '' ) {
-                           $instance->where('price','>=', $request->get('price_min'))->where('price','<=', $request->get('price_max'));
-                        }
-                        if ($request->get('price_min') != '' && $request->get('price_max') == '' ) {
-                           $instance->where('price','>=', $request->get('price_min'));
-                        }
-                        if ($request->get('price_min') == '' && $request->get('price_max') != '' ) {
-                           $instance->where('price','<=', $request->get('price_max'));
-                        }
-                        if ($request->get('pub_type') != '') {
-                           $instance->where('publication_status', $request->get('pub_type'));
-                        }
-                        if ($request->get('date_min') != '') {
-                           $instance->where('published_at', '>=', date('Y-m-d', strtotime($request->get('date_min'))));
-                        }
-                        if ($request->get('date_max') != '') {
-                           $instance->where('published_at', '<=', date('Y-m-d', strtotime($request->get('date_max'))));
-                        }
-                        if (!empty($request->get('search'))) {
-                            $instance->where(function($w) use($request){
-                               $search = $request->get('search');
-                               $w->orWhere('announcements.title', 'LIKE', "%$search%");
-                           });
-                        }
-                   })
-                   ->rawColumns(['title','category_id','price','owner','region_id','publication'])
-                   ->make(true);
+                    ->filter(function ($instance) use ($request) {
+                            if ($request->get('region_id') != '') {
+                            $instance->where('region_id', $request->get('region_id'));
+                            }
+                            if ($request->get('city_id') != '') {
+                            $instance->where('city_id', $request->get('city_id'));
+                            }
+                            if ($request->get('filter_categ_id') != '') {
+                            $instance->where('category_id', $request->get('filter_categ_id'));
+                            }
+                            if ($request->get('postal_code') != '') {
+                                $postal_code = $request->get('postal_code');
+                            $instance->where('postal_code','LIKE', "%$postal_code%");
+                            }
+                            if ($request->get('price_type') == '3' || $request->get('price_type') == '2') {
+                            $instance->where('price_type', $request->get('price_type'));
+                            }
+                            if ($request->get('price_min') != '' && $request->get('price_max') != '' ) {
+                            $instance->where('price','>=', $request->get('price_min'))->where('price','<=', $request->get('price_max'));
+                            }
+                            if ($request->get('price_min') != '' && $request->get('price_max') == '' ) {
+                            $instance->where('price','>=', $request->get('price_min'));
+                            }
+                            if ($request->get('price_min') == '' && $request->get('price_max') != '' ) {
+                            $instance->where('price','<=', $request->get('price_max'));
+                            }
+                            if ($request->get('pub_type') != '') {
+                            $instance->where('publication_status', $request->get('pub_type'));
+                            }
+                            if ($request->get('date_min') != '') {
+                            $instance->where('published_at', '>=', date('Y-m-d', strtotime($request->get('date_min'))));
+                            }
+                            if ($request->get('date_max') != '') {
+                            $instance->where('published_at', '<=', date('Y-m-d', strtotime($request->get('date_max'))));
+                            }
+                            if (!empty($request->get('search'))) {
+                                $instance->where(function($w) use($request){
+                                $search = $request->get('search');
+                                $w->orWhere('announcements.title', 'LIKE', "%$search%");
+                            });
+                            }
+                    })
+                    ->order(function ($instance) use ($request){
+                            $order = @$request->get('order')[0];
+                            switch ($order['column']) {
+                                /* case 0:
+                                    $instance->orderby('id', $order['dir'])
+                                    ->orderby('id','desc');
+                                    break; */
+                                case 0:
+                                    $instance->orderby('title', $order['dir'])
+                                    ->orderby('id','desc');
+                                    break;
+                                case 1:
+                                    $instance->orderby('category_id', $order['dir'])
+                                    ->orderby('id','desc');
+                                    break;
+                                case 2:
+                                    $instance->orderby('price', $order['dir'])
+                                    ->orderby('id','desc');
+                                    break;
+                                case 3:
+                                    $instance->orderby('owner', $order['dir'])
+                                    ->orderby('id','desc');
+                                    break;
+                                case 4:
+                                    $instance->orderby('region_id', $order['dir']
+                                    ->orderby('city_id', $order['dir'])
+                                    ->orderby('id','desc'));
+                                    break;
+                                case 5:
+                                    $instance->orderby('owner', $order['dir'])
+                                    ->orderby('id','desc');
+                                    break;
+                                
+                                default:
+                                    $instance->orderby('id', "desc")
+                                    ->orderby('id','desc');
+                                    break;
+                            }
+                            $instance
+                                ->skip( @$request->get('start') )
+                                ->take( @$request->get('length') );
+                    })
+                    ->rawColumns(['title','category_id','price','owner','region_id','publication'])
+                    ->make(true);
         }
         
         //$form       = $this->getForm();
@@ -184,9 +232,9 @@ class AnnouncementController extends Controller
                             ->select('username','id')
                             ->get();
         //Check if user has enough of needed currency
-        $can_post   = $user->userHasEnoughCredit('annoucements_price','paid_currency');
-        $role_currency = $user->mainRole()->currency;
-        $user_events = $user->getUnlinkedEvents()->pluck("events.title","events.id")->all();
+        $can_post       = $user->userHasEnoughCredit('annoucements_price','paid_currency');
+        $role_currency  = $user->mainRole()->currency;
+        $user_events    = $user->getUnlinkedEvents()->pluck("events.title","events.id")->all();
 
         $announcement = new Announcement();
         $announcement->postal_code = @$user->postal_code;

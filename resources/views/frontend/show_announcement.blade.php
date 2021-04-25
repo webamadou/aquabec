@@ -71,7 +71,7 @@
                         <div class="d-flex  announcement-footer">
                         <!-- struggling to set a policy. Will do it latter -->
                         @if(intval(@$current_user->id) === intval(@$announcement->owner) || intval(@$current_user->id) === intval(@$announcement->posted_by))
-                            <div class="mx-2"><a href="{{route('user.edit_announcement',@$announcement->slug)}}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Editer </a></div>
+                            <div class="mx-2"><a href="{{route('user.edit_announcement',@$announcement->slug)}}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Modifier </a></div>
                             <div class="mx-2">
                                 <a href="#" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-delete" data-whatever="{{route('user.delete_announcement',@$announcement->slug)}}"><i class="fa fa-user-times"></i> Supprimer</a>
                             </div>

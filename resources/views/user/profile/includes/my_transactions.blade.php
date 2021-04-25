@@ -2,14 +2,14 @@
     <div class="col-md-12 col-sm-12">
         <div class="card">
             <div class="card-header">
-                <h2 class="card-title font-weight-bold">Liste de mes transferts de crédit</h2>
+                <h2 class="card-title font-weight-bold">Liste de mes transferts de monnaies</h2>
             </div>
             <div class="card-body">
                 <table class="table table-success table-striped table-borderless" id="my-transactions-table">
                     <thead class="table-light">
                     <tr>
                         <th>Actions</th>
-                        <th>Transactions</th>
+                        <th>Transferts</th>
                         <th>Notes</th>
                         <th>Date d'envoie</th>
                     </tr>
@@ -42,7 +42,7 @@
                     { data: null, name: 'sent_to',
                         render: data => {
                             if(data.sent_by.id == "{{$user->id}}")
-                                return `<span class="sent_by">Vous avez</span> envoyé ${data.sent_value} ${data.credit.name} à <span class="sent_to"> ${data.sent_to?data.sent_to.name:"Utilisateur supprimé"}</span>`;
+                                return `<span class="sent_by">Vous avez</span> envoyé ${data.sent_value} ${data.credit.name} à <span class="sent_to"> ${data.sent_to?data.sent_to.username:"Utilisateur supprimé"}</span>`;
                             else
                                 return `<span class="sent_by">${data.sent_by?data.sent_by.name:"Utilisateur supprimé"}</span> vous a envoyé ${data.sent_value} ${data.credit.name}`;
                             }

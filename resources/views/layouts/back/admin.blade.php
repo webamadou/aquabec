@@ -34,7 +34,7 @@
 
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="{{asset('dist/icons-picker/js/bootstrap-iconpicker.bundle.min.js')}}" defer></script>
-    <script src="{{asset('js/scripts.js')}}" defer></script>
+    <!-- <script src="{ {asset('js/scripts.js')}}" defer></script> -->
     @stack('scripts')
 
     <!-- Theme style -->
@@ -44,7 +44,7 @@
     <link rel="stylesheet" href="{{ asset('css/all.css') }}">
 </head>
 
-<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed" siteurl="{{ config('app.url') }}">
     <div class="wrapper">
 
         @include('layouts.back.partials.admin-navbar')
@@ -60,9 +60,7 @@
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-
                     @yield('content')
-
                 </div>
                 <!--/. container-fluid -->
             </section>
@@ -93,6 +91,60 @@
 @include('layouts.back.alerts.sweetalerts')
 <script src="{{asset('dist/datepicker/bootstrap-datepicker.js')}}" defer></script>
 <script src="{{asset('js/bootstrap-datepicker.js')}}" defer></script>
+<script src="{{asset('js/admin_scripts.js')}}" defer></script>
+<script>
+    const SITE_URLs = document.querySelector("body").getAttribute("siteurl");
+    const autocomplete_field = document.querySelector('input[name="autocomplete_user"]');
+    const user_id_field = document.getElementById("user_id");
+
+    if (autocomplete_field !== null) {
+        autocomplete_field.addEventListener('keyup', function (e) {
+            $.ajax({
+                url: `${SITE_URL}/admin/autocomplete_user`,
+                type: "get",
+                data: {
+                    "_token": $('meta[name="csrf-token"]').attr('content'),
+                    "autocomplete_user": autocomplete_field.value,
+                },
+                beforeSend: function () {
+                    console.log('loading users');
+                }
+            }).done(function (data) {
+                console.log(data);
+                let list = '';
+                for (let item in data) {
+                    const user = data[item];
+                    list += `<li data-user_id="${user.id}" data-username="${user.username}" class="select-user">${user.id} ${user.username}</li>`;
+                }
+                autocompletes.innerHTML = `<div class="close-autocomplete">x</div> ${list}`;
+                autocompletes.style.display = "block";
+
+            }).fail(function (jqXHR, ajaxOptions, thrownError) {
+                console.log('No response from server');
+            });
+        });
+
+        const close_autocomplete = document.querySelector(".close-autocomplete");
+        $('body').on('click', '.close-autocomplete', function (e) {
+            autocompletes.style.display = "none";
+        });
+        //when clicking on one of the result on the autocompletion
+        $('body').on('click', '.select-user', function (e) {
+            const userid = $(this).data("user_id");
+            const username = $(this).data("username");
+            autocomplete_field.value = `${userid} ${username}`;
+
+            if (user_id_field != null) {
+                user_id_field.value = userid;
+                if (document.getElementById('filter_form_announcement') != null)
+                    filter_elements();//we execute filter announcements function in case we need to filter
+                if (document.getElementById('filter_form_events') != null)
+                    filter_events();//we execute filter events function in case we need to filter
+            }
+            autocompletes.style.display = "none";
+        });
+    }
+</script>
 </body>
 
 </html>

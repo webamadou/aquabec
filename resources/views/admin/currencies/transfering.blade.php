@@ -34,15 +34,20 @@
                         <div class="row">
                             @php $_POST @endphp
                             <div class="col-12 form-group">
-                                <label for="send_to" class="col-sm-12">Selectionnez le destinataire *</label>
-                                <select name="send_to" id="" class="form-control">
-                                    <option value="">--- Destinataire ---</option>
+                                <label for="send_to" class="col-sm-12">Entrez le numéro ou le nom d'utilisateur du destinataire. *</label>
+                                <div class="col-sm-12">
+                                    <input name="autocomplete_user" id="annonceur_filter" class="form-control select-members" placeholder="Destinataire">
+                                    <input name="send_to" id="user_id" type="hidden">
+                                    <ul id="autocompletes" style="display: none;"></ul> 
+                                </div>
+                                <!-- <select name="send_to" id="" class="form-control">
+                                    <option value=""></option>
                                     @forelse($users as $user)
                                         <option value="{{$user->id}}" {{old('send_to') == $user->id ? 'selected':''}}>
                                         <strong>{{$user->username}} {{$user->id}} </strong>
                                         </option>
                                     @endforeach
-                                </select>
+                                </select> -->
                                 {!! $errors->first('send_to', '<div class="error-message col-12">:message</div>') !!}
                             </div>
                             @role('banquier|super-admin') 

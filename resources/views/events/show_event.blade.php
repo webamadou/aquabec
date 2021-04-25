@@ -96,7 +96,7 @@
                         <!-- struggling to set a policy. Will do it latter -->
                         @if(intval(@$current_user->id) === intval(@$event->owner) || intval(@$current_user->id) === intval(@$event->posted_by))
                             <div class="mx-2">
-                                <a href="{{route('user.edit_event',@$event->slug)}}" class="btn btn-sm btn-primary py-2"><i class="fa fa-edit"></i> Editer </a>
+                                <a href="{{route('user.edit_event',@$event->slug)}}" class="btn btn-sm btn-primary py-2"><i class="fa fa-edit"></i> Modifier </a>
                             </div>
                             <div class="mx-2">
                                 <a href="#" class="btn btn-sm btn-danger py-2" data-toggle="modal" data-target="#modal-delete" data-whatever="{{route('user.delete_event',@$event->slug)}}"><i class="fa fa-user-times"></i> Supprimer</a>

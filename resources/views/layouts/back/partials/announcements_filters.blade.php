@@ -3,7 +3,7 @@
         <div class="col-sm-12 col-md-2 px-0">
             <label><small>Régions :</small></label>
             <select id='filter_region_id' class="form-control">
-                <option value="">--Filtrer par region--</option>
+                <option value=""> --- </option>
                 @foreach($regions as $key => $value)
                     <option value="{{$key}}">{{$value}}</option>
                 @endforeach
@@ -12,7 +12,7 @@
         <div class="col-sm-12 col-md-2 px-0">
             <label><small> Villes :</small></label>
             <select id='filter_city_id' class="form-control">
-                <option value="">--Filtrer par ville--</option>
+                <option value=""> --- </option>
                 @foreach($cities as $key => $value)
                     <option value="{{$key}}">{{$value}}</option>
                 @endforeach
@@ -21,7 +21,7 @@
         <div class="col-sm-12 col-md-2 px-0">
             <label><small> Catégories :</small></label>
             <select id='filter_categ_id' class="form-control">
-                <option value="">--Filtrer par catégorie--</option>
+                <option value=""> --- </option>
                 @foreach($categories as $key => $value)
                     <option value="{{$key}}">{{$value}}</option>
                 @endforeach
@@ -30,7 +30,7 @@
         <div class="col-sm-12 col-md-2 px-0">
             <label><small>Type de publication :</small></label>
             <select id='filter_publication_type_id' class="form-control">
-                <option value="">--Filtrer par types de publication--</option>
+                <option value=""> --- e publication--</option>
                 <option value="0"> Enregistrée en brouillon </option>
                 <option value="1"> Publiée </option>
                 <option value="2"> Enregistrée en privé </option>

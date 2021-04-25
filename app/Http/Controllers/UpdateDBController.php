@@ -24,7 +24,7 @@ class UpdateDBController extends Controller
         // $request_fromorigin = DB::connection('mysql2')->table('comptes')->limit(450)->get();
         // $request_fromorigin = DB::connection('mysql2')->table('comptes')->limit(450)->get();
         // $request_fromorigin = DB::connection('mysql2')->table('comptes')->skip(450)->take(450)->get();
-        $request_fromorigin = DB::connection('mysql2')->table('comptes')->skip(900)->take(100)->get();
+        // $request_fromorigin = DB::connection('mysql2')->table('comptes')->skip(900)->take(100)->get();
         ####Updateing users from comptes
         foreach ($request_fromorigin as $key => $item) {
             $user = new User();
@@ -73,7 +73,7 @@ class UpdateDBController extends Controller
         }
         return "I see fire";
         //*/
-        /* ================= ADABT CATEGORIES TABLE =================== */
+        /* ================= ADABT CATEGORIES TABLE =================== *
         $category_annonce = DB::connection('mysql2')->table('categories_annonces')->get();
         foreach ($category_annonce as $key => $item) {
             echo "Saving annonce category $item->categorie <br/>";
@@ -193,9 +193,26 @@ class UpdateDBController extends Controller
         }
         //*/
         /* ================= ADABT  EVENTS TABLE =================== *
-        // $events = DB::connection('mysql2')->table('evenements')->limit(500)->get();
-        $events = DB::connection('mysql2')->table('evenements')->skip(500)->take(500)->get();
-        // $events = DB::connection('mysql2')->table('evenements')->skip(1000)->take(500)->get();
+        // $events = DB::connection('mysql2')->table('evenements')->limit(100)->get();
+        // $events = DB::connection('mysql2')->table('evenements')->skip(100)->take(100)->get();
+        //$events = DB::connection('mysql2')->table('evenements')->skip(200)->take(100)->get();
+        // $events = DB::connection('mysql2')->table('evenements')->skip(300)->take(100)->get();
+        // $events = DB::connection('mysql2')->table('evenements')->skip(400)->take(100)->get();
+        // $events = DB::connection('mysql2')->table('evenements')->skip(500)->take(100)->get();
+        // $events = DB::connection('mysql2')->table('evenements')->skip(600)->take(100)->get();
+        // $events = DB::connection('mysql2')->table('evenements')->skip(700)->take(100)->get();
+        // $events = DB::connection('mysql2')->table('evenements')->skip(800)->take(100)->get();
+        $events = DB::connection('mysql2')->table('evenements')->skip(900)->take(100)->get();
+        // $events = DB::connection('mysql2')->table('evenements')->skip(1000)->take(100)->get();
+        // $events = DB::connection('mysql2')->table('evenements')->skip(1100)->take(100)->get();
+        // $events = DB::connection('mysql2')->table('evenements')->skip(1200)->take(100)->get();
+        // $events = DB::connection('mysql2')->table('evenements')->skip(1300)->take(100)->get();
+        // $events = DB::connection('mysql2')->table('evenements')->skip(1400)->take(100)->get();
+        // $events = DB::connection('mysql2')->table('evenements')->skip(1500)->take(100)->get();
+        // $events = DB::connection('mysql2')->table('evenements')->skip(1600)->take(100)->get();
+        // $events = DB::connection('mysql2')->table('evenements')->skip(1700)->take(100)->get();
+        // $events = DB::connection('mysql2')->table('evenements')->skip(1800)->take(100)->get();
+        // $events = DB::connection('mysql2')->table('evenements')->skip(1900)->take(100)->get();
         // $events = DB::connection('mysql2')->table('evenements')->skip(1500)->take(500)->get();
         // $events = DB::connection('mysql2')->table('evenements')->skip(2000)->take(100)->get();
         foreach ($events as $key => $item) {
@@ -260,11 +277,13 @@ class UpdateDBController extends Controller
                 //Save dates 
                 $event_dates_oroginal = $event_dates = DB::connection('mysql2')->table('evenements_dates')->where('id',$item->id)->get();
                 foreach ($event_dates_oroginal as $dates){
+                    $event->dates .= date('Y-m-d H:i:s', strtotime($dates->date.' '.$dates->heure));
                     EventDate::create([
                                         'event_id'=>$event->id,
                                         'event_date'=>date('Y-m-d H:i:s', strtotime($dates->date.' '.$dates->heure)),
                                     ]);
                 }
+                $event->save();
             }
         }
         //*/

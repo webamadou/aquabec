@@ -48,7 +48,7 @@
                 columns: [
                     { data: 'id', name: 'id' },
                     { data: null, name: 'name',
-                        render: data => { return `<strong><i class="fa fa-user"></i> <a href="/admin/users/${data.id}" class="text-link">${data.name?data.name:''} ${data.prenom?data.prenom:''} </a></strong>`; }
+                        render: data => { return `<strong><i class="fa fa-user"></i> <a href="/admin/users/${data.id}" class="text-link">${data.username?data.username:''}</a></strong>`; }
                     },
                     { data: 'email', name: 'email' },
                     { data: null, name: 'fonctions',

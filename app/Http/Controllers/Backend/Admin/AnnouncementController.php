@@ -59,8 +59,15 @@ class AnnouncementController extends Controller
                         $validation_status = intval($row->validated) === 1?'<span class="badge badge-success"><i class="fa fa-check"></i> Validée</span>':(intval($row->validated > 1)?'<span class="badge badge-danger">Rejetée</span>':'<span class="badge badge-primary">Validation en attente</span>');
                         return $validation_status."<br>".$annonce_status;
                     })
+                    ->addColumn('id',function ($row) {
+                        return $row->id;
+                    })
                     ->addColumn('title',function ($row) {
-                        return '<a href="'.url("/admin/announcement/$row->id").'"> <img src="'.url("/voir/images/$row->images").'" alt="'.@$row->title.'" style="width:50px; height: auto"> <strong>'.$row->title.'</strong></a>';
+                        $event = \App\Models\Event::where('id',@$row->event_id)
+                                                    ->select('id','title','slug','images')
+                                                    ->first();
+                        $event = $event?"<br><strong>Evenement</strong> : <a href='".route('user.show_announcement',$event->slug)."'>$event->slug</a>":'';
+                        return '<a href="'.url("/admin/announcement/$row->id").'"> <img src="'.url("/voir/images/$row->images").'" alt="'.@$row->title.'" style="width:50px; height: auto"> <strong>'.$row->title.'</strong></a> '.$event;
                     })
                     ->addColumn("category_id", function($row){
                         return @$row->category->name;
@@ -91,7 +98,7 @@ class AnnouncementController extends Controller
                         ];
                         return view('layouts.back.datatables.actions-btn',compact('edit_route','delete_route','modal_togglers'));
                     })
-                   ->filter(function ($instance) use ($request) {
+                    ->filter(function ($instance) use ($request) {
                         if ($request->get('region_id') != '') {
                            $instance->where('region_id', $request->get('region_id'));
                         }
@@ -129,12 +136,55 @@ class AnnouncementController extends Controller
                         if (!empty($request->get('search'))) {
                             $instance->where(function($w) use($request){
                                $search = $request->get('search');
-                               $w->orWhere('announcements.title', 'LIKE', "%$search%");
+                               $w->orWhere('announcements.title', 'LIKE', "%$search%")
+                                    ->orWhere('announcements.id', 'LIKE', "%$search%");
                            });
                         }
-                   })
-                   ->rawColumns(['title','category_id','price','owner','region_id','publication','action'])
-                   ->make(true);
+                    })
+                    ->order(function ($instance) use ($request){
+                            $order = @$request->get('order')[0];
+                            switch ($order['column']) {
+                                case 0:
+                                    $instance->orderby('id', $order['dir'])
+                                    ->orderby('id','desc');
+                                    break;
+                                case 1:
+                                    $instance->orderby('title', $order['dir'])
+                                    ->orderby('id','desc');
+                                    break;
+                                case 2:
+                                    $instance->orderby('category_id', $order['dir'])
+                                    ->orderby('id','desc');
+                                    break;
+                                case 3:
+                                    $instance->orderby('price', $order['dir'])
+                                    ->orderby('id','desc');
+                                    break;
+                                case 4:
+                                    $instance->orderby('owner', $order['dir'])
+                                    ->orderby('id','desc');
+                                    break;
+                                case 5:
+                                    $instance->orderby('region_id', $order['dir']
+                                    ->orderby('city_id', $order['dir'])
+                                    ->orderby('id','desc'));
+                                    break;
+                                case 6:
+                                    $instance->orderby('owner', $order['dir'])
+                                    ->orderby('id','desc');
+                                    break;
+                                
+                                default:
+                                    $instance->orderby('id', "desc")
+                                    ->orderby('id','desc');
+                                    break;
+                            }
+                            $instance
+                                ->skip( @$request->get('start') )
+                                ->take( @$request->get('length') );
+                    })
+                    ->rawColumns(['id','title','category_id','price','owner','region_id','publication','action'])
+                    ->make(true);
         }
         
         //$form       = $this->getForm();
