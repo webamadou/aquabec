@@ -17,7 +17,7 @@
                                 <div class="col-6"><strong>Catégorie :</strong></div><div class="col-6 meta-value"><span>{{@$event->category->name}}</span></div>
                                 <div class="col-6"> 
                                     @if(intval($event->publication_status) === 1)
-                                        <strong>Posté le :</strong></div><div class="col-6 meta-value"><span> {{date('d/m/Y', strtotime($event->published_at))}} </span>
+                                        <strong>Posté le :</strong></div><div class="col-6 meta-value"><span> {{date('Y/m/d', strtotime($event->published_at))}} </span>
                                     @else
                                         @if(intval($event->publication_status) === 0)
                                             <span class="badge badge-warning">Enregistrée en brouillon</span>
@@ -29,18 +29,14 @@
                                 <div class="col-6"><strong>N° de l'annonce :</strong></div><div class="col-6 meta-value px-4"><span>{{sprintf("%05d",@$event->id)}}</span></div>
                                 <div class="col-12 text-center"> <hr> </div>
                                 <div class="col-12"> <strong>Publié par :</strong> </div>
-                                <ul class="list-group list-group-flush px-4 list-metas">
-                                    <li class="list-group-item"><i class="fa fa-user"></i> {{@$event->owned->username}} </li>
-                                    @if(trim(@$event->owned->mainRole()->name) !== "")
-                                        <li class="list-group-item"> <strong><i class="fa fa-user-lock"></i> Fonction</strong> {{@$event->owned->mainRole()->name}} </li>
-                                    @endif
-                                    @if(trim(@$event->advertiser_type) !== "")
-                                        <li class="list-group-item"> <strong><i class="fa fa-user-lock"></i> </strong> {{@$event->advertiser_type}} </li>
-                                    @endif
-                                    <!-- -- -->
+                                <ul class="row flex-column p-0 mx-1 publication-meta w-100">
+                                    <li class="list-group-item"><i class="fa fa-user"></i> {{@$event->owned->prenom}} {{@$event->owned->name}} </li>
+                                    @if(trim(@$event->owned->mainRole()->name) !== "")<li class="list-group-item"> <strong><i class="fa fa-user-lock"></i> Fonction</strong> {{@$event->owned->mainRole()->name}} </li>@endif
+                                    <li class="list-group-item"><i class="fa fa-envelope"></i> {{@$event->email}}</li>
                                     @if(trim(@$event->telephone) !== "")<li class="list-group-item"><i class="fa fa-phone-alt"></i> {{@$event->telephone}}</li>@endif
-                                    @if(trim(@$event->website) !== "")<li class="list-group-item"><i class="fa fa-laptop-house"></i> <a href="{{@$event->website}}" target="_blank">{{@$event->website}}</a> </li>@endif
-                                    @if(trim(@$event->postal_code) !== "")<li class="list-group-item"><i class="fa fa-map"></i> Code postal : {{@$event->postal_code}}</li>@endif
+                                    @if(trim(@$event->postal_code) !== "")<li class="list-group-item"><i class="fa fa-mail-bulk"> Code Postal</i> {{@$event->postal_code}}</li>@endif
+                                    <li class="list-group-item"><i class="fa fa-map-marked-alt"></i><br> {{@$event->city->name}} <br>  {{@$event->region->name}}</li>
+                                    @if(trim(@$event->website) !== "")<li class="list-group-item"><i class="fa fa-laptop-house"></i><a href="{{@$event->website}}" target="_blank"> {{@$event->website}}</a></li>@endif
                                 </ul>
                                 <div class="col-12 text-center"> <hr> </div>
                                 <div class="col-12 bg-white mx-0">
@@ -75,7 +71,7 @@
                             <div class="col-sm-12 col-md-3"><span class="small font-bold">Date(s) de l'événement : </span></div>
                             <div class="col-sm-12 col-md-9">
                                 @foreach(@$event->event_dates as $date )
-                                    <span class="badge badge-primary list-event-dates"><i class="fa fa-calendar"></i> {{ date( "d-m-Y H:i",strtotime($date->event_date) )}} </span>
+                                    <span class="badge badge-primary list-event-dates"><i class="fa fa-calendar"></i> {{ date( "Y/m/d",strtotime($date->event_date) )}} </span>
                                 @endforeach
                             </div>
                             <!-- <div class="col-sm-12 col-md-3"><span class="small font-bold">Heure de l'événement : </span></div>
@@ -88,6 +84,12 @@
                                 <li><i class="fa fa-eye"></i>  {{@$event->views}} vues</li>
                                 <li><i class="fa fa-mouse-pointer"></i> {{@$event->clicks}} cliques</li>
                             </ul>
+                        </div>
+                        <div class="row justify-content-center">
+                            @php
+                             $city_name = str_replace(["(saint)","saint"],'',strtolower(@$event->region->name));
+                            @endphp
+                            <iframe width="100%" height="240" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?q={{@$city->name}},{{@$event->postal_code}}&key=AIzaSyC8-GVIaSiFceeP9qmTdHvvVfQXD0pMc0A" allowfullscreen="" loading="lazy"></iframe>
                         </div>
                         <div class="d-flex  announcement-footer">
                         <!-- struggling to set a policy. Will do it latter -->

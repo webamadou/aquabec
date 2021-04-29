@@ -36,7 +36,7 @@ class RegionController extends Controller
                 $another_actions = [
                     [
                         'name' => 'Ajouter une ville',
-                        'route' => route('admin.settings.regions.edit',$role)
+                        'route' => route('admin.settings.cities.index',$role)
                     ]
                 ];
                 return view('layouts.back.datatables.actions-btn',compact('edit_route','delete_route','another_actions'));

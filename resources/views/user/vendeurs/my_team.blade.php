@@ -53,8 +53,9 @@
                         render: data => {
                             const slug      = data.slug ?? '';
                             const prenom    = data.prenom ?? '';
-                            const username      = data.username ?? '';
-                            return data.name?`<strong><i class="fa fa-user-friends"><a href="{{url('/vendeur/${slug}')}}"> ${username}</a></strong>`:``;
+                            const name      = data.name ?? '';
+                            const username  = data.username ?? '';
+                            return data.name?`<strong><i class="fa fa-user-friends"><a href="{{url('/vendeur/${slug}')}}"> ${username}</a><br/>${prenom} ${name}</strong>`:``;
                         }
                     },
                     { data: 'email', name: 'email'},

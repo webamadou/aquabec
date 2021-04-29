@@ -70,15 +70,17 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="{{ route('admin.users.index') }}" class="nav-link {{ side_nav_bar_menu_status('users','active') }}">
-                        <i class="nav-icon fas fa-users"></i>
-                        <p>
-                            Utilisateurs
-                            <span class="ml-2 badge badge-danger">{{ App\Models\User::count() }}</span>
-                        </p>
-                    </a>
-                </li>
+                @if(auth()->user()->hasRole('super-admin'))
+                    <li class="nav-item">
+                        <a href="{{ route('admin.users.index') }}" class="nav-link {{ side_nav_bar_menu_status('users','active') }}">
+                            <i class="nav-icon fas fa-users"></i>
+                            <p>
+                                Utilisateurs
+                                <span class="ml-2 badge badge-danger">{{ App\Models\User::count() }}</span>
+                            </p>
+                        </a>
+                    </li>
+                @endif
                 <li class="nav-item">
                     <a href="{{ route('admin.organisations.index') }}" class="nav-link {{ side_nav_bar_menu_status('organisations','active') }}">
                         <i class="nav-icon fas fa-address-card"></i>

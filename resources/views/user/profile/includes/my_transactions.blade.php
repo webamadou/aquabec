@@ -44,7 +44,7 @@
                             if(data.sent_by.id == "{{$user->id}}")
                                 return `<span class="sent_by">Vous avez</span> envoyé ${data.sent_value} ${data.credit.name} à <span class="sent_to"> ${data.sent_to?data.sent_to.username:"Utilisateur supprimé"}</span>`;
                             else
-                                return `<span class="sent_by">${data.sent_by?data.sent_by.name:"Utilisateur supprimé"}</span> vous a envoyé ${data.sent_value} ${data.credit.name}`;
+                                return `<span class="sent_by">${data.sent_by?data.sent_by.username:"Utilisateur supprimé"}</span> vous a envoyé ${data.sent_value} ${data.credit.name}`;
                             }
                     },
                     { data: null, name: 'notes',

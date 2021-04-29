@@ -50,7 +50,7 @@ class PaymentReceived extends Notification
                     ->greeting("Bonjour $user->prenom $user->name")
                     ->line("Votre Transaction a parfaitement été effectué.")
                     ->line($this->message)
-                    ->action('Votre profile l\'agenda du Quebec', url('/membres/account'))
+                    ->action('Votre profil l\'agenda du Quebec', url('/membres/account'))
                     ->line('Merci est à bientôt!');
     }
 

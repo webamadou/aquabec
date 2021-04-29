@@ -92,7 +92,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     @endrole
                     @auth
                     <li class="nav-item dropdown">
-                        <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Mon Profile</a>
+                        <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Mon Profil</a>
                         <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
                             <li>
                                 <a class="dropdown-item" href="{{route('user.infosperso')}}/account"><i class="fa fa-cogs"></i> Mon Compte</a>

@@ -113,6 +113,11 @@ Route::middleware(['auth','verified'])->group(function (){
         Route::post("/transfering",[CurrencyController::class, 'transfering'])->name('currencies.transfering');
     });
 
+    Route::middleware(['role:super-admin'])->name('admin.')->prefix('admin')->group(function () {
+        // Users Routes
+        Route::resource('users', UserController::class);
+    });
+
     Route::middleware(['role:super-admin|admin|banker|banquier'])->name('admin.')->prefix('admin')->group(function () {
         Route::get("/autocomplete_user",[UserDashboard::class, 'autocomplete'])->name('autocomplete-user');
         // Dashboard Routes...
@@ -184,8 +189,6 @@ Route::middleware(['auth','verified'])->group(function (){
             Route::get('get-announcement-categories-data', [CategoryController::class, 'announcementCategoriesData'])->name('announcement.categories.data');
 
         });
-        // Users Routes
-        Route::resource('users', UserController::class);
         Route::get('get-users-data', [UserController::class, 'usersData'])->name('users.data');
         // Organisations Routes
         Route::resource('organisations', OrganisationController::class);

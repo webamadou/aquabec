@@ -38,10 +38,16 @@
                                     <option value="">--- Destinataire ---</option>
                                     @forelse($users as $key => $user)
                                         <option value="{{$user->id}}" {{old("send_to") == $user->id ? 'selected':''}}>
-                                        {{str_pad($user->id,$nbr_leading_zeros,0,STR_PAD_LEFT)}} - {{ucfirst($user->prenom)}} {{ucfirst($user->name)}}
+                                        {{ucfirst($user->username)}}
                                         </option>
                                     @endforeach
                                 </select>
+                                <!-- <div class="col-sm-12">
+                                    <label for="annonceur_filter">Annonceur</label>
+                                    <input name="autocomplete_user" id="annonceur_filter" class="form-control select-members" >
+                                    <input name="send_to" id="user_id" type="hidden">
+                                    <ul id="autocompletes" style="display: none;"></ul> 
+                                </div> -->
                                 <!-- <input class="col-sm-12 col-md-9" name="name" type="text" value=""> -->
                                 {!! $errors->first('send_to', '<div class="error-message col-12">:message</div>') !!}
                             </div>
@@ -90,6 +96,64 @@
 @push('scripts')
 
     <script src="{{asset('/dist/ckeditor/ckeditor.js')}}" defer></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            const autocomplete_field = document.querySelector('input[name="autocomplete_user"]');
+            const autocompletes = document.getElementById("autocompletes");
+            const user_id_field = document.getElementById("user_id");
+            if (autocomplete_field !== null) {
+                autocomplete_field.addEventListener('keyup', function (e) {
+                    $.ajax({
+                        url: `${SITE_URL}/autocomplete-user`,
+                        type: "get",
+                        data: {
+                            "_token": $('meta[name="csrf-token"]').attr('content'),
+                            "autocomplete_user": autocomplete_field.value,
+                        },
+                        beforeSend: function () {
+                            console.log('loading users');
+                        }
+                    }).done(function (data) {
+                        console.log(data);
+                        let list = '';
+                        for (let item in data) {
+                            const user = data[item];
+                            list += `<li data-user="${user.username}" class="select-user">${user.username}</li>`;
+                        }
+                        autocompletes.innerHTML = `<div class="close-autocomplete">x</div> ${list}`;
+                        autocompletes.style.display = "block";
+
+                    }).fail(function (jqXHR, ajaxOptions, thrownError) {
+                        console.log('No response from server');
+                    });
+                });
+                //When click to close the autocomplete
+                /* document.querySelector(".close-autocomplete")[0] */
+                /* autocomplete_field.addEventListener('focusout', function(e){
+                    autocompletes.style.display = "none";
+                }); */
+                const close_autocomplete = document.querySelector(".close-autocomplete");
+                $('body').on('click', '.close-autocomplete', function (e) {
+                    autocompletes.style.display = "none";
+                });
+
+                //when clicking on one of the result on the autocompletion
+                $('body').on('click', '.select-user', function (e) {
+                    const username = $(this).data("user");
+                    autocomplete_field.value = username;
+
+                    if (user_id_field != null) {
+                        user_id_field.value = username;
+                        if (document.getElementById('filter_form_announcement') != null)
+                            filter_elements();//we execute filter announcements function in case we need to filter
+                        if (document.getElementById('filter_form_events') != null)
+                            filter_events();//we execute filter events function in case we need to filter
+                    }
+                    autocompletes.style.display = "none";
+                });
+            }
+        })
+    </script>
     <script type="text/javascript" defer>
         $(document).ready(function () {
             $('.ckeditor').ckeditor();

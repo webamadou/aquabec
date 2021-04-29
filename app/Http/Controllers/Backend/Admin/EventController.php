@@ -78,7 +78,7 @@ class EventController extends Controller
                             foreach ($dates as $key => $date) {
                                 ++$i;
                                 if(trim($date->event_date) != "")
-                                    $dates_string .= '<span class="badge badge-primary text-sm d-block my-1 font-weight-normal"> '.date('d-m-Y H:i', strtotime($date->event_date)).'</span> ';
+                                    $dates_string .= '<span class="badge badge-primary text-sm d-block my-1 font-weight-normal"> '.date('Y-m-d', strtotime($date->event_date)).'</span> ';
                             }
                             $uncollapse = $i > 1?'<span class="uncolapser" data-item="'.$row->slug.'"><i class="fa fa-folder-open"></i><u class="d-none">'.$i.'</u></span>':$i;
                             return $dates_string.$uncollapse.'</div>';

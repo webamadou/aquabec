@@ -211,7 +211,8 @@ class DashboardController extends Controller
             return redirect()->route('welcome');
         }
         $users = $current_user->recipientList()
-                              ->select('id','name','prenom','email')
+                              ->select('id','name','username','prenom','email')
+                              ->orderby('username')
                               ->get();
 
         //We need to display the id next to name in list of users. We just need to add some leading zeros

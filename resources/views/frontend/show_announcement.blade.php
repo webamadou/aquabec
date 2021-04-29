@@ -29,13 +29,14 @@
                                 </div>
                                 <div class="col-12 text-center"> <hr> </div>
                                 <div class="col-12"> <strong>Annonceur :</strong> </div>
-                                <ul class="col-12 list-group">
-                                    <li class="list-group-item"><i class="fa fa-user"></i> {{@$announcement->owned->username}}<br><strong><i class="fa fa-caret-right"></i> {{@$announcement->advertiser}}</strong></li>
+                                <ul class="row flex-column p-0 mx-1 publication-meta w-100">
+                                    <li class="list-group-item"><i class="fa fa-user"></i> {{@$announcement->owned->prenom}} {{@$announcement->owned->name}} </li>
                                     @if(trim(@$announcement->owned->mainRole()->name) !== "")<li class="list-group-item"> <strong><i class="fa fa-user-lock"></i> Fonction</strong> {{@$announcement->owned->mainRole()->name}} </li>@endif
-                                    <!-- -- -->
+                                    <li class="list-group-item"><i class="fa fa-envelope"></i> {{@$announcement->email}}</li>
                                     @if(trim(@$announcement->telephone) !== "")<li class="list-group-item"><i class="fa fa-phone-alt"></i> {{@$announcement->telephone}}</li>@endif
                                     @if(trim(@$announcement->postal_code) !== "")<li class="list-group-item"><i class="fa fa-mail-bulk"> Code Postal</i> {{@$announcement->postal_code}}</li>@endif
-                                    @if(trim(@$announcement->website) !== "")<li class="list-group-item"><i class="fa fa-home"></i> <a href="{{@$announcement->website}}" target="_blank">{{@$announcement->website}}</a></li>@endif
+                                    <li class="list-group-item"><i class="fa fa-map-marked-alt"></i><br> {{@$announcement->city->name}} <br>  {{@$announcement->region->name}}</li>
+                                    @if(trim(@$announcement->website) !== "")<li class="list-group-item"><i class="fa fa-laptop-house"></i><a href="{{@$announcement->website}}" target="_blank"> {{@$announcement->website}}</a></li>@endif
                                 </ul>
                             </div>
                             <hr>
@@ -69,20 +70,26 @@
                             </ul>
                         </div>
                         <div class="d-flex  announcement-footer">
-                        <!-- struggling to set a policy. Will do it latter -->
-                        @if(intval(@$current_user->id) === intval(@$announcement->owner) || intval(@$current_user->id) === intval(@$announcement->posted_by))
-                            <div class="mx-2"><a href="{{route('user.edit_announcement',@$announcement->slug)}}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Modifier </a></div>
-                            <div class="mx-2">
-                                <a href="#" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-delete" data-whatever="{{route('user.delete_announcement',@$announcement->slug)}}"><i class="fa fa-user-times"></i> Supprimer</a>
-                            </div>
-                        @endif
+                            <!-- struggling to set a policy. Will do it latter -->
+                            @if(intval(@$current_user->id) === intval(@$announcement->owner) || intval(@$current_user->id) === intval(@$announcement->posted_by))
+                                <div class="mx-2"><a href="{{route('user.edit_announcement',@$announcement->slug)}}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Modifier </a></div>
+                                <div class="mx-2">
+                                    <a href="#" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-delete" data-whatever="{{route('user.delete_announcement',@$announcement->slug)}}"><i class="fa fa-user-times"></i> Supprimer</a>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="row justify-content-center">
+                            @php
+                             $region_name = str_replace(["(saint)","saint"],'',strtolower(@$announcement->region->name));
+                            @endphp
+                            <!-- <iframe width="100%" height="240" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?q=Abercorn,{{@$announcement->postal_code}}&key=AIzaSyCrPpsyOFrP3BCOGcbyYp8zbU7WRtQSNIk"></iframe>-->
+                            <iframe width="100%" height="240" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?q={{@$region_name}},{{@$announcement->postal_code}}&key=AIzaSyC8-GVIaSiFceeP9qmTdHvvVfQXD0pMc0A" allowfullscreen="" loading="lazy"></iframe>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
     @include('layouts.front.alerts.delete-confirmation')
 @endsection
 
