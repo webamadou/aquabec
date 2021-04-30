@@ -7,13 +7,35 @@
             <div class="card-body">
                 <table class="table table-success table-striped table-borderless" id="my-transactions-table">
                     <thead class="table-light">
-                    <tr>
-                        <th>Actions</th>
-                        <th>Transferts</th>
-                        <th>Notes</th>
-                        <th>Date d'envoie</th>
-                    </tr>
+                        <tr>
+                            <th>N°</th>
+                            <th>Actions</th>
+                            <th>Transferts</th>
+                            <th>Notes</th>
+                            <th>Date d'envoie</th>
+                        </tr>
                     </thead>
+                    <tbody>
+                    @foreach($logs as $log)
+                        <tr>
+                            <td>{{$log->ref}}</td>
+                            <td>
+                                <!-- let type_text = data.sent_by.id==={{$user->id}}?"<strong>Envoie</strong>":"<strong>Réception</strong>"; -->
+                                <span><strong>{{@$log->sent_by->id === $user->id?"Envoie":"Réception"}}</strong><br>
+                                <i class="{{@$log->credit->icons}}"></i> {{@$log->credit->name}}</span>
+                            </td>
+                            <td>
+                                @if(@$log->sent_by->id == $user->id)
+                                    <span class="sent_by">Vous avez</span> envoyé {{@$log->sent_value}} {{@$log->credit->name}} à <span class="sent_to"> {{@$log->sent_to->username}}</span>
+                                @else
+                                    <span class="sent_by">{{@$log->sent_by->username}}</span> vous a envoyé {{@$log->sent_value}} {{@$log->credit->name}}
+                                @endif
+                            </td>
+                            <td><div class='log-notes'>{!!@$log->notes!!}</div></td>
+                            <td>{{@$log->updated_at}}</td>
+                        </tr>
+                    @endforeach
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -22,17 +44,18 @@
 <script defer>
         $(function() {
 
-            $('#my-transactions-table').DataTable({
-                processing: true,
-                serverSide: true,
+        let table = $('#my-transactions-table').DataTable({
+                processing: false,
+                serverSide: false,
                 dom: 'Bfrliptip',
                 buttons: [
                     'csv', 'excel', 'pdf'
                 ],
                 method:'post',
                 dom: 'Bfrliptip',
-                ajax: '{{ route("user.userSentTransactions") }}',
+                /* ajax: '{{ route("user.userSentTransactions") }}', *
                 columns: [
+                    {data: 'ref',name: 'ref'},
                     { data: null, name: 'action',
                         render: data => {
                             let type_text = data.sent_by.id==={{$user->id}}?"<strong>Envoie</strong>":"<strong>Réception</strong>";
@@ -55,12 +78,12 @@
                         }
                     },
                     { data: 'updated_at', name: 'updated_at' }
-                ],
+                ],*/
                 buttons: [
                     'csv', 'excel', 'pdf'
                 ],
                 order: [[ 3, 'desc' ]],
-                pageLength: 100,
+                pageLength: 30,
                 responsive: true,
                 "oLanguage":{
                       "sProcessing":     "<i class='fa fa-2x fa-spinner fa-pulse'>",

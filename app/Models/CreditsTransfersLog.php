@@ -68,7 +68,7 @@ class CreditsTransfersLog extends Model
     public function getUpdatedAtAttribute($value)
     {
         $updated_at = Carbon::make($value);
-        return Carbon::createFromFormat('Y-m-d H:i:s', $updated_at)->format('m-d-Y à H:i:s');
+        return Carbon::createFromFormat('Y-m-d H:i:s', $updated_at)->format('d-m-Y à H:i:s');
         //return $updated_at->toDateString().' à '.$updated_at->toTimeString();
     }
     public function getFreeCurrencyAttribute(){

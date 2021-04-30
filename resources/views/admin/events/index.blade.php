@@ -88,7 +88,7 @@
                     'csv', 'excel', 'pdf'
                 ],
                 order: [[ 6, 'desc' ]],
-                pageLength: 100,
+                pageLength: 30,
                 responsive: true,
                 "oLanguage":{
                       "sProcessing":     "<i class='fa fa-2x fa-spinner fa-pulse'>",

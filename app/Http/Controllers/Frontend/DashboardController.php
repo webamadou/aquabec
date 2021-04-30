@@ -154,11 +154,15 @@ class DashboardController extends Controller
         $cities_list = City::where('region_id',$user->region_id)->pluck('name','id');
 
         $age_group   = AgeRange::ageSelect();
-
         $fonction_except    = ['admin','super-admin','membre','chef vendeur','chef-vendeur','vendeur','Banquier'];
         $fonctions          = Role::select('name','id','description')->whereNotIn("name",$fonction_except)->get();
+        $logs = CreditsTransfersLog::with('sentBy','sentTo','credit')
+                                    ->where('sent_by',$user->id)
+                                    ->orWhere('sent_to',$user->id)
+                                    ->orderBy("created_at","desc")
+                                    ->get();
 
-        return view('user.profile.infosperso',compact('region_list','cities_list', 'age_group','user','default_tab','fonctions'));
+        return view('user.profile.infosperso',compact('region_list','cities_list', 'age_group','user','default_tab','fonctions','logs'));
     }
 
     /**

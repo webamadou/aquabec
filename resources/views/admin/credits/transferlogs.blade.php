@@ -12,15 +12,39 @@
                 <div class="card-body">
                     <table class="table table-bordered table-responsive" id="credits-table">
                         <thead class="table-light">
-                        <tr>
-                            <th>Monnaie</th>
-                            <th>Envoyé par</th>
-                            <th>Destinataire</th>
-                            <th>Somme envoyé</th>
-                            <th>Notes</th>
-                            <th>Dernière modification</th>
-                        </tr>
+                            <tr>
+                                <th>N°</th>
+                                <th>Monnaie</th>
+                                <th>Envoyé par</th>
+                                <th>Destinataire</th>
+                                <th>Somme envoyé</th>
+                                <th>Notes</th>
+                                <th>Dernière modification</th>
+                            </tr>
                         </thead>
+                        <tbody>
+                        @forelse($logs as $log)
+                            <tr>
+                                <td>{{$log->ref}}</td>
+                                <td>
+                                    @php
+                                    $url = url('/admin/currency-logs/').'/'.$log->credit->id;
+                                    echo $log->credit->status<=1?'<strong><a href="'.$url.'">'.$log->credit->name.'</a></strong>':"Monnaie introuvable";
+                                    @endphp
+                                </td>
+                                <td>
+                                    <strong>{{@$log->sentBy->id}} - {{@$log->sentBy->username}}</strong><br><span>Réserve initial: {{@$log->sender_initial_credit}}</span><br><span>Réserve final: {{@$log->sender_new_credit}}</span><br>
+                                </td>
+                                <td>
+                                    <strong>{{@$log->sentTo->id??""}} - {{$log->sentTo->username ?? "Utilisateur supprimé"}}</strong><br><span>Réserve initial: {{@$log->recipient_initial_credit}}</span><br><span>Réserve final: {{@$log->recipient_new_credit}}</span><br>
+                                </td>
+                                <td>{{@$log->sent_value}}</td>
+                                <td><div class="log-notes">{!!@$log->notes!!}</div></td>
+                                <td>{{@$log->updated_at}}</td>
+                            </tr>
+                        @empty
+                        @endforelse
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -36,13 +60,14 @@
         $(function() {
             $('#credits-table').DataTable({
                 processing: true,
-                serverSide: true,
+                serverSide: false,
                 dom: 'Bfrliptip',
                 buttons: [
                     'csv', 'excel', 'pdf'
                 ],
-                ajax: '{{ url('admin/get-credits-logs') }}',
+                /*ajax: '{{ url('admin/get-credits-logs') }}',
                 columns: [
+                    {data: 'ref', name: 'ref'},
                     {data: null, name: 'ref',
                         render: data => {
                                 return data.credit.status<=1?`<strong><a href="{{url('/admin/currency-logs/')}}/${data.credit.id}">${data.credit.name}</a></strong>`:"Monnaie introuvable";
@@ -52,7 +77,7 @@
                                 return `<strong>${data.sent_by?data.sent_by.id:""} - ${data.sent_by?data.sent_by.username:"Utilisateur supprimé"}</strong><br><span>Réserve initial: ${data.sender_initial_credit}</span><br><span>Réserve final: ${data.sender_new_credit}</span><br>`;
                             }
                     },
-                    { data: null, name: 'sent_to',
+                    { data: null, name: 'sent_T',
                         render: data => { 
                                 return `<strong>${data.sent_to?data.sent_to.id:""} - ${data.sent_to?data.sent_to.username:"Utilisateur supprimé"}</strong><br><span>Réserve initial: ${data.recipient_initial_credit}</span><br><span>Réserve final: ${data.recipient_new_credit}</span><br>`;
                             }
@@ -66,9 +91,9 @@
                         }
                     },
                     { data: 'updated_at', name: 'updated_at' }
-                ],
+                ],*/
                 order: [[ 5, 'desc' ]],
-                pageLength: 100,
+                pageLength: 30,
                 responsive: true,
                 "oLanguage":{
                       "sProcessing":     "<i class='fa fa-2x fa-spinner fa-pulse'>",
