@@ -12803,6 +12803,11 @@ input[type="submit"].btn-block {
     background: no-repeat center center;
     background-size: 100% 100%;
 }
+ul.navbar-nav a {
+    display: block;
+    position: relative;
+    border-radius: 0;
+}
 @media (max-width: 575.98px) {
     .navbar-expand-sm > .container,
     .navbar-expand-sm > .container-fluid,
@@ -41493,6 +41498,22 @@ hr {
     height: 2vw;
     border: 1px solid #ddd;
     border-radius: 2px;
+}
+a.table-link-publication {
+    display: inline-block;
+    max-width: 210px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    font-size: small;
+    font-weight: lighter;
+}
+a.reset-field {
+    text-align: right;
+    display: inline-block;
+    font-size: small;
+    font-weight: lighter;
+    margin-left: 3px;
+    color: red;
 }
 /* datatable */
 .dt-button {

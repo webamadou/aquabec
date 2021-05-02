@@ -1,4 +1,4 @@
-@extends('layouts.back.admin')
+@extends('layouts.front.app')
 
 @section('content')
     <div class="row">
@@ -8,9 +8,9 @@
         <div class="col-12 tab-content" id="nav-tabContent">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="card-title font-weight-bold">Liste des annonces</h2>
+                    <h2 class="card-title font-weight-bold">Mes annonces </h2>
                     <div class="card-tools">
-                        <a href="{{route('admin.create_announcement')}}" class="btn btn-primary btn-sm">
+                        <a href="{{route('user.create_announcement')}}" class="btn btn-primary btn-sm">
                             <i class="mr-2 fa fa-plus"></i> Ajouter une annonce
                         </a>
                     </div>
@@ -27,7 +27,6 @@
                                 <th>Code postal</th>
                                 <th>Ajouté par</th>
                                 <th>Date de l'ajout</th>
-                               <!--  <th>Action</th> -->
                             </tr>
                         </thead>
                     </table>
@@ -67,7 +66,6 @@
             </div>
         </div>
     </div>
-    @include('layouts.back.alerts.validate-confirmation')
 @endsection
 
 @push('scripts')
@@ -82,14 +80,13 @@
 
             let table = $('#announcements-table').DataTable({
                             processing: true,
-                            ordering: true,
                             serverSide: true,
                             dom: 'Bfrliptip',
                             buttons: [
                                 'csv', 'excel', 'pdf'
                             ],
                             ajax: {
-                                url: '{{ url('admin/announcements') }}',
+                                url: '{{ url('mes_annonces') }}',
                                 data: function (d) {
                                     d.search            = $('input[type="search"]').val(),
                                     d.city_id           = $('#filter_city_id').val(),
@@ -112,10 +109,10 @@
                                 { data: 'postal_code', name: 'postal_code' },
                                 { data: 'owner', name: 'owner' },
                                 { data: 'updated_at', name: 'updated_at'},
-                                /* { data: 'action', name: 'action'}, */
+                                /* { data: 'publication', name: 'publication', orderable: true, searchable: false,'width': '50px' } */
                             ],
                             order: [[ 0, 'asc' ]],
-                            pageLength: 30,
+                            pageLength: 100,
                             responsive: true,
                             "oLanguage":{
                                   "sProcessing":     "<i class='fa fa-2x fa-spinner fa-pulse'>",
@@ -167,7 +164,6 @@
                     that.search(this.value).draw();
                 });
             });
-
             /*action when select boxes are updated*
             $('#filter_region_id, #filter_city_id, #filter_categ_id,#price_type,#filter_publication_type_id').change(function(){
                 table.draw();
@@ -179,7 +175,7 @@
             /*action when dates fields are updated*
             $("#filter_date_min_id,#filter_date_max_id").blur(function(){
                 table.draw();
-            });*/
+            });//*/
 
         });
     </script>

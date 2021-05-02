@@ -1,90 +1,71 @@
-<div class="row form-group datatable-filter">
-    <div class="col-sm-12 col-md-8 justify-content-start row p-0 bg-light">
-        <div class="col-sm-12 col-md-2 px-0">
-            <label><small>Régions :</small></label>
-            <select id='filter_region_id' class="form-control">
-                <option value=""> --- </option>
-                @foreach($regions as $key => $value)
-                    <option value="{{$key}}">{{$value}}</option>
-                @endforeach
-            </select>
-        </div>
-        <div class="col-sm-12 col-md-2 px-0">
-            <label><small> Villes :</small></label>
-            <select id='filter_city_id' class="form-control">
-                <option value=""> --- </option>
-                @foreach($cities as $key => $value)
-                    <option value="{{$key}}">{{$value}}</option>
-                @endforeach
-            </select>
-        </div>
-        <div class="col-sm-12 col-md-2 px-0">
-            <label><small> Catégories :</small></label>
-            <select id='filter_categ_id' class="form-control">
-                <option value=""> --- </option>
-                @foreach($categories as $key => $value)
-                    <option value="{{$key}}">{{$value}}</option>
-                @endforeach
-            </select>
-        </div>
-        <div class="col-sm-12 col-md-2 px-0">
-            <label><small>Type de publication :</small></label>
-            <select id='filter_publication_type_id' class="form-control">
-                <option value=""> --- e publication--</option>
-                <option value="0"> Enregistrée en brouillon </option>
-                <option value="1"> Publiée </option>
-                <option value="2"> Enregistrée en privé </option>
-            </select>
-        </div>
-        <div class="col-sm-12 col-md-2 px-0">
-            <label><small>Code postal :</small></label>
-            <input  id='filter_postal_code_id' type="text" name="postal_code" placeholder="Filtrer par code postal" />
-        </div>
+<form class="col-sm-12 col-md-12 justify-content-center row p-0 bg-light datatable-filter mb-2">
+    <!-- <div class="row form-group datatable-filter"> -->
+    <div class="col-sm-12 col-md-2 px-0">
+        <label><small>Régions :</small><a href="#" class="reset-field" data-target="#filter_region_id">x</a></label>
+        <select id='filter_region_id' class="form-control">
+            <option value=""> --- </option>
+            @foreach($regions as $key => $region)
+                <option value="{{$region->id}}">{{$region->region_number}} {{$region->name}}</option>
+            @endforeach
+        </select>
     </div>
-    <div class="col-sm-12 col-md-4 row justify-content-end p-0 bg-light">
-        <div class="col-sm-12 col-md-6 px-0">
-            <label for="filterdates"><small>Filtrer par publication :</small></label>
-            <div class="input-group-filter-min date">
-                <input type="text" class="form-control" id="filter_date_min_id"/>
-                <!-- <span class="input-group-addon">
-                    <span class="fa fa-calendar"></span>
-                </span> -->
-            </div>
-        </div>
-        <div class="col-sm-12 col-md-6 px-0">
-            <label for="filterdates"><small>&nbsp;</small></label>
-            <div class="input-group-filter-max date">
-                <input type="text" class="form-control" id="filter_date_max_id" />
-                <!-- <span class="input-group-addon">
-                    <span class="fa fa-calendar"></span>
-                </span> -->
-            </div>
-        </div>
+    <div class="col-sm-12 col-md-2 px-0">
+        <label><small> Villes :</small><a href="#" class="reset-field" data-target="#filter_city_id">x</a></label>
+        <select id='filter_city_id' class="form-control">
+            <option value=""> --- </option>
+            @foreach($cities as $key => $value)
+                <option value="{{$key}}">{{$value}}</option>
+            @endforeach
+        </select>
     </div>
-    <div class="col-12 row mt-1 bg-light p-0">
-        <div class="col-sm-12 col-md-2 p-0">
-            <label for="price_type" class="col-sm-12 col-md-12"><small>Type de prix :</small> </label>
-            <select name="price_type" id="price_type" class="form-control">
-                <option value=""> Sélectionez le type de prix </option>
-                <option value="1">Entrez le prix</option>
-                <option value="3">Gratuit</option>
-                <option value="2">Échange</option>
-            </select>
-        </div>
-        <div class="col-sm-12 col-md-3 px-0" id="min-price" style="display: none">
-            <label><small>Filtrer par prix minimum :</small></label>
-            <input type="number" step="0.01" id='filter_price_min_id' class="form-control" placeholder="Entrer le prix minimum">
-        </div>
-        <div class="col-sm-12 col-md-3 px-0" id="max-price" style="display: none">
-            <label><small>Filtrer par prix maximum:</small></label>
-            <input type="number" step="0.01" id='filter_price_max_id' class="form-control" placeholder="Entrer le prix maximum">
-        </div>
+    <div class="col-sm-12 col-md-1 px-0">
+        <label><small>Code postal :</small><a href="#" class="reset-field" data-target="#filter_postal_code_id">x</a></label>
+        <input class="form-control" id='filter_postal_code_id' type="text" name="postal_code" placeholder="" />
     </div>
-</div>
+    <div class="col-sm-12 col-md-1 px-0">
+        <label><small> Catégories :</small><a href="#" class="reset-field" data-target="#filter_categ_id">x</a></label>
+        <select id='filter_categ_id' class="form-control">
+            <option value=""> --- </option>
+            @foreach($categories as $key => $value)
+                <option value="{{$key}}">{{$value}}</option>
+            @endforeach
+        </select>
+    </div>
+    <div class="col-sm-12 col-md-2 px-0">
+        <label><small>Titre :</small><a href="#" class="reset-field" data-target="#filter_title">x</a></label>
+        <input  id='filter_title' type="text" name="title" placeholder="" class="form-control" />
+    </div>
+    <div class="col-sm-12 col-md-1 px-0">
+        <label><small>Id :</small><a href="#" class="reset-field" data-target="#filter__id">x</a></label>
+        <input  id='filter__id' type="text" name="id" placeholder="" class="form-control" />
+    </div>
+    @hasanyrole('super-admin|admin')
+        <div class="col-sm-12 col-md-2 px-0">
+            <label for="annonceur_filter"><small>Ajouté par</small><a href="#" class="reset-field" data-target="#annonceur_filter">x</a></label>
+            <input name="autocomplete_user" id="annonceur_filter" class="form-control select-members" >
+            <input name="user_id" id="user_id" type="hidden">
+            <ul id="autocompletes" style="display: none;"></ul> 
+        </div>
+        <div class="col-sm-12 col-md-1 px-0">
+            <label><small>Modifier le :</small><a href="#" class="reset-field" data-target="#filter_updated_at">x</a></label>
+            <input class="form-control" id='filter_updated_at' type="text" name="id" placeholder="Ex: 2021-04-28" />
+        </div>
+    @endrole
+    @hasanyrole('vendeur|chef-vendeur')
+        <div class="col-sm-12 col-md-1 px-0">
+            <label><small>Ajouté le :</small><a href="#" class="reset-field" data-target="#filter_created_at">x</a></label>
+            <input class="form-control" id='filter_created_at' type="text" name="id" placeholder="Ex: 2021-04-28" />
+        </div>
+        <div class="col-sm-12 col-md-1 px-0">
+            <label><small>Modifié le :</small><a href="#" class="reset-field" data-target="#filter_updated_at">x</a></label>
+            <input class="form-control" id='filter_updated_at' type="text" name="id" placeholder="Ex: 2021-04-28" />
+        </div>
+    @endrole
+</form>
 
 <script defer>
         $(function() {
-            
+   
             /* *  load the date picker **/
             $('#filter_date_min_id,#filter_date_max_id').datepicker({
                 clearBtn: true,
@@ -134,5 +115,7 @@
                     }
                 });
             });
+            
+            $('.dt-buttons').append(' - <button class="dt-button buttons-csv buttons-html5 btn btn-success m-0" tabindex="0" aria-controls="announcements-table" type="button" id="reset_filter"><span><i class="fa fa-broom"></i>Effacer les filtres</span></button>')
         });
 </script>

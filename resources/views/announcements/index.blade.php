@@ -8,7 +8,7 @@
         <div class="col-12 tab-content" id="nav-tabContent">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="card-title font-weight-bold">Mes annonces</h2>
+                    <h2 class="card-title font-weight-bold">Mes annonces (Vacl) </h2>
                     <div class="card-tools">
                         <a href="{{route('user.create_announcement')}}" class="btn btn-primary btn-sm">
                             <i class="mr-2 fa fa-plus"></i> Ajouter une annonce
@@ -16,16 +16,17 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    @include("layouts.front.partials.announcements_filters")
+                    @include("layouts.back.partials.announcements_filters")
                     <table class="table table-success table-striped table-borderless" id="announcements-table">
                         <thead class="table-light">
                             <tr>
+                                <th>N°</th>
                                 <th>Titre</th>
-                                <th>Categorie</th>
-                                <th>Prix</th>
-                                <th>Identité</th>
                                 <th>Region et Ville</th>
-                                <th width="150px">Etat Publication</th>
+                                <th>Categorie</th>
+                                <th>Code postal</th>
+                                <th>Ajouté le</th>
+                                <th>Modifié le</th>
                             </tr>
                         </thead>
                     </table>
@@ -90,23 +91,26 @@
                                     d.search            = $('input[type="search"]').val(),
                                     d.city_id           = $('#filter_city_id').val(),
                                     d.date_min          = $('#filter_date_min_id').val(),
-                                    d.date_max          = $('#filter_date_max_id').val(),
+                                    d.title             = $('#filter_title').val(),
                                     d.pub_type          = $('#filter_publication_type_id').val(),
-                                    d.price_max         = $('#filter_price_max_id').val(),
-                                    d.price_min         = $('#filter_price_min_id').val(),
+                                    d.id                = $('#filter__id').val(),
                                     d.region_id         = $('#filter_region_id').val(),
-                                    d.price_type        = $('#price_type').val(),
+                                    d.updated_at        = $('#filter_updated_at').val(),
+                                    d.created_at        = $('#filter_created_at').val(),
                                     d.postal_code       = $('#filter_postal_code_id').val(),
                                     d.filter_categ_id   = $('#filter_categ_id').val()
                                 }
                             },
                             columns: [
+                                { data: 'id', name: 'id' },
                                 { data: 'title', name: 'title' },
-                                { data: 'category_id', name: 'category_id' },
-                                { data: 'price', name: 'price' },
-                                { data: 'owner', name: 'owner' },
                                 { data: 'region_id', name: 'region_id' },
-                                { data: 'publication', name: 'publication', orderable: true, searchable: false,'width': '50px' }
+                                { data: 'category_id', name: 'category_id' },
+                                { data: 'postal_code', name: 'postal_code' },
+                                /* { data: 'owner', name: 'owner' }, */
+                                { data: 'created_at', name: 'created_at'},
+                                { data: 'updated_at', name: 'updated_at'},
+                                /* { data: 'publication', name: 'publication', orderable: true, searchable: false,'width': '50px' } */
                             ],
                             order: [[ 0, 'asc' ]],
                             pageLength: 100,
@@ -135,18 +139,44 @@
                                 }
                         });
             /** loading filters when fields value changed **/
-            /*action when select boxes are updated*/
+            table.columns().every( function() {
+                var that = this;
+        
+                $('#filter_region_id, #filter_city_id, #filter_categ_id,#filter_title,#filter__id,#filter_updated_at,#filter_created_at,#filter_postal_code_id')
+                .on('keyup change', function() {
+                    if (that.search() !== this.value) {
+                        that
+                            .search(this.value)
+                            .draw();
+                    }
+                });
+                //When the button to reset a filter is clicked
+                $('body').on('click','.reset-field', function (e) {
+                    e.preventDefault();
+                    console.log("hello");
+                    const target = $(this).data('target');
+                    $(target).val('')
+                    that.draw();
+                });
+                //When the button to erase filters is clicked
+                $('body').on('click','#reset_filter', function (e) {
+                    e.preventDefault();
+                    $('form.datatable-filter')[0].reset();
+                    that.search(this.value).draw();
+                });
+            });
+            /*action when select boxes are updated*
             $('#filter_region_id, #filter_city_id, #filter_categ_id,#price_type,#filter_publication_type_id').change(function(){
                 table.draw();
             });
-            /*action when input fields are updated*/
+            /*action when input fields are updated*
             $('#filter_postal_code_id,#filter_price_min_id,#filter_price_max_id').keyup(function(){
                 table.draw();
             });
-            /*action when dates fields are updated*/
+            /*action when dates fields are updated*
             $("#filter_date_min_id,#filter_date_max_id").blur(function(){
                 table.draw();
-            });
+            });//*/
 
         });
     </script>

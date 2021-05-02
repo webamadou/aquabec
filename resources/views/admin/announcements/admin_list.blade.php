@@ -16,7 +16,9 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    @include("layouts.back.partials.announcements_filters")
+                    <form class="col-sm-12 col-md-12 justify-content-center row p-0 bg-light datatable-filter">
+                        @include("layouts.back.partials.announcements_filters")
+                    </form>
                     <table class="table table-success table-striped table-borderless" id="announcements-table">
                         <thead class="table-light">
                             <tr>
