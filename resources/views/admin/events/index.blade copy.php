@@ -24,10 +24,10 @@
                                 <th>Titre</th>
                                 <th>Date(s)</th>
                                 <th>Région et Ville</th>
+                                <th>Identité</th>
                                 <th>Organisateur</th>
-                                <th>Ajouté par</th>
-                                <th>Ajouté le</th>
-                                <th>Modifié le</th>
+                                <th>État Publication</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                     </table>
@@ -63,15 +63,12 @@
                             d.search            = $('input[type="search"]').val(),
                             d.city_id           = $('#filter_city_id').val(),
                             d.date_min          = $('#filter_date_min_id').val(),
-                            d.filter_id         = $('#filter__id').val(),
-                            d.filter__date      = $('#filter__date').val(),
+                            /* d.date_max          = $('#filter_date_max_id').val(), */
                             d.pub_type          = $('#filter_publication_type_id').val(),
                             d.organisateur      = $('#filter_organisation_id').val(),
-                            d.owner             = $('#annonceur_filter').val(),
-                            d.filter_title      = $('#filter_title').val(),
+                            d.price_min         = $('#filter_price_min_id').val(),
                             d.region_id         = $('#filter_region_id').val(),
-                            d.created_at        = $('#filter_created_at').val(),
-                            d.updated_at        = $('#filter_updated_at').val(),
+                            d.price_type        = $('#price_type').val(),
                             d.postal_code       = $('#filter_postal_code_id').val(),
                             d.filter_categ_id   = $('#filter_categ_id').val()
                         }
@@ -81,12 +78,11 @@
                     { data: "title", name: 'title'},
                     { data: "dates", name: 'dates'},
                     { data: "region_id", name: 'region_id'},
-                    { data: "organisation", name: 'organisation'},
                     { data: "owner", name: 'owner'},
+                    { data: "organisation", name: 'organisation'},
                     /* { data:"event_time",name: "event_time" }, */
-                    { data: "created_at", name: 'created_at'},
-                    { data: "updated_at", name: 'updated_at'},
-                    /* { data: 'action', name: 'action'} */
+                    { data: "publication", name: 'publication'},
+                    { data: 'action', name: 'action'}
                 ],
                 buttons: [
                     'csv', 'excel', 'pdf'
@@ -117,42 +113,21 @@
                       }
                     }
             });
-
-            /** loading filters when fields value changed **/
-            table.columns().every( function() {
-                var that = this;
         
-                $('#filter_region_id, #filter_city_id, #filter_categ_id,#filter_title,#filter__id,#filter_updated_at,#filter_created_at,#filter_postal_code_id,#filter__date,#user_id,#filter_organisation_id,#filter_publication_type_id,#annonceur_filter__')
-                .on('keyup change', function() {
-                    if (that.search() !== this.value) {
-                        that
-                            .search(this.value)
-                            .draw();
-                    }
-                });
-                //When the button to reset a filter is clicked
-                $('body').on('click','.reset-field', function (e) {
-                    e.preventDefault();
-                    console.log("hello");
-                    const target = $(this).data('target');
-                    $(target).val('')
-                    that.draw();
-                });
-                //When the button to erase filters is clicked
-                $('body').on('click','#reset_filter', function (e) {
-                    e.preventDefault();
-                    $('form.datatable-filter')[0].reset();
-                    that.search(this.value).draw();
-                });
+        
+            /** loading filters when fields value changed **/
+            /*action when select boxes are updated*/
+            $('#filter_region_id, #filter_city_id, #filter_categ_id,#price_type,#filter_publication_type_id,#filter_organisation_id').change(function(){
+                table.draw();
             });
-            /*action when input fields are updated*
+            /*action when input fields are updated*/
             $('#filter_postal_code_id,#filter_price_max_id').keyup(function(){
                 table.draw();
             });
-            /*action when dates fields are updated*
+            /*action when dates fields are updated*/
             $("#filter_date_min_id,#filter_date_max_id").change(function(){
                 table.draw();
-            });*/
+            });
         });
     </script>
 

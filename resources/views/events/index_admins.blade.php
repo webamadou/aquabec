@@ -1,4 +1,4 @@
-@extends('layouts.back.admin')
+@extends('layouts.front.app')
 
 @section('content')
     <div class="row">
@@ -40,7 +40,7 @@
 
 @push('scripts')
 
-    <script defer>
+     <script defer>
         $(function() {
             $('body').on('click','.uncolapser',function(e){
                 let $id = $(this).data('item');
@@ -58,7 +58,7 @@
                 method:'post',
                 dom: 'Bfrliptip',
                 ajax: {
-                    url: '{{ url("admin/events") }}',
+                    url: '{{ route("user.my_events") }}',
                     data: function (d) {
                             d.search            = $('input[type="search"]').val(),
                             d.city_id           = $('#filter_city_id').val(),
@@ -155,5 +155,6 @@
             });*/
         });
     </script>
+
 
 @endpush

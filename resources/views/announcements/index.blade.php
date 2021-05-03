@@ -141,8 +141,7 @@
             /** loading filters when fields value changed **/
             table.columns().every( function() {
                 var that = this;
-        
-                $('#filter_region_id, #filter_city_id, #filter_categ_id,#filter_title,#filter__id,#filter_updated_at,#filter_created_at,#filter_postal_code_id')
+                $('#filter_region_id, #filter_city_id, #filter_categ_id,#filter_title,#filter__id,#filter_updated_at,#filter_created_at,#filter_postal_code_id,#annonceur_filter,#user_id')
                 .on('keyup change', function() {
                     if (that.search() !== this.value) {
                         that

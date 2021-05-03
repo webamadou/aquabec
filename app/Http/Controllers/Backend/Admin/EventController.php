@@ -34,7 +34,9 @@ class EventController extends Controller
     {
         $user = auth()->user();
         if ($request->ajax()) {
-            $data = Event::where('publication_status','<',2);
+            $data = Event::where('publication_status','<=',3)
+                            ->select('id','images','title','region_id','dates','city_id','organisation_id','owner','slug','posted_by','category_id','publication_status','created_at','updated_at')
+                            ->with('region','city','organisation','owned','posted','category');
             return Datatables::of($data)
                     ->addIndexColumn()
                     ->addColumn('publication',function ($row) {
@@ -65,7 +67,7 @@ class EventController extends Controller
                         return $row->id;
                     })
                     ->addColumn('title',function ($row) {
-                        return '<a href="'.url("/admin/event/$row->id").'"><img src="'.url("/voir/images/$row->images").'" alt="'.@$row->title.'" style="width:50px; height: auto"><strong>'.$row->title.'</strong></a>';
+                        return '<a href="'.url("/admin/event/$row->id").'" class="table-link-publication"><img src="'.url("/voir/images/$row->images").'" alt="'.@$row->title.'" style="width:50px; height: auto"><strong>'.$row->title.'</strong></a>';
                     })
                     ->addColumn("organisation", function($row){
                         return @$row->organisation->name;
@@ -96,7 +98,7 @@ class EventController extends Controller
                     ->addColumn('region_id', function($row){
                         return '<strong>Region : </strong>'.@$row->region->name.'<br><strong>Ville : </strong>'.@$row->city->name;
                     })
-                     ->addColumn('action',function ($row) {
+                    ->addColumn('action',function ($row) {
                         $edit_route = route("admin.edit_event",$row->id);
                         $modal_togglers = [
                             [
@@ -107,6 +109,15 @@ class EventController extends Controller
                         ];
 
                         return view('layouts.back.datatables.actions-btn',compact('edit_route','modal_togglers'));
+                    })
+                    ->addColumn('created_at', function($row){
+                        return @$row->created_at;
+                    })
+                    ->addColumn('updated_at', function($row){
+                        return @$row->updated_at;
+                    })
+                    ->addColumn('category_id', function($row){
+                        return @$row->category->name;
                     })
                     ->filter(function ($instance) use ($request) {
                         if ($request->get('region_id') != '') {
@@ -129,22 +140,48 @@ class EventController extends Controller
                                 ->where('events.dates','LIKE', "%".$dates."%");
                         }
                         if ($request->get('price_type') == '3' || $request->get('price_type') == '2') {
-                           $instance->where('price_type', $request->get('price_type'));
+                            $instance->where('price_type', $request->get('price_type'));
                         }
                         if ($request->get('organisateur') != '' ) {
-                           $instance->where('organisation_id','<=', $request->get('organisateur'));
+                            $instance->where('organisation_id','<=', $request->get('organisateur'));
                         }
                         if ($request->get('pub_type') != '') {
-                           $instance->where('publication_status', $request->get('pub_type'));
+                            $instance->where('publication_status', $request->get('pub_type'));
                         }
-                        if (!empty($request->get('search'))) {
+                        if ($request->get('filter_id') != '') {
+                            $instance->where('id', $request->get('filter_id'));
+                        }
+                        if ($request->get('created_at') != '') {
+                            $date_min = $request->get('created_at').' 00:00:00';
+                            $date_max = $request->get('created_at').' 23:59:59';
+                            $instance->where('created_at', '>=',$date_min)
+                                    ->where('created_at', '<=',$date_max);
+                        }
+                        if ($request->get('updated_at') != '') {
+                            $date_min = $request->get('updated_at').' 00:00:00';
+                            $date_max = $request->get('updated_at').' 23:59:59';
+                            $instance->where('updated_at', '>=',$date_min)
+                                    ->where('updated_at', '<=',$date_max);
+                        }
+                        if ($request->get('filter__date') != '') {
+                            $dates = $request->get('filter__date');
+                            $instance->where('dates','LIKE', "%$dates%");
+                        }
+                        if ($request->get('owner') != '') {
+                            $instance->where('dates', $request->get('owner'));
+                        }
+                        if ($request->get('filter_title') != '') {
+                            $title = $request->get('filter_title');
+                            $instance->where('title','LIKE', "%$title%");
+                        }
+                        /* if (!empty($request->get('search'))) {
                             $instance->where(function($w) use($request){
                                $search = $request->get('search');
                                $w->orWhere('title', 'LIKE', "%$search%")
                                     ->orWhere('dates', 'LIKE', "%$search%")
                                     ->orWhere('id', 'LIKE', "%$search%");
                            });
-                        }
+                        } */
                     })
                     ->order(function ($instance) use ($request){
                             $order = @$request->get('order')[0];
@@ -187,7 +224,7 @@ class EventController extends Controller
                             
                             // echo $instance->join('event_dates','event_dates.event_id','=','events.id')->groupby('events.id')->toSql();
                     })
-                    ->rawColumns(['id','title','organisation','dates','owner','region_id','publication','action'])
+                    ->rawColumns(['id','title','organisation','dates','owner','region_id','publication','action','created_at','updated_at'])
                     ->make(true);
         }
         $data = Event::where('publication_status','<',2);
@@ -196,11 +233,15 @@ class EventController extends Controller
         $regions    = Region::pluck('name','id');
         $cities     = City::orderby('name')->pluck('name','id');
         $organisations = \App\Models\Organisation::pluck('name','id');
-        $categories = Category::pluck('name','id');
-        $regions    = \App\Models\Region::pluck('name','id');
+        $categories = Category::where('type','!=','annonce')->pluck('name','id');
+        $regions    = \App\Models\Region::select('name','id','region_number')->get();
         $announcements = null;
+        $list_users = $user->recipientList()
+                        ->orderby('username')
+                        ->select('id','name','prenom','username')
+                        ->get();
 
-        return view('admin.events.index', compact('user','announcements','regions','cities','organisations','categories'));
+        return view('admin.events.index', compact('user','announcements','regions','cities','organisations','categories','list_users'));
     }
 
     /** *** EVENTS METHODS *** */
