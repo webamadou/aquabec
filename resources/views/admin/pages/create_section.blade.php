@@ -41,11 +41,5 @@
 
 @push('scripts')
 
-    <script src="{{asset('/dist/ckeditor/ckeditor.js')}}" defer></script>
-    <script type="text/javascript" defer>
-        $(document).ready(function () {
-            $('.ckeditor').ckeditor();
-        });
-    </script>
 
 @endpush

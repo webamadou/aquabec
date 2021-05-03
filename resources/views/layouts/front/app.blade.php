@@ -43,6 +43,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="{{asset('dist/ckeditor5/build/styles.css')}}">
     <link rel="stylesheet" href="{{ asset('/dist/datepicker/combined.css') }}">
     <link rel="stylesheet" href="{{ asset('css/all.css') }}">
     <script defer>
@@ -174,5 +175,65 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script type='text/javascript' src="https://cdn.jsdelivr.net/npm/froala-editor@2.9.1/js/froala_editor.pkgd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/froala-editor@2.9.1/js/languages/fr.js"></script>
 @include('layouts.back.alerts.sweetalerts')
+
+<script src="{{asset('dist/ckeditor5/build/ckeditor.js')}}"></script>
+<script>ClassicEditor
+        .create( document.querySelector( '.editor, .ckeditor' ), {
+            
+            toolbar: {
+                items: [
+                    'heading',
+                    '|',
+                    'bold',
+                    'italic',
+                    'link',
+                    'bulletedList',
+                    'numberedList',
+                    '|',
+                    'outdent',
+                    'indent',
+                    '|',
+                    'imageUpload',
+                    'blockQuote',
+                    'insertTable',
+                    'mediaEmbed',
+                    'undo',
+                    'redo',
+                    'CKFinder',
+                    'underline',
+                    'fontColor',
+                    'removeFormat',
+                    'alignment'
+                ]
+            },
+            language: 'fr',
+            image: {
+                toolbar: [
+                    'imageTextAlternative',
+                    'imageStyle:full',
+                    'imageStyle:side'
+                ]
+            },
+            table: {
+                contentToolbar: [
+                    'tableColumn',
+                    'tableRow',
+                    'mergeTableCells'
+                ]
+            },
+            licenseKey: '',
+            
+            
+        } )
+        .then( editor => {
+            window.editor = editor;
+        } )
+        .catch( error => {
+            console.error( 'Oops, something went wrong!' );
+            console.error( 'Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:' );
+            console.warn( 'Build id: qp877ojrkize-b9d1q6l02xnr' );
+            console.error( error );
+        } );
+</script>
 </body>
 </html>

@@ -70,7 +70,7 @@ class EventController extends Controller
                         return $row->id;
                     })
                     ->addColumn('title',function ($row) {
-                        return '<a href="'.url("/admin/event/$row->id").'" class="table-link-publication"><img src="'.url("/voir/images/$row->images").'" alt="'.@$row->title.'" style="width:50px; height: auto"><strong>'.$row->title.'</strong></a>';
+                        return '<a href="'.route("user.show_event",$row->slug).'" class="table-link-publication"><img src="'.url("/voir/images/$row->images").'" alt="'.@$row->title.'" style="width:50px; height: auto"><strong>'.$row->title.'</strong></a>';
                     })
                     ->addColumn("organisation", function($row){
                         return @$row->organisation->name;

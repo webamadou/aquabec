@@ -82,7 +82,7 @@ class AnnouncementController extends Controller
                                                 ->select('id','title','slug','images')
                                                 ->first();
                     $event = $event?"<br><strong>Evenement</strong> : <a href='".route('user.show_announcement',$event->slug)."'>$event->slug</a>":'';
-                    return '<a class="table-link-publication" href="'.url("/admin/announcement/$row->id").'"> <img src="'.url("/voir/images/$row->images").'" alt="'.@$row->title.'" style="width:50px; height: auto"> <strong>'.$row->title.'</strong></a> '.$event;
+                    return '<a class="table-link-publication" href="'.route("user.show_announcement",$row->slug).'"> <img src="'.url("/voir/images/$row->images").'" alt="'.@$row->title.'" style="width:50px; height: auto"> <strong>'.$row->title.'</strong></a> '.$event;
                 })
                 ->addColumn("category_id", function($row){
                     return @$row->category->name;

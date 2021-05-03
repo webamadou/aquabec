@@ -113,8 +113,4 @@
             });
         });
     </script>
-    <script src="{{asset('/dist/ckeditor/ckeditor.js')}}" defer></script>
-    <script>
-        $('.ckeditor').ckeditor();
-    </script>
 @endpush

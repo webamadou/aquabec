@@ -44,7 +44,7 @@
                         </div>
                         <div class="form-group" data-children-count="1">
                             <label for="description" class="control-label">Description</label>
-                            <textarea class="ckeditor form-control" name="description" id="description" cols="30" rows="5" placeholder="Ajoutez une description à cette monnaie">{{old('description',@$currency->description)}}</textarea>
+                            <textarea class="ckeditor form-control" name="description" id="description" placeholder="Ajoutez une description à cette monnaie">{{old('description',@$currency->description)}}</textarea>
                         </div>
                         <button class="btn bg-primary float-right" type="submit"><i class="fa fa-save mr-2"></i>Enregistrer</button>
                     </form>
@@ -101,8 +101,6 @@
 @stop
 
 @push('scripts')
-    <script src="{{asset('/dist/ckeditor/ckeditor.js')}}"></script>
-    <script src="{{asset('/dist/ckeditor/lang/fr-ca.js')}}"></script>
     <script>
         $(function() {
             $('#roles-table').DataTable({

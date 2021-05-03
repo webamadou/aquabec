@@ -95,7 +95,6 @@
 
 @push('scripts')
 
-    <script src="{{asset('/dist/ckeditor/ckeditor.js')}}" defer></script>
     <script type="text/javascript">
         $(document).ready(function () {
             const autocomplete_field = document.querySelector('input[name="autocomplete_user"]');
@@ -153,11 +152,6 @@
                 });
             }
         })
-    </script>
-    <script type="text/javascript" defer>
-        $(document).ready(function () {
-            $('.ckeditor').ckeditor();
-        });
     </script>
 
 @endpush

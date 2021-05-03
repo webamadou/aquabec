@@ -256,4 +256,8 @@ class WelcomeController extends Controller
         }
         return response()->json($components   , 200);
     }
+
+    public function test(Request $request){
+        return view('test');
+    }
 }

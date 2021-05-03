@@ -7,6 +7,7 @@
     <label for="title" class="col-sm-12 col-md-12">Description de l'annonce ( le poumon ) : </label>
     <div><textarea name="description" id="description" class="ckeditor form-control">{{old('description',@$announcement->description)}}</textarea></div>
 </div>
+
 <div class="offset-sm-0 col-sm-12 col-md-6 form-group row">
     <label for="images" class="col-sm-12 col-md-12">Image de l'annonce : </label>
     <input type="file" name="images" id="images" class="form-control">
