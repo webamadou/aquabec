@@ -17,6 +17,7 @@
                     </div>
                 </div>
                 <div class="card-body">
+                    @include("layouts.back.partials.users_filters")
                     <table class="table table-success table-striped table-borderless" id="teams-table">
                         <thead class="table-light">
                             <tr>
@@ -40,30 +41,32 @@
 
     <script>
         $(function() {
-            $('#teams-table').DataTable({
+            let table = $('#teams-table').DataTable({
                 processing: true,
                 serverSide: true,
-                dom: 'Bfrliptip',
+                dom: 'Brliptip',
                 buttons: [
                     'csv', 'excel', 'pdf'
                 ],
-                ajax: '{{ route("vendeurs.my_team_data") }}',
+                ajax: {
+                    url: '{{ route("vendeurs.my_team") }}',
+                    data: function (d) {
+                        d.search            = $('input[type="search"]').val(),
+                        d.filter_name       = $('#filter_name').val(),
+                        d.filter_prenom     = $('#filter_prenom').val(),
+                        d.filter_username   = $('#filter_username').val(),
+                        d.filter_roles      = $('#filter_roles').val(),
+                        d.filter_id         = $('#filter_id').val(),
+                        d.filter_email      = $('#filter_email').val(),
+                        d.updated_at        = $('#filter_updated_at').val(),
+                        d.created_at        = $('#filter_created_at').val()
+                    }
+                },
                 columns: [
-                    { data: null, name: 'username',
-                        render: data => {
-                            const slug      = data.slug ?? '';
-                            const prenom    = data.prenom ?? '';
-                            const name      = data.name ?? '';
-                            const username  = data.username ?? '';
-                            return data.name?`<strong><i class="fa fa-user-friends"><a href="{{url('/vendeur/${slug}')}}"> ${username}</a><br/>${prenom} ${name}</strong>`:``;
-                        }
-                    },
+                    { data: 'name', name: 'name'},
                     { data: 'email', name: 'email'},
                     { data: 'updated_at', name: 'updated_at' },
                     { data: 'action', name: 'action' }
-                ],
-                buttons: [
-                    'csv', 'excel', 'pdf'
                 ],
                 order: [[ 0, 'desc' ]],
                 pageLength: 100,
@@ -90,6 +93,34 @@
                         "sSortDescending": ": activez pour trier la colonne par ordre décroissant"
                       }
                     }
+            });
+
+            /** loading filters when fields value changed **/
+            table.columns().every( function() {
+                var that = this;
+
+                $('#filter_id,#filter_prenom, #filter_name, #filter_username,#filter_roles,#filter_email')
+                .on('keyup change', function() {
+                    if (that.search() !== this.value) {
+                        that
+                            .search(this.value)
+                            .draw();
+                    }
+                });
+                //When the button to reset a filter is clicked
+                $('body').on('click','.reset-field', function (e) {
+                    e.preventDefault();
+                    console.log("hello");
+                    const target = $(this).data('target');
+                    $(target).val('')
+                    that.draw();
+                });
+                //When the button to erase filters is clicked
+                $('body').on('click','#reset_filter', function (e) {
+                    e.preventDefault();
+                    $('form.datatable-filter')[0].reset();
+                    that.search(this.value).draw();
+                });
             });
         });
     </script>

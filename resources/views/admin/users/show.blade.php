@@ -31,8 +31,9 @@
                     <div class="py-md-1">
                         <div class="row justify-content-start pb-3">
                             <div class="col-md-12 heading-section ftco-animate fadeInUp ftco-animated">
-                                <span class="subheading">{{$user->name}}</span>
-                                <h2 class="mb-4" style="font-size: 34px; text-transform: capitalize;">{{$user->prenom}} {{$user->nom}}</h2>
+                                <strong class="subheading">{{$user->username}}</strong><br>
+                                <h2 class="mb-4" style="font-size: 34px; text-transform: capitalize;">{{$user->prenom}} {{$user->name}}</h2>
+                                <span class="subheading">N° {{$user->id}}</span>
                                 <p class="p-0 m-0 text-blue">{{$user->email}}</p>
                                 <ul class="about-info d-flex px-0">
                                     <li class="d-flex mr-3">

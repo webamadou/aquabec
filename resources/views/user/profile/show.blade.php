@@ -33,6 +33,7 @@
                                 <h3  style="font-size: 34px; text-transform: capitalize;">{{@$user->username}}</h3>
                                 {!! (@$user->name !== "" && @$user->prenom !== "") ? '<span class="subheading">Nom : '.$user->name.'</span><br>' : "" !!}
                                 <h5 class="mb-4 font-bold">Prenom :{{ @$user->prenom !== "" ? $user->prenom : $user->nom }}</h5>
+                                <span class="subheading">N° {{$user->id}}</span>
                                 <p class="p-0 m-0 text-blue">{{$user->email}}</p>
                                 <ul class="about-info d-flex px-0">
                                     <li class="d-flex mr-3">

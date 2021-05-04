@@ -242,7 +242,7 @@ class EventController extends Controller
                         ->orderby('username')
                         ->select('id','name','prenom','username')
                         ->get();
-        if($user->hasAnyRole(['vendeur','chef-vendeur'])){
+        if($user->hasAnyRole(['vendeur','chef-vendeur','annonceur'])){
             return view('events.index', compact('user','announcements','regions','cities','organisations','categories','list_users'));
         }elseif ($user->hasAnyRole(['super-admin','admin'])) {
             return view('events.index_admins', compact('user','announcements','regions','cities','organisations','categories','list_users'));

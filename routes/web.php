@@ -225,7 +225,7 @@ Route::middleware(['auth','verified'])->group(function (){
      * Vendor's Routes
      */
     Route::middleware(['role:chef-vendeur|vendeur'])->name('vendeurs.')->group(function () {
-        Route::get('/my_team', [UserDashboard::class, 'myTeam'])->name('my_team');
+        route::get('/mon_equipe', [userdashboard::class, 'listTeamates'])->name('my_team');
         Route::get('get-my_team-data/{user_id?}', [UserDashboard::class, 'myTeamData'])->name('my_team_data');
         Route::get('/create/vendeur', [UserController::class, 'createVendeur'])->name('create_vendeur');
         Route::post('/create/vendeur', [UserController::class, 'store'])->name('store_vendeur');
