@@ -11,6 +11,7 @@ use App\Models\Region;
 use App\Models\City;
 use App\Models\Event;
 use App\Models\Announcement;
+use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\DB;
 
 class WelcomeController extends Controller
@@ -109,6 +110,143 @@ class WelcomeController extends Controller
 
         return view('frontend.eventRegion', compact('region','events','month_array','cities','categories'));
 	}
+
+    public function announcementsCategoriesTable(Request $request,Category $category)
+    {
+        $user = auth()->user();
+        if ($request->ajax()) {
+            $data = Announcement::where('category_id',$category->id)
+                                ->where('publication_status','1')
+                                ->where('lock_publication','!=','1')
+                                ->where('validated','1');
+
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('id',function ($row) {
+                    return $row->id;
+                })
+                ->addColumn('updated_at',function ($row) {
+                    return $row->updated_at;
+                })
+                ->addColumn('created_at',function ($row) {
+                    return $row->created_at;
+                })
+                ->addColumn('title',function ($row) {
+                    $event = \App\Models\Event::where('id',@$row->event_id)
+                                                ->select('id','title','slug','images')
+                                                ->first();
+                    $event = $event?"<br><strong>Evenement</strong> : <a href='".route('user.show_announcement',$event->slug)."'>$event->slug</a>":'';
+                    return '<a class="table-link-publication" href="'.route("user.show_announcement",$row->slug).'"> <img src="'.url("/voir/images/$row->images").'" alt="'.@$row->title.'" style="width:50px; height: auto"> <strong>'.$row->title.'</strong></a> '.$event;
+                })
+                ->addColumn("category_id", function($row){
+                    return @$row->category->name;
+                })
+                ->addColumn('postal_code',function($row){
+                    return $row->postal_code;
+                })
+                ->addColumn('owner', function($row){
+                    $retour = $row->owned?$row->owned->username:"";
+                    if($row->owned->id !== $row->posted->id)
+                        $retour .= '<br><strong> Postée par :'. @$row->posted->username.'</strong>';
+
+                    return $retour;
+                })
+                ->addColumn('region_id', function($row){
+                    return '<strong>Region : </strong>'.@$row->region->name.'<br><strong>Ville : </strong>'.@$row->city->name;
+                })
+                ->addColumn('action',function ($row) {
+                    $edit_route = route('admin.edit_announcement',$row->id);
+                    $delete_route = route('admin.delete_announcement',$row->id);
+                    $modal_togglers = [
+                        [
+                            'name' => "Valider l'annonce classée",
+                            'route' => route('admin.validation_announcement',$row->id),
+                            'modal_title' => "Confirmer ou rejeter la validation de l'annonce <strong>$row->title</strong>"
+                        ]
+                    ];
+                    return view('layouts.back.datatables.actions-btn',compact('edit_route','delete_route','modal_togglers'));
+                })
+                ->filter(function ($instance) use ($request) {
+                    if ($request->get('region_id') != '') {
+                        $instance->where('region_id', $request->get('region_id'));
+                    }
+                    if ($request->get('city_id') != '') {
+                        $instance->where('city_id', $request->get('city_id'));
+                    }
+                    if ($request->get('filter_categ_id') != '') {
+                        $instance->where('category_id', $request->get('filter_categ_id'));
+                    }
+                    if ($request->get('postal_code') != '') {
+                        $postal_code = $request->get('postal_code');
+                        $instance->where('postal_code','LIKE', "%$postal_code%");
+                        // dd($instance->toSql(), "%$postal_code%");
+                    }
+                    if ($request->get('title') != '') {
+                        $title = $request->get('title');
+                        $instance->where('title','LIKE', "%$title%");
+                    }
+                    if ($request->get('id') != '') {
+                        $instance->where('id', $request->get('id'));
+                    }
+                    if ($request->get('updated_at') != '') {
+                        $instance
+                            ->where('updated_at','>=', $request->get('updated_at')." 00:00:00")
+                            ->where('updated_at','<=', $request->get('updated_at')." 23:59:59" );
+                    }
+                    if ($request->get('created_at') != '') {
+                        $instance
+                            ->where('created_at','>=', $request->get('created_at')." 00:00:00")
+                            ->where('created_at','<=', $request->get('created_at')." 23:59:59" );
+                    }
+                    if ($request->get('pub_type') != '') {
+                        $instance->where('publication_status', $request->get('pub_type'));
+                    }
+                    if ($request->get('date_min') != '') {
+                        $instance->where('published_at', '>=', date('Y-m-d', strtotime($request->get('date_min'))));
+                    }
+                    if ($request->get('date_max') != '') {
+                        $instance->where('published_at', '<=', date('Y-m-d', strtotime($request->get('date_max'))));
+                    }
+                    if (!empty($request->get('search'))) {
+                        $instance->where(function($w) use($request){
+                            $search = $request->get('search');
+                            $w->orWhere('announcements.title', 'LIKE', "%$search%")
+                                ->orWhere('announcements.id', 'LIKE', "%$search%");
+                        });
+                    }
+                })
+                ->order(function ($instance) use ($request){
+                        $order = @$request->get('order')[0];
+                        switch ($order['column']) {
+                            case 0:
+                                $instance->orderby('id', $order['dir'])
+                                ->orderby('id','desc');
+                                break;
+                            case 1:
+                                $instance->orderby('title', $order['dir'])
+                                ->orderby('id','desc');
+                                break;
+                            
+                            default:
+                                $instance->orderby('id', $order['dir']);
+
+                                break;
+                        }
+                        $instance
+                            ->skip( @$request->get('start') )
+                            ->take( @$request->get('length') );
+                })
+                ->rawColumns(['id','title','category_id','postal_code','owner','region_id','created_at','updated_at','action'])
+                ->make(true);
+        }
+
+        $regions    = Region::select('name','id','region_number')->get();
+        $cities     = City::orderby('name')->pluck('name','id');
+        $categories = Category::where('type','annonce')->pluck('name','id');
+        $regions    = Region::select('name','id','region_number')->get();
+        $announcements = null;
+        return view('frontend.announcementsTable', compact('user','announcements','cities','categories','regions','category'));
+    }
 
 	public function announcementCategory(Category $category)
 	{

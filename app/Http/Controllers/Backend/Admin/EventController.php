@@ -422,7 +422,8 @@ class EventController extends Controller
         if(intval(@$event->publication_status) !== 1 && (
                         intval(@$current_user->id) !== intval(@$event->owner) && 
                         intval(@$current_user->id) !== intval(@$event->posted_by)
-                    )
+                    ) &&
+                    !$current_user->hasAnyRole(['super-admin','admin'])
         ){
             $message = "Ce contenu n'est pas encore disponible";
             return view('frontend.feedback',compact('message'));

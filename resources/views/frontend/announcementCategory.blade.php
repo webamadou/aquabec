@@ -8,7 +8,7 @@
             <div class="row text-center">
                 <div class="col section-heading wow fadeInDown" data-wow-duration="1s" data-wow-delay=".5s">
                     <h2>
-                        <small>Annonce</small>
+                        <small>Annonce </small>
                         <span>Catégorie / {{@$category->name}}</span>
                     </h2>
                     <span class="animate-border border-offwhite ml-auto mr-auto tw-mt-20"></span>

@@ -20,8 +20,6 @@ use App\Models\Event;
 use Mail;
 use App\Mail\UserMails;
 
-use Yajra\Datatables\Datatables;
-use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -116,114 +114,6 @@ class DashboardController extends Controller
             ->make(true);
     }
 
-    public function listTeamates(Request $request,$user_id = null)
-    {
-        $user_id = $user_id === null?auth()->user()->id:$user_id;
-        if ($request->ajax()) {
-            $data = User::vendors()->where('godfather', $user_id)
-                        ->where('profile_status','<=','2');
-            if(auth()->user()->hasRole('vendeur')){
-                $data = auth()->user()
-                                ->godchildren()
-                                ->where('profile_status','<=',2);
-            }
-            return Datatables::of($data)
-                ->addIndexColumn()
-                ->addColumn('id',function ($row) {
-                    return $row->id;
-                })
-                ->addColumn('name',function ($row) {
-                    return  '<strong><i class="fa fa-user"></i> <a href="'.route('vendeurs.show_vendeur',$row->slug).'" class="text-link">'.@$row->username.'<br>'.$row->prenom.' '.$row->name.'</a></strong>';
-                })
-                ->addColumn("email", function($row){
-                    return @$row->email;
-                })
-                ->addColumn('roles',function($row){
-                    $roles = $row->roles;
-                    $fonctions = "";
-                    foreach ($roles as $key => $role) {
-                        $fonctions .= '<div class="badge badge-primary">'.$role->name.'</div>';
-                    }
-                    return $fonctions;
-                })
-                ->addColumn('updated_at', function($row){
-                    return @$row->updated_at;
-                })
-                ->addColumn('action', function($item){
-                    $edit_route = route('vendeurs.edit_vendeur',$item);
-                    return view('layouts.back.datatables.actions-btn', compact('edit_route'));
-                })
-                ->addColumn('created_at', function($row){
-                    return @$row->created_at;
-                })
-                ->filter(function ($instance) use ($request) {
-                    if ($request->get('filter_name') != '') {
-                        $name =  $request->get('filter_name');
-                        $instance->where('name','LIKE', "%$name%");
-                    }
-                    if ($request->get('filter_prenom') != '') {
-                        $prenom =  $request->get('filter_prenom');
-                        $instance->where('prenom','LIKE', "%$prenom%");
-                    }
-                    if ($request->get('filter_username') != '') {
-                        $username =  $request->get('filter_username');
-                        $instance->where('username','LIKE', "%$username%");
-                    }
-                    if ($request->get('filter_email') != '') {
-                        $username =  $request->get('filter_email');
-                        $instance->where('email','LIKE', "%$username%");
-                    }
-                    if ($request->get('filter_id') != '') {
-                        $instance->where('id', $request->get('filter_id'));
-                    }
-                    if ($request->get('filter_roles') != '') {
-                        $name = $request->get('filter_roles');
-                        $instance->whereHas("roles", function($q) use($name){$q->where('name', $name);});
-                    }
-                    if ($request->get('created_at') != '') {
-                        $date_min = $request->get('created_at').' 00:00:00';
-                        $date_max = $request->get('created_at').' 23:59:59';
-                        $instance->where('created_at', '>=',$date_min)
-                                ->where('created_at', '<=',$date_max);
-                    }
-                    if ($request->get('updated_at') != '') {
-                        $date_min = $request->get('updated_at').' 00:00:00';
-                        $date_max = $request->get('updated_at').' 23:59:59';
-                        $instance->where('updated_at', '>=',$date_min)
-                                ->where('updated_at', '<=',$date_max);
-                    }
-                    /* if (!empty($request->get('search'))) {
-                        $instance->where(function($w) use($request){
-                            $search = $request->get('search');
-                            $w->orWhere('title', 'LIKE', "%$search%")
-                                ->orWhere('dates', 'LIKE', "%$search%")
-                                ->orWhere('id', 'LIKE', "%$search%");
-                        });
-                    } */
-                })
-                ->order(function ($instance) use ($request){
-                        $order = @$request->get('order')[0];
-                        switch ($order['column']) {
-                            case 0:
-                                $instance->orderby('id', $order['dir']);
-                                break;
-                            
-                            default:
-                                $instance->orderby('updated_at', "desc");
-                                break;
-                        }
-                        $instance
-                            ->skip( @$request->get('start') )
-                            ->take( @$request->get('lenght') );
-                })
-                ->rawColumns(['id','name','email','roles','updated_at','created_at','action'])
-                ->make(true);
-        }
-
-        $roles = Role::orderby('name')->get();
-
-        return view('user.vendeurs.my_team', compact('roles'));
-    }
     public function showProfile(User $user)
     {
         if($user->profile_status >1)
