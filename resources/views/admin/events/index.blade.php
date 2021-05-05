@@ -8,7 +8,7 @@
         <div class="col-12 tab-content" id="nav-tabContent">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="card-title font-weight-bold">Liste des événements</h2>
+                    <h2 class="card-title font-weight-bold">Liste des événements @hasanyrole('admin') (admin) @endrole</h2>
                     <div class="card-tools">
                         <a href="{{route('user.create_event')}}" class="btn btn-primary btn-sm">
                             <i class="mr-2 fa fa-plus"></i> Ajouter un événement
