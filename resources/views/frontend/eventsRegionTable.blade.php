@@ -1,39 +1,46 @@
-    @extends('layouts.front.app')
+@extends('layouts.front.master')
+
+@section('title','Bienvenus')
 
 @section('content')
-    <div class="row">
-        <div class="my-4 col-12 row">
-            <!-- <h2 class="my-0"> - </h2> -->
-        </div>
-        <div class="col-12 tab-content" id="nav-tabContent">
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title font-weight-bold">Mes événements (Vacl)</h2>
-                    <div class="card-tools">
-                        <a href="{{route('user.create_event')}}" class="btn btn-primary btn-sm">
-                            <i class="mr-2 fa fa-plus"></i> Ajouter un événement
-                        </a>
-                    </div>
+    <section id="tw-blog" class="tw-blog">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col section-heading wow fadeInDown" data-wow-duration="1s" data-wow-delay=".5s">
+                    <h2>
+                        <small>Evénements</small>
+                        <span>{{$region->name}}</span>
+                    </h2>
+                    <span class="animate-border border-offwhite ml-auto mr-auto tw-mt-20"></span>
                 </div>
-                <div class="card-body">
-                    @include("layouts.front.partials.events_filters")
-                    <table class="table table-success table-striped table-borderless" id="events-table">
+                <!-- Col end -->
+            </div>
+            <!-- Row End -->
+            <div class="row fadeInDown" data-wow-duration="1s" data-wow-delay=".2s">
+                <div class="col-sm-12 col-md-12" id="list-component-wrapper">
+                    @include("frontend.includes.events_filters")
+                    <table class="table table-primary table-striped table-borderless" id="events-table">
                         <thead class="table-light">
                             <tr>
                                 <th>Id</th>
+                                <th>Image</th>
                                 <th>Titre</th>
-                                <th>Date(s)</th>
-                                <th>Catégorie</th>
-                                <th>Identité</th>
-                                <th>État Publication</th>
+                                <th>Dates</th>
+                                <th>Region & Ville</th>
+                                <th>Ajouté par</th>
                             </tr>
                         </thead>
                     </table>
                 </div>
+                    
+                <!-- <div class="col-md-12 text-center wow zoomIn" data-wow-duration="1s" data-wow-delay="1s"><a href="#" class="btn btn-primary btn-lg tw-mt-80">view all</a></div> -->
             </div>
+            <!-- End Row -->
         </div>
-    </div>
-@endsection
+        <!-- Container End -->
+    </section>
+    <!-- template tag -->
+@stop
 
 @push('scripts')
 
@@ -48,14 +55,10 @@
             let table = $('#events-table').DataTable({
                 processing: true,
                 serverSide: true,
-                dom: 'Bfrliptip',
-                buttons: [
-                    'csv', 'excel', 'pdf'
-                ],
-                method:'post',
                 dom: 'Brliptip',
+                method:'post',
                 ajax: {
-                    url: '{{ route("user.my_events") }}',
+                    url: '{{ route("event_region",$region) }}',
                     data: function (d) {
                             d.search            = $('input[type="search"]').val(),
                             d.city_id           = $('#filter_city_id').val(),
@@ -75,14 +78,14 @@
                 },
                 columns: [
                     { data: "id", name: 'id'},
+                    { data: "images", name: 'images'},
                     { data: "title", name: 'title'},
                     { data: "dates", name: 'dates'},
-                    { data: "category_id", name: 'category_id'},
+                    { data: "region_id", name: 'region_id'},
                     { data: "owner", name: 'owner'},
-                    { data: "publication", name: 'publication'}
                 ],
                 buttons: [
-                    'csv', 'excel', 'pdf'
+                    /* 'csv', 'excel', 'pdf' */
                 ],
                 order: [[ 5, 'desc' ]],
                 pageLength: 100,
@@ -114,7 +117,6 @@
             table.columns().every( function() {
                 var that = this;
         
-                /* $('#filter_region_id, #filter_city_id, #filter_categ_id,#filter_title,#filter__id,#filter_updated_at,#filter_created_at,#filter_postal_code_id,#filter__date,#user_id,#filter_organisation_id,#filter_publication_type_id,#annonceur_filter__') */
                 $('#filter_region_id, #filter_city_id, #filter_categ_id,#filter_title,#filter__id,#filter_updated_at,#filter_created_at,#filter_postal_code_id,#filter__date,#user_id,#filter_organisation_id,#filter_publication_type_id,#annonceur_filter')
                 .on('keyup change', function() {
                     if (that.search() !== this.value) {
@@ -126,7 +128,6 @@
                 //When the button to reset a filter is clicked
                 $('body').on('click','.reset-field', function (e) {
                     e.preventDefault();
-                    console.log("hello");
                     const target = $(this).data('target');
                     $(target).val('')
                     that.draw();
@@ -138,19 +139,8 @@
                     that.search(this.value).draw();
                 });
             });
-            /*action when select boxes are updated*
-            $('#filter_region_id, #filter_city_id, #filter_categ_id,#price_type,#filter_publication_type_id,#filter_organisation_id').change(function(){
-                table.draw();
-            });
-            /*action when input fields are updated*
-            $('#filter_postal_code_id,#filter_price_max_id').keyup(function(){
-                table.draw();
-            });
-            /*action when dates fields are updated*
-            $("#filter_date_min_id,#filter_date_max_id").change(function(){
-                table.draw();
-            });//*/
+
+            $('.dt-buttons').append(' <button class="dt-button buttons-csv buttons-html5 btn btn-success m-0" tabindex="0" aria-controls="announcements-table" type="button" id="reset_filter"><span><i class="fa fa-broom"></i>Effacer les filtres</span></button>')
         });
     </script>
-
 @endpush

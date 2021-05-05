@@ -1,4 +1,4 @@
-@extends('layouts.front.app')
+@extends('layouts.front.master')
 
 @section('title','Bienvenus')
 
@@ -17,21 +17,22 @@
             </div>
             <!-- Row End -->
             <div class="row fadeInDown" data-wow-duration="1s" data-wow-delay=".2s">
-                <div class="col-sm-12 col-md-12 row" id="list-component-wrapper">
-                    <table class="table table-success table-striped table-borderless" id="announcements-table">
+                <div class="col-sm-12 col-md-12" id="list-component-wrapper">
+                    @include("frontend.includes.announcements_filters")
+                    <table class="table table-primary table-striped table-borderless" id="announcements-table">
                         <thead class="table-light">
                             <tr>
+                                <th>Images</th>
                                 <th>Titre</th>
                                 <th>Categorie</th>
                                 <th>Prix</th>
                                 <th>Identité</th>
                                 <th>Region & Ville</th>
+                                <th>Publiée le</th>
                             </tr>
                         </thead>
                     </table>
                 </div>
-                    
-                <!-- <div class="col-md-12 text-center wow zoomIn" data-wow-duration="1s" data-wow-delay="1s"><a href="#" class="btn btn-primary btn-lg tw-mt-80">view all</a></div> -->
             </div>
             <!-- End Row -->
         </div>
@@ -43,7 +44,6 @@
 @push('scripts')
 
     <script defer>
-        alert("This is a test");
         $(function() {
             // Create our number formatter.
             var formatter = new Intl.NumberFormat('en-US', {
@@ -56,34 +56,34 @@
                             ordering: true,
                             serverSide: true,
                             dom: 'Brliptip',
-                            /* buttons: [
-                                'csv', 'excel', 'pdf'
-                            ], */
+                            buttons: [
+                                // 'csv', 'excel', 'pdf'
+                            ],
                             ajax: {
                                 url: '{{ route("announcement_page",$category) }}',
                                 data: function (d) {
                                     d.search            = $('input[type="search"]').val(),
                                     d.city_id           = $('#filter_city_id').val(),
                                     d.date_min          = $('#filter_date_min_id').val(),
-                                    d.date_max          = $('#filter_date_max_id').val(),
+                                    d.title             = $('#filter_title').val(),
                                     d.pub_type          = $('#filter_publication_type_id').val(),
-                                    d.price_max         = $('#filter_price_max_id').val(),
-                                    d.price_min         = $('#filter_price_min_id').val(),
+                                    d.id                = $('#filter__id').val(),
                                     d.region_id         = $('#filter_region_id').val(),
-                                    d.price_type        = $('#price_type').val(),
+                                    d.updated_at        = $('#filter_updated_at').val(),
+                                    d.created_at        = $('#filter_created_at').val(),
                                     d.postal_code       = $('#filter_postal_code_id').val(),
                                     d.filter_categ_id   = $('#filter_categ_id').val()
                                 }
                             },
                             columns: [
-                                /* { data: 'id', name: 'id' }, */
+                                { data: 'images', name: 'images' },
                                 { data: 'title', name: 'title' },
                                 { data: 'category_id', name: 'category_id' },
                                 { data: 'price', name: 'price' },
                                 { data: 'owner', name: 'owner' },
                                 { data: 'region_id', name: 'region_id' },
-                                /* { data: 'publication', name: 'publication'},
-                                { data: 'action', name: 'action'}, */
+                                { data: 'published_at', name: 'published_at'},
+                                /* { data: 'action', name: 'action'}, */
                             ],
                             order: [[ 0, 'asc' ]],
                             pageLength: 25,
@@ -98,7 +98,7 @@
                                   "sInfoPostFix":    "",
                                   "sLoadingRecords": "Chargement en cours...",
                                   "sZeroRecords":    "Aucun &eacute;l&eacute;ment &agrave; afficher",
-                                  "sEmptyTable":     "Aucune annonce n'est enregistr&eacute; dans cette cat&eacute;gorie",
+                                  "sEmptyTable":     "Aucune valeur disponible dans le tableau",
                                   "oPaginate": {
                                     "sFirst":      "<| ",
                                     "sPrevious":   "Prec",
@@ -111,7 +111,6 @@
                                   }
                                 }
                         });
-            /** loading filters when fields value changed **/
             /** loading filters when fields value changed **/
             table.columns().every( function() {
                 var that = this;
@@ -140,6 +139,7 @@
                 });
             });
 
+            $('.dt-buttons').append(' <button class="dt-button buttons-csv buttons-html5 btn btn-success m-0" tabindex="0" aria-controls="announcements-table" type="button" id="reset_filter"><span><i class="fa fa-broom"></i>Effacer les filtres</span></button>')
         });
     </script>
 @endpush

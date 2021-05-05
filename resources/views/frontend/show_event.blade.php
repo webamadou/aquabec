@@ -69,10 +69,13 @@
                         </div>
                         <div class="row announcement-dates mt-3 bg-gray-light px-3 py-3">
                             <div class="col-sm-12 col-md-3"><span class="small font-bold">Date(s) de l'événement : </span></div>
-                            <div class="col-sm-12 col-md-9">
-                                @foreach(@$event->event_dates as $date )
-                                    <span class="badge badge-primary list-event-dates"><i class="fa fa-calendar"></i> {{ date( "Y/m/d",strtotime($date->event_date) )}} </span>
-                                @endforeach
+                            <div class="col-sm-12 col-md-9 dates-list">
+                                <div class="dates-list">
+                                    <span class="uncolapser"><i class="fa fa-folder"></i></span>
+                                    @foreach(@$event->event_dates as $date )
+                                        <span class="badge badge-primary list-event-dates"><i class="fa fa-calendar"></i> {{ date( "Y/m/d",strtotime($date->event_date) )}} </span>
+                                    @endforeach
+                                </div>
                             </div>
                             <!-- <div class="col-sm-12 col-md-3"><span class="small font-bold">Heure de l'événement : </span></div>
                             <div class="col-sm-12 col-md-9">

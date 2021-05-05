@@ -63,9 +63,9 @@ Route::get('mode-utilisation', [ContactController::class, 'contactPage'])->name(
 Route::get('bien-debuter', [ContactController::class, 'contactPage'])->name('get.started');
 Route::post('contactez-nous', [ContactController::class, 'contactPost'])->name('contact.post');
 
-Route::get('/evenements/region/{region:slug}', [WelcomeController::class, 'eventsRegion'])->name('event_region');
+Route::get('/evenements/region/{region:slug}', [WelcomeController::class, 'eventsRegionsTable'])->name('event_region');
 Route::get("/evenement/{event:slug}", [WelcomeController::class, 'showEvent'])->name('page_evenement');
-Route::get("/annonces/categorie/{category:slug}", [WelcomeController::class, 'announcementCategory'])->name('announcement_page');
+Route::get("/annonces/categorie/{category:slug}", [WelcomeController::class, 'announcementsCategoriesTable'])->name('announcement_page');
 Route::get("/annonce/{announcement:slug}", [WelcomeController::class, 'showAnnouncement'])->name('page_annonce');
 
 Route::get('/profil/{user:slug?}', [WelcomeController::class, 'showProfile'])->name('user_profile');

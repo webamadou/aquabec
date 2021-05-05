@@ -1,8 +1,8 @@
-const SITE_URL = document.querySelector("body").getAttribute("siteurl");
+const _SITE_URL = document.querySelector("body").getAttribute("siteurl");
 moment.locale('fr');
 
 //Building functions to format the phone number fields
-const isNumericInput = (event) => {
+const _isNumericInput = (event) => {
     const key = event.keyCode;
     return ((key >= 48 && key <= 57) || // Allow number line
         (key >= 96 && key <= 105) // Allow number pad
@@ -23,7 +23,7 @@ const isModifierKey = (event) => {
 
 const enforceFormat = (event) => {
     // Input must be of a valid number format or a modifier key, and not longer than ten digits
-    if (!isNumericInput(event) && !isModifierKey(event)) {
+    if (!_isNumericInput(event) && !isModifierKey(event)) {
         event.preventDefault();
     }
 };
@@ -74,7 +74,7 @@ const filter_elements = () => {
     //const dates_filter  = document.getElementById("dates_id").value;
     const user_filter = document.getElementById("user_id").value;
     $.ajax({
-        url: `${SITE_URL}/filter/announcements`,
+        url: `${_SITE_URL}/filter/announcements`,
         type: "get",
         data: {
             "type": "announcements",
@@ -100,10 +100,10 @@ const filter_elements = () => {
                 const mozaique_element = document.createElement('div');
                 mozaique_element.className = "mozaique-item visible col-sm-6 col-md-4";
                 mozaique_element.innerHTML = `<div class="card shadow-sm p-0">
-                                                <a id="item_img" href="${SITE_URL}/annonce/${data[item].slug}"><img class="img-fluid" src="/voir/images/${data[item].images}" alt="${data[item].title}"></a>
+                                                <a id="item_img" href="${_SITE_URL}/annonce/${data[item].slug}"><img class="img-fluid" src="/voir/images/${data[item].images}" alt="${data[item].title}"></a>
                                                 <div class="card-body p-0">
                                                     <p class="card-text" id="item_title">
-                                                        <a href="${SITE_URL}/annonce/${data[item].slug}">${data[item].title}</a>
+                                                        <a href="${_SITE_URL}/annonce/${data[item].slug}">${data[item].title}</a>
                                                     </p>
                                                     <div class="d-block" style="background: #dcdcdc; padding: 0;">
                                                         <div type="button" class="px-1" id="item_price">${data[item].price}</div>
@@ -141,7 +141,7 @@ const filter_events = () => {
     const user_filter = document.getElementById("user_id").value;
 
     $.ajax({
-        url: `${SITE_URL}/filter/events`,
+        url: `${_SITE_URL}/filter/events`,
         type: "get",
         data: {
             "type": "events",
@@ -171,10 +171,10 @@ const filter_events = () => {
                 const dates_array = data[item].dates != null ? data[item].dates.split(";") : '';
                 const date = moment(dates_array[0]).format("DD/MM/YYYY");
                 mozaique_element.innerHTML = `<div class="card shadow-sm p-0">
-                                                <a id="item_img" href="${SITE_URL}/evenement/${data[item].slug}"><img class="img-fluid" src="/voir/images/${data[item].images}" alt="${data[item].title}"></a>
+                                                <a id="item_img" href="${_SITE_URL}/evenement/${data[item].slug}"><img class="img-fluid" src="/voir/images/${data[item].images}" alt="${data[item].title}"></a>
                                                 <div class="card-body p-0">
                                                     <p class="card-text" id="item_title">
-                                                        <a href="${SITE_URL}/evenement/${data[item].slug}">${data[item].title}</a>
+                                                        <a href="${_SITE_URL}/evenement/${data[item].slug}">${data[item].title}</a>
                                                     </p>
                                                     <div class="d-block" style="background: #dcdcdc; padding: 0;">
                                                         <div type="button" class="px-1" id="item_price">${date}</div>
@@ -196,12 +196,6 @@ const filter_events = () => {
 }
 
 $(document).on('ready', function () {
-    let date_list = $('.dates-list');
-    if(date_list != null){
-        $(".uncolapser").on('click', function(e){
-            date_list.toggleClass('uncolapsed');
-        });
-    }
     /** trigger filters on public pages */
     const mozaique_item = document.querySelectorAll('.mozaique-item');
     //Autocomplete user in front
@@ -232,7 +226,7 @@ $(document).on('ready', function () {
     if (autocomplete_field !== null) {
         autocomplete_field.addEventListener('keyup', function (e) {
             $.ajax({
-                url: `${SITE_URL}/autocomplete-users-publications`,
+                url: `${_SITE_URL}/autocomplete-users-publications`,
                 type: "get",
                 data: {
                     "_token": $('meta[name="csrf-token"]').attr('content'),

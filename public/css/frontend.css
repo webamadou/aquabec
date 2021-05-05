@@ -11093,7 +11093,132 @@ td.active.day {
     font-size: x-small;
     text-transform: unset;
 }
+table.dataTable tbody th, table.dataTable tbody td {
+    padding: 8px 10px;
+    color: #313131;
+}
+.datatable-filter {
+    background: #ffffff !important;
+    border: 1px solid #efefef;
+    display: flex;
+    justify-content: space-between;
+}
+.datatable-filter input[type="text"], .datatable-filter select {
+    height: 6vh !important;
+    border-radius: 1px;
+}
+#reset_filter {
+    padding: 1vh 3vw;
+    margin: 0 0 3vw !important;
+    font-size: x-small;
+    text-transform: none;
+    position: relative;
+    z-index: 1;
+}
+#events-table_length,
+#events-table_info,
+#announcements-table_length,
+#announcements-table_info {
+    font-size: small;
+    margin: 0 !important;
+    line-height: 1;
+    padding: 0;
+}
+#announcements-table_paginate a,
+#events-table_paginate a
+.paginate_button a
+ {
+    font-size: x-small;
+    padding: 4px 3px;
+    margin: 0 0 3px;
+    line-height: 1;
+}
+a.paginate_button.current,
+.paginate_button a.paginate_button.current 
+{
+    border: none !important;
+    background: #aeceef !important;
+    color: #fff !important;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    box-sizing: border-box;
+    display: inline-block;
+    min-width: 1.5em;
+    padding: 0.5em 1em;
+    margin-left: 2px;
+    text-align: center;
+    text-decoration: none !important;
+    cursor: pointer;
+    font-size: 0.7rem;
+    padding: 4px 2px;
+    line-height: 1 !important;
+    color: #333 !important;
+    border: 1px solid transparent;
+}
+#events-table_length select {
+    border: 1px;
+    font-size: 0.8rem;
+    padding: 0 0.5rem;
+}
 
+.collapsable-dates {
+  position: relative;
+  height: 26px;
+  overflow: hidden;
+  transition: all ease-in 1.8s;
+  background: #fff;
+  padding: 0 8px;
+  font-size: medium !important;
+}
+.collapsable-dates.uncolapse{
+  height: auto;
+}
+.uncolapser {
+  position: absolute;
+  top: 10px;
+  right: -1px;
+  color: #fdd50b;
+  cursor: pointer;
+  background: #695803;
+  line-height: 1;
+  padding: 0;
+}
+.uncolapser u {
+  position: absolute;
+  right: 16px;
+  top: 0;
+  background: red;
+  border-radius: 50%;
+  color: #fff;
+  font-size: xx-small;
+  line-height: 1;
+  padding: 4px;
+  text-decoration: none;
+}
+.max-width-title {
+	text-align: left;
+	padding: 0.1vh 1vw;
+	max-width: 300px;
+	max-height: 58px;
+	overflow: auto;
+}
+.dates-list {
+    position: relative;
+    width: 144px;
+    height: 31px;
+    overflow: hidden;
+    display: block;
+    transition: all 0.8s ease-in-out;
+}
+.dates-list.uncolapsed {
+    display: flex;
+    width: 100%;
+    height: 35vh !important;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    /*overflow: auto;*/
+}
 /* filter design */
 /*RESPONSIEVE*/
 @media (max-width: 1200px) {
