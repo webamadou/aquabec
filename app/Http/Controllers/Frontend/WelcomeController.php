@@ -296,10 +296,11 @@ class WelcomeController extends Controller
         $organisations = \App\Models\Organisation::pluck('name','id');
         $categories = Category::where('type','!=','annonce')->pluck('name','id');
         $regions    = \App\Models\Region::select('name','id','region_number')->get();
-        $list_users = $user->recipientList()
-                        ->orderby('username')
-                        ->select('id','name','prenom','username')
-                        ->get();
+        $list_users = \App\Models\User::whereHas("roles", function($q){ $q
+                                                            ->where('name','vendeur')
+                                                            ->orWhere('name','annonceur'); } )
+                            ->orderby('username')
+                            ->get();
 
         return view('frontend.eventsRegionTable', compact('user','region','regions','cities','organisations','categories','list_users'));
     }
@@ -374,7 +375,7 @@ class WelcomeController extends Controller
                                                 ->select('id','title','slug','images')
                                                 ->first();
                     $event = $event?"<br><strong>Evenement</strong> : <a href='".route('page_evenement',$event->slug)."'>$event->title</a>":'';
-                    return '<div class="max-width-title"><a class="table-link-publication" href="'.url("/admin/announcement/$row->id").'"><strong>'.$row->title.'</strong></a>'.$event.'</div>';
+                    return '<div class="max-width-title"><a class="table-link-publication" href="'.route("page_annonce",$row->slug).'"><strong>'.$row->title.'</strong></a>'.$event.'</div>';
                 })
                 ->addColumn("category_id", function($row){
                     return @$row->category->name;

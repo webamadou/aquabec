@@ -33,7 +33,7 @@
         <select id='annonceur_filter' class="form-control">
             <option value=""> --- </option>
             @foreach($list_users as $user)
-                <option value="{{$user->id}}">{{$user->id}} - {{$user->username}}</option>
+                <option value="{{$user->id}}"><i class="fa fa-user-circle-o"></i> {{$user->username}}</option>
             @endforeach
         </select>
     </div>
