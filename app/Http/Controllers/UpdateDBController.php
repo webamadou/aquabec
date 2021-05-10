@@ -330,5 +330,47 @@ class UpdateDBController extends Controller
             }
         }
         //*/
+        /* ================= ADABT FAQ_GROUPS TABLE =================== *
+        $faq_titles = DB::connection('mysql2')->table('faq_titles')->orderby('id', 'asc')->get();
+        foreach ($faq_titles as $key => $item) {
+            // if(@$item->name != ""){
+                echo "Saving FAQ titles $item->titre <br/>";
+                $faq_group = \App\Models\Faq_group::find(@$item->id);
+                $faq_group = $faq_group == null? new \App\Models\Faq_group() : $faq_group;
+
+                $faq_group->title    = @$item->titre;
+                $faq_group->slug     = Str::slug(@$item->titre, '-');
+                $faq_group->position = @$item->position;
+                $page = DB::connection('mysql2')->table('PH_pages')->where('url_name', $item->page)->first();
+                // $faq_group->page_type = @$item->helppage;
+                //$faq_group->custom_link = @$item->custom_link; 
+                //if($page){
+                //}
+                $faq_group->page_id  = @$page->id ?? null;
+                $faq_group->save();
+            // } 
+        }
+        //*/
+        /* ================= ADABT FAQ TABLE =================== */
+        $faqs = DB::connection('mysql2')->table('faq')->orderby('id', 'asc')->get();
+        foreach ($faqs as $key => $item) {
+            if(@$item->parent_id != ""){
+                echo "Saving faq $item->titre <br/>";
+                $faq = \App\Models\Faq::find(@$item->id);
+                $faq = $faq == null? new \App\Models\Faq() : $faq;
+
+                $faq->title         = @$item->titre;
+                $faq->faq_group_id  = @$item->parent_id;
+                $faq->position      = @$item->position;
+                $faq->content       = @$item->contenu;
+                $faq->publication_status   = 1;
+
+                $page = DB::connection('mysql2')->table('PH_pages')->where('url_name', $faq->page)->first();
+                $faq->page_id  = @$page->id;
+
+                $faq->save();
+            }
+        }
+        //*/
     }
 }

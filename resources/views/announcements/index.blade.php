@@ -3,7 +3,6 @@
 @section('content')
     <div class="row">
         <div class="my-4 col-12 row">
-            <!-- <h2 class="my-0"> - </h2> -->
         </div>
         <div class="col-12 tab-content" id="nav-tabContent">
             <div class="card">
@@ -72,7 +71,6 @@
 
     <script defer>
         $(function() {
-            // Create our number formatter.
             var formatter = new Intl.NumberFormat('en-US', {
             style: 'currency',
             currency: 'USD',
@@ -81,7 +79,7 @@
             let table = $('#announcements-table').DataTable({
                             processing: true,
                             serverSide: true,
-                            dom: 'Bfrliptip',
+                            dom: 'Brliptip',
                             buttons: [
                                 'csv', 'excel', 'pdf'
                             ],
@@ -107,10 +105,8 @@
                                 { data: 'region_id', name: 'region_id' },
                                 { data: 'category_id', name: 'category_id' },
                                 { data: 'postal_code', name: 'postal_code' },
-                                /* { data: 'owner', name: 'owner' }, */
                                 { data: 'created_at', name: 'created_at'},
                                 { data: 'updated_at', name: 'updated_at'},
-                                /* { data: 'publication', name: 'publication', orderable: true, searchable: false,'width': '50px' } */
                             ],
                             order: [[ 0, 'asc' ]],
                             pageLength: 100,
@@ -164,19 +160,6 @@
                     that.search(this.value).draw();
                 });
             });
-            /*action when select boxes are updated*
-            $('#filter_region_id, #filter_city_id, #filter_categ_id,#price_type,#filter_publication_type_id').change(function(){
-                table.draw();
-            });
-            /*action when input fields are updated*
-            $('#filter_postal_code_id,#filter_price_min_id,#filter_price_max_id').keyup(function(){
-                table.draw();
-            });
-            /*action when dates fields are updated*
-            $("#filter_date_min_id,#filter_date_max_id").blur(function(){
-                table.draw();
-            });//*/
-
         });
     </script>
 

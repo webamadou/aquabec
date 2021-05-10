@@ -41648,3 +41648,18 @@ td.active.day {
     line-height: 1.8;
     cursor: pointer;
 }
+/*pages aides*/
+.faq_groups{
+    border: 2px solid #a7a7a7;
+    border-radius: 6px;
+    background: #f3f3f3;
+}
+.ui-accordion .ui-accordion-header {
+    display: block;
+    cursor: pointer;
+    position: relative;
+    margin: 2px 0 0 0;
+    padding: 0.6rem 0.6rem 0.6rem 0.7rem;
+    font-size: 1rem;
+    border-radius: 0;
+}

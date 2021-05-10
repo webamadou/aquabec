@@ -27,7 +27,7 @@
                                 <th>Code postal</th>
                                 <th>Ajouté par</th>
                                 <th>Date de l'ajout</th>
-                               <!--  <th>Action</th> -->
+                                <th>Action</th>
                             </tr>
                         </thead>
                     </table>
@@ -112,7 +112,7 @@
                                 { data: 'postal_code', name: 'postal_code' },
                                 { data: 'owner', name: 'owner' },
                                 { data: 'updated_at', name: 'updated_at'},
-                                /* { data: 'action', name: 'action'}, */
+                                { data: 'action', name: 'action',filterable: false},
                             ],
                             order: [[ 0, 'asc' ]],
                             pageLength: 30,

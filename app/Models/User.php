@@ -351,6 +351,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->roles->wherenotin('name',['chef-vendeur','banquier','membre'])->first();
     }
+    
     public function userHasEnoughCredit(String $contenu_price, String $type = 'free_currency')
     {
         //First get the user role excluding some roles

@@ -83,11 +83,19 @@
                                 { data: 'owner', name: 'owner' },
                                 { data: 'region_id', name: 'region_id' },
                                 { data: 'published_at', name: 'published_at'},
-                                /* { data: 'action', name: 'action'}, */
                             ],
                             order: [[ 0, 'asc' ]],
                             pageLength: 25,
                             responsive: true,
+                            columnDefs: [
+                                { responsivePriority: 1, targets: 0 },
+                                { responsivePriority: 2, targets: 1 },
+                                { responsivePriority: 3, targets: 2 },
+                                { responsivePriority: 4, targets: 3 },
+                                { responsivePriority: 5, targets: 4 },
+                                { responsivePriority: 6, targets: 5 },
+                                { responsivePriority: 7, targets: -1 },
+                            ],
                             "oLanguage":{
                                   "sProcessing":     "<i class='fa fa-2x fa-spinner fa-pulse'>",
                                   "sSearch":         "Rechercher&nbsp;:",

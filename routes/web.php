@@ -138,6 +138,7 @@ Route::middleware(['auth','verified'])->group(function (){
             Route::post("/pages_section",[PageController::class, 'store_section'])->name("store_section");
             Route::get("/pages_section/{home_section}/edit",[PageController::class, 'edit_section'])->name("edit_section");
             Route::put("/pages_section/{home_section}/update",[PageController::class, 'update_section'])->name("update_section");
+            Route::post("page/menus/{page}", [PageController::class, 'setMenu'])->name('page.menus');
             
             Route::resource("menus",MenuController::class);
             Route::get('get-menu-data', [MenuController::class, 'menusData'])->name('menus.data');

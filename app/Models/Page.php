@@ -22,6 +22,10 @@ class Page extends Model
         return $this->hasMany(\App\Models\Menu::class);
     }
 
+    public function faq_groups(){
+        return $this->hasMany(\App\Models\Faq_group::class);
+    }
+
     /**
      * Return the sluggable configuration array for this model.
      *
