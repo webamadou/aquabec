@@ -84,7 +84,7 @@
                             processing: true,
                             ordering: true,
                             serverSide: true,
-                            dom: 'Bfrliptip',
+                            dom: 'Brliptip',
                             buttons: [
                                 'csv', 'excel', 'pdf'
                             ],

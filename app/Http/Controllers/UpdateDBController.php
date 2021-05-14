@@ -330,7 +330,7 @@ class UpdateDBController extends Controller
             }
         }
         //*/
-        /* ================= ADABT FAQ_GROUPS TABLE =================== *
+        /* ================= ADABT FAQ_GROUPS TABLE =================== */
         $faq_titles = DB::connection('mysql2')->table('faq_titles')->orderby('id', 'asc')->get();
         foreach ($faq_titles as $key => $item) {
             // if(@$item->name != ""){
@@ -341,7 +341,7 @@ class UpdateDBController extends Controller
                 $faq_group->title    = @$item->titre;
                 $faq_group->slug     = Str::slug(@$item->titre, '-');
                 $faq_group->position = @$item->position;
-                $page = DB::connection('mysql2')->table('PH_pages')->where('url_name', $item->page)->first();
+                $page = DB::connection('mysql')->table('pages')->where('slug','LIKE', $item->page)->first();
                 // $faq_group->page_type = @$item->helppage;
                 //$faq_group->custom_link = @$item->custom_link; 
                 //if($page){
@@ -351,7 +351,7 @@ class UpdateDBController extends Controller
             // } 
         }
         //*/
-        /* ================= ADABT FAQ TABLE =================== */
+        /* ================= ADABT FAQ TABLE =================== *
         $faqs = DB::connection('mysql2')->table('faq')->orderby('id', 'asc')->get();
         foreach ($faqs as $key => $item) {
             if(@$item->parent_id != ""){

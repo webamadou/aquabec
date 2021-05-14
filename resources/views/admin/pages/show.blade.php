@@ -1,17 +1,16 @@
 @extends('layouts.back.admin')
 
-@section('title','Gestion des pages')
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+@section('title',$page->title)
 @section('content')
     <div class="row">
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-header">
-                    <h1 class="card-title font-weight-bold">{{$page->title}}</h1>
+                    <h1 class="card-title font-weight-bold">-</h1>
                 </div>
                 @forelse($page->faq_groups as $faq_group)
                 <div class="card-body my-2 faq_groups">
-                    <h2>{{$faq_group->title}}</h2>
+                    <h2>{{$faq_group->title}} </h2>
                     <div id="accordion-{{$faq_group->id}}" class="accordion">
                         @foreach($faq_group->faqs as $faq)
                         <div class="group">
@@ -58,26 +57,7 @@
 
 
     <script defer>
-        $( function() {
-            $( ".accordion" )
-            .accordion({
-                header: "> div > h3",
-                heightStyle: "content",
-                collapsible: true
-            })
-            .sortable({
-                axis: "y",
-                handle: "h3",
-                stop: function( event, ui ) {
-                    // IE doesn't register the blur when sorting
-                    // so trigger focusout handlers to remove .ui-state-focus
-                    ui.item.children( "h3" ).triggerHandler( "focusout" );
-            
-                    // Refresh accordion to handle new order
-                    $( this ).accordion( "refresh" );
-                }
-            });
-        } );
+        
     </script>
 
 @endpush

@@ -16,6 +16,7 @@
     <!-- JQUERY -->
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
     <!-- App script -->
     <script src="{{ asset('js/all.js') }}"></script>
@@ -148,66 +149,168 @@
             autocompletes.style.display = "none";
         });
     }
+
+    //JQUERY-UI ACCORDION
+    $( function() {
+            $( ".accordion" )
+            .accordion({
+                header: "> div > h3",
+                heightStyle: "content",
+                collapsible: true
+            })
+            .sortable({
+                axis: "y",
+                handle: "h3",
+                stop: function( event, ui ) {
+                    // IE doesn't register the blur when sorting
+                    // so trigger focusout handlers to remove .ui-state-focus
+                    ui.item.children( "h3" ).triggerHandler( "focusout" );
+            
+                    // Refresh accordion to handle new order
+                    $( this ).accordion( "refresh" );
+                }
+            });
+
+            //IN PAGE EDIT/CREATE PAGE
+
+            /**
+            * If we on a page aide we display the faq if not we display the content
+            */
+            const set_page_content = (page_type) => {
+                if(page_type.value == '1'){
+                    document.getElementById("content-page").style.display = 'none';
+                    document.getElementById("faqs-page").style.display = 'initial';
+                } else {
+                    document.getElementById("content-page").style.display = 'initial';
+                    document.getElementById("faqs-page").style.display = 'none';
+                }
+            }
+
+            const page_type = document.getElementById("page_type");
+            if(page_type){
+                set_page_content(page_type);
+                page_type.addEventListener('change', function(e){
+                    set_page_content(page_type);
+                })
+            }
+
+            let faqg_title = null;
+            let faqg_title_input = null;
+            //When click on the button to edit a faq group title 
+            $('body').on('click','.edit-faq', function(e){
+                e.preventDefault();
+                const id = $(this).data('id');
+                faqg_title = $(`#faqg-${id} .faqg-title`);
+                faqg_title_input = $(`#faqg-${id} .faqg-title-input`);
+                
+                faqg_title.toggleClass('active');
+                faqg_title_input.toggleClass('active').focus();
+                
+                faqg_title_input.on("focusout blur", function(a){
+                    const title = $(`#faqg-${id} .faqg-title-input input[type="text"]`).val();
+                    $(`#faqg-${id} .faqg-title`).html(title);
+                    $(`#faqg-${id} .faqg-title`).toggleClass('active');
+                    faqg_title_input.toggleClass('active');
+                })
+            });
+            //When adding faq
+
+            /* $('.edit-faq').on('click', function(e){
+                e.preventDefault();
+                // alert($(this).data('id'));
+                const faq_id = $(this).data('id');
+                const faq_group = $(this).data('faq_group');
+                const title = $(`#faq_title_${faq_id}`).val();
+                // const content = $(`#faq_content_${faq_id}`).val();
+                const content = $(`.ck.ck-editor__main>.ck-editor__editable`).html();
+                $.ajax({
+                    type: 'get',
+                    url: `{{route('admin.settings.save.faqs')}}`,
+                    data: {
+                        'faq_group_id': faq_group,
+                        'id': faq_id,
+                        'title' : title,
+                        'content' : content
+                    },
+                    success: function(res){
+                        if(res.status == 200){
+                            console.log(res);
+                            toastr.success(res.message);
+                            $(`#panel_title_${faq_id}`).html(res.title);
+                        }
+                    }
+                });
+            }) */
+        } );
 </script>
 
 <script src="{{asset('dist/ckeditor5/build/ckeditor.js')}}"></script>
-<script>ClassicEditor
-        .create( document.querySelector( '.editor, .ckeditor' ), {
-            
-            toolbar: {
-                items: [
-                    'heading',
-                    '|',
-                    'bold',
-                    'italic',
-                    'link',
-                    'bulletedList',
-                    'numberedList',
-                    '|',
-                    'outdent',
-                    'indent',
-                    '|',
-                    'imageUpload',
-                    'blockQuote',
-                    'insertTable',
-                    'mediaEmbed',
-                    'undo',
-                    'redo',
-                    'CKFinder',
-                    'underline',
-                    'fontColor',
-                    'removeFormat',
-                    'alignment'
-                ]
-            },
-            language: 'fr',
-            image: {
-                toolbar: [
-                    'imageTextAlternative',
-                    'imageStyle:full',
-                    'imageStyle:side'
-                ]
-            },
-            table: {
-                contentToolbar: [
-                    'tableColumn',
-                    'tableRow',
-                    'mergeTableCells'
-                ]
-            },
-            licenseKey: '',
-            
-            
-        } )
-        .then( editor => {
-            window.editor = editor;
-        } )
-        .catch( error => {
-            console.error( 'Oops, something went wrong!' );
-            console.error( 'Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:' );
-            console.warn( 'Build id: qp877ojrkize-b9d1q6l02xnr' );
-            console.error( error );
-        } );
+<script>
+const textarea_elements = document.querySelectorAll('textarea');
+if(textarea_elements.length > 0){
+    textarea_elements.forEach(e => {
+        /* e.addEventListener('keyup change',function(a){
+            alert(e.value);
+        }); */
+        ClassicEditor
+                .create( e, {
+                    
+                    toolbar: {
+                        items: [
+                            'heading',
+                            '|',
+                            'bold',
+                            'italic',
+                            'link',
+                            'bulletedList',
+                            'numberedList',
+                            '|',
+                            'outdent',
+                            'indent',
+                            '|',
+                            'imageUpload',
+                            'blockQuote',
+                            'insertTable',
+                            'mediaEmbed',
+                            'undo',
+                            'redo',
+                            'CKFinder',
+                            'underline',
+                            'fontColor',
+                            'removeFormat',
+                            'alignment'
+                        ]
+                    },
+                    language: 'fr',
+                    image: {
+                        toolbar: [
+                            'imageTextAlternative',
+                            'imageStyle:full',
+                            'imageStyle:side'
+                        ]
+                    },
+                    table: {
+                        contentToolbar: [
+                            'tableColumn',
+                            'tableRow',
+                            'mergeTableCells'
+                        ]
+                    },
+                    licenseKey: '',
+                    
+                    
+                } )
+                .then( editor => {
+                    window.editor = editor;
+                } )
+                .catch( error => {
+                    console.error( 'Oops, something went wrong!' );
+                    console.error( 'Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:' );
+                    console.warn( 'Build id: qp877ojrkize-b9d1q6l02xnr' );
+                    console.error( error );
+                } );
+    })
+}
 </script>
 </body>
 

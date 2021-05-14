@@ -11,6 +11,8 @@ use App\Forms\PageForm;
 use App\Models\HomeSection;
 use App\Models\MenuLink;
 use App\Models\Menu;
+use App\Models\Faq_group;
+use App\Models\Faq;
 
 class PageController extends Controller
 {
@@ -73,7 +75,7 @@ class PageController extends Controller
                         return $row->created_at;
                     })
                     ->addColumn('title',function ($row) {
-                        return '<a class="table-link-publication" href="'.route("admin.settings.pages.show",$row->id).'"> <strong>'.$row->title.'</strong></a> ';
+                        return '<a class="table-link-publication" href="'.route("admin.settings.pages.edit",$row->id).'"> <strong>'.$row->title.'</strong></a> ';
                     })
                     ->addColumn("page_type", function($row){
                         return intval($row->page_type) === 1 ? "Page aide" : "Page générique";
@@ -261,10 +263,33 @@ class PageController extends Controller
             'page_type' => 'required',
             'subtitle'  => 'nullable',
             'content'   => 'nullable'
-        ]);
+            ]);
+        //If page is successfully saved we start saving faqs
+        if($page->update($data)){
+            //First we need the total nbr of faq groups and will loop through them
+            $total_faqg_total = intval($request->faqg_total);
+            for ($i=1; $i <= $total_faqg_total ; $i++) { 
+                //We get the id of the faq_group or create a new instance
+                $faqg = Faq_group::find(@$request->input("faqg_id_".$i)) ?? new Faq_group();
+                $faqg->title = $request->input("faqg_title_".$i);
+                $faqg->save();
 
-        $page->update($data);
-        return redirect()->route('admin.settings.pages.index')->with('success','La page a été mise à jour avec succès!');
+                //Now we need the total nbr of faq for each faq_group
+                $faqg_total_faq = $request->input("faq_total_".$faqg->id);
+                for ($j=1; $j <= $faqg_total_faq  ; $j++) {
+                    //For each faq we get it from the id or create a new instance
+                    $faq = Faq::find(@$request->input("faq_id_".$j)) ?? new Faq();
+
+                    $faq->position  = @$request->input("faq_position_".$j);
+                    $faq->title     = @$request->input("faq_title_".$j);
+                    $faq->content   = @$request->input("faq_content_".$j);
+
+                    $faq->save();
+                }
+            }
+        }
+
+        return redirect()->back()->with('success','La page a été mise à jour avec succès!');
     }
     /**
      * 

@@ -25,6 +25,8 @@ use App\Http\Controllers\Frontend\ContactController;
 use App\Http\Controllers\Frontend\WelcomeController;
 use App\Http\Controllers\Frontend\SubscriberController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\FaqController;
+use App\Http\Controllers\FaqGroupController;
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\Backend\Admin\AnnouncementController as BOAnnouncementController;
 use App\Http\Controllers\EventController;
@@ -132,6 +134,9 @@ Route::middleware(['auth','verified'])->group(function (){
         Route::name('settings.')->prefix('settings')->group(function () {
             //Pages routes
             Route::resource("pages",PageController::class);
+            Route::resource("faqs",FaqController::class);
+            Route::resource("faq_groups",FaqGroupController::class);
+            Route::get("save_faq", [FaqController::class, 'saveFaq'])->name('save.faqs');
             Route::get('get-pages-data', [RoleController::class, 'pagesData'])->name('pages.data');
 
             Route::get("/pages_section/create",[PageController::class, 'create_section'])->name("create_section");

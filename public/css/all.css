@@ -41663,3 +41663,27 @@ td.active.day {
     font-size: 1rem;
     border-radius: 0;
 }
+input.faq-panel-title, input.faq-panel-title:focus {
+    border-radius: 0;
+    border: transparent;
+    background: #0e7cfa !important;
+    color: #fff !important;
+}
+.faqg-title, .faqg-title-input {
+    position: absolute;
+    width: 100%;
+    left: -109%;
+    transition: all 0.8s ease-in;
+}
+.faqg-title.active, .faqg-title-input.active {
+    left: initial;
+}
+.faqg-title-input input {
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    font-size: 1.2rem;
+    line-height: 1;
+    padding: 0;
+    color: #000000;
+}

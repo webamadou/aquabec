@@ -12,6 +12,7 @@ class Faq extends Model
     use HasFactory;
     use Sluggable;
 
+    protected $guarded = [];
 
     /**
      * Return the sluggable configuration array for this model.

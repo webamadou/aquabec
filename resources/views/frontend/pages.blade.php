@@ -55,7 +55,6 @@
             
                     // Refresh accordion to handle new order
                     $( this ).accordion( "refresh" );
-                    alert("I'm up");
                 }
             });
         } );
