@@ -61,7 +61,7 @@ class PageController extends Controller
         $model  = new Page();
         $page = Page::all();
         if ($request->ajax()) {
-            $data = Page::where('id','!=','');
+            $data = Page::where('id','!=','')->with('menu_link');
 
             return Datatables::of($data)
                     ->addIndexColumn()
@@ -83,7 +83,7 @@ class PageController extends Controller
                     ->addColumn("menu", function($row){
                         $menus = '';
                         foreach($row->menu_link as $menu){
-                            $menus .= '<h5 class="text-sm text-center bg-gray-light"><strong>'.$menu->menu->name.'</strong> </h5>';
+                            $menus .= '<h5 class="text-sm text-center bg-gray-light"><strong>'.@$menu->menu->name.'</strong> </h5>';
                         }
                         return $menus;
                     })

@@ -9,6 +9,8 @@
     "license": "MIT",
     "require": {
         "php": "^7.3",
+        "barryvdh/laravel-debugbar": "^3.5",
+        "braintree/braintree_php": "^3.36",
         "cviebrock/eloquent-sluggable": "^8.0",
         "doctrine/dbal": "^3.0",
         "fideloper/proxy": "^4.2",
@@ -22,8 +24,7 @@
         "laravel/ui": "^3.0",
         "spatie/laravel-permission": "^3.18",
         "tinymce/tinymce": ">= 5",
-        "yajra/laravel-datatables-oracle": "~9.0",
-        "braintree/braintree_php": "^3.36"
+        "yajra/laravel-datatables-oracle": "~9.0"
     },
     "require-dev": {
         "facade/ignition": "^2.3.6",
