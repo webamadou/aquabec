@@ -8,17 +8,17 @@
         <div class="container">
             <div class="row">
                 <div class="col">
-                    <div class="section-heading text-center">
+                    <div class="section-heading text-center mb-0">
                         <h2>
                             <small>{{$page->subtitle}}</small>
                             <span>{{$page->title}} </span>
                         </h2>
-                        <span class="animate-border border-ash ml-auto mr-auto tw-mt-20 tw-mb-40"></span>
+                        <span class="animate-border border-ash ml-auto mr-auto tw-mt-20 tw-mb-40 mb-0"></span>
                     </div>
                 </div>
             </div>
             <div class="contact-us-form">
-                @forelse($page->faq_groups as $faq_group)
+                @forelse($page->faq_groups()->orderby('position','asc')->get() as $faq_group)
                 <div id="accordion-{{$faq_group->id}}" class="accordion">
                     <h2>{{$faq_group->title}}</h2>
                     @foreach($faq_group->faqs as $faq)
@@ -29,7 +29,10 @@
                     @endforeach
                 </div>
                 @empty
+                    {!! $page->content !!}
                 @endforelse
+            </div>
+            <div>
             </div>
         </div>
     </section>

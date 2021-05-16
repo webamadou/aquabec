@@ -16,6 +16,11 @@ use App\Models\Payment;
 use App\Models\Announcement;
 use App\Models\Event;
 use App\Models\EventDate;
+use App\Models\Menu;
+use App\Models\MenuLink;
+use App\Models\Page;
+use App\Models\Faq_group;
+use App\Models\Faq;
 
 class UpdateDBController extends Controller
 {
@@ -287,29 +292,6 @@ class UpdateDBController extends Controller
             }
         }
         //*/
-        /* ================= ADABT PAGES TABLE =================== *
-        // $pages = DB::connection('mysql2')->table('PH_pages')->orderby('id', 'asc')->limit(500)->get();
-        // $pages = DB::connection('mysql2')->table('PH_pages')->orderby('id', 'asc')->skip(500)->take(500)->get();
-        // $pages = DB::connection('mysql2')->table('PH_pages')->orderby('id', 'asc')->skip(1000)->take(500)->get();
-        $pages = DB::connection('mysql2')->table('PH_pages')->orderby('id', 'asc')->skip(1500)->take(500)->get();
-        foreach ($pages as $key => $item) {
-            if(@$item->nom != "" && @$item->texte !=""){
-                echo "Saving event $item->nom <br/>";
-                $page = \App\Models\Page::find(@$item->id);
-                $page = $page == null? new \App\Models\Page() : $page;
-
-                $page->title = @$item->nom;
-                $page->status = @$item->protected;
-                $page->content = @$item->texte;
-                $page->position = @$item->position;
-                $page->is_a_separator = @$item->is_a_separator;
-                $page->page_type = @$item->helppage;
-                $page->custom_link = @$item->custom_link;
-
-                $page->save();
-            }
-        }
-        //*/
         /* ================= ADABT MENUS TABLE =================== *
         $menus = DB::connection('mysql2')->table('PH_menu')->orderby('id', 'asc')->limit(500)->get();
         foreach ($menus as $key => $item) {
@@ -330,29 +312,69 @@ class UpdateDBController extends Controller
             }
         }
         //*/
-        /* ================= ADABT FAQ_GROUPS TABLE =================== */
+        /* ================= ADABT PAGES TABLE =================== */
+        // $pages = DB::connection('mysql2')->table('PH_pages')->orderby('id', 'asc')->limit(500)->get();
+        // $pages = DB::connection('mysql2')->table('PH_pages')->orderby('id', 'asc')->skip(500)->take(500)->get();
+        $pages = DB::connection('mysql2')->table('PH_pages')->orderby('id', 'asc')->skip(1000)->take(500)->get();
+        //$pages = DB::connection('mysql2')->table('PH_pages')->orderby('id', 'asc')->skip(1500)->take(500)->get();
+        foreach ($pages as $key => $item) {
+            //if(@$item->nom != "" && @$item->texte !=""){
+                echo "Saving page $item->nom <br/>";
+                $page = \App\Models\Page::find(@$item->id);
+                $page = $page == null? new \App\Models\Page() : $page;
+
+                $page->id    = @$item->id;
+                $page->title    = @$item->nom;
+                $page->slug     = @$item->url_name;
+                $page->status   = @$item->protected;
+                $page->content  = @$item->texte;
+                $page->position = @$item->position;
+                $page->is_a_separator   = @$item->is_a_separator;
+                $page->page_type        = @$item->helppage;
+                $page->custom_link      = @$item->custom_link;
+
+                $page->save();
+                $menu = Menu::where('name','LIKE', "%$page->menu_parent%")->first();
+                if($menu){
+                    MenuLink::create(['name'    => $page->title,
+                                      'menu_id' => $menu->id,
+                                      'page_id' => $page->id,
+                                      'visible' => $menu->visible
+                                    ]);
+                }
+            //}
+        }
+        //*/
+        /* ================= ADABT FAQ_GROUPS TABLE =================== *
         $faq_titles = DB::connection('mysql2')->table('faq_titles')->orderby('id', 'asc')->get();
         foreach ($faq_titles as $key => $item) {
             // if(@$item->name != ""){
-                echo "Saving FAQ titles $item->titre <br/>";
+                $faq_group = Faq_group::where('title', @$item->titre)->first();
                 $faq_group = \App\Models\Faq_group::find(@$item->id);
                 $faq_group = $faq_group == null? new \App\Models\Faq_group() : $faq_group;
 
+                $faq_group->id    = @$item->id;
                 $faq_group->title    = @$item->titre;
                 $faq_group->slug     = Str::slug(@$item->titre, '-');
                 $faq_group->position = @$item->position;
-                $page = DB::connection('mysql')->table('pages')->where('slug','LIKE', $item->page)->first();
+                $page = DB::connection('mysql')->table('pages')->where('slug', $item->page)->first();
                 // $faq_group->page_type = @$item->helppage;
                 //$faq_group->custom_link = @$item->custom_link; 
                 //if($page){
                 //}
                 $faq_group->page_id  = @$page->id ?? null;
                 $faq_group->save();
+                echo "Saving FAQ titles id = $item->id $item->titre === ".@$faq_group->title." ".@$faq_group->id."<br/>";
             // } 
         }
         //*/
         /* ================= ADABT FAQ TABLE =================== *
-        $faqs = DB::connection('mysql2')->table('faq')->orderby('id', 'asc')->get();
+        // $faqs = DB::connection('mysql2')->table('faq')->orderby('id', 'asc')->limit(500)->get();
+        // $faqs = DB::connection('mysql2')->table('faq')->orderby('id', 'asc')->skip(500)->take(500)->get();
+        // $faqs = DB::connection('mysql2')->table('faq')->orderby('id', 'asc')->skip(1000)->take(500)->get();
+        // $faqs = DB::connection('mysql2')->table('faq')->orderby('id', 'asc')->skip(1500)->take(500)->get();
+        // $faqs = DB::connection('mysql2')->table('faq')->orderby('id', 'asc')->skip(2000)->take(500)->get();
+        $faqs = DB::connection('mysql2')->table('faq')->orderby('id', 'asc')->skip(2500)->take(500)->get();
         foreach ($faqs as $key => $item) {
             if(@$item->parent_id != ""){
                 echo "Saving faq $item->titre <br/>";
@@ -364,9 +386,12 @@ class UpdateDBController extends Controller
                 $faq->position      = @$item->position;
                 $faq->content       = @$item->contenu;
                 $faq->publication_status   = 1;
-
-                $page = DB::connection('mysql2')->table('PH_pages')->where('url_name', $faq->page)->first();
-                $faq->page_id  = @$page->id;
+                //Get faq_title from faq->parent_id
+                // $faq_title = DB::connection('mysql2')->table('faq_titles')->select('titre','id')->where('id', $item->parent_id)->first();
+                //$faq_groups = DB::connection('mysql')->table('faq_groups')->select('title','id','page_id')->where('title', //$faq_title->titre)->first(); 
+                
+                // echo "@$faq_groups->title + $faq_groups->page_id => faq->parent_id = $item->parent_id<br>";
+                $faq->page_id  = @$item->parent_id;
 
                 $faq->save();
             }

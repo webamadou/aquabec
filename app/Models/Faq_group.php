@@ -32,6 +32,11 @@ class Faq_group extends Model
         ];
     }
 
+    public function page()
+    {
+        return $this->belongsTo(\App\Models\Page::class);
+    }
+
     public function faqs()
     {
         return $this->hasMany(\App\Models\Faq::class);
