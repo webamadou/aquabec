@@ -1,6 +1,7 @@
 @extends('layouts.back.admin')
 
 @section('title','Ajout d'une fonction')
+@section('page_title','Ajout d'une fonction')
 
 @section('content')
     @if(Route::currentRouteName() == 'admin.settings.security.roles.create')

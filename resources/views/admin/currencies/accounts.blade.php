@@ -1,6 +1,7 @@
 @extends('layouts.back.admin')
 
 @section('title','Liste des monnaies')
+@section('page_title','Liste des monnaies')
 
 @inject('credit', 'App\Models\Credit')
 @section('content')

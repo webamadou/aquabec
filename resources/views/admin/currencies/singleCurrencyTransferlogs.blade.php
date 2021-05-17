@@ -1,6 +1,7 @@
 @extends('layouts.back.admin')
 
-@section('title','Historique des transferts de la monnaie '.$currency->name)
+@section('title','Historique des transferts de la monnaie '.@$currency->name)
+@section('page_title','Historique des transferts de la monnaie '.@$currency->name)
 
 @inject('credit', 'App\Models\Credit')
 @section('content')

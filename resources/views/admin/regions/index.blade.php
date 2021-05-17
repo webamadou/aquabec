@@ -1,6 +1,7 @@
 @extends('layouts.back.admin')
 
 @section('title','Régions ')
+@section('page_title','Régions ')
 
 @section('content')
 

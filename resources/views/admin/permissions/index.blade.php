@@ -1,6 +1,7 @@
 @extends('layouts.back.admin')
 
 @section('title','Permissions')
+@section('page_title','Permissions')
 
 @section('content')
 

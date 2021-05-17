@@ -1,6 +1,7 @@
 @extends('layouts.back.admin')
 
 @section('title','Liste des monnaies')
+@section('page_title',"Profil de ".@$user->username)
 
 @section('content')
     <section class="ftco-about ftco-section ftco-no-pt ftco-no-pb" id="about-section">

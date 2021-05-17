@@ -1,6 +1,7 @@
 @extends('layouts.back.admin')
 
 @section('title','Packs de credit')
+@section('page_title','Packs de credit')
 
 @section('content')
 

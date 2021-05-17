@@ -1,5 +1,6 @@
 @php use Carbon\Carbon @endphp
 @extends('layouts.back.admin')
+@section('page_title',"Page de l'événement")
 
 @section('content')
     <div class="row">

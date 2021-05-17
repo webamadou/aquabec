@@ -1,4 +1,5 @@
 @extends('layouts.back.admin')
+@section('page_title','Ajout d'un événement (Le montage)')
 
 <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
 <link rel="stylesheet" href="{{asset('dist/timepicker/clocklet.css')}}">

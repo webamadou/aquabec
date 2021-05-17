@@ -1,6 +1,7 @@
 @extends('layouts.back.admin')
 
 @section('title','Transfert de monnaies')
+@section('page_title','Transfert de monnaies')
 
 @section('content')
 

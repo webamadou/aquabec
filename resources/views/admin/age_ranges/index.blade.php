@@ -1,6 +1,7 @@
 @extends('layouts.back.admin')
 
 @section('title','Groupes d\'age ')
+@section('page_title','Groupes d\'age ')
 
 @section('content')
 

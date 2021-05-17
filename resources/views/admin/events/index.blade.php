@@ -1,4 +1,5 @@
 @extends('layouts.back.admin')
+@section('page_title',"Liste des événements")
 
 @section('content')
     <div class="row">

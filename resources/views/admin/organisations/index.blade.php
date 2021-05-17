@@ -1,6 +1,7 @@
 @extends('layouts.back.admin')
 
 @section('title','Organisations')
+@section('page_title','Les organisations')
 
 @section('content')
 

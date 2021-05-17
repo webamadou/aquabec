@@ -1,5 +1,7 @@
 @extends('layouts.back.admin')
 
+@section('title',"Ajout d'une annonce en backoffice")
+@section('page_title','Ajout d'une annonce en backoffice')
 
 <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"> 
 @section('content')

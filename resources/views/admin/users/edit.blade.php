@@ -1,6 +1,7 @@
 @extends('layouts.back.admin')
 
 @section('title',"Modification d'un profil ")
+@section('page_title',"Modification d'un profil ")
 
 @section('content')
     <div class="col-sm-12"> <a class="btn btn-primary mb-3" href="{{route('admin.users.index')}}"><i class="fa fa-angle-double-left"></i> Retourner vers la liste</a> <a href="{{route('admin.users.show', $user)}}" class="btn btn-primary text-white mb-3"><i class="fa fa-eye"></i> Afficher le profil</a> </div>

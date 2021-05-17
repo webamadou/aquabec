@@ -1,6 +1,7 @@
 @extends('layouts.back.admin')
 
 @section('title','Catégories ')
+@section('page_title','Catégories ')
 
 @section('content')
 

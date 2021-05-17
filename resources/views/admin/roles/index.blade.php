@@ -1,6 +1,7 @@
 @extends('layouts.back.admin')
 
 @section('title','Fonctions')
+@section('page_title','Les Fonctions')
 
 @section('content')
 

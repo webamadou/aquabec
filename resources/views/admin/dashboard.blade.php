@@ -1,6 +1,7 @@
 @extends('layouts.back.admin')
 
 @section('title','Tableau de bord')
+@section('page_title','Tableau de bord')
 
 @section('content')
 

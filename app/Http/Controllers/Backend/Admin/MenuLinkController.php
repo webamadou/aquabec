@@ -57,8 +57,9 @@ class MenuLinkController extends Controller
         $model  = new MenuLink();
         $form   = $this->getForm();
         $current_user = auth()->user();
-        $menus = MenuLink::all();
-        return view('admin.menulinks.index',compact('form'));
+        $menus = MenuLink::orderby('updated_at','desc')->get();
+        // dd($menus[0]->page->id);
+        return view('admin.menulinks.index',compact('form','menus'));
     }
     public function create()
     {

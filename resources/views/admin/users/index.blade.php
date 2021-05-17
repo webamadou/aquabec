@@ -1,6 +1,7 @@
 @extends('layouts.back.admin')
 
 @section('title','Liste des utilisateurs ')
+@section('page_title','Liste des utilisateurs ')
 
 @section('content')
 

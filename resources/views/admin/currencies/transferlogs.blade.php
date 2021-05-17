@@ -1,6 +1,7 @@
 @extends('layouts.back.admin')
 
 @section('title','Historique des transferts de monnaies')
+@section('page_title','Historique des transferts de monnaies')
 
 @section('content')
     <div class="row">

@@ -1,6 +1,7 @@
 @extends('layouts.back.admin')
 
 @section('title','Gestion des liens des menus')
+@section('page_title','Gestion des liens des menus')
 
 @section('content')
     <div class="row">
@@ -38,6 +39,16 @@
                                 <th>Actions</th>
                             </tr>
                         </thead>
+                        <tbody>
+                        @foreach($menus as $menu)
+                            <tr>
+                                <td>{{$menu->name}}</td>
+                                <td>{{url('/pages/'.@$menu->page->slug)}}</td>
+                                <td>{{@$menu->menu->name}}</td>
+                                <td>Actions</td>
+                            </tr>
+                        @endforeach
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -50,11 +61,10 @@
 
 @push('scripts')
 
-    <script src="{{asset('/dist/ckeditor/ckeditor.js')}}" defer></script>
     <script>
         $(function() {
             $('#pages-table').DataTable({
-                processing: true,
+                processing: false,
                 serverSide: true,
                 dom: 'Bfrliptip',
                 ajax: '{{ route('admin.settings.menulinks.data') }}',
@@ -67,7 +77,7 @@
                     },
                     { data: null, name: 'menu_id',
                         render: data => {
-                            return `${data.menu_id?data.menu.name:"Aucun menu"}`;
+                            return `${data.menu_id?data.menu_id.name:"Aucun menu"}`;
                         }
                     },
                     { data: 'action', name: 'action', orderable: false, searchable: false }

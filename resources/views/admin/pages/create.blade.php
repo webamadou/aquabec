@@ -1,7 +1,13 @@
 @extends('layouts.back.admin')
 
-@section('title','Gestion des pages')
-@section('page_title','Gestion des pages')
+@if(Route::currentRouteName() == 'admin.settings.pages.create')
+    @section('title',"Création d'une nouvelle page")
+    @section('page_title',"Création d'une nouvelle page")
+@endif
+@if(Route::currentRouteName() == 'admin.settings.pages.edit')
+    @section('title',"Modification de la page ".@$page->title)
+    @section('page_title',"Modification de la page ".@$page->title)
+@endif
 
 @section('content')
     <div class="row">

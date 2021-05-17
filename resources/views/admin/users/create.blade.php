@@ -1,6 +1,7 @@
 @extends('layouts.back.admin')
 
 @section('title',"Ajout d'un profil ")
+@section('page_title',"Enregistrement d'un profil ")
 
 @section('content')
     <a class="btn btn-primary mb-3" href="{{route('admin.users.index')}}"><i class="fa fa-angle-double-left"></i> Retourner vers la liste</a>

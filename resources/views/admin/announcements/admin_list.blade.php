@@ -1,5 +1,8 @@
 @extends('layouts.back.admin')
 
+@section('title',"Liste des annonces")
+@section('page_title','Liste des annnonces')
+
 @section('content')
     <div class="row">
         <div class="my-4 col-12 row">

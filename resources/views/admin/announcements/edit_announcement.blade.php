@@ -1,5 +1,7 @@
 @extends('layouts.back.admin')
 
+@section('title',"Modification de l'annonce" @$announcement->title)
+@section('page_title',"Modification de l'annonce" @$announcement->title)
 
 <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"> 
 @section('content')

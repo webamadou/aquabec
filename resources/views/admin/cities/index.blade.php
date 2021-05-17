@@ -1,6 +1,7 @@
 @extends('layouts.back.admin')
 
 @section('title','Villes ')
+@section('page_title','Villes ')
 
 @section('content')
 

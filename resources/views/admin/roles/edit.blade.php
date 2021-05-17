@@ -1,6 +1,7 @@
 @extends('layouts.back.admin')
 
 @section('title',"Modification d'une fonction")
+@section('page_title',"Modification d'une fonction")
 
 @section('content')
     <form method="POST" action="{{route('admin.settings.security.roles.update', $role)}}" accept-charset="UTF-8">

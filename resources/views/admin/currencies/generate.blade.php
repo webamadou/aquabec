@@ -1,6 +1,7 @@
 @extends('layouts.back.admin')
 
 @section('title', 'Générer de la monnaie: '.@$currency->name)
+@section('page_title', 'Générer de la monnaie: '.@$currency->name)
 
 @section('content')
 

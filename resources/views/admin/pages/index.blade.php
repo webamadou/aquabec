@@ -1,6 +1,7 @@
 @extends('layouts.back.admin')
 
 @section('title','Gestion des pages')
+@section('page_title','Gestion des pages')
 
 @section('content')
     <div class="row">
