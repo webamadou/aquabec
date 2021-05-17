@@ -74,6 +74,7 @@
     </div>
 
     @include('layouts.back.alerts.set-page-menus')
+    @include('layouts.back.alerts.delete-confirmation')
 
 @stop
 

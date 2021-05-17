@@ -125,7 +125,8 @@ class MenuController extends Controller
             'public'    => 'nullable',
             'roles'     => 'nullable',
         ]);
-
+        $data['visible'] = intval(@$data['visible'])>= 1?1:0;
+            // dd($data);
         $menu->update($data);
         return redirect()->route('admin.settings.menus.index')->with('success','Le menu a été mis à jour avec succès!');
     }
