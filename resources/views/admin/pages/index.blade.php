@@ -112,7 +112,7 @@
                                 { data: 'updated_at', name: 'updated_at'},
                                 { data: 'action', name: 'action',orderable: false},
                             ],
-                            order: [[ 3, 'asc' ]],
+                            order: [[ 3, 'desc' ]],
                             pageLength: 30,
                             responsive: true,
                             "oLanguage":{

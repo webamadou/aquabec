@@ -12,7 +12,7 @@ class Page extends Model
     use HasFactory;
     use Sluggable;
 
-    protected $fillable = ['title','content','slug','subtitle'];
+    protected $guarded = [];
 
     public function menu_link(){
         return $this->hasMany(\App\Models\MenuLink::class);

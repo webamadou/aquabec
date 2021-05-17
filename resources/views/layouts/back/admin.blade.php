@@ -9,7 +9,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name') }}</title>
+    <title>{{ config('app.name') }} - @yield('page_title')</title>
 	<link rel="stylesheet" type="text/css" href="{{asset('dist/ckeditor5/build/styles.css')}}">
 
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
