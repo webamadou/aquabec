@@ -1,6 +1,7 @@
 @extends('layouts.back.admin')
 
 @section('title','Transfert de monnaies')
+@section('page_title','Transfert de monnaies')
 
 @section('content')
 
@@ -83,6 +84,10 @@
             $('#credits-table').DataTable({
                 processing: true,
                 serverSide: true,
+                dom: 'Bfrliptip',
+                buttons: [
+                    'csv', 'excel', 'pdf'
+                ],
                 ajax: '{{ url('banker/get-credits-data') }}',
                 columns: [
                     { data: 'ref', name: 'ref' },

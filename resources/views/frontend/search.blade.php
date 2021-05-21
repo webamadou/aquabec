@@ -56,55 +56,13 @@
             <!-- Row End -->
             <div class="row wow fadeInUp" data-wow-duration="1s" data-wow-delay=".2s">
                 @forelse(@$response as $key => $item)
-                <div class="col-lg-4 col-md-12 mb-4">
-                    <div class="tw-latest-post">
-                        <div class="latest-post-media text-center">
-                                <img src="{{ route('show.image',@$item->images) }}" alt="{{@$item->title}}">
-                        </div>
-                        <!-- End Latest Post Media -->
-                        <div class="post-body">
-                            <div class="post-item-date">
-                                <div class="post-date {{class_basename(@$item) === 'Event'? 'event':''}}">
-                                    <span class="date">{{date('d', strtotime(@$item->published_at))}}</span>
-                                    <span class="month">{{@$month_array[intval(date('m', strtotime(@$item->published_at)))] }}</span>
-                                </div>
-                            </div>
-                            <!-- End Post Item Date -->
-                            <div class="post-info">
-                                <div class="post-meta">
-                                    <span class="post-author">
-                                        Par <a href="{{route('user_profile',@$item->owned)}}">{{@$item->owned->prenom}} {{@$item->owned->name}}</a>
-                                        <div class="contenu-type {{class_basename(@$item) === 'Event' ? 'event':''}}">
-                                            {{class_basename(@$item) === "Event" ? 'Evénement':"Annonce"}}
-                                        </div>
-                                    </span>
-                                </div>
-                                <!-- End Post Meta -->
-                                <h3 class="post-title"><a href="#">
-                                    @if(class_basename(@$item) === 'Event')
-                                        <a href="{{route('page_event',@$item->slug)}}">{{@$item->title}}</a>
-                                    @else
-                                        <a href="{{route('page_announcement',@$item->slug)}}">{{@$item->title}}</a>
-                                    @endif
-                                </h3>
-                                <div class="entry-content">
-                                    <p>
-                                    {!! substr(@$announcement->description, 0, 90); !!}...
-                                    </p>
-                                </div>
-                                <!-- End Entry Content -->
-                            </div>
-                            <!-- End Post info -->
-                        </div>
-                        <!-- End Post Body -->
-                    </div>
-                    <!-- End Tw Latest Post -->
-                </div>
+                    @include("frontend.includes.publication_component")
                 @empty
                     <h1 class="text-center" style="color: #d2d2d1">Nous n'avons rien trouvé correspondant à votre recherche.</h1>
                 @endforelse
                 <!-- <div class="col-md-12 text-center wow zoomIn" data-wow-duration="1s" data-wow-delay="1s"><a href="#" class="btn btn-primary btn-lg tw-mt-80">view all</a></div> -->
             </div>
+            <div id="items-pagination">{{ $response->links() }}</div>
             <!-- End Row -->
         </div>
         <!-- Container End -->

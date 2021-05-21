@@ -13,9 +13,9 @@ class Announcement extends Model
     use Sluggable;
 
     protected $fillable = [
-        'title', 'description', 'excerpt', 'slug', 'category_id', 'images', 'parent', 'posted_by', 'region_id', 'city_id', 'publication_status', 'owner', 'published_at', 'dates'
+        'title', 'description', 'excerpt', 'slug', 'category_id', 'images', 'parent', 'posted_by', 'region_id', 'city_id', 'publication_status', 'owner', 'published_at', 'dates','purchased','price_type','price','email','telephone','postal_code','event_id','advertiser_type'
     ];
-
+    protected $appends = ['advertiser'];
 
     /**
      * Return the sluggable configuration array for this model.
@@ -50,6 +50,11 @@ class Announcement extends Model
         return $this->belongsTo(\App\Models\Category::class);
     }
 
+    public function event()
+    {
+        return $this->belongsTo(\App\Models\Event::class);
+    }
+
     public function posted()
     {
         return $this->belongsTo(\App\Models\User::class, 'posted_by', 'id' );
@@ -63,6 +68,21 @@ class Announcement extends Model
     public function validated()
     {
         return $this->belongsTo(\App\Models\User::class, 'validated_by', 'id');
+    }
+
+    public function getAdvertiserAttribute(){
+        switch (intval($this->advertiser_type)) {
+            case 1:
+                return "particulier";
+                break;
+            case 'value':
+                return "commerce";
+                break;
+            
+            default:
+                "";
+                break;
+        }
     }
 
     public function getImagesAttribute($value)
@@ -82,7 +102,7 @@ class Announcement extends Model
     public function getCreatedAtAttribute($value)
     {
         $created_at = Carbon::make($value);
-        return Carbon::createFromFormat('Y-m-d H:i:s', $created_at)->diffForHumans();
+        return Carbon::createFromFormat('Y-m-d H:i:s', $created_at)->format('d-m-Y à H:i:s');
     }
 /* 
     public function getPublishedAtAttribute($value)
@@ -103,6 +123,40 @@ class Announcement extends Model
         $updated_at = Carbon::make($value);
         return Carbon::createFromFormat('Y-m-d H:i:s', $updated_at)->format('d-m-Y à H:i:s');
     }
+
+    /**
+     * Format the price
+     */
+    public static function formatPrice($value)
+    {
+        $returned_ref = '';
+        $ref = str_split($value);
+        $i = 0;
+        for ($c = count($ref) - 1; $c >= 0 ; $c--) {
+            $returned_ref = ($i % 3) === 0 ? @$ref[$c]." ".$returned_ref : @$ref[$c].$returned_ref;
+            $i++;
+        }
+        return $returned_ref;
+    }
+    public function getPrice()
+    {
+        switch (intval($this->price_type)) {
+            case 1:
+                return "$".self::formatPrice($this->price);
+                break;
+            case 2:
+                return "Échange";
+                break;
+            case 3:
+                return "Gratuit";
+                break;
+            
+            default:
+                return "Non Précisé";
+                break;
+        }
+    }
+
 
     public function countViews(){
         $this->views += 1;

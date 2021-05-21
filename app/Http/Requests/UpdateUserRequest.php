@@ -28,6 +28,7 @@ class UpdateUserRequest extends FormRequest
             "prenom"        => "nullable",
             "name"          => "required",
             "email"         => "required|email|unique:users,email,".$this->user->id,
+            "username"      => "required|unique:users,username,".$this->user->id,
             "age_group"     => "nullable",
             "gender"        => "nullable",
             "num_civique"   => "nullable|max:10",

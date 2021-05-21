@@ -1,10 +1,12 @@
 @extends('layouts.back.admin')
 
 @section('title','Liste des monnaies')
+@section('page_title',"Profil de ".@$user->username)
 
 @section('content')
     <section class="ftco-about ftco-section ftco-no-pt ftco-no-pb" id="about-section">
         <div class="container">
+            <div class="col-sm-12"><a class="btn btn-primary mb-3" href="{{route('admin.users.index')}}"><i class="fa fa-angle-double-left"></i> Retourner vers la liste</a> </div>
             <div class="row d-flex no-gutters">
                 <div class="col-md-3 col-lg-3 row">
                     <div class="col-12">
@@ -30,8 +32,9 @@
                     <div class="py-md-1">
                         <div class="row justify-content-start pb-3">
                             <div class="col-md-12 heading-section ftco-animate fadeInUp ftco-animated">
-                                <span class="subheading">{{$user->name}}</span>
-                                <h2 class="mb-4" style="font-size: 34px; text-transform: capitalize;">{{$user->prenom}} {{$user->nom}}</h2>
+                                <strong class="subheading">{{$user->username}}</strong><br>
+                                <h2 class="mb-4" style="font-size: 34px; text-transform: capitalize;">{{$user->prenom}} {{$user->name}}</h2>
+                                <span class="subheading">N° {{$user->id}}</span>
                                 <p class="p-0 m-0 text-blue">{{$user->email}}</p>
                                 <ul class="about-info d-flex px-0">
                                     <li class="d-flex mr-3">
@@ -55,7 +58,7 @@
                 </div>
                 <div class="col-md-12 pr-lg-0 py-1 row justify-content-end">
                 @can('update', $user)
-                    <a class="btn btn-primary btn-sm" href="{{route('admin.users.edit',$user)}}"><i class="fa fa-user-edit"></i> Editer</a>
+                    <a class="btn btn-primary btn-sm" href="{{route('admin.users.edit',$user)}}"><i class="fa fa-user-edit"></i> Modifier</a>
                 @endcan
                 </div>
             </div>

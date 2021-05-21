@@ -1,6 +1,7 @@
 @extends('layouts.back.admin')
 
 @section('title','Packs de credit')
+@section('page_title','Packs de credit')
 
 @section('content')
 
@@ -61,6 +62,10 @@
             $('#credit_packs-table').DataTable({
                 processing: true,
                 serverSide: true,
+                dom: 'Bfrliptip',
+                buttons: [
+                    'csv', 'excel', 'pdf'
+                ],
                 ajax: '{{ url('banker/get-credit_pack-data') }}',
                 columns: [
                     { data: 'id', name: 'id' },

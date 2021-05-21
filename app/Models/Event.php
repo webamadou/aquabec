@@ -14,7 +14,7 @@ class Event extends Model
 
     protected $fillable = [
         'title', 'description', 'excerpt', 'slug', 'category_id', 'images', 'parent', 'posted_by','postal_code', 'region_id', 'city_id', 'publication_status', 'owner', 'published_at', 'dates','telephone', 'website',
-        'email',
+        'email','purchased','event_time','organisation_id'
     ];
     /**
      * Return the sluggable configuration array for this model.
@@ -34,6 +34,10 @@ class Event extends Model
         ];
     }
 
+    public function announcement()
+    {
+        return $this->hasOne(\App\Models\Announcement::class);
+    }
     public function region()
     {
         return $this->belongsTo(\App\Models\Region::class);
@@ -62,6 +66,16 @@ class Event extends Model
     public function validated()
     {
         return $this->belongsTo(\App\Models\User::class, 'validated_by', 'id');
+    }
+
+    public function organisation()
+    {
+        return $this->belongsTo(\App\Models\Organisation::class);
+    }
+
+    public function event_dates()
+    {
+        return $this->hasMany(\App\Models\EventDate::class);
     }
 
     public function getImagesAttribute($value)

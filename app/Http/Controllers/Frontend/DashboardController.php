@@ -17,6 +17,8 @@ use App\Models\CreditsTransfersLog;
 use App\Models\Announcement;
 use App\Models\Event;
 
+use Yajra\Datatables\Datatables;
+use Illuminate\Support\Facades\DB;
 use Mail;
 use App\Mail\UserMails;
 
@@ -30,6 +32,58 @@ class DashboardController extends Controller
         $events         = $current_user->myEvents()->count() ;
         $announcements  = $current_user->myAnnouncements()->count() ;
         return view('user.dashboard', compact('notifications','events','announcements'));
+    }
+    /**
+     * Autocompletion method
+     * List user with username like user's request
+     * Use in transfering currencies
+     */
+    public function autocomplete(Request $request)
+    {
+        $user = auth()->user();
+        if(!$user){//If user is not logged in
+            $user = new User();
+        }
+        $input = strtolower( trim( $request->get('autocomplete_user') ) );
+        /* $users = User::where('username','LIKE',"%$input%")
+                        ->orWhere('id',$input)
+                        ->select('id','name','prenom','username')
+                        ->get(); */
+        $users = $user->recipientList()
+                        ->where('username','LIKE',"%$input%")
+                        ->orWhere('id',$input)
+                        ->orderby('username')
+                        ->select('id','name','prenom','username')
+                        ->get();
+        // dd($users,'"%'.$input.'%"');
+        return response()->json($users);
+    }
+
+    /**
+     * Autocompletion method
+     * List user with username like user's request
+     * Use in filtering publication by author
+     */
+    public function autocompleteUserPublication(Request $request)
+    {
+        $user = auth()->user();
+        if(!$user){//If user is not logged in
+            $user = new User();
+        }
+        $input = strtolower( trim( $request->get('autocomplete_user') ) );
+        $users = User::where('username','LIKE',"%$input%")
+                        ->orWhere('id',$input)
+                        ->orderby('username')
+                        ->select('id','name','prenom','username')
+                        ->get();
+        /* $users = $user->recipientList()
+                        ->where('username','LIKE',"%$input%")
+                        ->orWhere('id',$input)
+                        ->orderby('username')
+                        ->select('id','name','prenom','username')
+                        ->get(); */
+        // dd($users,'"%'.$input.'%"');
+        return response()->json($users);
     }
     /**
      * 
@@ -61,7 +115,114 @@ class DashboardController extends Controller
             ->rawColumns(['action'])
             ->make(true);
     }
+    public function listTeamates(Request $request,$user_id = null)
+    {
+        $user_id = $user_id === null?auth()->user()->id:$user_id;
+        if ($request->ajax()) {
+            $data = User::vendors()->where('godfather', $user_id)
+                        ->where('profile_status','<=','2');
+            if(auth()->user()->hasRole('vendeur')){
+                $data = auth()->user()
+                                ->godchildren()
+                                ->where('profile_status','<=',2);
+            }
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('id',function ($row) {
+                    return $row->id;
+                })
+                ->addColumn('name',function ($row) {
+                    return  '<strong><i class="fa fa-user"></i> <a href="'.route('vendeurs.show_vendeur',$row->slug).'" class="text-link">'.@$row->username.'<br>'.$row->prenom.' '.$row->name.'</a></strong>';
+                })
+                ->addColumn("email", function($row){
+                    return @$row->email;
+                })
+                ->addColumn('roles',function($row){
+                    $roles = $row->roles;
+                    $fonctions = "";
+                    foreach ($roles as $key => $role) {
+                        $fonctions .= '<div class="badge badge-primary">'.$role->name.'</div>';
+                    }
+                    return $fonctions;
+                })
+                ->addColumn('updated_at', function($row){
+                    return @$row->updated_at;
+                })
+                ->addColumn('action', function($item){
+                    $edit_route = route('vendeurs.edit_vendeur',$item);
+                    return view('layouts.back.datatables.actions-btn', compact('edit_route'));
+                })
+                ->addColumn('created_at', function($row){
+                    return @$row->created_at;
+                })
+                ->filter(function ($instance) use ($request) {
+                    if ($request->get('filter_name') != '') {
+                        $name =  $request->get('filter_name');
+                        $instance->where('name','LIKE', "%$name%");
+                    }
+                    if ($request->get('filter_prenom') != '') {
+                        $prenom =  $request->get('filter_prenom');
+                        $instance->where('prenom','LIKE', "%$prenom%");
+                    }
+                    if ($request->get('filter_username') != '') {
+                        $username =  $request->get('filter_username');
+                        $instance->where('username','LIKE', "%$username%");
+                    }
+                    if ($request->get('filter_email') != '') {
+                        $username =  $request->get('filter_email');
+                        $instance->where('email','LIKE', "%$username%");
+                    }
+                    if ($request->get('filter_id') != '') {
+                        $instance->where('id', $request->get('filter_id'));
+                    }
+                    if ($request->get('filter_roles') != '') {
+                        $name = $request->get('filter_roles');
+                        $instance->whereHas("roles", function($q) use($name){$q->where('name', $name);});
+                    }
+                    if ($request->get('created_at') != '') {
+                        $date_min = $request->get('created_at').' 00:00:00';
+                        $date_max = $request->get('created_at').' 23:59:59';
+                        $instance->where('created_at', '>=',$date_min)
+                                ->where('created_at', '<=',$date_max);
+                    }
+                    if ($request->get('updated_at') != '') {
+                        $date_min = $request->get('updated_at').' 00:00:00';
+                        $date_max = $request->get('updated_at').' 23:59:59';
+                        $instance->where('updated_at', '>=',$date_min)
+                                ->where('updated_at', '<=',$date_max);
+                    }
+                    /* if (!empty($request->get('search'))) {
+                        $instance->where(function($w) use($request){
+                            $search = $request->get('search');
+                            $w->orWhere('title', 'LIKE', "%$search%")
+                                ->orWhere('dates', 'LIKE', "%$search%")
+                                ->orWhere('id', 'LIKE', "%$search%");
+                        });
+                    } */
+                })
+                ->order(function ($instance) use ($request){
+                        $order = @$request->get('order')[0];
+                        switch ($order['column']) {
+                            case 0:
+                                $instance->orderby('id', $order['dir']);
+                                break;
+                            
+                            default:
+                                $instance->orderby('updated_at', "desc");
+                                break;
+                        }
+                        $instance
+                            ->skip( @$request->get('start') )
+                            ->take( @$request->get('lenght') );
+                })
+                ->rawColumns(['id','name','email','roles','updated_at','created_at','action'])
+                ->make(true);
+        }
 
+        $roles = Role::orderby('name')->get();
+
+        return view('user.vendeurs.my_team', compact('roles'));
+    }
     public function showProfile(User $user)
     {
         if($user->profile_status >1)
@@ -85,6 +246,7 @@ class DashboardController extends Controller
 
     public function editVendeur(User $user)
     {
+        // dd($user->email);
         $current_user = auth()->user();
         $region_list = Region::pluck('name','id');
         $cities_list = City::where('region_id',$user->region_id)->pluck('name','id');
@@ -101,17 +263,28 @@ class DashboardController extends Controller
         $cities_list = City::where('region_id',$user->region_id)->pluck('name','id');
 
         $age_group   = AgeRange::ageSelect();
-
         $fonction_except    = ['admin','super-admin','membre','chef vendeur','chef-vendeur','vendeur','Banquier'];
         $fonctions          = Role::select('name','id','description')->whereNotIn("name",$fonction_except)->get();
+        $logs = CreditsTransfersLog::with('sentBy','sentTo','credit')
+                                    ->where('sent_by',$user->id)
+                                    ->orWhere('sent_to',$user->id)
+                                    ->orderBy("created_at","desc")
+                                    ->get();
 
-        return view('user.profile.infosperso',compact('region_list','cities_list', 'age_group','user','default_tab','fonctions'));
+        return view('user.profile.infosperso',compact('region_list','cities_list', 'age_group','user','default_tab','fonctions','logs'));
     }
 
+    /**
+     * Method used to select the cities of a region and return them in json format
+     */
     public function selectCities(Request $request)
     {
-        $res = Region::find($request->id)->cities->pluck('name','id');
-
+        $res = [];
+        $region = Region::find($request->id);
+        if($region){
+            $region->cities->pluck('name','id');
+            $res = $region->cities->pluck('name','id');
+        }
         return response()->json($res);
     }
     /**
@@ -151,7 +324,8 @@ class DashboardController extends Controller
             return redirect()->route('welcome');
         }
         $users = $current_user->recipientList()
-                              ->select('id','name','prenom','email')
+                              ->select('id','name','username','prenom','email')
+                              ->orderby('username')
                               ->get();
 
         //We need to display the id next to name in list of users. We just need to add some leading zeros
@@ -208,7 +382,7 @@ class DashboardController extends Controller
     /**
      * Create annoucement
      */
-    public function createAnnouncement()
+    public function create()
     {
         $categories = Category::where('type','annonce')->get();
         $regions    = Region::pluck('name','id');
@@ -216,10 +390,11 @@ class DashboardController extends Controller
         $status     = ['Enregistrer en brouillon','Publiée','Enregistrer en privée'];
         $user       = auth()->user();
         $children   = $user->godchildren()->select('name','prenom','email','id')->get();
-        //Check if user has enough credit
-        $can_post   = $user->userHasEnoughCredit('annoucements_price','free_currency');
+        //Check if user has enough of needed currency
+        $can_post   = $user->userHasEnoughCredit('annoucements_price','paid_currency');
+        $user_events = $user->getUnlinkedEvents()->pluck("events.title","events.id")->all();
 
-        return view('announcements.add_announcement',compact('categories','regions','cities','status','children','user','can_post'));
+        return view('announcements.add_announcement',compact('categories','regions','cities','status','children','user','can_post','user_events'));
     }
     /**
      * Store announcement
@@ -286,12 +461,14 @@ class DashboardController extends Controller
         $current_user = auth()->user();
         //User can view annonce if is owner or publisher or announcement is validated and published
         //Later we will have to set gates or policies for this
-        if(intval(@$announcement->publication_status) !== 1 && (
+        if((
+                intval(@$announcement->publication_status) !== 1 || 
+                intval(@$announcement->lock_publication) === 1) 
+        && (
                 intval(@$current_user->id) !== intval(@$announcement->owner) && 
                 intval(@$current_user->id) !== intval(@$announcement->posted_by)
-                )
-        ){
-            $message = "Ce contenu n'est pas encore disponible";
+        )){
+            $message = "Ce contenu n'est pas disponible";
             return view('frontend.feedback',compact('message'));
         }
         $announcement->countViews();
@@ -310,7 +487,7 @@ class DashboardController extends Controller
         $user       = auth()->user();
         $children   = $user->godchildren()->select('name','prenom','email','id')->get();
         //Check if user has enough credit
-        $can_post   = $user->userHasEnoughCredit('annoucements_price','free_currency');
+        $can_post   = $user->userHasEnoughCredit('annoucements_price','paid_currency');
 
         return view('announcements.edit_announcement',compact('announcement','categories','regions','cities','status','children','user','can_post'));
     }
@@ -387,24 +564,6 @@ class DashboardController extends Controller
                         ->with('success', "L'annonce a été supprimée");
         }
     }
-    /** *** EVENTS METHODS *** */
-    /**
-     * List events
-     */
-    public function myEventsData()
-    {
-        $user = auth()->user();
-        $events = $user->myEvents()->with('owned','posted','category','region','city')->get();
-        return datatables()
-            ->collection($events)
-            ->addColumn('action',function ($item) {
-                $edit_route = "#";
-
-                return view('layouts.back.datatables.actions-btn',compact('edit_route'));
-            })
-            ->rawColumns(['action'])
-            ->make(true);
-    }
 
     /**
      * list events of current user
@@ -419,7 +578,7 @@ class DashboardController extends Controller
     /**
      * Create event
      */
-    public function createEvent()
+    public function createEvent(Announcement $announcement = null)
     {
         $categories = Category::where('type','evènement')->get();
         $regions    = Region::pluck('name','id');
@@ -428,9 +587,9 @@ class DashboardController extends Controller
         $user       = auth()->user();
         $children   = $user->godchildren()->select('name','prenom','email','id')->get();
         //Check if user has enough credit
-        $can_post   = $user->userHasEnoughCredit('events_price','paid_currency');
+        $can_post   = $user->userHasEnoughCredit('events_price','free_currency');
 
-        return view('events.add_event',compact('categories','regions','cities','status','children','user','can_post'));
+        return view('events.add_event',compact('announcement','categories','regions','cities','status','children','user','can_post'));
     }
 
     /**
@@ -495,116 +654,4 @@ class DashboardController extends Controller
         return redirect()->back();
     }
 
-    /**
-     * Show event
-     */
-    public function showEvent(Event $event)
-    {
-        $current_user = auth()->user();
-        //User can view annonce if is owner or publisher or event is validated and published
-        //Later we will have to set gates or policies for this
-        if(intval(@$event->publication_status) !== 1 && (
-                        intval(@$current_user->id) !== intval(@$event->owner) && 
-                        intval(@$current_user->id) !== intval(@$event->posted_by)
-                    )
-        ){
-            $message = "Ce contenu n'est pas encore disponible";
-            return view('frontend.feedback',compact('message'));
-        }
-        $event->countViews();
-        $event->countClicks();
-        return view('events.show_event', compact('event','current_user'));
-    }
-
-    /**
-     * Edit Announcement
-     */
-    public function editEvent(Event $event)
-    {
-        $categories = Category::where('type', 'évènement')->get();
-        $regions    = Region::pluck('name','id');
-        $cities     = City::pluck('name','id');
-        $status     = ['Enregistrer en brouillon','Publiée','Enregistrer en privée'];
-        $user       = auth()->user();
-        $children   = $user->godchildren()->select('name','prenom','email','id')->get();
-        //Check if user has enough credit
-        $can_post   = $user->userHasEnoughCredit('events_price','paid_currency');
-
-        return view('events.edit_event',compact('event','categories','regions','cities','status','children','user','can_post'));
-    }
-
-
-    /**
-     * Update announcement
-     */
-    public function updateEvent(Request $request,Event $event)
-    {
-        $data = $request->validate([
-            'title'         => 'required',
-            'description'   => 'nullable',
-            'excerpt'       => 'nullable',
-            'category_id'   => 'nullable',
-            'images'        => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
-            'parent'        => 'nullable',
-            'posted_by'     => 'required',
-            'postal_code'   => 'nullable',
-            'region_id'     => 'nullable',
-            'telephone'     => 'nullable',
-            'email'         => 'nullable',
-            'website'       => 'nullable',
-            'city_id'       => 'nullable',
-            'publication_status'=> 'required',
-            'published_at'  => 'nullable',
-            'dates'         => 'required',
-        ]);
-        $current_user = auth()->user();
-        if(!isset($request->owner)){//If the owner is not defined the publisher become the publisher
-            $data['owner'] = $current_user->id;
-        } else {
-            $data['owner'] = $request->owner;
-        }
-        //If annouce is published we set the published_at column
-        if(intval($data['publication_status']) === 1){
-            $data['published_at'] = date('Y-m-d H:i:s');
-        }
-        $data['posted_by'] = $current_user->id;
-        //Make sure user has enough to publish
-        $can_post   = $current_user->userHasEnoughCredit('annoucements_price','free_currency');
-        $data['publication_status'] = $can_post ? $data["publication_status"] : 0;
-
-        $save = $event->update($data);
-        if($save){
-            //Actions if an image is uploaded
-            $owner = $event->owned()->select('name','prenom','id')->first() ;
-            //Each user has a folder where to save image and other eventual files
-            $user_folder = str_replace(' ','-',$owner->name)."_".str_replace(' ','-', $owner->prenom)."_".str_replace(' ','-',$owner->id);
-            if($request->has('images')){
-                $image = $request->file('images');
-                $image_name = $event->slug.".".\File::extension($image->getClientOriginalName());
-                $image_path = 'images/announcements';
-                $save_images = $image->storeAs($image_path,$image_name,'public');
-                $event->images = $image_name;
-                $event->save();
-            }
-            //dd("lep baax");
-            return redirect()
-                    ->back()
-                    ->with('success',"Votre évènement a été modifié avec succès");
-        }
-        return redirect()
-                    ->back()
-                    ->with('error',"Il s'est produite une erreur");
-    }
-    /**
-     * Delete event
-     */
-    public function deleteEvent(Event $event)
-    {
-        if($event) {
-            $event->delete();
-            return redirect()
-                        ->route('user.my_events')
-                        ->with('success', "L'évènement a été supprimé");
-        }
-    }
 }

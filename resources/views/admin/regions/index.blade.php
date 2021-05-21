@@ -1,6 +1,7 @@
 @extends('layouts.back.admin')
 
 @section('title','Régions ')
+@section('page_title','Régions ')
 
 @section('content')
 
@@ -60,6 +61,10 @@
             $('#roles-table').DataTable({
                 processing: true,
                 serverSide: true,
+                dom: 'Bfrliptip',
+                buttons: [
+                    'csv', 'excel', 'pdf'
+                ],
                 ajax: '{{ url('admin/settings/get-regions-data') }}',
                 columns: [
                     { data: 'region_number', name: 'region_number' },

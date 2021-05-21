@@ -13,6 +13,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name') }} - @yield(('title'))</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <!-- FROALA -->
+    <link href='https://cdn.jsdelivr.net/npm/froala-editor@2.9.1/css/froala_editor.min.css' rel='stylesheet' type='text/css' />
+    <link href='https://cdn.jsdelivr.net/npm/froala-editor@2.9.1/css/froala_style.min.css' rel='stylesheet' type='text/css' />
     
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
 
@@ -39,15 +43,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="{{asset('dist/ckeditor5/build/styles.css')}}">
+    <link rel="stylesheet" href="{{ asset('/dist/datepicker/combined.css') }}">
     <link rel="stylesheet" href="{{ asset('css/all.css') }}">
     <script defer>
        
 
     </script>
 </head>
-<body class="hold-transition layout-top-nav">
+<body class="hold-transition layout-top-nav" siteurl="{{ config('app.url') }}">
 <div class="wrapper">
-
     <!-- Navbar -->
     <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
         <div class="container">
@@ -77,7 +82,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <a href="{{ route('user.dashboard') }}" class="nav-link {{ side_nav_bar_menu_status('dashboard','active') }}"><i class="fa fa-user-cog"></i> Portrait</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('user.my_events') }}" class="nav-link {{ side_nav_bar_menu_status('events','active') }}"><i class="fas fa-calendar-check"></i> Mes évènements</a>
+                        <a href="{{ route('user.my_events') }}" class="nav-link {{ side_nav_bar_menu_status('events','active') }}"><i class="fas fa-calendar-check"></i> Mes événements</a>
                     </li>
                     <li class="nav-item">
                         <a href="{{route('user.my_announcements')}}" class="nav-link"><i class="fa fa-bullhorn"></i> Mes annonces</a>
@@ -88,7 +93,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     @endrole
                     @auth
                     <li class="nav-item dropdown">
-                        <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Mon Profile</a>
+                        <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Mon Profil</a>
                         <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
                             <li>
                                 <a class="dropdown-item" href="{{route('user.infosperso')}}/account"><i class="fa fa-cogs"></i> Mon Compte</a>
@@ -163,6 +168,72 @@ scratch. This page gets rid of all links and provides the needed markup only.
         Vous avez désactivé Javascript sur votre navigateur. Un bon nombre de fonctionnalités sont exécutées avec Javascript.<br>Vous devez activer Javascript pour pouvoir utiliser le site.
     </div>
 </noscript>
+<script src="{{asset('dist/datepicker/bootstrap-datepicker.js')}}" defer></script>
+<script src="{{asset('js/bootstrap-datepicker.js')}}" defer></script>
+
+<!-- Froala 2.7.3 -->
+<script type='text/javascript' src="https://cdn.jsdelivr.net/npm/froala-editor@2.9.1/js/froala_editor.pkgd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/froala-editor@2.9.1/js/languages/fr.js"></script>
 @include('layouts.back.alerts.sweetalerts')
+
+<script src="{{asset('dist/ckeditor5/build/ckeditor.js')}}"></script>
+<script>ClassicEditor
+        .create( document.querySelector( '.editor, .ckeditor' ), {
+            
+            toolbar: {
+                items: [
+                    'heading',
+                    '|',
+                    'bold',
+                    'italic',
+                    'link',
+                    'bulletedList',
+                    'numberedList',
+                    '|',
+                    'outdent',
+                    'indent',
+                    '|',
+                    'imageUpload',
+                    'blockQuote',
+                    'insertTable',
+                    'mediaEmbed',
+                    'undo',
+                    'redo',
+                    'CKFinder',
+                    'underline',
+                    'fontColor',
+                    'removeFormat',
+                    'alignment'
+                ]
+            },
+            language: 'fr',
+            image: {
+                toolbar: [
+                    'imageTextAlternative',
+                    'imageStyle:full',
+                    'imageStyle:side'
+                ]
+            },
+            table: {
+                contentToolbar: [
+                    'tableColumn',
+                    'tableRow',
+                    'mergeTableCells'
+                ]
+            },
+            licenseKey: '',
+            
+            
+        } )
+        .then( editor => {
+            window.editor = editor;
+        } )
+        .catch( error => {
+            console.error( 'Oops, something went wrong!' );
+            console.error( 'Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:' );
+            console.warn( 'Build id: qp877ojrkize-b9d1q6l02xnr' );
+            console.error( error );
+        } );
+</script>
 </body>
 </html>

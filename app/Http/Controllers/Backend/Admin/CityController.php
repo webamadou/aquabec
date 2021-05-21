@@ -18,6 +18,7 @@ use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Kris\LaravelFormBuilder\Form;
 use Kris\LaravelFormBuilder\FormBuilder;
+use Yajra\Datatables\Datatables;
 
 class CityController extends Controller
 {
@@ -70,15 +71,44 @@ class CityController extends Controller
      *
      * @return Application|Factory|View
      */
-    public function index()
+    public function index(Request $request)
     {
+        if ($request->ajax()) {
+          $data = City::select('*');
+           return Datatables::of($data)
+                    ->addIndexColumn()
+                    ->addColumn('full_name',function ($row) {
+                        if ($row->prefix) {
+                            return $row->name . ' (' . $row->prefix . ')';
+                        }
+                        return $row->name;
+                    })
+                    ->addColumn('action',function ($row) {
+                        $edit_route = route('admin.settings.cities.edit',$row->id);
+                        $delete_route = route('admin.settings.cities.destroy',$row->id);
+                        return view('layouts.back.datatables.actions-btn',compact('edit_route','delete_route'));
+                    })
+                    ->addColumn('region',function ($role) {
+                        return $role->region->name;
+                    })
+                   ->filter(function ($instance) use ($request) {
+                       if ($request->get('region_id') != '') {
+                           $instance->where('region_id', $request->get('region_id'));
+                       }
+                       if (!empty($request->get('search'))) {
+                            $instance->where(function($w) use($request){
+                               $search = $request->get('search');
+                               $w->orWhere('name', 'LIKE', "%$search%");
+                           });
+                       }
+                   })
+                   ->rawColumns(['status'])
+                   ->make(true);
+        }
+        
         $form = $this->getForm();
-
-      	$users = User::all();
-      	$organisations = User::all();
-      	$events = Event::all();
-      	$announcements = Announcement::all();
-        return view('admin.cities.index',compact('form'));
+        $regions = \App\Models\Region::pluck('name','id'); 
+        return view('admin.cities.index',compact('form','regions'));
     }
 
     /**

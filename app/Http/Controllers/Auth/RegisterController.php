@@ -60,6 +60,7 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name'      => ['required', 'string', 'max:255'],
             'prenom'    => ['required', 'string', 'max:255'],
+            'username'  => 'required|string|max:20|unique:users',
             'email'     => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password'  => ['required', 'string', 'min:8', 'confirmed'],
             'terms'     => ['required'],
@@ -79,12 +80,23 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = new User();
+        $user->name = $data['name'];
+        $user->prenom = $data['prenom'];
+        $user->email = $data['email'];
+        $user->username = $data['username'];
+        $user->password = Hash::make($data['password']);
+        //dd($data);
+
+        $user->save();
+        return $user;
+        /* return User::create([
             'name' => $data['name'],
             'prenom' => $data['prenom'],
             'email' => $data['email'],
+            'username' => $data['username'],
             'password' => Hash::make($data['password']),
-        ]);
+        ]); */
     }
 
     /**
@@ -108,7 +120,7 @@ class RegisterController extends Controller
 
         $role = $request->role;//We get the picked role
         event(new Registered($user = $this->create($request->all())));
-        $user->assignRole($role);//We assign the role to the user
+        $user->assignRole("membre");//We assign the role to the user
         //We need to prepare the data to apply to the default credit amount to assign to the user
         $role = $user->roles->first();
         $free_credit_amount = $role != null ? intval($role->free_credit) : 0;

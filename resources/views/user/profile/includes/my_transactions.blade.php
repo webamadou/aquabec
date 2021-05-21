@@ -2,18 +2,40 @@
     <div class="col-md-12 col-sm-12">
         <div class="card">
             <div class="card-header">
-                <h2 class="card-title font-weight-bold">Liste de mes transferts de crédit</h2>
+                <h2 class="card-title font-weight-bold">Liste de mes transferts de monnaies</h2>
             </div>
             <div class="card-body">
                 <table class="table table-success table-striped table-borderless" id="my-transactions-table">
                     <thead class="table-light">
-                    <tr>
-                        <th>Actions</th>
-                        <th>Transactions</th>
-                        <th>Notes</th>
-                        <th>Date d'envoie</th>
-                    </tr>
+                        <tr>
+                            <th>N°</th>
+                            <th>Actions</th>
+                            <th>Transferts</th>
+                            <th>Notes</th>
+                            <th>Date d'envoie</th>
+                        </tr>
                     </thead>
+                    <tbody>
+                    @foreach($logs as $log)
+                        <tr>
+                            <td>{{$log->ref}}</td>
+                            <td>
+                                <!-- let type_text = data.sent_by.id==={{$user->id}}?"<strong>Envoie</strong>":"<strong>Réception</strong>"; -->
+                                <span><strong>{{@$log->sent_by->id === $user->id?"Envoie":"Réception"}}</strong><br>
+                                <i class="{{@$log->credit->icons}}"></i> {{@$log->credit->name}}</span>
+                            </td>
+                            <td>
+                                @if(@$log->sent_by->id == $user->id)
+                                    <span class="sent_by">Vous avez</span> envoyé {{@$log->sent_value}} {{@$log->credit->name}} à <span class="sent_to"> {{@$log->sent_to->username}}</span>
+                                @else
+                                    <span class="sent_by">{{@$log->sent_by->username}}</span> vous a envoyé {{@$log->sent_value}} {{@$log->credit->name}}
+                                @endif
+                            </td>
+                            <td><div class='log-notes'>{!!@$log->notes!!}</div></td>
+                            <td>{{@$log->updated_at}}</td>
+                        </tr>
+                    @endforeach
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -22,12 +44,18 @@
 <script defer>
         $(function() {
 
-            $('#my-transactions-table').DataTable({
-                processing: true,
-                serverSide: true,
+        let table = $('#my-transactions-table').DataTable({
+                processing: false,
+                serverSide: false,
+                dom: 'Bfrliptip',
+                buttons: [
+                    'csv', 'excel', 'pdf'
+                ],
                 method:'post',
-                ajax: '{{ route("user.userSentTransactions") }}',
+                dom: 'Bfrliptip',
+                /* ajax: '{{ route("user.userSentTransactions") }}', *
                 columns: [
+                    {data: 'ref',name: 'ref'},
                     { data: null, name: 'action',
                         render: data => {
                             let type_text = data.sent_by.id==={{$user->id}}?"<strong>Envoie</strong>":"<strong>Réception</strong>";
@@ -37,9 +65,9 @@
                     { data: null, name: 'sent_to',
                         render: data => {
                             if(data.sent_by.id == "{{$user->id}}")
-                                return `<span class="sent_by">Vous avez</span> envoyé ${data.sent_value} ${data.credit.name} à <span class="sent_to"> ${data.sent_to?data.sent_to.name:"Utilisateur supprimé"}</span>`;
+                                return `<span class="sent_by">Vous avez</span> envoyé ${data.sent_value} ${data.credit.name} à <span class="sent_to"> ${data.sent_to?data.sent_to.username:"Utilisateur supprimé"}</span>`;
                             else
-                                return `<span class="sent_by">${data.sent_by?data.sent_by.name:"Utilisateur supprimé"}</span> vous a envoyé ${data.sent_value} ${data.credit.name}`;
+                                return `<span class="sent_by">${data.sent_by?data.sent_by.username:"Utilisateur supprimé"}</span> vous a envoyé ${data.sent_value} ${data.credit.name}`;
                             }
                     },
                     { data: null, name: 'notes',
@@ -50,12 +78,12 @@
                         }
                     },
                     { data: 'updated_at', name: 'updated_at' }
-                ],
+                ],*/
                 buttons: [
-                    'copy', 'csv', 'excel', 'pdf', 'print'
+                    'csv', 'excel', 'pdf'
                 ],
                 order: [[ 3, 'desc' ]],
-                pageLength: 100,
+                pageLength: 30,
                 responsive: true,
                 "oLanguage":{
                       "sProcessing":     "<i class='fa fa-2x fa-spinner fa-pulse'>",

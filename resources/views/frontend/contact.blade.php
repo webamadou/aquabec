@@ -11,7 +11,7 @@
                     <div class="section-heading text-center">
                         <h2>
                             <small>Laissez un message</small>
-                            Contacter l'administration de <span>l'agenda.quebec</span>
+                            Contacter l'administration de <span>l'Agenda du Québec</span>
                         </h2>
                         <span class="animate-border border-ash ml-auto mr-auto tw-mt-20 tw-mb-40"></span>
                     </div>

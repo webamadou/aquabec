@@ -5,7 +5,7 @@
 @section('content')
     <section class="ftco-about ftco-section ftco-no-pt ftco-no-pb" id="about-section">
         <div class="card">
-            <div class="row card-body">
+            <div class="row card-body col-sm-12 col-md-8 mx-auto">
                 <div class="col-md-3 col-lg-3 row">
                     <div class="col-12">
                         <div class="overlay"></div>
@@ -52,12 +52,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-12 pr-lg-0 py-1" style="text-align: right">
-                @if($current_user->id === $user->id || $current_user->id === $user->godfather)
-                    <a class="btn btn-primary" href="{{route('vendeurs.edit_vendeur',$user)}}"><i class="fa fa-user-edit"></i> Editer</a>
-                    <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#modal-delete" data-whatever="{{ route('vendeurs.delete',$user) }}"><i class="fa fa-user-times"></i> Supprimer</a>
-                @endcan
                 </div>
             </div>
         </div>

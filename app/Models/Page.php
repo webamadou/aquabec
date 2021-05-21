@@ -5,13 +5,26 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Carbon\Carbon;
 
 class Page extends Model
 {
     use HasFactory;
     use Sluggable;
 
-    protected $fillable = ['title','content','slug','subtitle'];
+    protected $guarded = [];
+
+    public function menu_link(){
+        return $this->hasMany(\App\Models\MenuLink::class);
+    }
+
+    public function menu(){
+        return $this->hasMany(\App\Models\Menu::class);
+    }
+
+    public function faq_groups(){
+        return $this->hasMany(\App\Models\Faq_group::class);
+    }
 
     /**
      * Return the sluggable configuration array for this model.

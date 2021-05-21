@@ -1,6 +1,7 @@
 @extends('layouts.back.admin')
 
-@section('title',"Modification d'une fonctions")
+@section('title',"Modification d'une fonction")
+@section('page_title',"Modification d'une fonction")
 
 @section('content')
     <form method="POST" action="{{route('admin.settings.security.roles.update', $role)}}" accept-charset="UTF-8">
@@ -11,6 +12,9 @@
                 <div class="card">
                     <div class="card-header bg-primary">
                         <h2 class="card-title font-weight-bold">Informations de base</h2>
+                        <div class="card-tools">
+                            <a href="{{route('admin.settings.security.roles.index')}}" class="btn btn-success"><i class="fa fa-angle-double-left"></i> Retourner vers la liste</a>
+                        </div>
                     </div>
                     <div class="card-body row">
                         <div class="col-12 form-group row">
@@ -63,7 +67,7 @@
                         <div class="col-12 form-group row">
                             <label for="Prix par annonce" class="col-sm-12 col-md-3">Prix Par Annonce</label>
                             <div class="input-group mb-3 col-sm-12 col-md-9">
-                                <input class="form-control" min="0" name="annoucements_price" id="annoucements_price" type="number" value="{{$role->annoucements_price}}">
+                                <input class="form-control" name="annoucements_price" id="annoucements_price" type="number" value="{{$role->annoucements_price}}">
                                 <div class="input-group-append"> <span class="input-group-text" id="basic-addon3"><i class="fa fa-coins"></i> </span> </div>
                             </div>
                             {!! $errors->first('annoucements_price', '<div class="error-message col-12">:message</div>') !!}
@@ -234,12 +238,6 @@
                 $(`#price_wrapper-${current_index}`).remove();
             });
 
-        });
-    </script>
-    <script src="{{asset('/dist/ckeditor/ckeditor.js')}}" defer></script>
-    <script type="text/javascript" defer>
-        $(document).ready(function () {
-            $('.ckeditor').ckeditor();
         });
     </script>
 

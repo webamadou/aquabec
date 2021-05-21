@@ -25,7 +25,12 @@
             $('#credits-table').DataTable({
                 processing: true,
                 serverSide: true,
+                dom: 'Bfrliptip',
+                buttons: [
+                    'csv', 'excel', 'pdf'
+                ],
                 method:'post',
+                dom: 'Bfrliptip',
                 ajax: '{{ route("user.userSentTransactions") }}',
                 columns: [
                     { data: null, name: 'action',
@@ -52,7 +57,7 @@
                     { data: 'updated_at', name: 'updated_at' }
                 ],
                 buttons: [
-                    'copy', 'csv', 'excel', 'pdf', 'print'
+                    'csv', 'excel', 'pdf'
                 ],
                 order: [[ 3, 'desc' ]],
                 pageLength: 100,

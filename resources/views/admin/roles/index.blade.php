@@ -1,6 +1,7 @@
 @extends('layouts.back.admin')
 
 @section('title','Fonctions')
+@section('page_title','Les Fonctions')
 
 @section('content')
 
@@ -45,6 +46,10 @@
             $('#roles-table').DataTable({
                 processing: true,
                 serverSide: true,
+                dom: 'Bfrliptip',
+                buttons: [
+                    'csv', 'excel', 'pdf'
+                ],
                 ajax: '{{ url('admin/settings/security/get-role-data') }}',
                 columns: [
                     { data: 'id', name: 'id' },

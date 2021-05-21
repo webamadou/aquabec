@@ -1,6 +1,7 @@
 @extends('layouts.back.admin')
 
 @section('title','Permissions')
+@section('page_title','Permissions')
 
 @section('content')
 
@@ -61,6 +62,10 @@
             $('#roles-table').DataTable({
                 processing: true,
                 serverSide: true,
+                dom: 'Bfrliptip',
+                buttons: [
+                    'csv', 'excel', 'pdf'
+                ],
                 ajax: '{{ url('admin/settings/security/get-permission-data') }}',
                 columns: [
                     { data: 'id', name: 'id' },

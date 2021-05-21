@@ -1,6 +1,7 @@
 @extends('layouts.back.admin')
 
 @section('title','Gestion des pages')
+@section('page_title','Gestion des pages')
 
 @section('content')
     <div class="row">
@@ -41,11 +42,5 @@
 
 @push('scripts')
 
-    <script src="{{asset('/dist/ckeditor/ckeditor.js')}}" defer></script>
-    <script type="text/javascript" defer>
-        $(document).ready(function () {
-            $('.ckeditor').ckeditor();
-        });
-    </script>
 
 @endpush

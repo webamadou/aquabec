@@ -12803,6 +12803,11 @@ input[type="submit"].btn-block {
     background: no-repeat center center;
     background-size: 100% 100%;
 }
+ul.navbar-nav a {
+    display: block;
+    position: relative;
+    border-radius: 0;
+}
 @media (max-width: 575.98px) {
     .navbar-expand-sm > .container,
     .navbar-expand-sm > .container-fluid,
@@ -41400,7 +41405,7 @@ input.autofill-field,
 /* ANNOUNCEMENT*/
 .announcement-side-bar {
     position: relative;
-    height: 80vh;
+    height: auto;
     margin: 0;
     padding: 0;
 }
@@ -41479,4 +41484,206 @@ hr {
     font-size: 0.9rem;
     font-weight: 500;
     border-radius: 1px;
+}
+#new_event_wrapper {
+    display: none;
+}
+#new_event_wrapper.active {
+    display: initial;
+}
+.datatable-filter select,.datatable-filter input {
+    padding: 0 1rem;
+    font-size: 0.7rem;
+    line-height: 1;
+    height: 2vw;
+    border: 1px solid #ddd;
+    border-radius: 2px;
+}
+a.table-link-publication {
+    display: inline-block;
+    max-width: 210px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    font-size: small;
+    font-weight: lighter;
+}
+a.reset-field {
+    text-align: right;
+    display: inline-block;
+    font-size: small;
+    font-weight: lighter;
+    margin-left: 3px;
+    color: red;
+}
+/* datatable */
+.dt-button {
+    margin: 0 0 14px 0;
+    padding: 0.1vh 1vw;
+    background: #0e78fa;
+    border: 2px solid #0e78fa;
+    border-radius: 5px;
+    color: #fff;
+    font-size: small;
+}
+a.paginate_button.current {
+    font-size: x-small;
+    border-radius: 10px;
+}
+.datepicker-incon-wrapper{
+    width: 3vw;
+    height: 2.9vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: xx-large;
+    background: #f3ecec;
+}
+.input-group-filter-min.date, .input-group-filter-max.date {
+    display: flex;
+    position: relative;
+}
+.date span.input-group-addon {
+    background: #ffffff;
+    border: 1px solid #ddd;
+    border-left: 1px solid #ffffff;
+    margin-left: -2px;
+    display: inline-block;
+}
+/* datatable */
+.dataTables_wrapper .dataTables_processing {
+    top: 20px !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 40px;
+    margin-left: -50%;
+    margin-top: -25px;
+    padding-top: 20px;
+    text-align: center;
+    font-size: 1.2em;
+    background-color: transparent !important;
+}
+#images,.file {
+    visibility: hidden;
+    position: absolute;
+}
+td.today.day {
+    border-bottom: 2px solid #0e78fa;
+}
+.datepicker-days .table td, .table th {
+    padding: .3rem;
+    text-align: center;
+}
+td.active.day {
+    border-bottom: 2px solid #0e98fa;
+}
+#themodal .form-group {
+    display: flex;
+}
+.collapsable-dates {
+  position: relative;
+  height: 29px;
+  overflow: hidden;
+  transition: all ease-in 1.8s;
+  background: #fff;
+  padding: 0 8px;
+}
+.collapsable-dates.uncolapse{
+  height: auto;
+}
+.uncolapser {
+  position: absolute;
+  top: 10px;
+  right: -1px;
+  color: #fdd50b;
+  cursor: pointer;
+  background: #695803;
+  line-height: 1;
+  padding: 0;
+}
+.uncolapser u {
+  position: absolute;
+  right: 16px;
+  top: 0;
+  background: red;
+  border-radius: 50%;
+  color: #fff;
+  font-size: xx-small;
+  line-height: 1;
+  padding: 4px;
+  text-decoration: none;
+}
+/*autocompletion*/
+
+#autocompletes {
+    list-style: none;
+    background: #fff;
+    border: 1px solid #1a3d82;
+    border-top: navajowhite;
+    margin-top: -0.6px;
+    padding: 0;
+    margin: 0;
+    max-height: 150px;
+    overflow: auto;
+}
+#autocompletes li {
+    padding: 6px 0;
+    line-height: 1.5;
+    cursor: pointer;
+    padding: 5px 6px;
+}
+#autocompletes li:hover {
+    background-color: #dedede;
+}
+.close-autocomplete {
+    color: #ffffff;
+    background: #d00f0f;
+    position: absolute;
+    right: 19px;
+    padding: 0px 8px;
+    border-radius: 0;
+    font-size: small;
+    line-height: 1.8;
+    cursor: pointer;
+}
+/*pages aides*/
+.faq_groups{
+    border: 2px solid #a7a7a7;
+    border-radius: 6px;
+    background: #f3f3f3;
+}
+.ui-accordion .ui-accordion-header {
+    display: block;
+    cursor: pointer;
+    position: relative;
+    margin: 2px 0 0 0;
+    padding: 0.6rem 0.6rem 0.6rem 0.7rem;
+    font-size: 1rem;
+    border-radius: 0;
+}
+input.faq-panel-title, input.faq-panel-title:focus {
+    border-radius: 0;
+    border: transparent;
+    background: #0e7cfa !important;
+    color: #fff !important;
+}
+.faqg-title, .faqg-title-input {
+    position: absolute;
+    width: 100%;
+    left: -109%;
+    transition: all 0.8s ease-in;
+}
+.faqg-title.active, .faqg-title-input.active {
+    left: initial;
+}
+.faqg-title-input input {
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    font-size: 1.2rem;
+    line-height: 1;
+    padding: 0;
+    color: #000000;
 }

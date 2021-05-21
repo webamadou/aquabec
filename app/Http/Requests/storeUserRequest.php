@@ -28,6 +28,7 @@ class storeUserRequest extends FormRequest
             "prenom"        => "nullable",
             "name"          => "required",
             "email"         => "required|email|unique:users",
+            "username"      => "required|unique:users",
             "age_group"     => "nullable",
             "gender"        => "nullable",
             "num_civique"   => "nullable",
@@ -46,7 +47,8 @@ class storeUserRequest extends FormRequest
         return [
             'name.required'     => "Veuillez renseigner le nom s'il vous plait.",
             'email.email'       => "Veuillez rensigner une adresse e-mail correcte.",
-            'email.unique'      => "Cette adresse e-mail n'est pas autorisée"
+            'email.unique'      => "Cette adresse e-mail n'est pas autorisée",
+            'username.unique'      => "Ce nom d'utilisateur n'est pas disponible."
         ];
     }
 }

@@ -6,9 +6,26 @@
 @section('content')
     <form class="uk-child-width-1-1 uk-grid-small" uk-grid method="POST" action="{{ route('register') }}">
         @csrf
+        <div>
+            <div class="uk-form-group">
+                <label for="email" class="uk-form-label"> Nom d'utilisateur (<small>obligatoire</small>)</label>
+                <div class="uk-position-relative w-100">
+                    <span class="uk-form-icon">
+                        <i class="icon-feather-smiley"></i>
+                    </span>
+                    <input id="username" type="text" name="username" class="uk-input @error('username') is-invalid @enderror" placeholder="Votre nom d'utilisateur" value="{{ old('username') }}" required autocomplete="username">
+                </div>
+                @error('email')
+                    <span class="text-danger" role="alert">
+                        {{ $message }}
+                    </span>
+                @enderror
+            </div>
+        </div>
+        <hr>
         <div class="uk-width-1-2@s">
             <div class="uk-form-group">
-                <label for="last-name" class="uk-form-label"> Nom</label>
+                <label for="last-name" class="uk-form-label"> Nom (<small>obligatoire</small>)</label>
                 <div class="uk-position-relative w-100">
                     <span class="uk-form-icon">
                         <i class="icon-feather-user"></i>
@@ -40,7 +57,7 @@
         </div>
         <div>
             <div class="uk-form-group">
-                <label for="email" class="uk-form-label"> Adresse Email</label>
+                <label for="email" class="uk-form-label"> Adresse Email (<small>obligatoire</small>)</label>
                 <div class="uk-position-relative w-100">
                     <span class="uk-form-icon">
                         <i class="icon-feather-mail"></i>
@@ -56,7 +73,7 @@
         </div>
         <div class="uk-width-1-2@s">
             <div class="uk-form-group">
-                <label class="uk-form-label"> Mot de passe</label>
+                <label class="uk-form-label"> Mot de passe (<small>obligatoire</small>) </label>
                 <div class="uk-position-relative w-100">
                     <span class="uk-form-icon">
                         <i class="icon-feather-lock"></i>
@@ -72,34 +89,13 @@
         </div>
         <div class="uk-width-1-2@s">
             <div class="uk-form-group">
-                <label for="password-confirm" class="uk-form-label"> Confirmez</label>
+                <label for="password-confirm" class="uk-form-label"> Confirmez <br>(<small>obligatoire</small>)</label>
                 <div class="uk-position-relative w-100">
                     <span class="uk-form-icon">
                         <i class="icon-feather-lock"></i>
                     </span>
                     <input id="password-confirm" type="password" name="password_confirmation" class="uk-input" placeholder="Confirmation du mot de passe">
                 </div>
-            </div>
-        </div>
-        <div>
-            <div class="uk-form-group">
-                <label for="email" class="uk-form-label"> Type de profil</label>
-                <div class="uk-position-relative w-100">
-                    <span class="uk-form-icon">
-                        <i class="fas fa-user-tag"></i>
-                    </span>
-                    <input id="role" type="hidden" name="role" value="{{ old('role',1) }}"><!-- 
-                    <select id="role" name="role" class="uk-input @error('role') is-invalid @enderror" placeholder="Choisissez un type de profil" value="{{ old('role') }}" required autocomplete="role">
-                        @foreach($roles as $role)
-                            <option value="{{$role}}">{{$role}}</option>
-                        @endforeach
-                    </select> -->
-                </div>
-                @error('email')
-                    <span class="text-danger" role="alert">
-                        {{ $message }}
-                    </span>
-                @enderror
             </div>
         </div>
         <div>

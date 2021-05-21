@@ -13,7 +13,7 @@ class DashboardController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth','verified','role:super-admin|admin']);
+        $this->middleware(['auth','verified','role:super-admin|admin|banquier|banker']);
     }
 
     public function index()
@@ -24,5 +24,21 @@ class DashboardController extends Controller
         $announcements = Announcement::all();
         $current_user = auth()->user();
         return view('admin.dashboard', compact("users","organisations","events","announcements","current_user"));
+    }
+
+
+    public function autocomplete(Request $request)
+    {
+        $user = auth()->user();
+        $input = strtolower( trim( $request->get('autocomplete_user') ) );
+
+        $users = $user->recipientList()
+                        ->where('username','LIKE',"%$input%")
+                        ->orWhere('id',$input)
+                        ->orderby('username')
+                        ->select('id','name','prenom','username')
+                        ->get();
+
+        return response()->json($users);
     }
 }

@@ -61,6 +61,10 @@
             $('#caracteristics-table').DataTable({
                 processing: true,
                 serverSide: true,
+                dom: 'Bfrliptip',
+                buttons: [
+                    'csv', 'excel', 'pdf'
+                ],
                 ajax: '{{ url('admin/settings/get-cateristics-data') }}',
                 columns: [
                     { data: null, name: 'name',

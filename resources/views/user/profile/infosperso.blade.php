@@ -11,12 +11,12 @@
                 <img src="{{asset('dist/img/avatar5.png')}}" alt="" class="rounded-circle" width="50">
             </div>
             <div class="col-11"> 
-                <h2 class="my-0">{{$user->prenom}} {{$user->name}}</h2>
+                <h2 class="my-0">{{$user->username}}</h2>
                 <div><span class="my-0">{{$user->email}}</span></div>
                 @foreach(@$user->roles as $role)
                     <span class="badge bg-info">{{$role->name}}</span> 
                 @endforeach
-                <small>Compte crée {{$user->created_at}}</small>
+                <br><small>Compte crée {{$user->created_at}}</small>
             </div>
         </div>
         <nav class="col-12">
@@ -24,7 +24,7 @@
                 <a class="nav-link {{@$default_tab=='account'?'active':''}}" id="nav-account-tab" data-bs-toggle="tab" href="#nav-account" role="tab" aria-controls="nav-account" aria-selected="true"><i class="fa fa-cogs"></i> Mon Compte</a>
                 <!-- <a class="nav-link {{@$default_tab=='events'?'active':''}}" id="nav-events-tab" data-bs-toggle="tab" href="#nav-events" role="tab" aria-controls="nav-events" aria-selected="false"><i class="fa fa-list"></i> Mes Événements</a> -->
                 <a class="nav-link {{@$default_tab=='wallet'?'active':''}}" id="nav-wallet-tab" data-bs-toggle="tab" href="#nav-wallet" role="tab" aria-controls="nav-wallet" aria-selected="false"><i class="fa fa-wallet"></i> Mon portefeuille </a>
-                <a class="nav-link {{@$default_tab=='transactions'?'active':''}}" id="nav-transactions-tab" data-bs-toggle="tab" href="#nav-transactions" role="tab" aria-controls="nav-transactions" aria-selected="false"><i class="fa fa-list"></i> Mes Transactions</a>
+                <a class="nav-link {{@$default_tab=='transactions'?'active':''}}" id="nav-transactions-tab" data-bs-toggle="tab" href="#nav-transactions" role="tab" aria-controls="nav-transactions" aria-selected="false"><i class="fa fa-list"></i> Mes transferts</a>
                 <a class="nav-link {{@$default_tab=='infos-perso'?'active':''}}" id="nav-infos-perso-tab" data-bs-toggle="tab" href="#nav-infos-perso" role="tab" aria-controls="nav-infos-perso" aria-selected="false"><i class="fa fa-user"></i> Informations Personelles</a>
                 <a class="nav-link {{@$default_tab=='security'?'active':''}}" id="nav-security-tab" data-bs-toggle="tab" href="#nav-security" role="tab" aria-controls="nav-security" aria-selected="false"><i class="fa fa-user-lock"></i> Sécurité </a>
             </div>

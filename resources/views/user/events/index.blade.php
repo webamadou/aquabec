@@ -1,6 +1,6 @@
 @extends('layouts.back.user')
 
-@section('title','Mes évènements')
+@section('title','Mes événements')
 
 @section('content')
 
@@ -8,7 +8,7 @@
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="card-title font-weight-bold">Liste d'évènements</h2>
+                    <h2 class="card-title font-weight-bold">Liste d'événements</h2>
                     <div class="card-tools">
                         <a href="{{ route('user.events.create') }}" class="btn btn-primary btn-sm">
                             <i class="mr-2 fa fa-plus-circle"></i>
@@ -45,6 +45,10 @@
             $('#events-table').DataTable({
                 processing: true,
                 serverSide: true,
+                dom: 'Bfrliptip',
+                buttons: [
+                    'csv', 'excel', 'pdf'
+                ],
                 ajax: '{{ url('get-events-data') }}',
                 columns: [
                     { data: 'image', name: 'image' },

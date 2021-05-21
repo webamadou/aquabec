@@ -1,6 +1,7 @@
 @extends('layouts.back.admin')
 
-@section('title','Historique des transferts de la monnaie '.$currency->name)
+@section('title','Historique des transferts de la monnaie '.@$currency->name)
+@section('page_title','Historique des transferts de la monnaie '.@$currency->name)
 
 @inject('credit', 'App\Models\Credit')
 @section('content')
@@ -46,6 +47,10 @@
             $('#credits-table').DataTable({
                 processing: true,
                 serverSide: true,
+                dom: 'Bfrliptip',
+                buttons: [
+                    'csv', 'excel', 'pdf'
+                ],
                 ajax: '{{ url("admin/get-currency-logs/".$currency->id) }}',
                 columns: [
                     { data: null, name: 'sent_by',

@@ -16,14 +16,24 @@
                     </div>
                 </div>
                 <div class="card-body">
+                    <div class="form-group">
+                        <label><strong>Regions :</strong></label>
+                        <select id='filter_region_id' class="form-control" style="width: 200px">
+                            <option value="">--Filtrer par region--</option>
+                            @foreach(@$regions as $key => $value)
+                                <option value="{{$key}}">{{$value}}</option>
+                            @endforeach
+                        </select>
+                    </div>
                     <table class="table table-success table-striped table-borderless" id="announcements-table">
                         <thead class="table-light">
                             <tr>
                                 <th>Titre</th>
                                 <th>Categorie</th>
-                                <th>Proprietaire</th>
+                                <th>Prix</th>
+                                <th>Identité</th>
                                 <th>Region et Ville</th>
-                                <th>Date d'enregistrement</th>
+                                <th>Etat Publication</th>
                             </tr>
                         </thead>
                     </table>
@@ -37,16 +47,28 @@
 
     <script defer>
         $(function() {
+            // Create our number formatter.
+            var formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            });
+
+
            $('#announcements-table').DataTable({
                 processing: true,
                 serverSide: true,
+                dom: 'Bfrliptip',
+                buttons: [
+                    'csv', 'excel', 'pdf'
+                ],
                 method:'post',
+                dom: 'Bfrliptip',
                 ajax: '{{ route("user.myAnnouncements-data") }}',
                 columns: [
                     { data: null, name: 'title',
                         render : data => {
                             const title = (data.title.length > 35) ? `${data.title.substring(0,35)}...` :data.title;
-                            return `<img src="/show/images/${data.images}" alt="{{@$announcement->title}}" style="width:50px; height: auto"><br><strong><a href="/mes_annonces/announcement/${data.slug}">${title}</a></strong>`;
+                            return `<a href="/mes_annonces/announcement/${data.slug}"><img src="/voir/images/${data.images}" alt="{{@$announcement->title}}" style="width:50px; height: auto"><br><strong>${title}</strong></a>`;
                         }
                     },
                     { data: null, name: 'category_id',
@@ -54,11 +76,17 @@
                             return `${data.category?data.category.name:""}`;
                         }
                     },
+                    { data: null, name: 'price',
+                        render : data => {
+                            const prix = data?.price_type == 1? `${formatter.format(data.price)}`:(data?.price_type == 3?"Échange":"Gratuit");
+                            return prix;
+                        }
+                    },
                     { data: null, name: 'owner',
                         render : data => {
-                            let retour = `${data.owned?data.owned.name:""}`;
+                            let retour = `${data.owned?data.owned.username:""}`;
                             if(data.owned.id !== data.posted.id)
-                                retour += `<br><strong> Postée par : ${data.posted.name}</strong>`;
+                                retour += `<br><strong> Postée par : ${data.posted.username}</strong>`;
 
                             return `${retour}`
                         }
@@ -73,29 +101,29 @@
                             let annonce_status = '';
                             switch (parseInt(data.publication_status)) {
                                 case 0:
-                                    annonce_status = `<span class="badge badge-warning">Bouillon</div>`  ;
+                                    annonce_status = `<h1 class="text-md badge badge-warning font-bold">Bouillon</h1>`;
                                     break;
                                 case 1:
-                                    annonce_status = `<span class="badge badge-success">Publiée</div>`  ;
+                                    annonce_status = `<h1 class="text-md badge badge-success font-bold">Publiée</h1>`;
                                     break;
                                 case 2:
-                                    annonce_status = `<span class="badge badge-primary">Privée</div>`  ;
+                                    annonce_status = `<h1 class="text-md badge badge-primary font-bold">Privée</h1>`;
                                     break;
                                 case 4:
-                                    annonce_status = `<span class="badge badge-danger">Suprimée</div>`  ;
+                                    annonce_status = `<h1 class="text-md badge badge-danger font-bold">Suprimée</h1>`;
                                     break;
                             
                                 default:
                                     break;
                             }
-                            return `${data.updated_at} <br> ${annonce_status}`
-                        }
+                            return parseInt(data.lock_publication) == 1 ? '<span class="badge badge-warning"><i class="fa fa-ban"></i> Publication bloquée</span>':`${annonce_status}`;
+                        }, width: '40'
                     }
                 ],
                 buttons: [
-                    'copy', 'csv', 'excel', 'pdf', 'print'
+                    'csv', 'excel', 'pdf'
                 ],
-                order: [[ 4, 'desc' ],[0,'asc']],
+                order: [[ 4, 'desc' ]],
                 pageLength: 100,
                 responsive: true,
                 "oLanguage":{
@@ -108,7 +136,7 @@
                       "sInfoPostFix":    "",
                       "sLoadingRecords": "Chargement en cours...",
                       "sZeroRecords":    "Aucun &eacute;l&eacute;ment &agrave; afficher",
-                      "sEmptyTable":     "Vous n'avez pas encore de transaction.",
+                      "sEmptyTable":     "Vous n'avez aucune annonce.",
                       "oPaginate": {
                         "sFirst":      "<| ",
                         "sPrevious":   "Prec",

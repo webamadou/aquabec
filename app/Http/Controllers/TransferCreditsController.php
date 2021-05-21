@@ -142,7 +142,7 @@ class TransferCreditsController extends Controller
         $currency->transfering($sender, $recipient, $data['credit_type'], $data['sent_value']);
 
         $logs = [
-            'ref' => Str::random(20),
+            'ref' => Str::random(12),
             'sent_by' => $data['send_by'],
             'sent_to' => $data['send_to'],
             'credit_id' => $data['currency_id'],
@@ -165,7 +165,10 @@ class TransferCreditsController extends Controller
 
     public function currencyLogs()
     {
-        return view('admin.credits.transferlogs');
+        $logs = CreditsTransfersLog::with('sentBy','sentTo','credit')
+                                    ->orderBy("created_at","desc")
+                                    ->get();
+        return view('admin.credits.transferlogs',compact('logs'));
     }
 
     /*
@@ -173,7 +176,7 @@ class TransferCreditsController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function currencyLogsData()
+    public function currencyLogsData(Request $request)
     {
         $logs = CreditsTransfersLog::with('sentBy','sentTo','credit')
                                     ->orderBy("created_at","desc")

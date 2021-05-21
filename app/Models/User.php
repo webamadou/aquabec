@@ -29,8 +29,8 @@ class User extends Authenticatable implements MustVerifyEmail
     //protected $guard_name = 'api';
     protected $guard_name = 'web';
 
-    protected $fillable = [ 'name', 'email', 'password','prenom','region_id','city_id','postal_code','gender','num_civique','street','age_group','mobile_phone','num_tel','godfather' ];
-    //protected $guarded = [];
+    //protected $fillable = [ 'name', 'email'.'username', 'password','prenom','region_id','city_id','postal_code','gender','num_civique','street','age_group','mobile_phone','num_tel','godfather' ];
+    protected $guarded = [];
 
     /**
      * Return the sluggable configuration array for this model.
@@ -44,7 +44,7 @@ class User extends Authenticatable implements MustVerifyEmail
                  'source'             => ['username'],
                  'separator'          => '-',
                  'unique'             => true,
-                 'onUpdate'           => true,
+                 'onUpdate'           => false,
                  'includeTrashed'     => false,
             ]
         ];
@@ -92,6 +92,14 @@ class User extends Authenticatable implements MustVerifyEmail
     public function currencies()
     {
         return $this->belongsToMany(Currency::class)->withPivot('free_currency','paid_currency')->withTimestamps();
+    }
+    /**
+     * 
+     * Setting up the relationship between users and currency. A many to many relationship
+     */
+    public function agerange()
+    {
+        return $this->belongsTo(\App\Models\AgeRange::class,'age_group','id');
     }
     /**
      * 
@@ -198,6 +206,14 @@ class User extends Authenticatable implements MustVerifyEmail
                             ->where('profile_status','<=',1);
         } elseif($this->hasAnyRole(['chef-vendeur','vendeur'])){
             $users = $this->godchildren();
+        } elseif($this->hasAnyRole(['banquier','banker'])){
+            $users = $query->whereHas("roles", function($q){
+                                         $q->where('name','super-admin')
+                                           ->orWhere('name','admin')
+                                           ->orWhere('name','banquier');
+                                        })
+                        ->where('id','!=',$this->id)
+                        ->where('profile_status','<',2) ;
         }
         else{
             $users = $query->whereHas("roles", function($q){
@@ -208,8 +224,7 @@ class User extends Authenticatable implements MustVerifyEmail
                                            ->Where('name','!=','banquier'); 
                                         })
                         ->where('id','!=',$this->id)
-                        ->where('profile_status',1)
-                        ;
+                        ->where('profile_status','<',2) ;
         }
 
         return $users;
@@ -287,19 +302,18 @@ class User extends Authenticatable implements MustVerifyEmail
     public function updateUserWallet($currency = 1, $publication_column="annoucements_price")
     {
         if($publication_column == "annoucements_price"){
-            $pivot_column = "free_currency";
-        } else {
             $pivot_column = "paid_currency";
+        } else {
+            $pivot_column = "free_currency";
             $publication_column = "events_price";
         }
-           //Get amount to pauy from user's role
+        //Get amount to pauy from user's role
         $price_to_pay = $this->roles->first()->$publication_column ;
         //Get user's currencey data
         $user_currencies = $this->setUserCurrency($currency);
         //update currency value and save
-        $user_currencies->pivot->free_currency -= $price_to_pay;
+        $user_currencies->pivot->$pivot_column -= $price_to_pay;
         return $user_currencies->pivot->save();
-        //dd($price_to_pay,$user_currencies->pivot->free_currency);
     }
     /**
      * 
@@ -330,17 +344,54 @@ class User extends Authenticatable implements MustVerifyEmail
         }
         return false;
     }
+    /**
+     * get the main role of a user excluding some roles
+     */
+    public function mainRole()
+    {
+        return $this->roles->wherenotin('name',['chef-vendeur','banquier','membre'])->first();
+    }
     
     public function userHasEnoughCredit(String $contenu_price, String $type = 'free_currency')
     {
-        $role = $this->roles->wherenotin('name',['chef-vendeur','banquier','banquier','membre'])->first();
+        //First get the user role excluding some roles
+        $role = $this->roles->wherenotin('name',['chef-vendeur','banquier','membre'])->first();
+        //Get the amount to spend from the role
         $amount_to_spend = intval($role->$contenu_price);
-        if($amount_to_spend <= intval($this->setUserCurrency(1)->pivot->$type)){
+        //Make sure currency id is set
+        if(!$role->currency_id)
+            return false;
+        //Make sure user has enough of the needed currency 
+        // dd($amount_to_spend,intval($this->setUserCurrency($role->currency_id)->pivot->$type));
+        if($amount_to_spend <= intval($this->setUserCurrency($role->currency_id)->pivot->$type)){
             return true ;
         }
 
         return false ;
     }
+    /**
+     * Each annoucement is linked to an event
+     * When saving a new annoucement we need to list the events that are not linked to any announcement
+     * This methods will help do that through a join between the announcements and events
+     */
+    public function getUnlinkedEvents()
+    {
+        return DB::table("events")
+                    ->leftjoin('announcements', 'events.id', '=', 'announcements.event_id')
+                    ->where(function($query){
+                        $query->where('events.owner',1)
+                                ->orWhere('events.posted_by',@$this->id);
+                    })
+                    ->where('announcements.event_id',NULL) ;
+
+        /* return DB::table('events')
+                    ->leftjoin('announcements', 'events.id', '=', 'announcements.event_id')
+                    ->where('events.owner',@$this->id)
+                    ->orWhere('events.posted_by',@$this->id)
+                    ->where('announcements.event_id',NULL) ; */
+                    /* ->select('events.title','events.id','announcements.event_id','events.owner') ->pluck('events.title','events.id') ;*/
+    }
+
     public function getRoleFromCurrency($currency_id)
     {
         return $this->currencies->where('id',$currency_id)->first()->roles->first();

@@ -1,6 +1,7 @@
 @extends('layouts.back.admin')
 
-@section('title','Utilisateurs ')
+@section('title','Liste des utilisateurs ')
+@section('page_title','Liste des utilisateurs ')
 
 @section('content')
 
@@ -12,11 +13,14 @@
                     <h2 class="card-title font-weight-bold">Liste des utilisateurs</h2>
                 </div>
                 <div class="card-body">
+                    @include("layouts.back.partials.users_filters")
                     <table class="table table-bordered" id="event-users-table">
                         <thead>
                         <tr>
+                            <th> - </th>
                             <th>Nom & Prénom</th>
                             <th>Adresse Email</th>
+                            <th>Fonctions</th>
                             <th>Dernière modification</th>
                             <th>Actions</th>
                         </tr>
@@ -35,20 +39,40 @@
 
     <script>
         $(function() {
-            $('#event-users-table').DataTable({
+            let table = $('#event-users-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ url('admin/get-users-data') }}',
+                dom: 'Brliptip',
+                buttons: [
+                    'csv', 'excel', 'pdf'
+                ],
+                ajax: {
+                    url: '{{ url('/admin/users') }}',
+                    data: function (d) {
+                        /* $('#filter_prenom, #filter_name, #filter_username,#filter_roles') */
+                        d.search            = $('input[type="search"]').val(),
+                        d.filter_name       = $('#filter_name').val(),
+                        d.filter_prenom     = $('#filter_prenom').val(),
+                        d.filter_username   = $('#filter_username').val(),
+                        d.filter_roles      = $('#filter_roles').val(),
+                        d.filter_id         = $('#filter_id').val(),
+                        d.region_id         = $('#filter_region_id').val(),
+                        d.updated_at        = $('#filter_updated_at').val(),
+                        d.created_at        = $('#filter_created_at').val(),
+                        d.postal_code       = $('#filter_postal_code_id').val(),
+                        d.filter_categ_id   = $('#filter_categ_id').val()
+                    }
+                },
                 columns: [
-                    { data: null, name: 'name',
-                        render: data => { return `<strong><i class="fa fa-user"></i> <a href="/admin/users/${data.slug}" class="text-link">${data.prenom?data.prenom:''} ${data.name?data.name:''}</a></strong>`; }
-                    },
+                    { data: 'id', name: 'id' },
+                    { data: 'name', name: 'name'},
                     { data: 'email', name: 'email' },
+                    { data: 'roles', name: 'roles'},
                     { data: 'updated_at', name: 'updated_at', width: '150' },
                     { data: 'action', name: 'action', orderable: false, searchable: false, width: '80' }
                 ],
-                order: [[ 0, 'asc' ]],
-                pageLength: 100,
+                order: [[ 5, 'asc' ]],
+                pageLength: 30,
                 responsive: true,
                 "oLanguage":{
                       "sProcessing":     "<i class='fa fa-2x fa-spinner fa-pulse'>",
@@ -74,14 +98,41 @@
                     }
             });
 
-            $('#modal-delete').on('show.bs.modal', function (event) {
+            /** loading filters when fields value changed **/
+            table.columns().every( function() {
+                var that = this;
+
+                $('#filter_id,#filter_prenom, #filter_name, #filter_username,#filter_roles')
+                .on('keyup change', function() {
+                    if (that.search() !== this.value) {
+                        that
+                            .search(this.value)
+                            .draw();
+                    }
+                });
+                //When the button to reset a filter is clicked
+                $('body').on('click','.reset-field', function (e) {
+                    e.preventDefault();
+                    console.log("hello");
+                    const target = $(this).data('target');
+                    $(target).val('')
+                    that.draw();
+                });
+                //When the button to erase filters is clicked
+                $('body').on('click','#reset_filter', function (e) {
+                    e.preventDefault();
+                    $('form.datatable-filter')[0].reset();
+                    that.search(this.value).draw();
+                });
+            });
+            /* $('#modal-delete').on('show.bs.modal', function (event) {
                 var button = $(event.relatedTarget) // Button that triggered the modal
                 var link = button.data('whatever') // Extract info from data-* attributes
                 // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
                 // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
                 var modal = $(this)
                 modal.find('.yes-delete-btn').attr({'href' : link})
-            })
+            }) */
         });
     </script>
 

@@ -45,7 +45,7 @@
                         <a href="{{ route('user.dashboard') }}" class="nav-link {{ side_nav_bar_menu_status('dashboard','active') }}"><i class="fa fa-user-cog"></i> Portrait</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('user.events.index') }}" class="nav-link {{ side_nav_bar_menu_status('events','active') }}"><i class="fas fa-calendar-check"></i> Mes évènements</a>
+                        <a href="{{ route('user.events.index') }}" class="nav-link {{ side_nav_bar_menu_status('events','active') }}"><i class="fas fa-calendar-check"></i> Mes événements</a>
                     </li>
                     <li class="nav-item">
                         <a href="#" class="nav-link"><i class="fa fa-bullhorn"></i> Mes annonces</a>

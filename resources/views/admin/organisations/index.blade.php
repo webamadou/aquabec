@@ -1,6 +1,7 @@
 @extends('layouts.back.admin')
 
 @section('title','Organisations')
+@section('page_title','Les organisations')
 
 @section('content')
 
@@ -59,6 +60,10 @@
             $('#event-organisations-table').DataTable({
                 processing: true,
                 serverSide: true,
+                dom: 'Bfrliptip',
+                buttons: [
+                    'csv', 'excel', 'pdf'
+                ],
                 ajax: '{{ url('admin/get-organisations-data') }}',
                 columns: [
                     { data: 'name', name: 'name' },

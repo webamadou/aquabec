@@ -162,7 +162,7 @@
                             @endrole
                             <hr>
                             @hasanyrole('vendeur|super-admin|annonceur')
-                            <a class="dropdown-item" href="{{route('user.my_events')}}"><i class="fas fa-calendar-check"></i>  Mes évènements</a>
+                            <a class="dropdown-item" href="{{route('user.my_events')}}"><i class="fas fa-calendar-check"></i>  Mes événements</a>
                             <a class="dropdown-item" href="{{route('user.my_announcements')}}"><i class="fa fa-bullhorn"></i> Mes Annonces</a>
                             @endrole
                             <hr>
