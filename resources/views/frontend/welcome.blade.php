@@ -261,6 +261,6 @@
         </div>
         <!-- Container End -->
     </section>
-    Facts End -->
+    <!-- Facts End -->
 
 @stop
