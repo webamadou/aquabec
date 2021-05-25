@@ -34,3 +34,4 @@ yarn-error.log
 /config/mail.php
 php.ini
 test_mail.php
+index.html
