@@ -25,9 +25,9 @@ use App\Models\Faq;
 class UpdateDBController extends Controller
 {
     public function index() {
-        /* ================= ADABT USERS TABLE =================== *
+        /* ================= ADABT USERS TABLE =================== */
         // $request_fromorigin = DB::connection('mysql2')->table('comptes')->limit(450)->get();
-        // $request_fromorigin = DB::connection('mysql2')->table('comptes')->limit(450)->get();
+        $request_fromorigin = DB::connection('mysql2')->table('comptes')->limit(450)->get();
         // $request_fromorigin = DB::connection('mysql2')->table('comptes')->skip(450)->take(450)->get();
         // $request_fromorigin = DB::connection('mysql2')->table('comptes')->skip(900)->take(100)->get();
         ####Updateing users from comptes
@@ -312,7 +312,7 @@ class UpdateDBController extends Controller
             }
         }
         //*/
-        /* ================= ADABT PAGES TABLE =================== */
+        /* ================= ADABT PAGES TABLE =================== *
         // $pages = DB::connection('mysql2')->table('PH_pages')->orderby('id', 'asc')->limit(500)->get();
         // $pages = DB::connection('mysql2')->table('PH_pages')->orderby('id', 'asc')->skip(500)->take(500)->get();
         $pages = DB::connection('mysql2')->table('PH_pages')->orderby('id', 'asc')->skip(1000)->take(500)->get();

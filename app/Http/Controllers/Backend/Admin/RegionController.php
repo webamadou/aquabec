@@ -94,9 +94,10 @@ class RegionController extends Controller
         $form = $this->getForm();
         $data = $form->getFieldValues();
         $form->redirectIfNotValid();
-
+        
         $slug = Str::slug($form->getFieldValues()['name']);
         $data = array_merge($data,compact('slug'));
+        // dd($data);
 
         Region::create($data);
 

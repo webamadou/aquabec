@@ -16,9 +16,7 @@ class AddCreditIdToCreditsTransfersLogs extends Migration
     {
         Schema::table($this->table, function (Blueprint $table) {
             if (!Schema::hasColumn($this->table, 'credit_id')){
-                Schema::table($this->table, function (Blueprint $table) {
-                    $table->integer("credit_id")->after('sent_to')->unsignedInteger();
-                });
+                $table->integer("credit_id")->after('sent_to')->unsignedInteger()->nullable(true);
             }
         });
     }
@@ -32,9 +30,7 @@ class AddCreditIdToCreditsTransfersLogs extends Migration
     {
         Schema::table($this->table, function (Blueprint $table) {
             if (Schema::hasColumn($this->table, 'credit_id')) {
-                Schema::table($this->table, function (Blueprint $table) {
-                    $table->dropColumn("credit_id");
-                });
+                $table->dropColumn("credit_id");
             }
         });
     }

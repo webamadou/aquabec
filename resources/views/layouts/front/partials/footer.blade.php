@@ -7,7 +7,7 @@
                         <img src="{{ asset('images/logo/logo.png') }}" alt="footer_logo" class="img-fluid">
                     </a>
                     <p class="footer-info-text">
-                        Lorem ipsum dolor sit amet, consec tetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                        L'AGENDA DU QUÉBEC VOUS OUVRE LES PORTES VERS L'AVENTURE!
                     </p>
                     <!-- End Social link -->
                 </div>
@@ -19,21 +19,21 @@
                     <div class="col-md-12 col-lg-6">
                         <div class="footer-widget footer-left-widget">
                             <div class="section-heading">
-                                <h3>Useful Links</h3>
+                                <h3>Liens utiles</h3>
                                 <span class="animate-border border-black"></span>
                             </div>
                             <ul>
-                                <li><a href="#">About us</a></li>
-                                <li><a href="#">Services</a></li>
-                                <li><a href="#">Projects</a></li>
-                                <li><a href="#">Our Team</a></li>
+                                <li><a href="{{route('page','a-propos-1')}}">A propos</a></li>
+                                <li><a href="{{route('page','comment-ca-marche')}}">Services</a></li>
+                                <li><a href="{{route('contact')}}">Contactez-Nous</a></li>
+                                <!-- <li><a href="#">FAQ</a></li> -->
                             </ul>
-                            <ul>
+                            <!-- <ul>
                                 <li><a href="#">Contact us</a></li>
                                 <li><a href="#">Blog</a></li>
                                 <li><a href="#">Testimonials</a></li>
                                 <li><a href="#">Faq</a></li>
-                            </ul>
+                            </ul> -->
                         </div>
                         <!-- End Footer Widget -->
                     </div>
@@ -44,11 +44,11 @@
                                 <h3>Subscribe</h3>
                                 <span class="animate-border border-black"></span>
                             </div>
-                            <p>Don’t miss to subscribe to our new feeds, kindly fill the form below.</p>
+                            <p>Ne manquez pas de vous abonner à notre neswsletter, veuillez remplir le formulaire ci-dessous.</p>
                             <form action="#">
                                 <div class="form-row">
                                     <div class="col tw-footer-form">
-                                        <input type="email" class="form-control" placeholder="Email Address">
+                                        <input type="email" class="form-control" placeholder="Adresse courriel">
                                         <button type="submit"><i class="fa fa-send"></i></button>
                                     </div>
                                 </div>
@@ -72,16 +72,16 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <span>Copyright &copy; 2021, All Right Reserved L'agenda du Quebec</span>
+                    <span>Copyright &copy; {{date('Y')}}, Tous droits réservés L'agenda du Québec</span>
                 </div>
                 <!-- End Col -->
                 <div class="col-md-6">
                     <div class="copyright-menu">
                         <ul>
-                            <li><a href="#">Home</a></li>
+                            <!-- <li><a href="#">Home</a></li>
                             <li><a href="#">Terms</a></li>
                             <li><a href="#">Privacy Policy</a></li>
-                            <li><a href="#">Contact</a></li>
+                            <li><a href="#">Contact</a></li> -->
                         </ul>
                     </div>
                 </div>

@@ -11,6 +11,18 @@
 /.well-known
 /.well-known/*
 /cgi-bin
+/css
+/dist
+/fonts
+/images
+/js
+/webfonts
+.htaccess
+favicon.ico
+index.php
+mix-manifest.json
+robots.txt
+web.config
 .env
 .env.backup
 .phpunit.result.cache
@@ -22,3 +34,4 @@ yarn-error.log
 /config/mail.php
 php.ini
 test_mail.php
+index.html

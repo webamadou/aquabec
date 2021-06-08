@@ -21,6 +21,7 @@ class WelcomeController extends Controller
      */
     public function welcomePage()
     {
+        return true;
 		$user = Auth::user();
 		/* $events = Event::where('publication_status','1')
 							->orderby('published_at','desc')

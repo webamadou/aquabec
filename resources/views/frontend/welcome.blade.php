@@ -185,7 +185,7 @@
     <!-- Intro section End -->
 
 
-    <section id="tw-facts" class="tw-facts">
+    <section id="tw-facts" class="tw-facts" style="display: none">
         <div class="facts-bg-pattern d-none d-lg-block">
             <img class="wow fadeInLeft" src="images/funfacts/arrow_left.png" alt="arrwo_left">
             <img class="wow fadeInRight" src="images/funfacts/arrow_right.png" alt="arrow_right">
@@ -261,6 +261,6 @@
         </div>
         <!-- Container End -->
     </section>
-    <!-- Facts End -->
+    Facts End -->
 
 @stop

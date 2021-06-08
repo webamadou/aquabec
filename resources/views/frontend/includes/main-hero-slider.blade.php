@@ -15,9 +15,10 @@
                     <!-- Row End -->
                     <div class="row justify-content-center text-center">
                         <div class="col-md-10">
-                            <h1 class="tw-slider-subtitle">Titre Slider 1</h1>
-                            <h4 class="tw-slider-title">Un peu de text de description</h4>
-                            <a href="#" class="btn btn-primary">Boutton d'action</a>
+                            <h1 class="tw-slider-subtitle">Nouveaux postes de télétravail, autonome,</h1>
+                            <strong class="tw-slider-title">sans payer de franchise (sans investir),</strong>
+                            <strong class="tw-slider-subtitle"> crée pour jeunes, anciens jeunes, handicapés, retraités, des personnes en convalescence, policiers, curés, députés.</strong>
+                            <!-- <a href="#" class="btn btn-primary">Boutton d'action</a> -->
                         </div>
                         <!-- End Col -->
                     </div>
@@ -38,11 +39,11 @@
                 <div class="container">
                     <div class="row justify-content-center text-center">
                         <div class="col-md-10">
-                            <h1 class="tw-slider-subtitle">Titre Slider 1</h1>
-                            <h4 class="tw-slider-title">Un peu de text de description
-                                <span>ici</span>
+                            <h1 class="tw-slider-title">Un site avec 101 raisons,</h1>
+                            <h4 class="tw-slider-subtitle"> pour toutes situations, permettant à tous les intéressés de faire de l’argent, en aidant aux activités.
+                            <!-- <span>ici</span> -->
                             </h4>
-                            <a href="#" class="btn btn-primary">Boutton d'action</a>
+                            <!-- <a href="#" class="btn btn-primary">Boutton d'action</a> -->
                         </div>
                         <!-- End Col -->
                     </div>
@@ -68,11 +69,10 @@
                 <div class="container">
                     <div class="row justify-content-center text-center">
                         <div class="col-md-10">
-                            <h1 class="tw-slider-subtitle">Titre Slider 1</h1>
-                            <h4 class="tw-slider-title">Un peu de text de description
-                                <span>ici</span>
+                            <h1 class="tw-slider-title">Vous avez 14 ans, ou même, vous dépassez 94 ans,</h1>
+                            <h4 class="tw-slider-subtitle"> nous avons un poste pour vous. Environ 75% c’est du télétravail,  et 25% des ventes.
                             </h4>
-                            <a href="#" class="btn btn-primary">Boutton d'action</a>
+                            <!-- <a href="#" class="btn btn-primary">Boutton d'action</a> -->
                         </div>
                         <!-- End Col -->
                     </div>
