@@ -17,19 +17,43 @@
                 <!-- Col end -->
             </div>
             <!-- Row End -->
-            <div class="row wow" data-wow-duration="1s" data-wow-delay=".2s">
-                <div class="col-md-3 d-sm-none d-md-block filter-side-bar">
-                    <form action="" class="row" id="filter_form_events">
-                        <div class="col-12 text-center text-lg-center text-info" id="filter-loading" style="display:none"><i class="fa fa-spin fa-spinner"></i></div>
-                        <input name="region_id" id="region_id" class="form-control" type="hidden" value="{{ $region->id }}">
-                        <div class="col-sm-12">
-                            <label for="city_id">Villes</label>
-                            <select name="city_id" id="city_id" class="form-control">
-                                <option value=""> --- </option>
-                                @foreach($cities as $key => $value)
-                                    <option value="{{$key}}">{{$value}}</option>
-                                @endforeach
-                            </select>
+            <div class="row wow fadeInUp" data-wow-duration="1s" data-wow-delay=".2s">
+                @forelse($events as $key => $event)
+                    <div class="col-lg-4 col-md-12">
+                        <div class="tw-latest-post">
+                            <div class="latest-post-media text-center">
+                                <img src="{{ route('show.image',$event->images) }}" alt="{{$event->title}}">
+                            </div>
+                            <!-- End Latest Post Media -->
+                            <div class="post-body">
+                                <div class="post-item-date">
+                                    <div class="post-date {{class_basename($event) === 'Event'? 'event':''}}">
+                                        <span class="date">{{date('d', strtotime($event->published_at))}}</span>
+                                        <span class="month">{{@$month_array[intval(date('m', strtotime($event->published_at)))] }}</span>
+                                    </div>
+                                </div>
+                                <!-- End Post Item Date -->
+                                <div class="post-info">
+                                    <div class="post-meta">
+                                        <span class="post-author">
+                                            Posté par <a href="{{route('user.show_profile',$event->owned->id)}}">Admin</a>
+                                        </span>
+                                    </div>
+                                    <!-- End Post Meta -->
+                                    <h3 class="post-title">
+                                        <a href="{{route('page_event',$event->slug)}}">{{$event->title}}</a>
+                                    </h3>
+                                    <div class="post-emplacements-meta">
+                                        <div class="post-emplacements">
+                                            <span class="redion">{{@$event->city->name}}</span>
+                                            <span class="city">{{@$event->region->name}}</span>
+                                        </div>
+                                    </div>
+                                    <!-- End Entry Content -->
+                                </div>
+                                <!-- End Post info -->
+                            </div>
+                            <!-- End Post Body -->
                         </div>
                         <div class="col-sm-12">
                             <label for="postal_code_id">Code postal</label>

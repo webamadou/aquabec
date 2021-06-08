@@ -15,7 +15,7 @@ class AddFieldsToAnnoucementTable extends Migration
     public function up()
     {
         Schema::table($this->table, function (Blueprint $table) {
-            $table->string('title')->after('id')->nullable(false);
+            $table->string('title')->after('id')->nullable(true);
             $table->text('description')->after('title')->nullable(true);
             $table->mediumText('excerpt')->after('description')->nullable(true);
             $table->string('slug')->after('excerpt')->nullable(true);
@@ -26,7 +26,7 @@ class AddFieldsToAnnoucementTable extends Migration
             $table->foreignId('region_id')->after('posted_by')->nullable(true);
             $table->foreignId('city_id')->after('posted_by')->nullable(true);
             $table->integer('publication_status')->after('city_id')->nullable(true)->default(0);
-            $table->foreignId('owner')->after('publication_status')->nullable(false)->comment("If the vendeur save an anoucement for a teamate the owner value will be the id of the teamate");
+            $table->foreignId('owner')->after('publication_status')->nullable(false)->default(0)->comment("If the vendeur save an anoucement for a teamate the owner value will be the id of the teamate");
             $table->dateTime('published_at')->after('owner')->nullable(true);
             $table->mediumText('dates')->after('published_at')->nullable(true);
             $table->foreignId('validated_by')->after('dates')->nullable(true);

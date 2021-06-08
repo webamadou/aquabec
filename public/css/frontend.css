@@ -13209,7 +13209,7 @@ img.mfp-img {
     right: 0;
     width: auto;
     height: auto;
-    z-index: -1;
+    /*z-index: -1;*/
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
     background: #444;
 }
@@ -14338,13 +14338,22 @@ ul.tw-dropdown-menu li.active a {
 .tw-mega-menu p {
     color: #757575;
 }
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+.tw-mega-menu:after {
+=======
+li.dropdown:hover ul.tw-dropdown-menu, li.dropdown:hover .tw-mega-menu {
+=======
 li.dropdown:hover ul.tw-dropdown-menu,
 li.dropdown:hover .tw-mega-menu {
+>>>>>>> b2300768a80f34b912941040bb9b64487c472f73
     display: block;
     position: absolute;
     z-index: 999;
 }
 /*.tw-mega-menu:after {
+>>>>>>> 3db49959cde7f96691c346280327b7f47befb285
   position: absolute;
   right: -50px;
   content: "";
@@ -14355,7 +14364,7 @@ li.dropdown:hover .tw-mega-menu {
   background-repeat: no-repeat;
   background-position: center right;
   z-index: -1;
-}*/
+}
 
 .tw-megamenu-title h3 {
     font-size: 20px;
@@ -14710,11 +14719,19 @@ li.dropdown:hover .tw-mega-menu {
 
       ===========================*/
 .tw-hero-area {
+<<<<<<< HEAD
+  text-align: center;
+  padding: 100px 0 0;
+  position: relative;
+  /*z-index: -1;*/
+  background: #F7F9F8;
+=======
     text-align: center;
     padding: 100px 0 0;
     position: relative;
     z-index: -1;
     background: #f7f9f8;
+>>>>>>> b2300768a80f34b912941040bb9b64487c472f73
 }
 
 .tw-hero-area:after {
@@ -15004,6 +15021,19 @@ li.dropdown:hover .tw-mega-menu {
 }
 
 .tw-features-area:after {
+<<<<<<< HEAD
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: bottom center;
+  content: "";
+  background-image: url("../images/features/wave.png");
+  /*z-index: -1;*/
+=======
     position: absolute;
     bottom: 0;
     left: 0;
@@ -15015,6 +15045,7 @@ li.dropdown:hover .tw-mega-menu {
     content: "";
     background-image: url("../images/features/wave.png");
     z-index: -1;
+>>>>>>> b2300768a80f34b912941040bb9b64487c472f73
 }
 
 .features-text {
@@ -15327,12 +15358,21 @@ input.round-btn {
 }
 
 .facts-bg-pattern img {
+<<<<<<< HEAD
+  position: absolute;
+  left: 17px;
+  bottom: 47px;
+  background-position: left center;
+  background-repeat: no-repeat;
+  /*z-index: -1;*/
+=======
     position: absolute;
     left: 17px;
     bottom: 47px;
     background-position: left center;
     background-repeat: no-repeat;
     z-index: -1;
+>>>>>>> b2300768a80f34b912941040bb9b64487c472f73
 }
 
 .facts-bg-pattern img:nth-child(2) {
@@ -15489,6 +15529,16 @@ input.round-btn {
 }
 
 .work-bg-pattern {
+<<<<<<< HEAD
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  text-align: center;
+  /*z-index: -1;*/
+  margin-top: -50px;
+  background-position: left center;
+=======
     position: absolute;
     left: 0;
     top: 50%;
@@ -15497,6 +15547,7 @@ input.round-btn {
     z-index: -1;
     margin-top: -50px;
     background-position: left center;
+>>>>>>> b2300768a80f34b912941040bb9b64487c472f73
 }
 
 .tw-work-process {
@@ -18045,12 +18096,21 @@ ul.comments-reply .comment-body {
 }
 
 .tw-web-analytics-content i {
+<<<<<<< HEAD
+  position: absolute;
+  top: -50px;
+  left: 0;
+  font-size: 100px;
+  /*z-index: -1;*/
+  color: #F4F4F4;
+=======
     position: absolute;
     top: -50px;
     left: 0;
     font-size: 100px;
     z-index: -1;
     color: #f4f4f4;
+>>>>>>> b2300768a80f34b912941040bb9b64487c472f73
 }
 
 /* Chart */
@@ -18119,9 +18179,15 @@ ul.comments-reply .comment-body {
 }
 
 .call-action-bg-pattern img {
+<<<<<<< HEAD
+  position: absolute;
+  left: 0;
+  /*z-index: -1;*/
+=======
     position: absolute;
     left: 0;
     z-index: -1;
+>>>>>>> b2300768a80f34b912941040bb9b64487c472f73
 }
 
 .call-action-bg-pattern img:nth-child(1) {
@@ -18458,9 +18524,15 @@ ul.comments-reply .comment-body {
 }
 
 .result-bg img {
+<<<<<<< HEAD
+  position: absolute;
+  left: -105%;
+  /*z-index: -1;*/
+=======
     position: absolute;
     left: -105%;
     z-index: -1;
+>>>>>>> b2300768a80f34b912941040bb9b64487c472f73
 }
 
 /* Traffic Result */
@@ -18966,6 +19038,18 @@ ul.comments-reply .comment-body {
 }
 
 .tw-slider-bg-dark:after {
+<<<<<<< HEAD
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  content: "";
+  /*z-index: -1;*/
+  background: url("../images/slider/slider-banner-2.jpg");
+  background-size: cover;
+  background-position: right center;
+=======
     position: absolute;
     top: 0;
     left: 0;
@@ -18976,6 +19060,7 @@ ul.comments-reply .comment-body {
     background: url("../images/slider/slider-banner-2.jpg");
     background-size: cover;
     background-position: right center;
+>>>>>>> b2300768a80f34b912941040bb9b64487c472f73
 }
 
 .slider-bg-dark,
@@ -19302,6 +19387,18 @@ ul.comments-reply .comment-body {
 }
 
 .tw-hero:before {
+<<<<<<< HEAD
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  content: '';
+  background-image: -moz-linear-gradient(90deg, #bfceff 0%, #e1e8ff 80%, #f9faff 100%);
+  background-image: -webkit-linear-gradient(90deg, #bfceff 0%, #e1e8ff 80%, #f9faff 100%);
+  background-image: -ms-linear-gradient(90deg, #bfceff 0%, #e1e8ff 80%, #f9faff 100%);
+  /*z-index: -1;*/
+=======
     position: absolute;
     left: 0;
     top: 0;
@@ -19327,6 +19424,7 @@ ul.comments-reply .comment-body {
         #f9faff 100%
     );
     z-index: -1;
+>>>>>>> b2300768a80f34b912941040bb9b64487c472f73
 }
 
 /*-------------------------------
@@ -19337,6 +19435,19 @@ ul.comments-reply .comment-body {
 }
 
 .tw-featured:after {
+<<<<<<< HEAD
+  background: url(../images/features/wave_color.png);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: bottom center;
+  content: "";
+  /*z-index: -1;*/
+=======
     background: url(../images/features/wave_color.png);
     position: absolute;
     bottom: 0;
@@ -19348,6 +19459,7 @@ ul.comments-reply .comment-body {
     background-position: bottom center;
     content: "";
     z-index: -1;
+>>>>>>> b2300768a80f34b912941040bb9b64487c472f73
 }
 
 .tw-featured .features-box {
