@@ -15,10 +15,12 @@ use App\Models\Currency;
 use App\Models\CreditsTransfersLog;
 use App\Models\Announcement;
 
-//class User extends Authenticatable
+//class User extends Authenticate
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasFactory, Notifiable, HasRoles;
+    use HasFactory;
+    use Notifiable;
+    use HasRoles;
     use Sluggable;
 
     /**
@@ -37,7 +39,7 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @return array
     */
-    public function sluggable()
+    public function sluggable(): array
     {
         return [
             'slug' => [
@@ -69,7 +71,7 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * 
+     *
      * Setting up the relationship between user and region. Each user has a region
      */
     public function region()
@@ -78,7 +80,7 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * 
+     *
      * Setting up the relationship between user and city. Each user has a city
      */
     public function city()
@@ -86,7 +88,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsTo(\App\Models\City::class);
     }
     /**
-     * 
+     *
      * Setting up the relationship between users and currency. A many to many relationship
      */
     public function currencies()
@@ -94,7 +96,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsToMany(Currency::class)->withPivot('free_currency','paid_currency')->withTimestamps();
     }
     /**
-     * 
+     *
      * Setting up the relationship between users and currency. A many to many relationship
      */
     public function agerange()
@@ -102,7 +104,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsTo(\App\Models\AgeRange::class,'age_group','id');
     }
     /**
-     * 
+     *
      * the relation betwin a user and the one that created the account
      */
     public function thegodfather()
@@ -111,7 +113,7 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * 
+     *
      * the relation betwin a user and all the accounts he created
      */
     public function godchildren()
@@ -155,27 +157,27 @@ class User extends Authenticatable implements MustVerifyEmail
 
         return $announcements = \App\Models\Event::where('owner',$this->id);
     }
-    
+
     /**
-     * 
+     *
      * Get users with role Banquier
      */
     public function scopeBankers($query)
     {
         return $query->whereHas("roles", function($q){ $q->where("name", "Banquier"); } );
     }
-    
+
     /**
-     * 
+     *
      * Get users with role admin or super-admin
      */
     public function scopeAdmins($query)
     {
         return $query->whereHas("roles", function($q){ $q->where("name", "super-admin")->orWhere('name','admin'); } );
     }
- 
+
     /**
-     * 
+     *
      * Get users with role chef vendor or vendor
      */
     public function scopeVendors($query)
@@ -183,7 +185,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return $query->whereHas("roles", function($q){ $q->where('name','chef-vendeur')->orWhere('name','vendeur'); } );
     }
     /**
-     * 
+     *
      * Get users with role vendor or higher
      */
     public function scopeVendorsHigher($query)
@@ -194,10 +196,10 @@ class User extends Authenticatable implements MustVerifyEmail
                                                          ->orWhere('name','chef vendeur')
                                                          ->orWhere('name','vendeur'); } );
     }
-        
+
     /**
-     * 
-     * Each role has a different list of users it can send currency to 
+     *
+     * Each role has a different list of users it can send currency to
      */
     public function scopeRecipientList($query)
     {
@@ -221,7 +223,7 @@ class User extends Authenticatable implements MustVerifyEmail
                                            ->where('name','!=','admin')
                                            ->Where('name','!=','chef-vendeur')
                                            ->Where('name','!=','vendeur')
-                                           ->Where('name','!=','banquier'); 
+                                           ->Where('name','!=','banquier');
                                         })
                         ->where('id','!=',$this->id)
                         ->where('profile_status','<',2) ;
@@ -295,7 +297,7 @@ class User extends Authenticatable implements MustVerifyEmail
     }
     /**
      * This methode is used to update the wallet of a user on publication of an announcement or event
-     * 
+     *
      * $currency the currency
      * $publication_column the publication column will tell if we are saving an annoucenement or an event
      */
@@ -316,14 +318,14 @@ class User extends Authenticatable implements MustVerifyEmail
         return $user_currencies->pivot->save();
     }
     /**
-     * 
+     *
      * assign a role to a user through
      */
     public function giveRole(\App\Models\Role $role)
     {
         if($role === null)
         {return false;}
-        //We add a restriction for the banker and super-admin profiles  
+        //We add a restriction for the banker and super-admin profiles
         if(strtolower($role->name) === 'banquier' || strtolower($role->name) === 'super-admin'|| strtolower($role->name) === 'admin'|| strtolower($role->name) === 'chef vendeur'){
             return false;
         }
@@ -351,7 +353,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->roles->wherenotin('name',['chef-vendeur','banquier','membre'])->first();
     }
-    
+
     public function userHasEnoughCredit(String $contenu_price, String $type = 'free_currency')
     {
         //First get the user role excluding some roles
@@ -361,7 +363,7 @@ class User extends Authenticatable implements MustVerifyEmail
         //Make sure currency id is set
         if(!$role->currency_id)
             return false;
-        //Make sure user has enough of the needed currency 
+        //Make sure user has enough of the needed currency
         // dd($amount_to_spend,intval($this->setUserCurrency($role->currency_id)->pivot->$type));
         if($amount_to_spend <= intval($this->setUserCurrency($role->currency_id)->pivot->$type)){
             return true ;

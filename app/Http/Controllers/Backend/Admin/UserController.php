@@ -9,7 +9,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
-use Illuminate \Support\Str;
+use Illuminate\Support\Str;
 use Carbon\Carbon;
 
 use App\Http\Requests\UpdateUserRequest;
@@ -76,7 +76,7 @@ class UserController extends Controller
                         case 4:
                             $annonce_status = '<span class="badge badge-danger font-bold">Suprimée</span>';
                             break;
-                    
+
                         default:
                             break;
                     }
@@ -117,7 +117,7 @@ class UserController extends Controller
                 })
                 ->addColumn('created_at', function($row){
                     return @$row->created_at;
-                })/* 
+                })/*
                 ->addColumn('owner', function($row){
                     $retour = $row->owned?$row->owned->username:"";
                     if($row->owned->id !== $row->posted->id)
@@ -222,7 +222,7 @@ class UserController extends Controller
                                 $instance->orderby('events.publication_status', $order['dir']);
                                 break;
                             */
-                            
+
                             default:
                                 $instance->orderby('updated_at', "desc");
                                 break;
@@ -232,7 +232,7 @@ class UserController extends Controller
                             ->groupby('events.id') */
                             ->skip( @$request->get('start') )
                             ->take( @$request->get('lenght') );
-                        
+
                         // echo $instance->join('event_dates','event_dates.event_id','=','events.id')->groupby('events.id')->toSql();
                 })
                 ->rawColumns(['id','name','email','roles','updated_at','created_at','action'])
@@ -256,7 +256,7 @@ class UserController extends Controller
     {
         $user = new User();
         $region_list = Region::pluck('name','id');
-        $cities_list = City::where('region_id',$user->region_id)->pluck('name','id'); 
+        $cities_list = City::where('region_id',$user->region_id)->pluck('name','id');
         $age_group   = AgeRange::ageSelect();
         $vendors     = User::vendors()->where('id', '!=', $user->id )->get(['prenom','name','id']);
         $roles       = Role::pluck('name','id');
@@ -264,7 +264,7 @@ class UserController extends Controller
         return view('admin.users.create',compact('user','region_list','cities_list','age_group','vendors','roles'));
     }
     /**
-     * 
+     *
      */
     public function createVendeur()
     {
@@ -305,13 +305,13 @@ class UserController extends Controller
             }
             if($last_role === '')
                 $user->assignRole("membre");
-            //We need to send the notification to the user 
+            //We need to send the notification to the user
             $user->notify(new \App\Notifications\NewAccount($user,$password));
             //Then we set users as verified
             $user->email_verified_at = Carbon::now();
             $user->save();
             $current_user = auth()->user();
-            //Based on the role of the current user we will have a different 
+            //Based on the role of the current user we will have a different
             if($current_user->hasRole('super-admin') || $current_user->hasRole('admin')){
                 return redirect()
                     ->route('admin.users.index')
@@ -328,7 +328,7 @@ class UserController extends Controller
     }
 
     /**
-     * 
+     *
      */
     public function editVendeur(User $user)
     {
@@ -340,12 +340,12 @@ class UserController extends Controller
         return view('user.vendeurs.cvedit', compact('current_user','user','region_list','cities_list','age_group'));
     }
     /**
-     * 
+     *
      */
     public function edit(User $user)
     {
         $region_list = Region::pluck('name','id');
-        $cities_list = City::where('region_id',$user->region_id)->pluck('name','id');       
+        $cities_list = City::where('region_id',$user->region_id)->pluck('name','id');
         $age_group   = AgeRange::ageSelect();
 
         $vendors     = User::vendors()->where('id', '!=',$user->id)->get(['prenom','name','id']);
@@ -392,7 +392,7 @@ class UserController extends Controller
                 ->where("id","%{$request->term}%")
                 ->where("id", "!=", Auth::id())
                 ->get();
-    
+
         return response()->json($res);
     }
     public function updateInfosPerso(Request $request)
@@ -433,7 +433,7 @@ class UserController extends Controller
         }
     }
     /**
-     * 
+     *
      * this will setup all data needed by the Braintree gateaway.
      */
     public function assignRole(Request $request)
@@ -465,9 +465,9 @@ class UserController extends Controller
         return view('payments.payment_page');
     }
     /**
-     * 
+     *
      * this method will execute the checkout and assign the purchased role to the user
-     * It also send email notification and save the reansaction in the database 
+     * It also send email notification and save the reansaction in the database
      */
     public function assignRoleCheckout(Request $request)
     {

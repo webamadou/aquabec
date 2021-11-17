@@ -27,7 +27,7 @@ class RegionTest extends TestCase
         $response->assertStatus(200);
     }
 
-    /** 
+    /**
      * @test
      * @group region_tests
      */
@@ -39,7 +39,7 @@ class RegionTest extends TestCase
          //$this->assertCount(1,Region::all());
     }
 
-    /** 
+    /**
      * @test
      * @group region_tests
      */
@@ -54,7 +54,7 @@ class RegionTest extends TestCase
         $this->assertCount(0, Region::all());
     }
 
-    /** 
+    /**
      * @test
      * @group region_tests
      */
@@ -70,12 +70,33 @@ class RegionTest extends TestCase
         $this->assertCount(1, Region::all());
     }
 
+    /**
+     * @test
+     */
+    public function a_region_can_be_updated_if_superadmin()
+    {
+        $this->withoutExceptionHandling();
+        $user = User::factory()->create();
+        Role::updateOrCreate(['name' => 'super-admin']);
+        $user->assignRole('super-admin');
+        $response = $this->actingAs($user)->post( 'admin/settings/regions', $this->dataSet() );
+        $region = Region::find(1);
+
+        $this->assertEquals($this->dataSet()['name'], $region->name);
+        $data = $this->dataSet();
+        $region->name = 'Edited name';
+        $response = $this->actingAs($user)->put("admin/settings/regions/{$region->id}", $region->toArray());
+        $region2 = Region::find($region->id);
+
+        $response->assertRedirect(route('admin.settings.regions.index'));
+        $this->assertEquals('Edited name', $region2->name);
+    }
 
     private function dataSet()
     {
         return [
             'region_number' => 1,
-            'name'          => 'This is the title',
+            'name'          => 'Region_name',
         ];
     }
 }
